@@ -1,0 +1,14 @@
+name: mainCI
+
+on: push
+
+jobs:
+  build:
+    name: main configure and build
+
+    runs-on: ubuntu-16.04
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: testAptInstall
+      run: sudo apt install libgl1-mesa-dev xorg-dev
