@@ -39,16 +39,24 @@
 ## stb
 
 -   version: **052dce1 (master)**
--   origin: https://github.com/nothings/stb/tree/052dce117ed989848a950308bd99eef55525dfb1
+-   origin: <https://github.com/nothings/stb/tree/052dce117ed989848a950308bd99eef55525dfb1>
 -   extracted from origin: see files below
 -   license: mentioned in files
-    -   [stb_image.h](stb/stb_image.h)
-    -   [stb_image_resize.h](stb/stb_image_resize.h)
+    -   [stb_image.h](stb/stb_image.h), version: **2.23**
+    -   [stb_image_resize.h](stb/stb_image_resize.h), version: **0.96**
+
+## tinyobjloader
+
+-   version: **v2.0.0-rc1**
+-   origin: <https://github.com/syoyo/tinyobjloader/releases/tag/v2.0.0-rc1>
+-   extracted from origin:
+    -   LICENSE, tiny_obj_loader.h
+-   license: [tinyobjloader/LICENSE](tinyobjloader/LICENSE)
 
 ## Where Am I?
 
 -   version: **f3a86fd (master)**
--   origin: https://github.com/gpakosz/whereami/tree/f3a86fdf17b49c434a16bb4d9e45a135d4cc25f9
+-   origin: <https://github.com/gpakosz/whereami/tree/f3a86fdf17b49c434a16bb4d9e45a135d4cc25f9>
 -   extracted from origin:
     -   LICENSE.MIT, whereami.{h,c}
 -   license: [whereami/LICENSE.MIT](whereami/LICENSE.MIT)
