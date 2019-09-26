@@ -27,10 +27,10 @@ void myInit(const yourgame::context &ctx)
 {
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     yourgame::registerCbInit(myInit);
-    yourgame::init();
+    yourgame::init(argc, argv);
     yourgame::shutdown();
 
     return 0;

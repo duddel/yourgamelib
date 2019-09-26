@@ -31,7 +31,7 @@ struct context
     std::string assetPath;
 };
 
-void init();
+void init(int argc, char *argv[]);
 void shutdown();
 void registerCbInit(void (*func)(const yourgame::context &ctx));
 

@@ -19,8 +19,11 @@ freely, subject to the following restrictions:
 */
 
 #include <algorithm>
+#include "easylogging++.h"
 #include "whereami.h"
 #include "yourgame/yourgame.h"
+
+INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame
 {
@@ -31,8 +34,13 @@ yourgame::context _context;
 void (*_cbInit)(const yourgame::context &ctx) = NULL;
 } // namespace
 
-void init()
+void init(int argc, char *argv[])
 {
+    // initialize logging
+    START_EASYLOGGINGPP(argc, argv);
+
+    LOG(INFO) << "initializing yourgame...";
+
     // get absolute path to assets/ along the executable
     // and make it available via the context
     int exeBasePathLength;

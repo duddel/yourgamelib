@@ -1,5 +1,13 @@
 # YourGameLib - Thirdparty
 
+## Easylogging++
+
+-   version: **9.96.7**
+-   origin: <https://github.com/zuhd-org/easyloggingpp/releases/tag/v9.96.7>
+-   extracted from origin:
+    -   LICENSE, easylogging++.{h,cc}
+-   license: [easyloggingpp/LICENSE](easyloggingpp/LICENSE)
+
 ## glad
 
 -   version: **0.1.33 (via webtool)**
