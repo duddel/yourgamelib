@@ -6,10 +6,19 @@ set(YOURGAME_GL_MINOR 3)
 set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
 
+# common yourgame inc dirs
+list(APPEND YOURGAME_INC_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 if(YOURGAME_PLATFORM STREQUAL "desktop")
   set(YOURGAME_PLATFORM_INTEGRATION "glfw")
   set(YOURGAME_PLATFORM_GL_EXT_LOADER "glad")
   set(YOURGAME_PLATFORM_GL_API "gl")
+  list(APPEND YOURGAME_EXT_PROJ_LIST "whereami")
+  list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_desktop.cpp
+  )
 else()
   message(FATAL_ERROR "YOURGAME_PLATFORM is not defined or unknown: ${YOURGAME_PLATFORM}")
 endif()
