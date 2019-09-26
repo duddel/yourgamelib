@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
+# enforce C++11 and disable extensions
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 # todo: allow custom gl versions
 set(YOURGAME_GL_MAJOR 3)
 set(YOURGAME_GL_MINOR 3)
