@@ -25,11 +25,20 @@ this example demonstrates the usage of the yourgame library framework.
 
 void myInit(const yourgame::context &ctx)
 {
+    yourgame::logi("initializing...");
+}
+
+void myShutdown(const yourgame::context &ctx)
+{
+    yourgame::logi("shutting down...");
 }
 
 int main(int argc, char *argv[])
 {
+    // register callbacks
     yourgame::registerCbInit(myInit);
+    yourgame::registerCbShutdown(myShutdown);
+
     yourgame::init(argc, argv);
     yourgame::shutdown();
 

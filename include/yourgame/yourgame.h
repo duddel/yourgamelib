@@ -17,11 +17,28 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-
 #ifndef YOURGAME_YOURGAME_H
 #define YOURGAME_YOURGAME_H
 
 #include <string>
+#include "easylogging++.h"
+
+/* generates log function wrappers */
+#define YOURGAME_LOG_FUNC(FUNC_NAME, EL_FUNC_NAME)                             \
+    template <typename T, typename... Args>                                    \
+    inline void FUNC_NAME(const char *s, const T &value, const Args &... args) \
+    {                                                                          \
+        el::Logger *logr = yourgame::getCtx().logger;                          \
+        if (logr != NULL)                                                      \
+            logr->EL_FUNC_NAME(s, value, args...);                             \
+    }                                                                          \
+    template <typename T>                                                      \
+    inline void FUNC_NAME(const T &value)                                      \
+    {                                                                          \
+        el::Logger *logr = yourgame::getCtx().logger;                          \
+        if (logr != NULL)                                                      \
+            logr->EL_FUNC_NAME(value);                                         \
+    }
 
 namespace yourgame
 {
@@ -29,12 +46,23 @@ namespace yourgame
 struct context
 {
     std::string assetPath;
+    el::Logger *logger = NULL;
 };
+
+const yourgame::context &getCtx();
+
+YOURGAME_LOG_FUNC(logd, debug)
+YOURGAME_LOG_FUNC(logi, info)
+YOURGAME_LOG_FUNC(logw, warn)
+YOURGAME_LOG_FUNC(loge, error)
 
 void init(int argc, char *argv[]);
 void shutdown();
+
 void registerCbInit(void (*func)(const yourgame::context &ctx));
+void registerCbShutdown(void (*func)(const yourgame::context &ctx));
 
 } // namespace yourgame
 
+#undef YOURGAME_LOG_FUNC
 #endif

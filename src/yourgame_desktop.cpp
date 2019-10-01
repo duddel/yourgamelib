@@ -17,7 +17,6 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-
 #include <algorithm>
 #include "easylogging++.h"
 #include "whereami.h"
@@ -32,14 +31,19 @@ namespace
 {
 yourgame::context _context;
 void (*_cbInit)(const yourgame::context &ctx) = NULL;
+void (*_cbShutdown)(const yourgame::context &ctx) = NULL;
 } // namespace
+
+const yourgame::context &getCtx()
+{
+    return _context;
+}
 
 void init(int argc, char *argv[])
 {
     // initialize logging
     START_EASYLOGGINGPP(argc, argv);
-
-    LOG(INFO) << "initializing yourgame...";
+    _context.logger = el::Loggers::getLogger("default");
 
     // get absolute path to assets/ along the executable
     // and make it available via the context
@@ -61,11 +65,20 @@ void init(int argc, char *argv[])
 
 void shutdown()
 {
+    if (_cbShutdown != NULL)
+    {
+        _cbShutdown(_context);
+    }
 }
 
 void registerCbInit(void (*func)(const yourgame::context &ctx))
 {
     _cbInit = func;
+}
+
+void registerCbShutdown(void (*func)(const yourgame::context &ctx))
+{
+    _cbShutdown = func;
 }
 
 } // namespace yourgame
