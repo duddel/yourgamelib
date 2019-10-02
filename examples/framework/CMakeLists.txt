@@ -15,6 +15,7 @@ add_subdirectory(
 
 add_executable(framework
   main.cpp
+  mygame.cpp
 )
 
 target_link_libraries(framework PRIVATE

@@ -17,9 +17,11 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <algorithm>
+#include <algorithm> // std::replace()
+#include "GLFW/glfw3.h"
 #include "easylogging++.h"
 #include "whereami.h"
+#include "yourgame/gl_include.h"
 #include "yourgame/yourgame.h"
 
 INITIALIZE_EASYLOGGINGPP
@@ -30,16 +32,24 @@ namespace yourgame
 namespace
 {
 yourgame::context _context;
+GLFWwindow *_window = NULL;
 void (*_cbInit)(const yourgame::context &ctx) = NULL;
+void (*_cbUpdate)(const yourgame::context &ctx) = NULL;
+void (*_cbDraw)(const yourgame::context &ctx) = NULL;
 void (*_cbShutdown)(const yourgame::context &ctx) = NULL;
 } // namespace
+
+void registerCbInit(void (*func)(const yourgame::context &ctx)) { _cbInit = func; }
+void registerCbUpdate(void (*func)(const yourgame::context &ctx)) { _cbUpdate = func; }
+void registerCbDraw(void (*func)(const yourgame::context &ctx)) { _cbDraw = func; }
+void registerCbShutdown(void (*func)(const yourgame::context &ctx)) { _cbShutdown = func; }
 
 const yourgame::context &getCtx()
 {
     return _context;
 }
 
-void init(int argc, char *argv[])
+int init(int argc, char *argv[])
 {
     // initialize logging
     START_EASYLOGGINGPP(argc, argv);
@@ -57,28 +67,88 @@ void init(int argc, char *argv[])
     std::replace(_context.assetPath.begin(), _context.assetPath.end(), '\\', '/');
     _context.assetPath += "assets/";
 
+    // initialize glfw, gl
+    yourgame::logi("glfwInit()...");
+    if (!glfwInit())
+    {
+        yourgame::loge("glfwInit() failed");
+        return -1;
+    }
+
+#if defined(YOURGAME_GL_API_GLES)
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+#elif defined(YOURGAME_GL_API_GL)
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+#endif
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, YOURGAME_GL_MAJOR);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, YOURGAME_GL_MINOR);
+
+    _window = glfwCreateWindow(640, 480, "", NULL, NULL);
+    if (_window == NULL)
+    {
+        yourgame::loge("glfwCreateWindow() failed");
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(_window);
+
+#if defined(YOURGAME_GL_EXT_LOADER_GLAD)
+    yourgame::logi("gladLoadGL()...");
+    if (!gladLoadGL())
+    {
+        yourgame::loge("gladLoadGL() failed");
+        return -1;
+    }
+#endif
+    yourgame::logi("GL_VERSION: %v", glGetString(GL_VERSION));
+    yourgame::logi("GL_VENDOR: %v", glGetString(GL_VENDOR));
+    yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
+    yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    glfwSwapInterval(1);
+
     if (_cbInit != NULL)
     {
         _cbInit(_context);
     }
+
+    return 0;
 }
 
-void shutdown()
+int tick()
 {
+    glfwPollEvents();
+
+    if (_cbUpdate != NULL)
+    {
+        _cbUpdate(_context);
+    }
+
+    if (_cbDraw != NULL)
+    {
+        _cbDraw(_context);
+    }
+
+    glfwSwapBuffers(_window);
+
+    return 0;
+}
+
+int shutdown()
+{
+    if (_window != NULL)
+    {
+        glfwDestroyWindow(_window);
+    }
+    glfwTerminate();
+
     if (_cbShutdown != NULL)
     {
         _cbShutdown(_context);
     }
-}
 
-void registerCbInit(void (*func)(const yourgame::context &ctx))
-{
-    _cbInit = func;
-}
-
-void registerCbShutdown(void (*func)(const yourgame::context &ctx))
-{
-    _cbShutdown = func;
+    return 0;
 }
 
 } // namespace yourgame

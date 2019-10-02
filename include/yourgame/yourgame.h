@@ -56,10 +56,13 @@ YOURGAME_LOG_FUNC(logi, info)
 YOURGAME_LOG_FUNC(logw, warn)
 YOURGAME_LOG_FUNC(loge, error)
 
-void init(int argc, char *argv[]);
-void shutdown();
+int init(int argc, char *argv[]);
+int tick();
+int shutdown();
 
 void registerCbInit(void (*func)(const yourgame::context &ctx));
+void registerCbUpdate(void (*func)(const yourgame::context &ctx));
+void registerCbDraw(void (*func)(const yourgame::context &ctx));
 void registerCbShutdown(void (*func)(const yourgame::context &ctx));
 
 } // namespace yourgame

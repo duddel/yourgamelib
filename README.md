@@ -39,4 +39,6 @@ Check out the example: [examples/mini-gl](examples/mini-gl).
 
 Supported platform to date:
 
-    YOURGAME_PLATFORM=desktop
+```bash
+YOURGAME_PLATFORM=desktop
+```

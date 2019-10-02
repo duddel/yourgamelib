@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
-        example_name: [mini-gl, framework]
+        example_name: [framework]
 
     steps:
     - uses: actions/checkout@v1

@@ -17,25 +17,17 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#ifndef MYGAME_H
+#define MYGAME_H
 
-/*
-this example demonstrates the usage of the yourgame library framework.
-*/
 #include "yourgame/yourgame.h"
-#include "mygame.h"
 
-int main(int argc, char *argv[])
+namespace mygame
 {
-    // register callbacks
-    yourgame::registerCbInit(mygame::init);
-    yourgame::registerCbUpdate(mygame::update);
-    yourgame::registerCbDraw(mygame::draw);
-    yourgame::registerCbShutdown(mygame::shutdown);
+void init(const yourgame::context &ctx);
+void update(const yourgame::context &ctx);
+void draw(const yourgame::context &ctx);
+void shutdown(const yourgame::context &ctx);
+} // namespace mygame
 
-    yourgame::init(argc, argv);
-    for (int i = 0; i < 250; i++)
-        yourgame::tick();
-    yourgame::shutdown();
-
-    return 0;
-}
+#endif
