@@ -25,6 +25,8 @@ freely, subject to the following restrictions:
   #endif
 #elif defined(_WIN32)
   #include <windows.h>
+#else
+  #error not implemented on this platform
 #endif
 #include <cstdint> // uint64_t
 #include "yourgame/timer.h"
