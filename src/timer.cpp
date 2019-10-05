@@ -17,7 +17,7 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__unix__))
+#if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__linux__) || defined(__unix__))
   #include <unistd.h> // POSIX macros
   #include <ctime>
   #if !(_POSIX_TIMERS && _POSIX_MONOTONIC_CLOCK)
@@ -61,7 +61,7 @@ uint64_t Timer::tick()
 
 uint64_t Timer::getNow()
 {
-#if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__unix__))
+#if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__linux__) || defined(__unix__))
     struct timespec theTimeNow;
     clock_gettime(CLOCK_MONOTONIC, &theTimeNow);
     return (uint64_t)(theTimeNow.tv_sec * 1000000 + (theTimeNow.tv_nsec / 1000));
