@@ -30,6 +30,7 @@ void init(const yourgame::context &ctx)
 
 void update(const yourgame::context &ctx)
 {
+    yourgame::logi("passed: %vs, %vus", ctx.deltaTimeS, ctx.deltaTimeUs);
 }
 
 void draw(const yourgame::context &ctx)

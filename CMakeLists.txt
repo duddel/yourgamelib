@@ -11,6 +11,11 @@ set(YOURGAME_GL_MINOR 3)
 set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
 
+# common yourgame source files
+list(APPEND YOURGAME_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/timer.cpp
+)
+
 # common yourgame external projects
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "easyloggingpp"

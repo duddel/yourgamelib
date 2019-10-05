@@ -22,6 +22,7 @@ freely, subject to the following restrictions:
 #include "easylogging++.h"
 #include "whereami.h"
 #include "yourgame/gl_include.h"
+#include "yourgame/timer.h"
 #include "yourgame/yourgame.h"
 
 INITIALIZE_EASYLOGGINGPP
@@ -32,6 +33,7 @@ namespace yourgame
 namespace
 {
 yourgame::context _context;
+yourgame::Timer _timer(0U);
 GLFWwindow *_window = NULL;
 void (*_cbInit)(const yourgame::context &ctx) = NULL;
 void (*_cbUpdate)(const yourgame::context &ctx) = NULL;
@@ -119,6 +121,10 @@ int init(int argc, char *argv[])
 int tick()
 {
     glfwPollEvents();
+
+    // update context
+    _context.deltaTimeUs = _timer.tick();
+    _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
     if (_cbUpdate != NULL)
     {

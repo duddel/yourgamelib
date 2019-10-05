@@ -20,6 +20,7 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_YOURGAME_H
 #define YOURGAME_YOURGAME_H
 
+#include <cstdint> // uint64_t
 #include <string>
 #include "easylogging++.h"
 
@@ -47,6 +48,8 @@ struct context
 {
     std::string assetPath;
     el::Logger *logger = NULL;
+    double deltaTimeS = 0.0;
+    uint64_t deltaTimeUs = 0U;
 };
 
 const yourgame::context &getCtx();

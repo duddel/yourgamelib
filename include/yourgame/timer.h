@@ -17,27 +17,26 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#ifndef YOURGAME_TIMER_H
+#define YOURGAME_TIMER_H
 
-/*
-this example demonstrates the usage of the yourgame library framework.
-*/
-#include "yourgame/yourgame.h"
-#include "mygame.h"
+#include <cstdint> // uint64_t
 
-int main(int argc, char *argv[])
+namespace yourgame
 {
-    // register callbacks
-    yourgame::registerCbInit(mygame::init);
-    yourgame::registerCbUpdate(mygame::update);
-    yourgame::registerCbDraw(mygame::draw);
-    yourgame::registerCbShutdown(mygame::shutdown);
 
-    yourgame::init(argc, argv);
+class Timer
+{
+public:
+  Timer(uint64_t targetTicktimeUs);
+  uint64_t tick();
 
-    for (int i = 0; i < 100; i++)
-        yourgame::tick();
+private:
+  uint64_t _timeLastTick;
+  uint64_t _targetTicktime;
+  uint64_t getNow();
+};
 
-    yourgame::shutdown();
+} // namespace yourgame
 
-    return 0;
-}
+#endif
