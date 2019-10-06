@@ -30,8 +30,10 @@ class Timer
 public:
   Timer(uint64_t targetTicktimeUs);
   uint64_t tick();
+  bool isMonotonic() { return _monotonic; }
 
 private:
+  bool _monotonic;
   uint64_t _timeLastTick;
   uint64_t _targetTicktime;
   uint64_t getNow();

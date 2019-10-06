@@ -57,6 +57,9 @@ int init(int argc, char *argv[])
     START_EASYLOGGINGPP(argc, argv);
     _context.logger = el::Loggers::getLogger("default");
 
+    // check the timer clock
+    yourgame::logi("timer clock is%v monotonic", _timer.isMonotonic() ? "" : " NOT" );
+
     // get absolute path to assets/ along the executable
     // and make it available via the context
     int exeBasePathLength;
