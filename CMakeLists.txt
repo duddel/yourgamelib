@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.7)
 
 # enforce C++11 and disable extensions
 set(CMAKE_CXX_STANDARD 11)
@@ -47,17 +47,9 @@ endif()
 # platform integration
 if(YOURGAME_PLATFORM_INTEGRATION STREQUAL "glfw")
   list(APPEND YOURGAME_EXT_PROJ_LIST "glfw")
-  # todo: assuming gl is required (only) when glfw is the platform
-  find_package(OpenGL REQUIRED)
-  list(APPEND YOURGAME_INC_DIRS
-    ${OPENGL_INCLUDE_DIR}
-  )
-  list(APPEND YOURGAME_LIBS
-    ${OPENGL_LIBRARIES}
-  )
 endif()
 
-# gl api and version
+# gl api, version, library
 if(YOURGAME_PLATFORM_GL_API STREQUAL "gl")
   list(APPEND YOURGAME_COMPILE_DEFS
     YOURGAME_GL_API_GL
@@ -65,12 +57,25 @@ if(YOURGAME_PLATFORM_GL_API STREQUAL "gl")
     YOURGAME_GL_MINOR=${YOURGAME_GL_MINOR}
   )
   set(YOURGAME_PLATFORM_GL_EXT_LOADER "glad")
+  find_package(OpenGL REQUIRED)
+  list(APPEND YOURGAME_INC_DIRS
+    ${OPENGL_INCLUDE_DIR}
+  )
+  list(APPEND YOURGAME_LIBS
+    ${OPENGL_LIBRARIES}
+  )
 elseif(YOURGAME_PLATFORM_GL_API STREQUAL "gles")
   list(APPEND YOURGAME_COMPILE_DEFS
     YOURGAME_GL_API_GLES
     YOURGAME_GL_MAJOR=${YOURGAME_GLES_MAJOR}
     YOURGAME_GL_MINOR=${YOURGAME_GLES_MINOR}
   )
+  # "recommended" gles library names (might differ)
+  if(YOURGAME_GLES_MAJOR EQUAL 1)
+    list(APPEND YOURGAME_LIBS GLESv1_C)
+  else()
+    list(APPEND YOURGAME_LIBS GLESv2) # usually valid for gles v2 and v3
+  endif()
 endif()
 
 # gl include

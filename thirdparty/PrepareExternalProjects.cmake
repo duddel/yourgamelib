@@ -13,7 +13,7 @@
 # YOURGAME_SRC_FILES      - source files
 # YOURGAME_LIBS           - libraries to link
 # YOURGAME_COMPILE_DEFS   - compile definitions
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.7)
 
 # allows ExtProj modules to use ExternalProject_Add()
 # for downloading or cloning dependencies
