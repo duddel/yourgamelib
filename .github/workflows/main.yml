@@ -51,8 +51,9 @@ jobs:
         cd examples/${{ matrix.example_name }}
         mkdir _build
         cd _build
-        cmake -DYOURGAME_PLATFORM=wasm ..
+        emconfigure cmake -DYOURGAME_PLATFORM=wasm ..
     - name: build
       run: |
+        source ./emsdk/emsdk_env.sh
         cd examples/${{ matrix.example_name }}/_build
-        cmake --build .
+        emmake cmake --build .
