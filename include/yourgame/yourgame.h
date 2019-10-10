@@ -60,7 +60,7 @@ YOURGAME_LOG_FUNC(logw, warn)
 YOURGAME_LOG_FUNC(loge, error)
 
 int init(int argc, char *argv[]);
-int tick();
+void tick();
 int shutdown();
 
 void registerCbInit(void (*func)(const yourgame::context &ctx));

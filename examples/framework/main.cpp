@@ -21,6 +21,9 @@ freely, subject to the following restrictions:
 /*
 this example demonstrates the usage of the yourgame library framework.
 */
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
 #include "yourgame/yourgame.h"
 #include "mygame.h"
 
@@ -34,8 +37,12 @@ int main(int argc, char *argv[])
 
     yourgame::init(argc, argv);
 
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(yourgame::tick, 0, 1);
+#else
     for (int i = 0; i < 100; i++)
         yourgame::tick();
+#endif
 
     yourgame::shutdown();
 

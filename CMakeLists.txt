@@ -37,6 +37,14 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
   list(APPEND YOURGAME_EXT_PROJ_LIST
     "whereami"
   )
+  list(APPEND YOURGAME_COMPILE_DEFS
+    YOURGAME_USE_WHEREAMI
+  )
+  list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_desktop.cpp
+  )
+elseif(YOURGAME_PLATFORM STREQUAL "wasm")
+  set(YOURGAME_PLATFORM_GL_API "gles")
   list(APPEND YOURGAME_SRC_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_desktop.cpp
   )

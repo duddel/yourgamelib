@@ -18,9 +18,15 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <algorithm> // std::replace()
-#include "GLFW/glfw3.h"
+// todo: where define GLFW_INCLUDE_NONE?
+#ifndef GLFW_INCLUDE_NONE
+#define GLFW_INCLUDE_NONE
+#endif
+#include <GLFW/glfw3.h>
 #include "easylogging++.h"
+#ifdef YOURGAME_USE_WHEREAMI
 #include "whereami.h"
+#endif
 #include "yourgame/gl_include.h"
 #include "yourgame/timer.h"
 #include "yourgame/yourgame.h"
@@ -58,10 +64,11 @@ int init(int argc, char *argv[])
     _context.logger = el::Loggers::getLogger("default");
 
     // check the timer clock
-    yourgame::logi("timer clock is%v monotonic", _timer.isMonotonic() ? "" : " NOT" );
+    yourgame::logi("timer clock is%v monotonic", _timer.isMonotonic() ? "" : " NOT");
 
-    // get absolute path to assets/ along the executable
-    // and make it available via the context
+// get absolute path to assets/ along the executable
+// and make it available via the context
+#ifdef YOURGAME_USE_WHEREAMI
     int exeBasePathLength;
     int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
     char *path = (char *)malloc(exePathLength + 1);
@@ -71,6 +78,9 @@ int init(int argc, char *argv[])
     free(path);
     std::replace(_context.assetPath.begin(), _context.assetPath.end(), '\\', '/');
     _context.assetPath += "assets/";
+#else
+    _context.assetPath = "/assets/";
+#endif
 
     // initialize glfw, gl
     yourgame::logi("glfwInit()...");
@@ -88,7 +98,7 @@ int init(int argc, char *argv[])
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, YOURGAME_GL_MAJOR);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, YOURGAME_GL_MINOR);
 
-    _window = glfwCreateWindow(640, 480, "", NULL, NULL);
+    _window = glfwCreateWindow(800, 512, "", NULL, NULL);
     if (_window == NULL)
     {
         yourgame::loge("glfwCreateWindow() failed");
@@ -121,7 +131,7 @@ int init(int argc, char *argv[])
     return 0;
 }
 
-int tick()
+void tick()
 {
     glfwPollEvents();
 
@@ -140,8 +150,6 @@ int tick()
     }
 
     glfwSwapBuffers(_window);
-
-    return 0;
 }
 
 int shutdown()

@@ -3,8 +3,8 @@ name: mainCI
 on: push
 
 jobs:
-  build:
-    name: examples
+  build_examples_desktop:
+    name: examples desktop
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -17,13 +17,42 @@ jobs:
     - name: install deps
       run: sudo apt install libgl1-mesa-dev xorg-dev
       if: startsWith(matrix.os, 'ubuntu')
-    - name: ${{ matrix.example_name }} configure
+    - name: configure
       run: |
         cd examples/${{ matrix.example_name }}
         mkdir _build
         cd _build
-        cmake ..
-    - name: ${{ matrix.example_name }} build
+        cmake -DYOURGAME_PLATFORM=desktop ..
+    - name: build
+      run: |
+        cd examples/${{ matrix.example_name }}/_build
+        cmake --build .
+
+
+  build_examples_wasm:
+    name: examples wasm
+
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        example_name: [framework]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: install emsdk
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+    - name: configure
+      run: |
+        source ./emsdk/emsdk_env.sh
+        cd examples/${{ matrix.example_name }}
+        mkdir _build
+        cd _build
+        cmake -DYOURGAME_PLATFORM=wasm ..
+    - name: build
       run: |
         cd examples/${{ matrix.example_name }}/_build
         cmake --build .
