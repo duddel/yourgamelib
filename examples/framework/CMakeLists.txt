@@ -16,7 +16,12 @@ add_executable(framework
 )
 
 if(YOURGAME_PLATFORM STREQUAL "wasm")
+  # setting the output file extension to .html lets emscripten
+  # generate an additional .html file along the .js and .wasm
   set_target_properties(framework PROPERTIES SUFFIX ".html")
+  # enforce GLFW v3 API (default is v2)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_GLFW=3")
 endif()
 
 target_link_libraries(framework PRIVATE
