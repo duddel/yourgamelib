@@ -41,12 +41,12 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
     YOURGAME_USE_WHEREAMI
   )
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_desktop.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_glfw.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "wasm")
   set(YOURGAME_PLATFORM_GL_API "gles")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_desktop.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_glfw.cpp
   )
 else()
   message(FATAL_ERROR "YOURGAME_PLATFORM is not defined or unknown: ${YOURGAME_PLATFORM}")

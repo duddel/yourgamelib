@@ -9,7 +9,4 @@ add_subdirectory(${YOURGAME_EXT_PROJ_MODULE_DIR}/glfw)
 list(APPEND YOURGAME_LIBS
   glfw
 )
-list(APPEND YOURGAME_COMPILE_DEFS
-  GLFW_INCLUDE_NONE
-)
 ") # file()

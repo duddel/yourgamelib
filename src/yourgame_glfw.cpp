@@ -18,16 +18,12 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <algorithm> // std::replace()
-// todo: where define GLFW_INCLUDE_NONE?
-#ifndef GLFW_INCLUDE_NONE
-#define GLFW_INCLUDE_NONE
-#endif
+#include "yourgame/gl_include.h"
 #include <GLFW/glfw3.h>
 #include "easylogging++.h"
 #ifdef YOURGAME_USE_WHEREAMI
 #include "whereami.h"
 #endif
-#include "yourgame/gl_include.h"
 #include "yourgame/timer.h"
 #include "yourgame/yourgame.h"
 
