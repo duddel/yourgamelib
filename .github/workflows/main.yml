@@ -59,3 +59,19 @@ jobs:
         source ./emsdk/emsdk_env.sh
         cd examples/${{ matrix.example_name }}/_build
         emmake cmake --build .
+
+
+  build_examples_android:
+    name: examples android
+
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        example_name: [framework]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: assemble
+      run: |
+        cd examples/${{ matrix.example_name }}/android
+        ./gradlew assembleDebug
