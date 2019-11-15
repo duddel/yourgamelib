@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.6)
 
 # enforce C++11 and disable extensions
 set(CMAKE_CXX_STANDARD 11)
