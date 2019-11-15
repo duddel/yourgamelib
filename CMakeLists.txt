@@ -48,6 +48,14 @@ elseif(YOURGAME_PLATFORM STREQUAL "wasm")
   list(APPEND YOURGAME_SRC_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_glfw.cpp
   )
+elseif(YOURGAME_PLATFORM STREQUAL "android")
+  set(YOURGAME_PLATFORM_GL_API "gles")
+  list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_android.cpp
+  )
+  list(APPEND YOURGAME_EXT_PROJ_LIST
+    "android-native-app"
+  )
 else()
   message(FATAL_ERROR "YOURGAME_PLATFORM is not defined or unknown: ${YOURGAME_PLATFORM}")
 endif()

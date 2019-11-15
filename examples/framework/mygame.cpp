@@ -17,24 +17,32 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include <cmath>
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
 
 namespace mygame
 {
 
+namespace
+{
+double _colT = 0.0;
+}
+
 void init(const yourgame::context &ctx)
 {
-    glClearColor(0.0f, 0.5f, 0.0f, 1.0f);
 }
 
 void update(const yourgame::context &ctx)
 {
-    yourgame::logi("passed: %vs, %vus", ctx.deltaTimeS, ctx.deltaTimeUs);
+    _colT += (1.0 * ctx.deltaTimeS);
 }
 
 void draw(const yourgame::context &ctx)
 {
+    float colFade = (float)((sin(_colT) * 0.5) + 0.5);
+
+    glClearColor(colFade, 1.0f - colFade, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

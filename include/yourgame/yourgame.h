@@ -20,6 +20,10 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_YOURGAME_H
 #define YOURGAME_YOURGAME_H
 
+#ifdef __ANDROID__
+#include <android/native_window.h>
+#endif
+
 #include <cstdint> // uint64_t
 #include <string>
 #include "easylogging++.h"
@@ -59,7 +63,11 @@ YOURGAME_LOG_FUNC(logi, info)
 YOURGAME_LOG_FUNC(logw, warn)
 YOURGAME_LOG_FUNC(loge, error)
 
+#ifdef __ANDROID__
+void init(ANativeWindow *win);
+#else
 int init(int argc, char *argv[]);
+#endif
 void tick();
 int shutdown();
 

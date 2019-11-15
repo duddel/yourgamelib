@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(yourgame::tick, 0, 1);
 #else
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 250; i++)
         yourgame::tick();
 #endif
 

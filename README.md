@@ -7,7 +7,8 @@
 
 ## License
 
-The files in this repository are licensed under the zlib license (if not stated otherwise), except for files in subdirectories of thirdparty/. For license information of thirdparty libraries, see: [thirdparty/](thirdparty/).
+-   The source code in this repository (except for code in subdirectories of thirdparty/) is licensed under the zlib license (if not stated otherwise)
+-   For license information of thirdparty libraries, see: [thirdparty/](thirdparty/).
 
 ## Usage
 
@@ -33,12 +34,39 @@ If multiple platforms are supported, omit setting `YOURGAME_PLATFORM` in your CM
 cmake .. -DYOURGAME_PLATFORM=desktop
 ```
 
-Check out the example: [examples/mini-gl](examples/mini-gl).
-
 ## Platforms
 
 Supported platform to date:
 
 ```bash
 YOURGAME_PLATFORM=desktop
+YOURGAME_PLATFORM=wasm
+YOURGAME_PLATFORM=android
+```
+
+### Raspberry PI
+
+Tested on Raspbian stretch, Pi 2
+
+```bash
+sudo apt install git cmake build-essential libgles2-mesa-dev xorg-dev
+-DYOURGAME_PLATFORM=desktop -DYOURGAME_FORCE_GLES=ON
+```
+
+### Android
+
+Make sure the environment variable `ANDROID_SDK_ROOT` is set and points to the android sdk. Install `ndk-bundle` and `cmake` via the `sdkmanager` (not installed platforms and platform-tools will be installed on demand)
+
+tested with
+
+```bash
+cmake       version 3.10.2.4988404
+ndk-bundle  version 20.0.5594570
+```
+
+Try the `framework` example:
+
+```bash
+cd examples/framework/android
+./gradlew assembleDebug
 ```

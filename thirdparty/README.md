@@ -1,5 +1,11 @@
 # YourGameLib - Thirdparty
 
+## Android Native App
+
+-   code is used from the Android SDK installation (no code distributed)
+-   see [ExtProj-android-native-app.cmake](ExtProj-android-native-app.cmake)
+-   license: check license information included in Android SDK
+
 ## Easylogging++
 
 -   version: **9.96.7**
