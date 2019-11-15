@@ -1,10 +1,10 @@
-name: mainCI
+name: examples
 
 on: push
 
 jobs:
   build_examples_desktop:
-    name: examples desktop
+    name: desktop
 
     runs-on: ${{ matrix.os }}
     strategy:
@@ -32,7 +32,7 @@ jobs:
 
 
   build_examples_wasm:
-    name: examples wasm
+    name: wasm
 
     runs-on: ubuntu-16.04
     strategy:
@@ -62,7 +62,7 @@ jobs:
 
 
   build_examples_android:
-    name: examples android
+    name: android
 
     runs-on: ubuntu-16.04
     strategy:

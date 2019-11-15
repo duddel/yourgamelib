@@ -1,5 +1,7 @@
 # YourGameLib
 
+[![Examples](https://github.com/duddel/yourgamelib/workflows/examples/badge.svg)](https://github.com/duddel/yourgamelib/actions?query=workflow%3Aexamples)
+
 **Framework for game-like applications - based on CMake, C++, OpenGL (ES)**
 
 -   Kick-start cross-platform OpenGL projects written in C/C++
