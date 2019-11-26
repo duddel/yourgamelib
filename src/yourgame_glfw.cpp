@@ -29,6 +29,14 @@ freely, subject to the following restrictions:
 
 INITIALIZE_EASYLOGGINGPP
 
+namespace mygame
+{
+extern void init(const yourgame::context &ctx);
+extern void update(const yourgame::context &ctx);
+extern void draw(const yourgame::context &ctx);
+extern void shutdown(const yourgame::context &ctx);
+} // namespace mygame
+
 namespace yourgame
 {
 
@@ -37,16 +45,7 @@ namespace
 yourgame::context _context;
 yourgame::Timer _timer(0U);
 GLFWwindow *_window = NULL;
-void (*_cbInit)(const yourgame::context &ctx) = NULL;
-void (*_cbUpdate)(const yourgame::context &ctx) = NULL;
-void (*_cbDraw)(const yourgame::context &ctx) = NULL;
-void (*_cbShutdown)(const yourgame::context &ctx) = NULL;
 } // namespace
-
-void registerCbInit(void (*func)(const yourgame::context &ctx)) { _cbInit = func; }
-void registerCbUpdate(void (*func)(const yourgame::context &ctx)) { _cbUpdate = func; }
-void registerCbDraw(void (*func)(const yourgame::context &ctx)) { _cbDraw = func; }
-void registerCbShutdown(void (*func)(const yourgame::context &ctx)) { _cbShutdown = func; }
 
 const yourgame::context &getCtx()
 {
@@ -119,10 +118,7 @@ int init(int argc, char *argv[])
 
     glfwSwapInterval(1);
 
-    if (_cbInit != NULL)
-    {
-        _cbInit(_context);
-    }
+    mygame::init(_context);
 
     return 0;
 }
@@ -135,15 +131,9 @@ void tick()
     _context.deltaTimeUs = _timer.tick();
     _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
-    if (_cbUpdate != NULL)
-    {
-        _cbUpdate(_context);
-    }
+    mygame::update(_context);
 
-    if (_cbDraw != NULL)
-    {
-        _cbDraw(_context);
-    }
+    mygame::draw(_context);
 
     glfwSwapBuffers(_window);
 }
@@ -156,10 +146,7 @@ int shutdown()
     }
     glfwTerminate();
 
-    if (_cbShutdown != NULL)
-    {
-        _cbShutdown(_context);
-    }
+    mygame::shutdown(_context);
 
     return 0;
 }

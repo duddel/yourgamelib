@@ -10,31 +10,13 @@
 ## License
 
 -   The source code in this repository (except for code in subdirectories of thirdparty/) is licensed under the zlib license (if not stated otherwise)
--   For license information of thirdparty libraries, see: [thirdparty/](thirdparty/).
+-   For license information of thirdparty libraries, see: [thirdparty/](thirdparty/)
 
 ## Usage
 
-Download or clone this repository and add the root directory to your CMake project via `add_subdirectory()`, like so:
-
-```cmake
-# omit if no further dependencies required
-list(APPEND YOURGAME_EXT_PROJ_LIST
-  "imgui"
-)
-
-# omit if multiple platforms are supported
-set(YOURGAME_PLATFORM desktop)
-
-add_subdirectory(libyourgame)
-```
-
-This creates the CMake library target `yourgame` to link your code against.
-
-If multiple platforms are supported, omit setting `YOURGAME_PLATFORM` in your CMakeLists.txt and hand over the platform via command line argument for each invokation of CMake:
-
-```bash
-cmake .. -DYOURGAME_PLATFORM=desktop
-```
+-   Download or clone this repository and add the root directory to your CMake project via `add_subdirectory()`
+-   This creates the CMake library target `yourgame` to link your code against
+-   Check out the [framework](examples/framework) example
 
 ## Platforms
 
@@ -62,7 +44,7 @@ Make sure the environment variable `ANDROID_SDK_ROOT` is set and points to the a
 tested with
 
 ```bash
-cmake       version 3.10.2.4988404
+cmake       version 3.6.4111459
 ndk-bundle  version 20.0.5594570
 ```
 

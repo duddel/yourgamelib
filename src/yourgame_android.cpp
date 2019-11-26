@@ -27,6 +27,14 @@ freely, subject to the following restrictions:
 
 INITIALIZE_EASYLOGGINGPP
 
+namespace mygame
+{
+extern void init(const yourgame::context &ctx);
+extern void update(const yourgame::context &ctx);
+extern void draw(const yourgame::context &ctx);
+extern void shutdown(const yourgame::context &ctx);
+} // namespace mygame
+
 namespace yourgame
 {
 
@@ -63,17 +71,7 @@ EGLDisplay _display = EGL_NO_DISPLAY;
 EGLSurface _surface = EGL_NO_SURFACE;
 EGLContext _eglContext = EGL_NO_CONTEXT;
 ANativeWindow *_win = NULL;
-
-void (*_cbInit)(const yourgame::context &ctx) = NULL;
-void (*_cbUpdate)(const yourgame::context &ctx) = NULL;
-void (*_cbDraw)(const yourgame::context &ctx) = NULL;
-void (*_cbShutdown)(const yourgame::context &ctx) = NULL;
 } // namespace
-
-void registerCbInit(void (*func)(const yourgame::context &ctx)) { _cbInit = func; }
-void registerCbUpdate(void (*func)(const yourgame::context &ctx)) { _cbUpdate = func; }
-void registerCbDraw(void (*func)(const yourgame::context &ctx)) { _cbDraw = func; }
-void registerCbShutdown(void (*func)(const yourgame::context &ctx)) { _cbShutdown = func; }
 
 const yourgame::context &getCtx()
 {
@@ -168,10 +166,7 @@ void init(ANativeWindow *win)
     yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
     yourgame::logi("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
 
-    if (_cbInit != NULL)
-    {
-        _cbInit(_context);
-    }
+    mygame::init(_context);
 }
 
 void tick()
@@ -180,15 +175,9 @@ void tick()
     _context.deltaTimeUs = _timer.tick();
     _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
-    if (_cbUpdate != NULL)
-    {
-        _cbUpdate(_context);
-    }
+    mygame::update(_context);
 
-    if (_cbDraw != NULL)
-    {
-        _cbDraw(_context);
-    }
+    mygame::draw(_context);
 
     eglSwapBuffers(_display, _surface);
 }
@@ -216,10 +205,7 @@ int shutdown()
     _eglContext = EGL_NO_CONTEXT;
     _surface = EGL_NO_SURFACE;
 
-    if (_cbShutdown != NULL)
-    {
-        _cbShutdown(_context);
-    }
+    mygame::shutdown(_context);
 
     return 0;
 }

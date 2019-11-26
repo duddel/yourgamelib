@@ -25,16 +25,9 @@ this example demonstrates the usage of the yourgame library framework.
 #include <emscripten/emscripten.h>
 #endif
 #include "yourgame/yourgame.h"
-#include "mygame.h"
 
 int main(int argc, char *argv[])
 {
-    // register callbacks
-    yourgame::registerCbInit(mygame::init);
-    yourgame::registerCbUpdate(mygame::update);
-    yourgame::registerCbDraw(mygame::draw);
-    yourgame::registerCbShutdown(mygame::shutdown);
-
     yourgame::init(argc, argv);
 
 #ifdef __EMSCRIPTEN__

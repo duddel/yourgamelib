@@ -14,7 +14,6 @@ add_subdirectory(
 
 if(YOURGAME_PLATFORM STREQUAL "android")
   add_library(${CMAKE_PROJECT_NAME} SHARED
-    main_android.cpp
     mygame.cpp
   )
   set(CMAKE_SHARED_LINKER_FLAGS
@@ -22,7 +21,6 @@ if(YOURGAME_PLATFORM STREQUAL "android")
   )
 else()
   add_executable(${CMAKE_PROJECT_NAME}
-    main.cpp
     mygame.cpp
   )
 endif()

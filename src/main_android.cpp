@@ -26,7 +26,6 @@ todo: move most of the logic into yourgame_android.cpp
 */
 #include <android_native_app_glue.h>
 #include "yourgame/yourgame.h"
-#include "mygame.h"
 
 static int32_t handleInputEvent(struct android_app *app, AInputEvent *inputEvent)
 {
@@ -61,12 +60,6 @@ static void handleAppCmd(struct android_app *app, int32_t appCmd)
 
 void android_main(struct android_app *app)
 {
-    // register yourgame callbacks
-    yourgame::registerCbInit(mygame::init);
-    yourgame::registerCbUpdate(mygame::update);
-    yourgame::registerCbDraw(mygame::draw);
-    yourgame::registerCbShutdown(mygame::shutdown);
-
     // register android app callbacks
     app->onAppCmd = handleAppCmd;
     app->onInputEvent = handleInputEvent;

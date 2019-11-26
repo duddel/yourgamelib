@@ -28,29 +28,32 @@ list(APPEND YOURGAME_INC_DIRS
 
 # yourgame platforms
 if(YOURGAME_PLATFORM STREQUAL "desktop")
-  set(YOURGAME_PLATFORM_INTEGRATION "glfw")
-  if(YOURGAME_FORCE_GLES)
-    set(YOURGAME_PLATFORM_GL_API "gles")
-  else()
-    set(YOURGAME_PLATFORM_GL_API "gl")
-  endif()
   list(APPEND YOURGAME_EXT_PROJ_LIST
+    "glfw"
     "whereami"
   )
   list(APPEND YOURGAME_COMPILE_DEFS
     YOURGAME_USE_WHEREAMI
   )
+  if(YOURGAME_FORCE_GLES)
+    set(YOURGAME_PLATFORM_GL_API "gles")
+  else()
+    set(YOURGAME_PLATFORM_GL_API "gl")
+  endif()
   list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_glfw.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "wasm")
   set(YOURGAME_PLATFORM_GL_API "gles")
   list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_glfw.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   set(YOURGAME_PLATFORM_GL_API "gles")
   list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/main_android.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame_android.cpp
   )
   list(APPEND YOURGAME_EXT_PROJ_LIST
@@ -58,11 +61,6 @@ elseif(YOURGAME_PLATFORM STREQUAL "android")
   )
 else()
   message(FATAL_ERROR "YOURGAME_PLATFORM is not defined or unknown: ${YOURGAME_PLATFORM}")
-endif()
-
-# platform integration
-if(YOURGAME_PLATFORM_INTEGRATION STREQUAL "glfw")
-  list(APPEND YOURGAME_EXT_PROJ_LIST "glfw")
 endif()
 
 # gl api, version, library
