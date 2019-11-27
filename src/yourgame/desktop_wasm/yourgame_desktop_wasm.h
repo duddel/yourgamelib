@@ -17,27 +17,16 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#ifndef YOURGAME_YOURGAME_DESKTOP_WASM_H
+#define YOURGAME_YOURGAME_DESKTOP_WASM_H
 
-/*
-this example demonstrates the usage of the yourgame library framework.
-*/
-#ifdef __EMSCRIPTEN__
-#include <emscripten/emscripten.h>
-#endif
-#include "yourgame/yourgame.h"
-
-int main(int argc, char *argv[])
+namespace yourgame
 {
-    yourgame::init(argc, argv);
 
-#ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(yourgame::tick, 0, 1);
-#else
-    for (int i = 0; i < 250; i++)
-        yourgame::tick();
+int init(int argc, char *argv[]);
+void tick();
+int shutdown();
+
+} // namespace yourgame
+
 #endif
-
-    yourgame::shutdown();
-
-    return 0;
-}

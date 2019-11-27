@@ -17,38 +17,15 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <cmath>
-#include "yourgame/yourgame.h"
-#include "yourgame/gl_include.h"
 
+/*
+these functions must be defined in the user code. they get called from
+within the yourgame library
+*/
 namespace mygame
 {
-
-namespace
-{
-double _colT = 0.0;
-}
-
-void init(const yourgame::context &ctx)
-{
-    yourgame::logi("mygame::init() called");
-}
-
-void update(const yourgame::context &ctx)
-{
-    _colT += (1.0 * ctx.deltaTimeS);
-}
-
-void draw(const yourgame::context &ctx)
-{
-    float colFade = (float)((sin(_colT) * 0.5) + 0.5);
-
-    glClearColor(colFade, 1.0f - colFade, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void shutdown(const yourgame::context &ctx)
-{
-}
-
+extern void init(const yourgame::context &ctx);
+extern void update(const yourgame::context &ctx);
+extern void draw(const yourgame::context &ctx);
+extern void shutdown(const yourgame::context &ctx);
 } // namespace mygame

@@ -17,38 +17,24 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <cmath>
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
 #include "yourgame/yourgame.h"
-#include "yourgame/gl_include.h"
+#include "yourgame/desktop_wasm/yourgame_desktop_wasm.h"
 
-namespace mygame
+int main(int argc, char *argv[])
 {
+    yourgame::init(argc, argv);
 
-namespace
-{
-double _colT = 0.0;
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(yourgame::tick, 0, 1);
+#else
+    for (int i = 0; i < 250; i++)
+        yourgame::tick();
+#endif
+
+    yourgame::shutdown();
+
+    return 0;
 }
-
-void init(const yourgame::context &ctx)
-{
-    yourgame::logi("mygame::init() called");
-}
-
-void update(const yourgame::context &ctx)
-{
-    _colT += (1.0 * ctx.deltaTimeS);
-}
-
-void draw(const yourgame::context &ctx)
-{
-    float colFade = (float)((sin(_colT) * 0.5) + 0.5);
-
-    glClearColor(colFade, 1.0f - colFade, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void shutdown(const yourgame::context &ctx)
-{
-}
-
-} // namespace mygame

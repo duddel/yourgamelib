@@ -17,38 +17,18 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <cmath>
-#include "yourgame/yourgame.h"
-#include "yourgame/gl_include.h"
+#ifndef YOURGAME_YOURGAME_ANDROID_H
+#define YOURGAME_YOURGAME_ANDROID_H
 
-namespace mygame
+#include <android/native_window.h>
+
+namespace yourgame
 {
 
-namespace
-{
-double _colT = 0.0;
-}
+void init(ANativeWindow *win);
+void tick();
+int shutdown();
 
-void init(const yourgame::context &ctx)
-{
-    yourgame::logi("mygame::init() called");
-}
+} // namespace yourgame
 
-void update(const yourgame::context &ctx)
-{
-    _colT += (1.0 * ctx.deltaTimeS);
-}
-
-void draw(const yourgame::context &ctx)
-{
-    float colFade = (float)((sin(_colT) * 0.5) + 0.5);
-
-    glClearColor(colFade, 1.0f - colFade, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void shutdown(const yourgame::context &ctx)
-{
-}
-
-} // namespace mygame
+#endif

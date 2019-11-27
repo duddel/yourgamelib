@@ -19,13 +19,11 @@ freely, subject to the following restrictions:
 */
 
 /*
-this example demonstrates the usage of the yourgame library framework
-on the android platform based on "android native app".
-todo: it is considered a stub, activity lifecycle, input, etc. not fully implemented.
-todo: move most of the logic into yourgame_android.cpp
+todo: this code is considered a stub: activity lifecycle, input, etc. not fully implemented.
 */
 #include <android_native_app_glue.h>
 #include "yourgame/yourgame.h"
+#include "yourgame/android/yourgame_android.h"
 
 static int32_t handleInputEvent(struct android_app *app, AInputEvent *inputEvent)
 {

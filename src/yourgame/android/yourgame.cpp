@@ -20,20 +20,12 @@ freely, subject to the following restrictions:
 #include <android/native_window.h>
 #include <android/log.h>
 #include <EGL/egl.h>
-#include "yourgame/gl_include.h"
-#include "easylogging++.h"
-#include "yourgame/timer.h"
 #include "yourgame/yourgame.h"
+#include "yourgame/gl_include.h"
+#include "yourgame/timer.h"
+#include "yourgame/mygame_external.h"
 
 INITIALIZE_EASYLOGGINGPP
-
-namespace mygame
-{
-extern void init(const yourgame::context &ctx);
-extern void update(const yourgame::context &ctx);
-extern void draw(const yourgame::context &ctx);
-extern void shutdown(const yourgame::context &ctx);
-} // namespace mygame
 
 namespace yourgame
 {

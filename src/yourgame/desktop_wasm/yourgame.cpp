@@ -18,24 +18,18 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <algorithm> // std::replace()
+/* prevent glfw to include any gl header by
+including gl_include.h before glfw */
 #include "yourgame/gl_include.h"
 #include <GLFW/glfw3.h>
-#include "easylogging++.h"
 #ifdef YOURGAME_USE_WHEREAMI
 #include "whereami.h"
 #endif
-#include "yourgame/timer.h"
 #include "yourgame/yourgame.h"
+#include "yourgame/timer.h"
+#include "yourgame/mygame_external.h"
 
 INITIALIZE_EASYLOGGINGPP
-
-namespace mygame
-{
-extern void init(const yourgame::context &ctx);
-extern void update(const yourgame::context &ctx);
-extern void draw(const yourgame::context &ctx);
-extern void shutdown(const yourgame::context &ctx);
-} // namespace mygame
 
 namespace yourgame
 {
