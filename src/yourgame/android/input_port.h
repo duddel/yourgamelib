@@ -17,16 +17,12 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_YOURGAME_DESKTOP_WASM_H
-#define YOURGAME_YOURGAME_DESKTOP_WASM_H
+#ifndef YOURGAME_INPUT_PORT_H
+#define YOURGAME_INPUT_PORT_H
 
 namespace yourgame
 {
-
-int init(int argc, char *argv[]);
-void tick();
-int shutdown();
-
-} // namespace yourgame
+void initInput(struct android_app *app);
+}
 
 #endif

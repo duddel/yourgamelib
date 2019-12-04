@@ -17,24 +17,16 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifdef __EMSCRIPTEN__
-#include <emscripten/emscripten.h>
-#endif
-#include "yourgame/yourgame.h"
-#include "yourgame/desktop_wasm/yourgame_port.h"
+#ifndef YOURGAME_PORT_H
+#define YOURGAME_PORT_H
 
-int main(int argc, char *argv[])
+namespace yourgame
 {
-    yourgame::init(argc, argv);
 
-#ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(yourgame::tick, 0, 1);
-#else
-    for (int i = 0; i < 250; i++)
-        yourgame::tick();
+void init(struct android_app *app);
+void tick();
+int shutdown();
+
+} // namespace yourgame
+
 #endif
-
-    yourgame::shutdown();
-
-    return 0;
-}

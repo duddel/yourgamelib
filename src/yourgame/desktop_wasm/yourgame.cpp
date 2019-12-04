@@ -28,6 +28,7 @@ including gl_include.h before glfw */
 #include "yourgame/yourgame.h"
 #include "yourgame/timer.h"
 #include "yourgame/mygame_external.h"
+#include "yourgame/desktop_wasm/input_port.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -111,6 +112,8 @@ int init(int argc, char *argv[])
     yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     glfwSwapInterval(1);
+
+    yourgame::initInput(_window);
 
     mygame::init(_context);
 

@@ -22,20 +22,7 @@ freely, subject to the following restrictions:
 todo: this code is considered a stub: activity lifecycle, input, etc. not fully implemented.
 */
 #include <android_native_app_glue.h>
-#include "yourgame/yourgame.h"
-#include "yourgame/android/yourgame_android.h"
-
-static int32_t handleInputEvent(struct android_app *app, AInputEvent *inputEvent)
-{
-    if (AInputEvent_getType(inputEvent) == AINPUT_EVENT_TYPE_MOTION)
-    {
-        yourgame::logi("we got a touch event!");
-        return 1;
-    }
-
-    yourgame::logi("we got a NON-touch event!");
-    return 0;
-}
+#include "yourgame/android/yourgame_port.h"
 
 static void handleAppCmd(struct android_app *app, int32_t appCmd)
 {
@@ -44,7 +31,7 @@ static void handleAppCmd(struct android_app *app, int32_t appCmd)
     case APP_CMD_SAVE_STATE:
         break;
     case APP_CMD_INIT_WINDOW:
-        yourgame::init(app->window);
+        yourgame::init(app);
         break;
     case APP_CMD_TERM_WINDOW:
         yourgame::shutdown();
@@ -60,7 +47,6 @@ void android_main(struct android_app *app)
 {
     // register android app callbacks
     app->onAppCmd = handleAppCmd;
-    app->onInputEvent = handleInputEvent;
 
     while (true)
     {

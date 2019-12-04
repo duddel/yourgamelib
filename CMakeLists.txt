@@ -46,18 +46,21 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
     set(YOURGAME_PLATFORM_GL_API "gl")
   endif()
   list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/yourgame.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "wasm")
   set(YOURGAME_PLATFORM_GL_API "gles")
   list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/input.cpp  
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/yourgame.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   set(YOURGAME_PLATFORM_GL_API "gles")
   list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/yourgame.cpp
   )

@@ -18,12 +18,14 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <android/native_window.h>
+#include <android_native_app_glue.h>
 #include <android/log.h>
 #include <EGL/egl.h>
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
 #include "yourgame/timer.h"
 #include "yourgame/mygame_external.h"
+#include "yourgame/android/input_port.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -70,9 +72,11 @@ const yourgame::context &getCtx()
     return _context;
 }
 
-void init(ANativeWindow *win)
+void init(struct android_app *app)
 {
-    _win = win;
+    _win = app->window;
+    
+    initInput(app);
 
     // initialize logging
     _context.logger = el::Loggers::getLogger("default");

@@ -22,6 +22,9 @@ freely, subject to the following restrictions:
 these functions must be defined in the user code. they get called from
 within the yourgame library
 */
+#ifndef MYGAME_EXTERNAL_H
+#define MYGAME_EXTERNAL_H
+
 namespace mygame
 {
 extern void init(const yourgame::context &ctx);
@@ -29,3 +32,5 @@ extern void update(const yourgame::context &ctx);
 extern void draw(const yourgame::context &ctx);
 extern void shutdown(const yourgame::context &ctx);
 } // namespace mygame
+
+#endif

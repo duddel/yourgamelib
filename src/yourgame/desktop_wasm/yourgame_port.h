@@ -17,15 +17,13 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_YOURGAME_ANDROID_H
-#define YOURGAME_YOURGAME_ANDROID_H
-
-#include <android/native_window.h>
+#ifndef YOURGAME_PORT_H
+#define YOURGAME_PORT_H
 
 namespace yourgame
 {
 
-void init(ANativeWindow *win);
+int init(int argc, char *argv[]);
 void tick();
 int shutdown();
 

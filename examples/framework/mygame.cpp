@@ -20,6 +20,7 @@ freely, subject to the following restrictions:
 #include <cmath>
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
+#include "yourgame/input.h"
 
 namespace mygame
 {
@@ -37,6 +38,14 @@ void init(const yourgame::context &ctx)
 void update(const yourgame::context &ctx)
 {
     _colT += (1.0 * ctx.deltaTimeS);
+    
+    if(yourgame::getInputi(yourgame::InputSource::YOURGAME_MOUSE_BUTTON_1))
+        yourgame::logi("mouse: %v/%v", yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_X),
+        yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_Y));
+
+    if(yourgame::getInputi(yourgame::InputSource::YOURGAME_TOUCH_0_DOWN))
+        yourgame::logi("touch 0: %v/%v", yourgame::getInputf(yourgame::InputSource::YOURGAME_TOUCH_0_X),
+        yourgame::getInputf(yourgame::InputSource::YOURGAME_TOUCH_0_Y));
 }
 
 void draw(const yourgame::context &ctx)
