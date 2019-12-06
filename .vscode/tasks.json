@@ -1,0 +1,57 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "framework_desktop_cmake",
+            "type": "shell",
+            "windows": {
+                "command": "cd ${workspaceFolder}/examples/framework & mkdir _build & cd _build & cmake .. -G \"Ninja\" -DYOURGAME_PLATFORM=desktop"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "framework_desktop_build",
+            "type": "shell",
+            "windows": {
+                "command": "cd ${workspaceFolder}/examples/framework/_build & cmake --build ."
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "framework_android_assembleDebug",
+            "type": "shell",
+            "windows": {
+                "command": "cd ${workspaceFolder}/examples/framework/android & gradlew assembleDebug"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "framework_android_installDebug",
+            "type": "shell",
+            "windows": {
+                "command": "cd ${workspaceFolder}/examples/framework/android & gradlew installDebug"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "framework_wasm_cmake",
+            "type": "shell",
+            "windows": {
+                "command": "cd ${workspaceFolder}/examples/framework & mkdir _build_wasm & cd _build_wasm & ${env:EMSDK}/emsdk_env & emconfigure cmake .. -DYOURGAME_PLATFORM=wasm"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "framework_wasm_build",
+            "type": "shell",
+            "windows": {
+                "command": "cd ${workspaceFolder}/examples/framework/_build_wasm & ${env:EMSDK}/emsdk_env & emmake cmake --build ."
+            },
+            "problemMatcher": []
+        }
+    ]
+}

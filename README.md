@@ -37,6 +37,13 @@ sudo apt install git cmake build-essential libgles2-mesa-dev xorg-dev
 -DYOURGAME_PLATFORM=desktop -DYOURGAME_FORCE_GLES=ON
 ```
 
+### WebAssembly
+
+Install Emscripten and
+-   (1) make sure the environment variable `EMSDK` is set and points to the emsdk root directory (required for the VSCode tasks, see [.vscode/tasks.json](.vscode/tasks.json))
+-   or (2) call `emsdk_env` and the configure/build commands yourself (see [.github/workflows/examples.yml](.github/workflows/examples.yml))
+
+
 ### Android
 
 Make sure the environment variable `ANDROID_SDK_ROOT` is set and points to the android sdk. Install `ndk-bundle` and `cmake` via the `sdkmanager` (not installed platforms and platform-tools will be installed on demand)
@@ -48,9 +55,6 @@ cmake       version 3.6.4111459
 ndk-bundle  version 20.0.5594570
 ```
 
-Try the `framework` example:
+## Example
 
-```bash
-cd examples/framework/android
-./gradlew assembleDebug
-```
+Try the `framework` example. See [.github/workflows/examples.yml](.github/workflows/examples.yml) or [.vscode/tasks.json](.vscode/tasks.json) on how to configure and build.
