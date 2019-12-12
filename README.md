@@ -28,12 +28,6 @@ YOURGAME_PLATFORM=wasm
 YOURGAME_PLATFORM=android
 ```
 
-### Assets
-In order to make assets loadable, make sure the asset files are placed:
--   **desktop:** in the directory `assets/` beside the executable
--   **wasm:** in the directory `assets/` in the root file system (`/assets/`)
--   **android:** in the directory `assets/` of the app (common location)
-
 ### Raspberry PI
 
 Tested on Raspbian stretch, Pi 2
@@ -46,9 +40,9 @@ sudo apt install git cmake build-essential libgles2-mesa-dev xorg-dev
 ### WebAssembly
 
 Install Emscripten and
+
 -   (1) make sure the environment variable `EMSDK` is set and points to the emsdk root directory (required for the VSCode tasks, see [.vscode/tasks.json](.vscode/tasks.json))
 -   or (2) call `emsdk_env` and the configure/build commands yourself (see [.github/workflows/examples.yml](.github/workflows/examples.yml))
-
 
 ### Android
 
@@ -60,6 +54,14 @@ tested with
 cmake       version 3.6.4111459
 ndk-bundle  version 20.0.5594570
 ```
+
+## Assets
+
+In order to make assets loadable, make sure the asset files are placed:
+
+-   **desktop:** in the directory `assets/` beside the executable
+-   **wasm:** in the directory `assets/` in the root file system (`/assets/`)
+-   **android:** in the directory `assets/` of the app (common location)
 
 ## Example
 
