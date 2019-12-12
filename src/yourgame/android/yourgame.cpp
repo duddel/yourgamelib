@@ -22,10 +22,10 @@ freely, subject to the following restrictions:
 #include <android/log.h>
 #include <EGL/egl.h>
 #include "yourgame/yourgame.h"
+#include "yourgame/android/yourgame_port.h"
 #include "yourgame/gl_include.h"
 #include "yourgame/timer.h"
 #include "yourgame/mygame_external.h"
-#include "yourgame/android/input_port.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -77,6 +77,7 @@ void init(struct android_app *app)
     _win = app->window;
     
     initInput(app);
+    initAssetFile(app);
 
     // initialize logging
     _context.logger = el::Loggers::getLogger("default");

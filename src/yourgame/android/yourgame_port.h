@@ -20,12 +20,16 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_PORT_H
 #define YOURGAME_PORT_H
 
+#include <android_native_app_glue.h>
+
 namespace yourgame
 {
 
 void init(struct android_app *app);
 void tick();
 int shutdown();
+void initInput(struct android_app *app);
+void initAssetFile(struct android_app *app);
 
 } // namespace yourgame
 

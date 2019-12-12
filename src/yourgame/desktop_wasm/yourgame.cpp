@@ -17,18 +17,14 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <algorithm> // std::replace()
 /* prevent glfw to include any gl header by
 including gl_include.h before glfw */
 #include "yourgame/gl_include.h"
 #include <GLFW/glfw3.h>
-#ifdef YOURGAME_USE_WHEREAMI
-#include "whereami.h"
-#endif
 #include "yourgame/yourgame.h"
+#include "yourgame/desktop_wasm/yourgame_port.h"
 #include "yourgame/timer.h"
 #include "yourgame/mygame_external.h"
-#include "yourgame/desktop_wasm/input_port.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -53,24 +49,11 @@ int init(int argc, char *argv[])
     START_EASYLOGGINGPP(argc, argv);
     _context.logger = el::Loggers::getLogger("default");
 
+    // initialize asset loading
+    initAssetFile();
+
     // check the timer clock
     yourgame::logi("timer clock is%v monotonic", _timer.isMonotonic() ? "" : " NOT");
-
-// get absolute path to assets/ along the executable
-// and make it available via the context
-#ifdef YOURGAME_USE_WHEREAMI
-    int exeBasePathLength;
-    int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
-    char *path = (char *)malloc(exePathLength + 1);
-    wai_getExecutablePath(path, exePathLength, &exeBasePathLength);
-    path[exeBasePathLength + 1] = '\0';
-    _context.assetPath = path;
-    free(path);
-    std::replace(_context.assetPath.begin(), _context.assetPath.end(), '\\', '/');
-    _context.assetPath += "assets/";
-#else
-    _context.assetPath = "/assets/";
-#endif
 
     // initialize glfw, gl
     yourgame::logi("glfwInit()...");

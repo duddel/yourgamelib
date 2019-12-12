@@ -2,10 +2,10 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "framework_desktop_cmake",
+            "label": "framework_desktop_cmake_debug",
             "type": "shell",
             "windows": {
-                "command": "cd ${workspaceFolder}/examples/framework & mkdir _build & cd _build & cmake .. -G \"Ninja\" -DYOURGAME_PLATFORM=desktop"
+                "command": "cd ${workspaceFolder}/examples/framework & mkdir _build & cd _build & cmake .. -G \"Ninja\" -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=DEBUG"
             },
             "problemMatcher": []
         },

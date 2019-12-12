@@ -17,12 +17,38 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INPUT_PORT_H
-#define YOURGAME_INPUT_PORT_H
+#include <vector>
+#include <android_native_app_glue.h>
+#include <android/asset_manager.h>
 
 namespace yourgame
 {
-void initInput(struct android_app *app);
+namespace
+{
+AAssetManager *_assetManager;
 }
 
-#endif
+void initAssetFile(struct android_app *app)
+{
+    _assetManager = app->activity->assetManager;
+}
+
+std::vector<uint8_t> readAssetFile(const char *filename)
+{
+    std::vector<uint8_t> buf{'\0'};
+    AAsset *assDesc = AAssetManager_open(_assetManager,
+                                         filename,
+                                         AASSET_MODE_BUFFER);
+    if (assDesc)
+    {
+        auto nBytes = AAsset_getLength(assDesc);
+        buf.resize(nBytes + 1); // +1 for appending \0
+        int64_t nBytesRead = AAsset_read(assDesc, buf.data(), buf.size());
+        AAsset_close(assDesc);
+        buf.back() = '\0';
+    }
+    // todo: check buf.size() against nBytesRead and handle error case
+    return buf;
+}
+
+} // namespace yourgame

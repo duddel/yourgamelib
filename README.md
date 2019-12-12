@@ -28,6 +28,12 @@ YOURGAME_PLATFORM=wasm
 YOURGAME_PLATFORM=android
 ```
 
+### Assets
+In order to make assets loadable, make sure the asset files are placed:
+-   **desktop:** in the directory `assets/` beside the executable
+-   **wasm:** in the directory `assets/` in the root file system (`/assets/`)
+-   **android:** in the directory `assets/` of the app (common location)
+
 ### Raspberry PI
 
 Tested on Raspbian stretch, Pi 2

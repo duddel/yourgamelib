@@ -18,6 +18,8 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <cmath>
+#include <vector>
+#include "yourgame/assetfile.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
 #include "yourgame/input.h"
@@ -33,19 +35,23 @@ double _colT = 0.0;
 void init(const yourgame::context &ctx)
 {
     yourgame::logi("mygame::init() called");
+
+    yourgame::logi("attempting to read test.txt from assets:");
+    auto testAsset = yourgame::readAssetFile("test.txt");
+    yourgame::logi("content: %v", &testAsset[0]);
 }
 
 void update(const yourgame::context &ctx)
 {
     _colT += (1.0 * ctx.deltaTimeS);
-    
-    if(yourgame::getInputi(yourgame::InputSource::YOURGAME_MOUSE_BUTTON_1))
-        yourgame::logi("mouse: %v/%v", yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_X),
-        yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_Y));
 
-    if(yourgame::getInputi(yourgame::InputSource::YOURGAME_TOUCH_0_DOWN))
+    if (yourgame::getInputi(yourgame::InputSource::YOURGAME_MOUSE_BUTTON_1))
+        yourgame::logi("mouse: %v/%v", yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_X),
+                       yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_Y));
+
+    if (yourgame::getInputi(yourgame::InputSource::YOURGAME_TOUCH_0_DOWN))
         yourgame::logi("touch 0: %v/%v", yourgame::getInputf(yourgame::InputSource::YOURGAME_TOUCH_0_X),
-        yourgame::getInputf(yourgame::InputSource::YOURGAME_TOUCH_0_Y));
+                       yourgame::getInputf(yourgame::InputSource::YOURGAME_TOUCH_0_Y));
 }
 
 void draw(const yourgame::context &ctx)

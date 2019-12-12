@@ -20,12 +20,16 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_PORT_H
 #define YOURGAME_PORT_H
 
+#include <GLFW/glfw3.h>
+
 namespace yourgame
 {
 
 int init(int argc, char *argv[]);
 void tick();
 int shutdown();
+void initInput(GLFWwindow *window);
+void initAssetFile();
 
 } // namespace yourgame
 

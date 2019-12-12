@@ -17,12 +17,15 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INPUT_PORT_H
-#define YOURGAME_INPUT_PORT_H
+#ifndef YOURGAME_ASSETFILE_H
+#define YOURGAME_ASSETFILE_H
+
+#include <cstdint>
+#include <vector>
 
 namespace yourgame
 {
-void initInput(GLFWwindow *window);
-}
+std::vector<uint8_t> readAssetFile(const char *filename);
+} // namespace yourgame
 
 #endif
