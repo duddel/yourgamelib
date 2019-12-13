@@ -1,3 +1,6 @@
+# assets are copied into the app by cmake (from project root)
+**/assets
+
 .cxx
 .externalNativeBuild
 build/
