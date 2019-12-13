@@ -45,6 +45,11 @@ void update(const yourgame::context &ctx)
 {
     _colT += (1.0 * ctx.deltaTimeS);
 
+    if(yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
+    {
+        yourgame::notifyShutdown();
+    }
+
     if (yourgame::getInputi(yourgame::InputSource::YOURGAME_MOUSE_BUTTON_1))
         yourgame::logi("mouse: %v/%v", yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_X),
                        yourgame::getInputf(yourgame::InputSource::YOURGAME_MOUSE_Y));

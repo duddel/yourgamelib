@@ -35,12 +35,25 @@ namespace
 {
 yourgame::context _context;
 yourgame::Timer _timer(0U);
+bool _pendingShutdown = false;
 GLFWwindow *_window = NULL;
 } // namespace
 
+// API
 const yourgame::context &getCtx()
 {
     return _context;
+}
+
+void notifyShutdown()
+{
+    _pendingShutdown = true;
+}
+
+// INTERNAL API
+bool pendingShutdown()
+{
+    return _pendingShutdown;
 }
 
 int init(int argc, char *argv[])

@@ -28,6 +28,7 @@ namespace yourgame
 int init(int argc, char *argv[]);
 void tick();
 int shutdown();
+bool pendingShutdown();
 void initInput(GLFWwindow *window);
 void initAssetFile();
 

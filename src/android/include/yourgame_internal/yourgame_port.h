@@ -28,6 +28,7 @@ namespace yourgame
 void init(struct android_app *app);
 void tick();
 int shutdown();
+bool pendingShutdown();
 void initInput(struct android_app *app);
 void initAssetFile(struct android_app *app);
 

@@ -52,6 +52,7 @@ struct context
 };
 
 const yourgame::context &getCtx();
+void notifyShutdown();
 
 YOURGAME_LOG_FUNC(logd, debug)
 YOURGAME_LOG_FUNC(logi, info)
