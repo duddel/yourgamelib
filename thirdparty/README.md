@@ -31,6 +31,14 @@
     -   all, except deps/, docs/, examples/, tests/
 -   license: [glfw/LICENSE.md](glfw/LICENSE.md)
 
+## glm
+
+-   version: **0.9.9.6**
+-   origin: <https://github.com/g-truc/glm/releases/tag/0.9.9.6>
+-   extracted from origin:
+    -   glm/, copying.txt
+-   license: [glm/copying.txt](glm/copying.txt)
+
 ## Dear ImGui
 
 -   version: **1.72b**
