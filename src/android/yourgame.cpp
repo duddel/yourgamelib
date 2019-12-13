@@ -22,10 +22,10 @@ freely, subject to the following restrictions:
 #include <android/log.h>
 #include <EGL/egl.h>
 #include "yourgame/yourgame.h"
-#include "yourgame/android/yourgame_port.h"
 #include "yourgame/gl_include.h"
-#include "yourgame/timer.h"
-#include "yourgame/mygame_external.h"
+#include "yourgame_internal/yourgame_port.h"
+#include "yourgame_internal/timer.h"
+#include "yourgame_internal/mygame_external.h"
 
 INITIALIZE_EASYLOGGINGPP
 

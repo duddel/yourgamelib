@@ -11,27 +11,48 @@ set(YOURGAME_GL_MINOR 3)
 set(YOURGAME_GLES_MAJOR 2)
 set(YOURGAME_GLES_MINOR 0)
 
-# common yourgame source files
+# sources
 list(APPEND YOURGAME_SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/timer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/timer.cpp
 )
+if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "wasm")
+  list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_wasm/assetfile.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_wasm/input.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_wasm/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_wasm/yourgame.cpp
+  )
+elseif(YOURGAME_PLATFORM STREQUAL "android")
+  list(APPEND YOURGAME_SRC_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/assetfile.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/input.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/yourgame.cpp
+  )
+endif()
 
-# common yourgame external projects
-list(APPEND YOURGAME_EXT_PROJ_LIST
-  "easyloggingpp"
-)
-
-# inc dirs for internal use (private to yourgame lib)
-list(APPEND YOURGAME_INC_DIRS_PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-
-# common yourgame inc dirs
+# inc dirs (api)
 list(APPEND YOURGAME_INC_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+# inc dirs (internal)
+list(APPEND YOURGAME_INC_DIRS_PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+)
+if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "wasm")
+  list(APPEND YOURGAME_INC_DIRS_PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_wasm/include
+  )
+elseif(YOURGAME_PLATFORM STREQUAL "android")
+  list(APPEND YOURGAME_INC_DIRS_PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/include
+  )
+endif()
 
-# yourgame platforms
+# external projects and yourgame config
+list(APPEND YOURGAME_EXT_PROJ_LIST
+  "easyloggingpp"
+)
 if(YOURGAME_PLATFORM STREQUAL "desktop")
   list(APPEND YOURGAME_EXT_PROJ_LIST
     "glfw"
@@ -42,28 +63,10 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
   else()
     set(YOURGAME_PLATFORM_GL_API "gl")
   endif()
-  list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/assetfile.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/input.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/yourgame.cpp
-  )
 elseif(YOURGAME_PLATFORM STREQUAL "wasm")
   set(YOURGAME_PLATFORM_GL_API "gles")
-  list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/assetfile.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/input.cpp  
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/desktop_wasm/yourgame.cpp
-  )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   set(YOURGAME_PLATFORM_GL_API "gles")
-  list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/assetfile.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/input.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/yourgame/android/yourgame.cpp
-  )
   list(APPEND YOURGAME_EXT_PROJ_LIST
     "android-native-app"
   )

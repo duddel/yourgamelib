@@ -21,7 +21,7 @@ freely, subject to the following restrictions:
 #include <emscripten/emscripten.h>
 #endif
 #include "yourgame/yourgame.h"
-#include "yourgame/desktop_wasm/yourgame_port.h"
+#include "yourgame_internal/yourgame_port.h"
 
 int main(int argc, char *argv[])
 {

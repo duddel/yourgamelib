@@ -31,7 +31,7 @@ not relying on that. instead, check if CLOCK_MONOTONIC works at run-time: checkM
 #endif
 
 #include <cstdint> // uint64_t
-#include "yourgame/timer.h"
+#include "yourgame_internal/timer.h"
 
 namespace yourgame
 {

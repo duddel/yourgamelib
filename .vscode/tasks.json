@@ -2,6 +2,18 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "framework_configure_build_all",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "framework_desktop_cmake_debug",
+                "framework_desktop_build",
+                "framework_wasm_cmake",
+                "framework_wasm_build",
+                "framework_android_assembleDebug"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "framework_desktop_cmake_debug",
             "type": "shell",
             "windows": {

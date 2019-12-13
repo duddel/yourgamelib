@@ -22,9 +22,9 @@ including gl_include.h before glfw */
 #include "yourgame/gl_include.h"
 #include <GLFW/glfw3.h>
 #include "yourgame/yourgame.h"
-#include "yourgame/desktop_wasm/yourgame_port.h"
-#include "yourgame/timer.h"
-#include "yourgame/mygame_external.h"
+#include "yourgame_internal/yourgame_port.h"
+#include "yourgame_internal/timer.h"
+#include "yourgame_internal/mygame_external.h"
 
 INITIALIZE_EASYLOGGINGPP
 
