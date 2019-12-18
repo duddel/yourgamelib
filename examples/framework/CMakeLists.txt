@@ -52,8 +52,8 @@ if(YOURGAME_PLATFORM STREQUAL "wasm")
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
   # enforce GLFW v3 API (default is v2)
   # make sure assets/ gets copied into the wasm file system
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_GLFW=3 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s USE_WEBGL2=1 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_GLFW=3 -s USE_WEBGL2=1 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE

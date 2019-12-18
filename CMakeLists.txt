@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # todo: allow custom gl versions
 set(YOURGAME_GL_MAJOR 3)
 set(YOURGAME_GL_MINOR 3)
-set(YOURGAME_GLES_MAJOR 2)
+set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
 
 # sources
@@ -74,7 +74,7 @@ else()
   message(FATAL_ERROR "YOURGAME_PLATFORM is not defined or unknown: ${YOURGAME_PLATFORM}")
 endif()
 
-# gl api, version, library
+# gl api, version, lib
 if(YOURGAME_PLATFORM_GL_API STREQUAL "gl")
   list(APPEND YOURGAME_COMPILE_DEFS
     YOURGAME_GL_API_GL
@@ -95,11 +95,12 @@ elseif(YOURGAME_PLATFORM_GL_API STREQUAL "gles")
     YOURGAME_GL_MAJOR=${YOURGAME_GLES_MAJOR}
     YOURGAME_GL_MINOR=${YOURGAME_GLES_MINOR}
   )
-  # "recommended" gles library names (might differ)
   if(YOURGAME_GLES_MAJOR EQUAL 1)
     list(APPEND YOURGAME_LIBS GLESv1_C)
-  else()
-    list(APPEND YOURGAME_LIBS GLESv2) # usually valid for gles v2 and v3
+  elseif(YOURGAME_GLES_MAJOR EQUAL 2)
+    list(APPEND YOURGAME_LIBS GLESv2)
+  elseif(YOURGAME_GLES_MAJOR EQUAL 3)
+    list(APPEND YOURGAME_LIBS GLESv3)
   endif()
 endif()
 

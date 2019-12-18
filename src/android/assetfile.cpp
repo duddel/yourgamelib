@@ -42,10 +42,9 @@ std::vector<uint8_t> readAssetFile(const char *filename)
     if (assDesc)
     {
         auto nBytes = AAsset_getLength(assDesc);
-        buf.resize(nBytes + 1); // +1 for appending \0
+        buf.resize(nBytes);
         int64_t nBytesRead = AAsset_read(assDesc, buf.data(), buf.size());
         AAsset_close(assDesc);
-        buf.back() = '\0';
     }
     // todo: check buf.size() against nBytesRead and handle error case
     return buf;

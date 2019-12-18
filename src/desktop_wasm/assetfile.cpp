@@ -56,11 +56,10 @@ std::vector<uint8_t> readAssetFile(const char *filename)
     {
         std::fseek(f, 0, SEEK_END);
         auto nBytes = std::ftell(f);
-        buf.resize(nBytes + 1); // +1 for appending \0
+        buf.resize(nBytes);
         std::rewind(f);
         std::fread(&buf[0], 1, buf.size(), f);
         std::fclose(f);
-        buf.back() = '\0';
     }
     // todo: perform some error checking
     return buf;

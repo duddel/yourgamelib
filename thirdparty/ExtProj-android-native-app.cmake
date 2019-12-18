@@ -14,7 +14,6 @@ list(APPEND YOURGAME_SRC_FILES
 list(APPEND YOURGAME_LIBS
   android
   EGL
-  GLESv2
   log
 )
 ") # file()
