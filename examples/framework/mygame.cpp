@@ -40,7 +40,7 @@ vbo, ibo, vao, vertex and fragment shaders.
 shaded triangle with varying brightness (via uniform).
 shaders are loaded from assets. limited error detection.
 */
-initGlTest()
+void initGlTest()
 {
     // attribute location of position vertex data
     const GLuint attrLocPosition = 3;
