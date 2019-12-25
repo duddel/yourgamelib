@@ -19,6 +19,7 @@
             "windows": {
                 "command": "cd ${workspaceFolder}/examples/framework & mkdir _build & cd _build & cmake .. -G \"Ninja\" -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=DEBUG"
             },
+            "command": "cd ${workspaceFolder}/examples/framework; mkdir _build; cd _build; cmake .. -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=DEBUG",
             "problemMatcher": []
         },
         {
@@ -27,6 +28,7 @@
             "windows": {
                 "command": "cd ${workspaceFolder}/examples/framework/_build & cmake --build ."
             },
+            "command": "cd ${workspaceFolder}/examples/framework/_build; cmake --build .",
             "problemMatcher": [
                 "$gcc"
             ]
@@ -37,6 +39,7 @@
             "windows": {
                 "command": "cd ${workspaceFolder}/examples/framework/android & gradlew assembleDebug"
             },
+            "command": "cd ${workspaceFolder}/examples/framework/android; ./gradlew assembleDebug",
             "problemMatcher": [
                 "$gcc"
             ]
@@ -47,6 +50,7 @@
             "windows": {
                 "command": "cd ${workspaceFolder}/examples/framework/android & gradlew installDebug"
             },
+            "command": "cd ${workspaceFolder}/examples/framework/android; ./gradlew installDebug",
             "problemMatcher": []
         },
         {
@@ -55,6 +59,7 @@
             "windows": {
                 "command": "cd ${workspaceFolder}/examples/framework & mkdir _build_wasm & cd _build_wasm & ${env:EMSDK}/emsdk_env & emconfigure cmake .. -DYOURGAME_PLATFORM=wasm"
             },
+            "command": "cd ${workspaceFolder}/examples/framework; mkdir _build_wasm; cd _build_wasm; source ${env:EMSDK}/emsdk_env.sh; emconfigure cmake .. -DYOURGAME_PLATFORM=wasm",
             "problemMatcher": []
         },
         {
@@ -63,6 +68,7 @@
             "windows": {
                 "command": "cd ${workspaceFolder}/examples/framework/_build_wasm & ${env:EMSDK}/emsdk_env & emmake cmake --build ."
             },
+            "command": "cd ${workspaceFolder}/examples/framework/_build_wasm; source ${env:EMSDK}/emsdk_env.sh; emmake cmake --build .",
             "problemMatcher": []
         }
     ]
