@@ -1,0 +1,22 @@
+/**
+\mainpage
+Follow these steps to set up the build environment and to kick-start a new YourGameLib project, in just minutes!
+
+\section sec_buildenv Build Environment
+todo. mention what to install, environment variables.
+
+\section sec_newproject Set up a new Project
+todo. mention how to build a new project.
+
+\section sec_usetheapi Use the API
+todo. explain the api
+
+minimum example
+\code{.cpp}
+#include "yourgame/yourgame.h"
+namespace mygame
+{
+    // todo
+}
+\endcode
+*/

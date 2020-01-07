@@ -1,0 +1,7 @@
+INPUT                   = ../include/yourgame \
+                          ../docs \
+                          ../src/include/yourgame_internal/mygame_external.h
+EXTRACT_ALL             = YES
+OUTPUT_DIRECTORY        = ./_output
+PROJECT_NAME            = YourGameLib
+HTML_EXTRA_STYLESHEET   = ./customdoxy.css

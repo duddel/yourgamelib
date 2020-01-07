@@ -1,0 +1,29 @@
+/*
+originally generated with doxygen 1.8.13 using this command:
+  doxygen -w html header.html footer.html customdoxy.css
+only modified elements are kept in this file
+*/
+body {
+	background-color: #002d5f;
+	color: black;
+	margin-left: 100px;
+	margin-right: 100px;
+}
+
+div.contents {
+	margin: 0px;
+	background-color: #ffffff;
+	padding-top: 5px;
+	padding-bottom: 15px;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+#titlearea
+{
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	border-bottom: 1px solid #5373B4;
+	background-color: #FFFFFF;
+}

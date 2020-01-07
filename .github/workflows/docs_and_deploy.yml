@@ -1,0 +1,28 @@
+name: docs and deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docs:
+    name: docs and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: install deps
+        run: |
+          sudo apt update
+          sudo apt install doxygen
+      - name: build docs
+        run: |
+          cd docs
+          doxygen
+      - name: deploy docs
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs/_output/html
