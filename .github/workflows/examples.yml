@@ -59,6 +59,18 @@ jobs:
         source ./emsdk/emsdk_env.sh
         cd examples/${{ matrix.example_name }}/_build
         emmake cmake --build .
+    - name: prepare deploy
+      run: |
+        cd examples/${{ matrix.example_name }}/_build
+        mkdir deploy
+        mv ${{ matrix.example_name }}.* deploy/
+    - name: deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: examples/${{ matrix.example_name }}/_build/deploy
+        TARGET_FOLDER: examples/${{ matrix.example_name }}
 
 
   build_examples_android:

@@ -1,4 +1,4 @@
-name: docs and deploy
+name: docs
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   docs:
-    name: docs and deploy
+    name: build_deploy_docs
     runs-on: ubuntu-latest
 
     steps:
@@ -16,11 +16,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install doxygen
-      - name: build docs
+      - name: build
         run: |
           cd docs
           doxygen
-      - name: deploy docs
+      - name: deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
