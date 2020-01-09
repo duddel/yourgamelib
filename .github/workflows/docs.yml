@@ -43,8 +43,12 @@ jobs:
       - name: prepare deploy
         run: |
           mkdir _deploy
-          mv examples/framework/_build/framework.* _deploy/
-          mv docs/_doxyout/html/* _deploy/
+          cd _deploy
+          mkdir framework
+          mv ../examples/framework/_build/framework.* framework/
+          mv ../docs/_doxyout/html/* ./
+          cd framework
+          mv framework.html index.html
 
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3

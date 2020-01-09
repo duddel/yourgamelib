@@ -3,5 +3,5 @@ INPUT                   = ../include/yourgame \
                           ../src/include/yourgame_internal/mygame_external.h
 EXTRACT_ALL             = YES
 OUTPUT_DIRECTORY        = ./_doxyout
-PROJECT_NAME            = YourGameLib API
+PROJECT_NAME            = "YourGameLib API"
 HTML_EXTRA_STYLESHEET   = ./customdoxy.css
