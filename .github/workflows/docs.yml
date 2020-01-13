@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_examples:
-    name: build examples (wasm)
+    name: build wasm examples
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -33,11 +33,17 @@ jobs:
         source ./emsdk/emsdk_env.sh
         cd examples/${{ matrix.example_name }}/_build
         emmake cmake --build .
-    - name: upload artifacts (examples)
+
+    - name: prepare upload
+      run: |
+        cd examples/${{ matrix.example_name }}/_build
+        mkdir _upload
+        mv ./${{ matrix.example_name }}.* ./_upload
+    - name: upload wasm artifacts
       uses: actions/upload-artifact@v1
       with:
         name: ${{ matrix.example_name }}
-        path: examples/${{ matrix.example_name }}/_build/${{ matrix.example_name }}.*
+        path: examples/${{ matrix.example_name }}/_build/_upload
 
   docs:
     name: build and deploy docs
@@ -62,7 +68,7 @@ jobs:
           mkdir examples
           mv ../docs/_doxyout/html/* ./
 
-      - name: download artifacts (examples)
+      - name: download wasm artifacts
         uses: actions/download-artifact@v1
         with:
           name: framework # todo: 2020-01-13 download framework example only, no "download-all" available
