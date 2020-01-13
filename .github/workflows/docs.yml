@@ -6,8 +6,46 @@ on:
       - master
 
 jobs:
+  build_examples:
+    name: build examples (wasm)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example_name: [framework]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: install emsdk
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+    - name: configure
+      run: |
+        source ./emsdk/emsdk_env.sh
+        cd examples/${{ matrix.example_name }}
+        mkdir _build
+        cd _build
+        emconfigure cmake -DYOURGAME_PLATFORM=wasm ..
+    - name: build
+      run: |
+        source ./emsdk/emsdk_env.sh
+        cd examples/${{ matrix.example_name }}/_build
+        emmake cmake --build .
+    - name: prepare upload
+      run: |
+        cd examples/${{ matrix.example_name }}/_build
+        mkdir _upload
+        mv ./${{ matrix.example_name }}.* ./_upload/
+    - name: upload artifacts (examples)
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ matrix.example_name }}
+        path: examples/${{ matrix.example_name }}/_build/_upload
+
   docs:
-    name: build_deploy_docs
+    name: build and deploy docs
     runs-on: ubuntu-latest
 
     steps:
@@ -21,34 +59,18 @@ jobs:
           cd docs
           doxygen
 
-      - name: install emsdk
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          ./emsdk install latest
-          ./emsdk activate latest
-      - name: configure example
-        run: |
-          source ./emsdk/emsdk_env.sh
-          cd examples/framework
-          mkdir _build
-          cd _build
-          emconfigure cmake -DYOURGAME_PLATFORM=wasm ..
-      - name: build example
-        run: |
-          source ./emsdk/emsdk_env.sh
-          cd examples/framework/_build
-          emmake cmake --build .
-
       - name: prepare deploy
         run: |
           mkdir _deploy
           cd _deploy
-          mkdir framework
-          mv ../examples/framework/_build/framework.* framework/
+          mkdir examples
           mv ../docs/_doxyout/html/* ./
-          cd framework
-          mv framework.html index.html
+
+      - name: download artifacts (examples)
+        uses: actions/download-artifact@v1
+        with:
+          name: framework # todo: 2020-01-13 download framework example only, no "download-all" available
+          part: _deploy/examples/
 
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3

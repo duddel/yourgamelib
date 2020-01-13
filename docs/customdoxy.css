@@ -6,8 +6,9 @@ only modified elements are kept in this file
 body {
 	background-color: #002d5f;
 	color: black;
-	margin-left: 100px;
-	margin-right: 100px;
+	margin-left: 5vw;
+	margin-right: 5vw;
+	margin-top: 2vw;
 }
 
 div.contents {
