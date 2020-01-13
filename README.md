@@ -1,6 +1,7 @@
 # YourGameLib
 
 [![Examples](https://github.com/duddel/yourgamelib/workflows/examples/badge.svg)](https://github.com/duddel/yourgamelib/actions?query=workflow%3Aexamples)
+[![Docs](https://github.com/duddel/yourgamelib/workflows/docs/badge.svg)](https://github.com/duddel/yourgamelib/actions?query=workflow%3Adocs)
 
 **Framework for game-like applications - based on CMake, C++, OpenGL (ES)**
 

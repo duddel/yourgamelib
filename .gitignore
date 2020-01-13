@@ -1,6 +1,6 @@
 **/_build*
 *.log
-docs/_output
+docs/_doxyout
 
 # Prerequisites
 *.d

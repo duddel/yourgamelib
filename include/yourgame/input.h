@@ -23,6 +23,7 @@ freely, subject to the following restrictions:
 namespace yourgame
 {
 
+/** \brief identifies the source of an input */
 enum class InputSource
 {
     YOURGAME_KEY_UNKNOWN,
@@ -160,7 +161,10 @@ enum class InputSource
     YOURGAME_TOUCH_0_Y
 };
 
+/** \brief returns the current value of the input source \p source as float */
 float getInputf(InputSource source);
+
+/** \brief returns the current value of the input source \p source as int */
 int getInputi(InputSource source);
 
 } // namespace yourgame

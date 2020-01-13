@@ -25,6 +25,9 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
+/** \brief reads an entire file (from packed assets) and returns it as a vector of bytes
+\attention assets have to be placed in a platform specific location, see: todo reference
+*/
 std::vector<uint8_t> readAssetFile(const char *filename);
 } // namespace yourgame
 
