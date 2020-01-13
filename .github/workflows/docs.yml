@@ -72,7 +72,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: framework # todo: 2020-01-13 download framework example only, no "download-all" available
-          part: _deploy/examples/
+          path: _deploy/examples/
 
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
