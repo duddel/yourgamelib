@@ -33,19 +33,15 @@ jobs:
         source ./emsdk/emsdk_env.sh
         cd examples/${{ matrix.example_name }}/_build
         emmake cmake --build .
-    - name: prepare upload
-      run: |
-        cd examples/${{ matrix.example_name }}/_build
-        mkdir _upload
-        mv ./${{ matrix.example_name }}.* ./_upload/
     - name: upload artifacts (examples)
       uses: actions/upload-artifact@v1
       with:
         name: ${{ matrix.example_name }}
-        path: examples/${{ matrix.example_name }}/_build/_upload
+        path: examples/${{ matrix.example_name }}/_build/${{ matrix.example_name }}.*
 
   docs:
     name: build and deploy docs
+    needs: build_examples
     runs-on: ubuntu-latest
 
     steps:
