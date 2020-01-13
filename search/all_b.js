@@ -122,7 +122,6 @@ var searchData=
   ['yourgame_5fkey_5fx',['YOURGAME_KEY_X',['../namespaceyourgame.html#a8e6303df08718caf215df7eead2ed8c8aa75ecece4ea599a26b8f0cee6ad3ff2f',1,'yourgame']]],
   ['yourgame_5fkey_5fy',['YOURGAME_KEY_Y',['../namespaceyourgame.html#a8e6303df08718caf215df7eead2ed8c8aa9a925452dceb4a4611ef0a902a29a50',1,'yourgame']]],
   ['yourgame_5fkey_5fz',['YOURGAME_KEY_Z',['../namespaceyourgame.html#a8e6303df08718caf215df7eead2ed8c8a348052c85816ac5abcbfd5e0eec5a4b8',1,'yourgame']]],
-  ['yourgame_5flog_5ffunc',['YOURGAME_LOG_FUNC',['../yourgame_8h.html#ae9bcc47306d18dd8a6c1f4acb4f49b76',1,'yourgame.h']]],
   ['yourgame_5fmouse_5fbutton_5f1',['YOURGAME_MOUSE_BUTTON_1',['../namespaceyourgame.html#a8e6303df08718caf215df7eead2ed8c8a647197f6124e913845e6bf84f7cd3c41',1,'yourgame']]],
   ['yourgame_5fmouse_5fbutton_5f2',['YOURGAME_MOUSE_BUTTON_2',['../namespaceyourgame.html#a8e6303df08718caf215df7eead2ed8c8a3bb731eafebc9efdd3b0d81c0195fc91',1,'yourgame']]],
   ['yourgame_5fmouse_5fbutton_5f3',['YOURGAME_MOUSE_BUTTON_3',['../namespaceyourgame.html#a8e6303df08718caf215df7eead2ed8c8a5e8da78441c8e11899f5415271567e8a',1,'yourgame']]],

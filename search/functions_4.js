@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['readassetfile',['readAssetFile',['../namespaceyourgame.html#aef8a285bcccc1d99fdc62c10f62bcdfc',1,'yourgame']]]
+  ['notifyshutdown',['notifyShutdown',['../namespaceyourgame.html#a3ed5dcb225aff2adeb27dfd1505f65c6',1,'yourgame']]]
 ];

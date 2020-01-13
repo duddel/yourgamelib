@@ -4,11 +4,10 @@ var indexSectionsWithContent =
   1: "c",
   2: "my",
   3: "agimy",
-  4: "dginrsu",
+  4: "dgilnrsu",
   5: "dl",
   6: "i",
-  7: "y",
-  8: "y"
+  7: "y"
 };
 
 var indexSectionNames =
@@ -20,8 +19,7 @@ var indexSectionNames =
   4: "functions",
   5: "variables",
   6: "enums",
-  7: "enumvalues",
-  8: "defines"
+  7: "enumvalues"
 };
 
 var indexSectionLabels =
@@ -33,7 +31,6 @@ var indexSectionLabels =
   4: "Functions",
   5: "Variables",
   6: "Enumerations",
-  7: "Enumerator",
-  8: "Macros"
+  7: "Enumerator"
 };
 

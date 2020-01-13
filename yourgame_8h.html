@@ -66,7 +66,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">yourgame.h File Reference</div>  </div>
@@ -94,49 +93,47 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceyourgame"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html">yourgame</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:ae9bcc47306d18dd8a6c1f4acb4f49b76"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="yourgame_8h.html#ae9bcc47306d18dd8a6c1f4acb4f49b76">YOURGAME_LOG_FUNC</a>(FUNC_NAME,  EL_FUNC_NAME)</td></tr>
-<tr class="separator:ae9bcc47306d18dd8a6c1f4acb4f49b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a90762bc42c1174f33d3313f96b8516d9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structyourgame_1_1context.html">yourgame::context</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9">yourgame::getCtx</a> ()</td></tr>
+<tr class="memdesc:a90762bc42c1174f33d3313f96b8516d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the current context  <a href="namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9">More...</a><br /></td></tr>
 <tr class="separator:a90762bc42c1174f33d3313f96b8516d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ed5dcb225aff2adeb27dfd1505f65c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a3ed5dcb225aff2adeb27dfd1505f65c6">yourgame::notifyShutdown</a> ()</td></tr>
+<tr class="memdesc:a3ed5dcb225aff2adeb27dfd1505f65c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">triggers the application to exit after the cycle this function was called in  <a href="namespaceyourgame.html#a3ed5dcb225aff2adeb27dfd1505f65c6">More...</a><br /></td></tr>
 <tr class="separator:a3ed5dcb225aff2adeb27dfd1505f65c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa018299735de2685349d3bfdbc86645b"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:aa018299735de2685349d3bfdbc86645b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#aa018299735de2685349d3bfdbc86645b">yourgame::logd</a> (const char *s, const T &amp;value, const Args &amp;... args)</td></tr>
+<tr class="memdesc:aa018299735de2685349d3bfdbc86645b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log debug  <a href="namespaceyourgame.html#aa018299735de2685349d3bfdbc86645b">More...</a><br /></td></tr>
+<tr class="separator:aa018299735de2685349d3bfdbc86645b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e70120e1d5ceb992552dbcaaff069cd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5e70120e1d5ceb992552dbcaaff069cd"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a5e70120e1d5ceb992552dbcaaff069cd">yourgame::logd</a> (const T &amp;value)</td></tr>
+<tr class="memdesc:a5e70120e1d5ceb992552dbcaaff069cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">log debug  <a href="namespaceyourgame.html#a5e70120e1d5ceb992552dbcaaff069cd">More...</a><br /></td></tr>
+<tr class="separator:a5e70120e1d5ceb992552dbcaaff069cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f67421bf076411d33636b98d6a6a84a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a0f67421bf076411d33636b98d6a6a84a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a0f67421bf076411d33636b98d6a6a84a">yourgame::logi</a> (const char *s, const T &amp;value, const Args &amp;... args)</td></tr>
+<tr class="memdesc:a0f67421bf076411d33636b98d6a6a84a"><td class="mdescLeft">&#160;</td><td class="mdescRight">log info  <a href="namespaceyourgame.html#a0f67421bf076411d33636b98d6a6a84a">More...</a><br /></td></tr>
+<tr class="separator:a0f67421bf076411d33636b98d6a6a84a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3acfaf5bf5d8db218fdf3ec6138c449c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3acfaf5bf5d8db218fdf3ec6138c449c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a3acfaf5bf5d8db218fdf3ec6138c449c">yourgame::logi</a> (const T &amp;value)</td></tr>
+<tr class="memdesc:a3acfaf5bf5d8db218fdf3ec6138c449c"><td class="mdescLeft">&#160;</td><td class="mdescRight">log info  <a href="namespaceyourgame.html#a3acfaf5bf5d8db218fdf3ec6138c449c">More...</a><br /></td></tr>
+<tr class="separator:a3acfaf5bf5d8db218fdf3ec6138c449c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbaf01185bb8023afd3920fa615a5fb5"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:acbaf01185bb8023afd3920fa615a5fb5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#acbaf01185bb8023afd3920fa615a5fb5">yourgame::logw</a> (const char *s, const T &amp;value, const Args &amp;... args)</td></tr>
+<tr class="memdesc:acbaf01185bb8023afd3920fa615a5fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">log warning  <a href="namespaceyourgame.html#acbaf01185bb8023afd3920fa615a5fb5">More...</a><br /></td></tr>
+<tr class="separator:acbaf01185bb8023afd3920fa615a5fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1428256b7d8aa6c99ad601f780f9f08"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab1428256b7d8aa6c99ad601f780f9f08"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ab1428256b7d8aa6c99ad601f780f9f08">yourgame::logw</a> (const T &amp;value)</td></tr>
+<tr class="memdesc:ab1428256b7d8aa6c99ad601f780f9f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">log warning  <a href="namespaceyourgame.html#ab1428256b7d8aa6c99ad601f780f9f08">More...</a><br /></td></tr>
+<tr class="separator:ab1428256b7d8aa6c99ad601f780f9f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a389e47f66fb1ab81f132fd48c0fa73cb"><td class="memTemplParams" colspan="2">template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a389e47f66fb1ab81f132fd48c0fa73cb"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a389e47f66fb1ab81f132fd48c0fa73cb">yourgame::loge</a> (const char *s, const T &amp;value, const Args &amp;... args)</td></tr>
+<tr class="memdesc:a389e47f66fb1ab81f132fd48c0fa73cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">log error  <a href="namespaceyourgame.html#a389e47f66fb1ab81f132fd48c0fa73cb">More...</a><br /></td></tr>
+<tr class="separator:a389e47f66fb1ab81f132fd48c0fa73cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1249e887a2994cd7aaf6ad968f5ccd49"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1249e887a2994cd7aaf6ad968f5ccd49"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a1249e887a2994cd7aaf6ad968f5ccd49">yourgame::loge</a> (const T &amp;value)</td></tr>
+<tr class="memdesc:a1249e887a2994cd7aaf6ad968f5ccd49"><td class="mdescLeft">&#160;</td><td class="mdescRight">log error  <a href="namespaceyourgame.html#a1249e887a2994cd7aaf6ad968f5ccd49">More...</a><br /></td></tr>
+<tr class="separator:a1249e887a2994cd7aaf6ad968f5ccd49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ae9bcc47306d18dd8a6c1f4acb4f49b76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9bcc47306d18dd8a6c1f4acb4f49b76">&#9670;&nbsp;</a></span>YOURGAME_LOG_FUNC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define YOURGAME_LOG_FUNC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">FUNC_NAME, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">EL_FUNC_NAME&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... Args&gt;                                    \</div><div class="line">    inline <span class="keywordtype">void</span> FUNC_NAME(<span class="keyword">const</span> <span class="keywordtype">char</span> *s, <span class="keyword">const</span> T &amp;value, <span class="keyword">const</span> Args &amp;... args) \</div><div class="line">    {                                                                          \</div><div class="line">        el::Logger *logr = <a class="code" href="namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9">yourgame::getCtx</a>().<a class="code" href="structyourgame_1_1context.html#a3983be8673c7ba86f2d59754da348547">logger</a>;                          \</div><div class="line">        if (logr != NULL)                                                      \</div><div class="line">            logr-&gt;EL_FUNC_NAME(s, value, args...);                             \</div><div class="line">    }                                                                          \</div><div class="line">    template &lt;typename T&gt;                                                      \</div><div class="line">    inline <span class="keywordtype">void</span> FUNC_NAME(<span class="keyword">const</span> T &amp;value)                                      \</div><div class="line">    {                                                                          \</div><div class="line">        el::Logger *logr = <a class="code" href="namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9">yourgame::getCtx</a>().<a class="code" href="structyourgame_1_1context.html#a3983be8673c7ba86f2d59754da348547">logger</a>;                          \</div><div class="line">        if (logr != NULL)                                                      \</div><div class="line">            logr-&gt;EL_FUNC_NAME(value);                                         \</div><div class="line">    }</div><div class="ttc" id="structyourgame_1_1context_html_a3983be8673c7ba86f2d59754da348547"><div class="ttname"><a href="structyourgame_1_1context.html#a3983be8673c7ba86f2d59754da348547">yourgame::context::logger</a></div><div class="ttdeci">el::Logger * logger</div><div class="ttdef"><b>Definition:</b> yourgame.h:49</div></div>
-<div class="ttc" id="namespaceyourgame_html_a90762bc42c1174f33d3313f96b8516d9"><div class="ttname"><a href="namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9">yourgame::getCtx</a></div><div class="ttdeci">const yourgame::context &amp; getCtx()</div></div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
