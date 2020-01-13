@@ -194,7 +194,7 @@ Module['FS_createPath']('/', 'assets', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 116, "filename": "/assets/simple.frag"}, {"start": 116, "audio": 0, "end": 249, "filename": "/assets/simple.es.vert"}, {"start": 249, "audio": 0, "end": 393, "filename": "/assets/simple.es.frag"}, {"start": 393, "audio": 0, "end": 523, "filename": "/assets/simple.vert"}], "remote_package_size": 523, "package_uuid": "874e1c04-e6d1-4925-938e-4c7fa2450243"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 116, "filename": "/assets/simple.frag"}, {"start": 116, "audio": 0, "end": 249, "filename": "/assets/simple.es.vert"}, {"start": 249, "audio": 0, "end": 393, "filename": "/assets/simple.es.frag"}, {"start": 393, "audio": 0, "end": 523, "filename": "/assets/simple.vert"}], "remote_package_size": 523, "package_uuid": "5892dd94-9722-4832-9846-534d88f6e892"});
 
 })();
 
