@@ -21,183 +21,183 @@ var Module = typeof Module !== 'undefined' ? Module : {};
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
 
-if (!Module.expectedDataFileDownloads) {
-  Module.expectedDataFileDownloads = 0;
-  Module.finishedDataFileDownloads = 0;
-}
-Module.expectedDataFileDownloads++;
-(function() {
- var loadPackage = function(metadata) {
-
-    var PACKAGE_PATH;
-    if (typeof window === 'object') {
-      PACKAGE_PATH = window['encodeURIComponent'](window.location.pathname.toString().substring(0, window.location.pathname.toString().lastIndexOf('/')) + '/');
-    } else if (typeof location !== 'undefined') {
-      // worker
-      PACKAGE_PATH = encodeURIComponent(location.pathname.toString().substring(0, location.pathname.toString().lastIndexOf('/')) + '/');
-    } else {
-      throw 'using preloaded data can only be done on a web page or in a web worker';
-    }
-    var PACKAGE_NAME = 'framework.data';
-    var REMOTE_PACKAGE_BASE = 'framework.data';
-    if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
-      Module['locateFile'] = Module['locateFilePackage'];
-      err('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
-    }
-    var REMOTE_PACKAGE_NAME = Module['locateFile'] ? Module['locateFile'](REMOTE_PACKAGE_BASE, '') : REMOTE_PACKAGE_BASE;
+  if (!Module.expectedDataFileDownloads) {
+    Module.expectedDataFileDownloads = 0;
+    Module.finishedDataFileDownloads = 0;
+  }
+  Module.expectedDataFileDownloads++;
+  (function() {
+   var loadPackage = function(metadata) {
   
-    var REMOTE_PACKAGE_SIZE = metadata.remote_package_size;
-    var PACKAGE_UUID = metadata.package_uuid;
-  
-    function fetchRemotePackage(packageName, packageSize, callback, errback) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', packageName, true);
-      xhr.responseType = 'arraybuffer';
-      xhr.onprogress = function(event) {
-        var url = packageName;
-        var size = packageSize;
-        if (event.total) size = event.total;
-        if (event.loaded) {
-          if (!xhr.addedTotal) {
-            xhr.addedTotal = true;
-            if (!Module.dataFileDownloads) Module.dataFileDownloads = {};
-            Module.dataFileDownloads[url] = {
-              loaded: event.loaded,
-              total: size
-            };
-          } else {
-            Module.dataFileDownloads[url].loaded = event.loaded;
-          }
-          var total = 0;
-          var loaded = 0;
-          var num = 0;
-          for (var download in Module.dataFileDownloads) {
-          var data = Module.dataFileDownloads[download];
-            total += data.total;
-            loaded += data.loaded;
-            num++;
-          }
-          total = Math.ceil(total * Module.expectedDataFileDownloads/num);
-          if (Module['setStatus']) Module['setStatus']('Downloading data... (' + loaded + '/' + total + ')');
-        } else if (!Module.dataFileDownloads) {
-          if (Module['setStatus']) Module['setStatus']('Downloading data...');
-        }
-      };
-      xhr.onerror = function(event) {
-        throw new Error("NetworkError for: " + packageName);
-      }
-      xhr.onload = function(event) {
-        if (xhr.status == 200 || xhr.status == 304 || xhr.status == 206 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
-          var packageData = xhr.response;
-          callback(packageData);
-        } else {
-          throw new Error(xhr.statusText + " : " + xhr.responseURL);
-        }
-      };
-      xhr.send(null);
-    };
-
-    function handleError(error) {
-      console.error('package error:', error);
-    };
-  
-      var fetchedCallback = null;
-      var fetched = Module['getPreloadedPackage'] ? Module['getPreloadedPackage'](REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE) : null;
-
-      if (!fetched) fetchRemotePackage(REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE, function(data) {
-        if (fetchedCallback) {
-          fetchedCallback(data);
-          fetchedCallback = null;
-        } else {
-          fetched = data;
-        }
-      }, handleError);
-    
-  function runWithFS() {
-
-    function assert(check, msg) {
-      if (!check) throw msg + new Error().stack;
-    }
-Module['FS_createPath']('/', 'assets', true, true);
-
-    function DataRequest(start, end, audio) {
-      this.start = start;
-      this.end = end;
-      this.audio = audio;
-    }
-    DataRequest.prototype = {
-      requests: {},
-      open: function(mode, name) {
-        this.name = name;
-        this.requests[name] = this;
-        Module['addRunDependency']('fp ' + this.name);
-      },
-      send: function() {},
-      onload: function() {
-        var byteArray = this.byteArray.subarray(this.start, this.end);
-        this.finish(byteArray);
-      },
-      finish: function(byteArray) {
-        var that = this;
-
-        Module['FS_createDataFile'](this.name, null, byteArray, true, true, true); // canOwn this data in the filesystem, it is a slide into the heap that will never change
-        Module['removeRunDependency']('fp ' + that.name);
-
-        this.requests[this.name] = null;
-      }
-    };
-
-        var files = metadata.files;
-        for (var i = 0; i < files.length; ++i) {
-          new DataRequest(files[i].start, files[i].end, files[i].audio).open('GET', files[i].filename);
-        }
-
-  
-    function processPackageData(arrayBuffer) {
-      Module.finishedDataFileDownloads++;
-      assert(arrayBuffer, 'Loading data file failed.');
-      assert(arrayBuffer instanceof ArrayBuffer, 'bad input to processPackageData');
-      var byteArray = new Uint8Array(arrayBuffer);
-      var curr;
-      
-        // copy the entire loaded file into a spot in the heap. Files will refer to slices in that. They cannot be freed though
-        // (we may be allocating before malloc is ready, during startup).
-        var ptr = Module['getMemory'](byteArray.length);
-        Module['HEAPU8'].set(byteArray, ptr);
-        DataRequest.prototype.byteArray = Module['HEAPU8'].subarray(ptr, ptr+byteArray.length);
-  
-          var files = metadata.files;
-          for (var i = 0; i < files.length; ++i) {
-            DataRequest.prototype.requests[files[i].filename].onload();
-          }
-              Module['removeRunDependency']('datafile_framework.data');
-
-    };
-    Module['addRunDependency']('datafile_framework.data');
-  
-    if (!Module.preloadResults) Module.preloadResults = {};
-  
-      Module.preloadResults[PACKAGE_NAME] = {fromCache: false};
-      if (fetched) {
-        processPackageData(fetched);
-        fetched = null;
+      var PACKAGE_PATH;
+      if (typeof window === 'object') {
+        PACKAGE_PATH = window['encodeURIComponent'](window.location.pathname.toString().substring(0, window.location.pathname.toString().lastIndexOf('/')) + '/');
+      } else if (typeof location !== 'undefined') {
+        // worker
+        PACKAGE_PATH = encodeURIComponent(location.pathname.toString().substring(0, location.pathname.toString().lastIndexOf('/')) + '/');
       } else {
-        fetchedCallback = processPackageData;
+        throw 'using preloaded data can only be done on a web page or in a web worker';
       }
+      var PACKAGE_NAME = 'framework.data';
+      var REMOTE_PACKAGE_BASE = 'framework.data';
+      if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
+        Module['locateFile'] = Module['locateFilePackage'];
+        err('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
+      }
+      var REMOTE_PACKAGE_NAME = Module['locateFile'] ? Module['locateFile'](REMOTE_PACKAGE_BASE, '') : REMOTE_PACKAGE_BASE;
     
-  }
-  if (Module['calledRun']) {
-    runWithFS();
-  } else {
-    if (!Module['preRun']) Module['preRun'] = [];
-    Module["preRun"].push(runWithFS); // FS is not initialized yet, wait for it
-  }
+      var REMOTE_PACKAGE_SIZE = metadata['remote_package_size'];
+      var PACKAGE_UUID = metadata['package_uuid'];
+    
+      function fetchRemotePackage(packageName, packageSize, callback, errback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', packageName, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onprogress = function(event) {
+          var url = packageName;
+          var size = packageSize;
+          if (event.total) size = event.total;
+          if (event.loaded) {
+            if (!xhr.addedTotal) {
+              xhr.addedTotal = true;
+              if (!Module.dataFileDownloads) Module.dataFileDownloads = {};
+              Module.dataFileDownloads[url] = {
+                loaded: event.loaded,
+                total: size
+              };
+            } else {
+              Module.dataFileDownloads[url].loaded = event.loaded;
+            }
+            var total = 0;
+            var loaded = 0;
+            var num = 0;
+            for (var download in Module.dataFileDownloads) {
+            var data = Module.dataFileDownloads[download];
+              total += data.total;
+              loaded += data.loaded;
+              num++;
+            }
+            total = Math.ceil(total * Module.expectedDataFileDownloads/num);
+            if (Module['setStatus']) Module['setStatus']('Downloading data... (' + loaded + '/' + total + ')');
+          } else if (!Module.dataFileDownloads) {
+            if (Module['setStatus']) Module['setStatus']('Downloading data...');
+          }
+        };
+        xhr.onerror = function(event) {
+          throw new Error("NetworkError for: " + packageName);
+        }
+        xhr.onload = function(event) {
+          if (xhr.status == 200 || xhr.status == 304 || xhr.status == 206 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
+            var packageData = xhr.response;
+            callback(packageData);
+          } else {
+            throw new Error(xhr.statusText + " : " + xhr.responseURL);
+          }
+        };
+        xhr.send(null);
+      };
 
- }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 116, "filename": "/assets/simple.frag"}, {"start": 116, "audio": 0, "end": 249, "filename": "/assets/simple.es.vert"}, {"start": 249, "audio": 0, "end": 393, "filename": "/assets/simple.es.frag"}, {"start": 393, "audio": 0, "end": 523, "filename": "/assets/simple.vert"}], "remote_package_size": 523, "package_uuid": "5892dd94-9722-4832-9846-534d88f6e892"});
+      function handleError(error) {
+        console.error('package error:', error);
+      };
+    
+        var fetchedCallback = null;
+        var fetched = Module['getPreloadedPackage'] ? Module['getPreloadedPackage'](REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE) : null;
 
-})();
+        if (!fetched) fetchRemotePackage(REMOTE_PACKAGE_NAME, REMOTE_PACKAGE_SIZE, function(data) {
+          if (fetchedCallback) {
+            fetchedCallback(data);
+            fetchedCallback = null;
+          } else {
+            fetched = data;
+          }
+        }, handleError);
+      
+    function runWithFS() {
+  
+      function assert(check, msg) {
+        if (!check) throw msg + new Error().stack;
+      }
+  Module['FS_createPath']('/', 'assets', true, true);
 
+      function DataRequest(start, end, audio) {
+        this.start = start;
+        this.end = end;
+        this.audio = audio;
+      }
+      DataRequest.prototype = {
+        requests: {},
+        open: function(mode, name) {
+          this.name = name;
+          this.requests[name] = this;
+          Module['addRunDependency']('fp ' + this.name);
+        },
+        send: function() {},
+        onload: function() {
+          var byteArray = this.byteArray.subarray(this.start, this.end);
+          this.finish(byteArray);
+        },
+        finish: function(byteArray) {
+          var that = this;
+  
+          Module['FS_createDataFile'](this.name, null, byteArray, true, true, true); // canOwn this data in the filesystem, it is a slide into the heap that will never change
+          Module['removeRunDependency']('fp ' + that.name);
+  
+          this.requests[this.name] = null;
+        }
+      };
+  
+          var files = metadata['files'];
+          for (var i = 0; i < files.length; ++i) {
+            new DataRequest(files[i]['start'], files[i]['end'], files[i]['audio']).open('GET', files[i]['filename']);
+          }
+  
+    
+      function processPackageData(arrayBuffer) {
+        Module.finishedDataFileDownloads++;
+        assert(arrayBuffer, 'Loading data file failed.');
+        assert(arrayBuffer instanceof ArrayBuffer, 'bad input to processPackageData');
+        var byteArray = new Uint8Array(arrayBuffer);
+        var curr;
+        
+          // copy the entire loaded file into a spot in the heap. Files will refer to slices in that. They cannot be freed though
+          // (we may be allocating before malloc is ready, during startup).
+          var ptr = Module['getMemory'](byteArray.length);
+          Module['HEAPU8'].set(byteArray, ptr);
+          DataRequest.prototype.byteArray = Module['HEAPU8'].subarray(ptr, ptr+byteArray.length);
+    
+            var files = metadata['files'];
+            for (var i = 0; i < files.length; ++i) {
+              DataRequest.prototype.requests[files[i].filename].onload();
+            }
+                Module['removeRunDependency']('datafile_framework.data');
+
+      };
+      Module['addRunDependency']('datafile_framework.data');
+    
+      if (!Module.preloadResults) Module.preloadResults = {};
+    
+        Module.preloadResults[PACKAGE_NAME] = {fromCache: false};
+        if (fetched) {
+          processPackageData(fetched);
+          fetched = null;
+        } else {
+          fetchedCallback = processPackageData;
+        }
+      
+    }
+    if (Module['calledRun']) {
+      runWithFS();
+    } else {
+      if (!Module['preRun']) Module['preRun'] = [];
+      Module["preRun"].push(runWithFS); // FS is not initialized yet, wait for it
+    }
+  
+   }
+   loadPackage({"files": [{"start": 0, "audio": 0, "end": 116, "filename": "/assets/simple.frag"}, {"start": 116, "audio": 0, "end": 249, "filename": "/assets/simple.es.vert"}, {"start": 249, "audio": 0, "end": 393, "filename": "/assets/simple.es.frag"}, {"start": 393, "audio": 0, "end": 523, "filename": "/assets/simple.vert"}], "remote_package_size": 523, "package_uuid": "601434a0-6beb-4d16-8709-5e61298575d4"});
+  
+  })();
+  
 
 
 // Sometimes an existing Module object exists with properties
@@ -532,14 +532,6 @@ function warnOnce(text) {
   }
 }
 
-var asm2wasmImports = { // special asm2wasm imports
-    "f64-rem": function(x, y) {
-        return x % y;
-    },
-    "debugger": function() {
-        debugger;
-    }
-};
 
 
 
@@ -637,7 +629,7 @@ function addFunctionWasm(func, sig) {
   try {
     table.grow(1);
   } catch (err) {
-    if (!err instanceof RangeError) {
+    if (!(err instanceof RangeError)) {
       throw err;
     }
     throw 'Unable to grow wasm table. Use a higher value for RESERVED_FUNCTION_POINTERS or set ALLOW_TABLE_GROWTH.';
@@ -648,7 +640,7 @@ function addFunctionWasm(func, sig) {
     // Attempting to call this with JS function will cause of table.set() to fail
     table.set(ret, func);
   } catch (err) {
-    if (!err instanceof TypeError) {
+    if (!(err instanceof TypeError)) {
       throw err;
     }
     assert(typeof sig !== 'undefined', 'Missing signature argument to addFunction');
@@ -1005,11 +997,6 @@ function getMemory(size) {
 
 
 
-
-/** @type {function(number, number=)} */
-function Pointer_stringify(ptr, length) {
-  abort("this function has been removed - you should use UTF8ToString(ptr, maxBytesToRead) instead!");
-}
 
 // Given a pointer 'ptr' to a null-terminated ASCII-encoded string in the emscripten HEAP, returns
 // a copy of that string as a Javascript String object.
@@ -1424,11 +1411,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 5276720,
+    STACK_BASE = 5276704,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 33840,
-    DYNAMIC_BASE = 5276720,
-    DYNAMICTOP_PTR = 33680;
+    STACK_MAX = 33824,
+    DYNAMIC_BASE = 5276704,
+    DYNAMICTOP_PTR = 33664;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1488,7 +1475,7 @@ HEAP32[DYNAMICTOP_PTR>>2] = DYNAMIC_BASE;
 function writeStackCookie() {
   assert((STACK_MAX & 3) == 0);
   // The stack grows downwards
-  HEAPU32[(STACK_MAX >> 2)+1] = 0x02135467;
+  HEAPU32[(STACK_MAX >> 2)+1] = 0x2135467;
   HEAPU32[(STACK_MAX >> 2)+2] = 0x89BACDFE;
   // Also test the global address 0 for integrity.
   // We don't do this with ASan because ASan does its own checks for this.
@@ -1498,8 +1485,8 @@ function writeStackCookie() {
 function checkStackCookie() {
   var cookie1 = HEAPU32[(STACK_MAX >> 2)+1];
   var cookie2 = HEAPU32[(STACK_MAX >> 2)+2];
-  if (cookie1 != 0x02135467 || cookie2 != 0x89BACDFE) {
-    abort('Stack overflow! Stack cookie has been overwritten, expected hex dwords 0x89BACDFE and 0x02135467, but received 0x' + cookie2.toString(16) + ' ' + cookie1.toString(16));
+  if (cookie1 != 0x2135467 || cookie2 != 0x89BACDFE) {
+    abort('Stack overflow! Stack cookie has been overwritten, expected hex dwords 0x89BACDFE and 0x2135467, but received 0x' + cookie2.toString(16) + ' ' + cookie1.toString(16));
   }
   // Also test the global address 0 for integrity.
   // We don't do this with ASan because ASan does its own checks for this.
@@ -1788,7 +1775,6 @@ var memoryInitializer = null;
 
 
 
-
 // Copyright 2017 The Emscripten Authors.  All rights reserved.
 // Emscripten is available under two separate licenses, the MIT license and the
 // University of Illinois/NCSA Open Source License.  Both these licenses can be
@@ -1945,7 +1931,7 @@ var ASM_CONSTS = {
 
 
 
-// STATICTOP = STATIC_BASE + 32816;
+// STATICTOP = STATIC_BASE + 32800;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -2982,7 +2968,7 @@ var ASM_CONSTS = {
         FS.syncFSRequests++;
   
         if (FS.syncFSRequests > 1) {
-          console.log('warning: ' + FS.syncFSRequests + ' FS.syncfs operations in flight at once, probably just doing extra work');
+          err('warning: ' + FS.syncFSRequests + ' FS.syncfs operations in flight at once, probably just doing extra work');
         }
   
         var mounts = FS.getMounts(FS.root.mount);
@@ -3238,7 +3224,7 @@ var ASM_CONSTS = {
             FS.trackingDelegate['willMovePath'](old_path, new_path);
           }
         } catch(e) {
-          console.log("FS.trackingDelegate['willMovePath']('"+old_path+"', '"+new_path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['willMovePath']('"+old_path+"', '"+new_path+"') threw an exception: " + e.message);
         }
         // remove the node from the lookup hash
         FS.hashRemoveNode(old_node);
@@ -3255,7 +3241,7 @@ var ASM_CONSTS = {
         try {
           if (FS.trackingDelegate['onMovePath']) FS.trackingDelegate['onMovePath'](old_path, new_path);
         } catch(e) {
-          console.log("FS.trackingDelegate['onMovePath']('"+old_path+"', '"+new_path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['onMovePath']('"+old_path+"', '"+new_path+"') threw an exception: " + e.message);
         }
       },rmdir:function(path) {
         var lookup = FS.lookupPath(path, { parent: true });
@@ -3277,14 +3263,14 @@ var ASM_CONSTS = {
             FS.trackingDelegate['willDeletePath'](path);
           }
         } catch(e) {
-          console.log("FS.trackingDelegate['willDeletePath']('"+path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['willDeletePath']('"+path+"') threw an exception: " + e.message);
         }
         parent.node_ops.rmdir(parent, name);
         FS.destroyNode(node);
         try {
           if (FS.trackingDelegate['onDeletePath']) FS.trackingDelegate['onDeletePath'](path);
         } catch(e) {
-          console.log("FS.trackingDelegate['onDeletePath']('"+path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['onDeletePath']('"+path+"') threw an exception: " + e.message);
         }
       },readdir:function(path) {
         var lookup = FS.lookupPath(path, { follow: true });
@@ -3316,14 +3302,14 @@ var ASM_CONSTS = {
             FS.trackingDelegate['willDeletePath'](path);
           }
         } catch(e) {
-          console.log("FS.trackingDelegate['willDeletePath']('"+path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['willDeletePath']('"+path+"') threw an exception: " + e.message);
         }
         parent.node_ops.unlink(parent, name);
         FS.destroyNode(node);
         try {
           if (FS.trackingDelegate['onDeletePath']) FS.trackingDelegate['onDeletePath'](path);
         } catch(e) {
-          console.log("FS.trackingDelegate['onDeletePath']('"+path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['onDeletePath']('"+path+"') threw an exception: " + e.message);
         }
       },readlink:function(path) {
         var lookup = FS.lookupPath(path);
@@ -3522,7 +3508,7 @@ var ASM_CONSTS = {
           if (!FS.readFiles) FS.readFiles = {};
           if (!(path in FS.readFiles)) {
             FS.readFiles[path] = 1;
-            console.log("FS.trackingDelegate error on read file: " + path);
+            err("FS.trackingDelegate error on read file: " + path);
           }
         }
         try {
@@ -3537,7 +3523,7 @@ var ASM_CONSTS = {
             FS.trackingDelegate['onOpenFile'](path, trackingFlags);
           }
         } catch(e) {
-          console.log("FS.trackingDelegate['onOpenFile']('"+path+"', flags) threw an exception: " + e.message);
+          err("FS.trackingDelegate['onOpenFile']('"+path+"', flags) threw an exception: " + e.message);
         }
         return stream;
       },close:function(stream) {
@@ -3626,7 +3612,7 @@ var ASM_CONSTS = {
         try {
           if (stream.path && FS.trackingDelegate['onWriteToFile']) FS.trackingDelegate['onWriteToFile'](stream.path);
         } catch(e) {
-          console.log("FS.trackingDelegate['onWriteToFile']('"+stream.path+"') threw an exception: " + e.message);
+          err("FS.trackingDelegate['onWriteToFile']('"+stream.path+"') threw an exception: " + e.message);
         }
         return bytesWritten;
       },allocate:function(stream, offset, length) {
@@ -4139,7 +4125,7 @@ var ASM_CONSTS = {
             chunkSize = datalength = 1; // this will force getter(0)/doXHR do download the whole file
             datalength = this.getter(0).length;
             chunkSize = datalength;
-            console.log("LazyFiles on gzip forces download of the whole file when length is accessed");
+            out("LazyFiles on gzip forces download of the whole file when length is accessed");
           }
   
           this._length = datalength;
@@ -4274,7 +4260,7 @@ var ASM_CONSTS = {
           return onerror(e);
         }
         openRequest.onupgradeneeded = function openRequest_onupgradeneeded() {
-          console.log('creating db');
+          out('creating db');
           var db = openRequest.result;
           db.createObjectStore(FS.DB_STORE_NAME);
         };
@@ -4376,9 +4362,9 @@ var ASM_CONSTS = {
         HEAP32[(((buf)+(76))>>2)]=0;
         (tempI64 = [stat.ino>>>0,(tempDouble=stat.ino,(+(Math_abs(tempDouble))) >= 1.0 ? (tempDouble > 0.0 ? ((Math_min((+(Math_floor((tempDouble)/4294967296.0))), 4294967295.0))|0)>>>0 : (~~((+(Math_ceil((tempDouble - +(((~~(tempDouble)))>>>0))/4294967296.0)))))>>>0) : 0)],HEAP32[(((buf)+(80))>>2)]=tempI64[0],HEAP32[(((buf)+(84))>>2)]=tempI64[1]);
         return 0;
-      },doMsync:function(addr, stream, len, flags) {
+      },doMsync:function(addr, stream, len, flags, offset) {
         var buffer = new Uint8Array(HEAPU8.subarray(addr, addr + len));
-        FS.msync(stream, buffer, 0, len, flags);
+        FS.msync(stream, buffer, offset, len, flags);
       },doMkdir:function(path, mode) {
         // remove a trailing slash, if one - /a/b/ has basename of '', but
         // we want to create b in the context of this function
@@ -4630,7 +4616,7 @@ var ASM_CONSTS = {
       if (!info) return 0;
       if (len === info.len) {
         var stream = FS.getStream(info.fd);
-        SYSCALLS.doMsync(addr, stream, len, info.flags);
+        SYSCALLS.doMsync(addr, stream, len, info.flags, info.offset);
         FS.munmap(stream);
         SYSCALLS.mappings[addr] = null;
         if (info.allocated) {
@@ -4690,7 +4676,7 @@ var ASM_CONSTS = {
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 33680;
+      return 33664;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -5463,7 +5449,7 @@ var ASM_CONSTS = {
   
   
         if (Browser.mainLoop.method === 'timeout' && Module.ctx) {
-          err('Looks like you are rendering without using requestAnimationFrame for the main loop. You should use 0 for the frame rate in emscripten_set_main_loop in order to use requestAnimationFrame, as that can greatly improve your frame rates!');
+          warnOnce('Looks like you are rendering without using requestAnimationFrame for the main loop. You should use 0 for the frame rate in emscripten_set_main_loop in order to use requestAnimationFrame, as that can greatly improve your frame rates!');
           Browser.mainLoop.method = ''; // just warn once per call to set main loop
         }
   
@@ -5610,7 +5596,35 @@ var ASM_CONSTS = {
     }
 
   
-  var GL={counter:1,lastError:0,buffers:[],mappedBuffers:{},programs:[],framebuffers:[],renderbuffers:[],textures:[],uniforms:[],shaders:[],vaos:[],contexts:{},currentContext:null,offscreenCanvases:{},timerQueriesEXT:[],queries:[],samplers:[],transformFeedbacks:[],syncs:[],programInfos:{},stringCache:{},stringiCache:{},unpackAlignment:4,init:function() {
+  
+  function __webgl_acquireInstancedArraysExtension(ctx) {
+      // Extension available in WebGL 1 from Firefox 26 and Google Chrome 30 onwards. Core feature in WebGL 2.
+      var ext = ctx.getExtension('ANGLE_instanced_arrays');
+      if (ext) {
+        ctx['vertexAttribDivisor'] = function(index, divisor) { ext['vertexAttribDivisorANGLE'](index, divisor); };
+        ctx['drawArraysInstanced'] = function(mode, first, count, primcount) { ext['drawArraysInstancedANGLE'](mode, first, count, primcount); };
+        ctx['drawElementsInstanced'] = function(mode, count, type, indices, primcount) { ext['drawElementsInstancedANGLE'](mode, count, type, indices, primcount); };
+      }
+    }
+  
+  function __webgl_acquireVertexArrayObjectExtension(ctx) {
+      // Extension available in WebGL 1 from Firefox 25 and WebKit 536.28/desktop Safari 6.0.3 onwards. Core feature in WebGL 2.
+      var ext = ctx.getExtension('OES_vertex_array_object');
+      if (ext) {
+        ctx['createVertexArray'] = function() { return ext['createVertexArrayOES'](); };
+        ctx['deleteVertexArray'] = function(vao) { ext['deleteVertexArrayOES'](vao); };
+        ctx['bindVertexArray'] = function(vao) { ext['bindVertexArrayOES'](vao); };
+        ctx['isVertexArray'] = function(vao) { return ext['isVertexArrayOES'](vao); };
+      }
+    }
+  
+  function __webgl_acquireDrawBuffersExtension(ctx) {
+      // Extension available in WebGL 1 from Firefox 28 onwards. Core feature in WebGL 2.
+      var ext = ctx.getExtension('WEBGL_draw_buffers');
+      if (ext) {
+        ctx['drawBuffers'] = function(n, bufs) { ext['drawBuffersWEBGL'](n, bufs); };
+      }
+    }var GL={counter:1,lastError:0,buffers:[],mappedBuffers:{},programs:[],framebuffers:[],renderbuffers:[],textures:[],uniforms:[],shaders:[],vaos:[],contexts:{},currentContext:null,offscreenCanvases:{},timerQueriesEXT:[],queries:[],samplers:[],transformFeedbacks:[],syncs:[],programInfos:{},stringCache:{},stringiCache:{},unpackAlignment:4,init:function() {
         var miniTempFloatBuffer = new Float32Array(GL.MINI_TEMP_BUFFER_SIZE);
         for (var i = 0; i < GL.MINI_TEMP_BUFFER_SIZE; i++) {
           GL.miniTempBufferFloatViews[i] = miniTempFloatBuffer.subarray(0, i+1);
@@ -5694,29 +5708,6 @@ var ASM_CONSTS = {
         if (GL.contexts[contextHandle] && GL.contexts[contextHandle].GLctx.canvas) GL.contexts[contextHandle].GLctx.canvas.GLctxObject = undefined; // Make sure the canvas object no longer refers to the context object so there are no GC surprises.
         _free(GL.contexts[contextHandle]);
         GL.contexts[contextHandle] = null;
-      },acquireInstancedArraysExtension:function(ctx) {
-        // Extension available in WebGL 1 from Firefox 26 and Google Chrome 30 onwards. Core feature in WebGL 2.
-        var ext = ctx.getExtension('ANGLE_instanced_arrays');
-        if (ext) {
-          ctx['vertexAttribDivisor'] = function(index, divisor) { ext['vertexAttribDivisorANGLE'](index, divisor); };
-          ctx['drawArraysInstanced'] = function(mode, first, count, primcount) { ext['drawArraysInstancedANGLE'](mode, first, count, primcount); };
-          ctx['drawElementsInstanced'] = function(mode, count, type, indices, primcount) { ext['drawElementsInstancedANGLE'](mode, count, type, indices, primcount); };
-        }
-      },acquireVertexArrayObjectExtension:function(ctx) {
-        // Extension available in WebGL 1 from Firefox 25 and WebKit 536.28/desktop Safari 6.0.3 onwards. Core feature in WebGL 2.
-        var ext = ctx.getExtension('OES_vertex_array_object');
-        if (ext) {
-          ctx['createVertexArray'] = function() { return ext['createVertexArrayOES'](); };
-          ctx['deleteVertexArray'] = function(vao) { ext['deleteVertexArrayOES'](vao); };
-          ctx['bindVertexArray'] = function(vao) { ext['bindVertexArrayOES'](vao); };
-          ctx['isVertexArray'] = function(vao) { return ext['isVertexArrayOES'](vao); };
-        }
-      },acquireDrawBuffersExtension:function(ctx) {
-        // Extension available in WebGL 1 from Firefox 28 onwards. Core feature in WebGL 2.
-        var ext = ctx.getExtension('WEBGL_draw_buffers');
-        if (ext) {
-          ctx['drawBuffers'] = function(n, bufs) { ext['drawBuffersWEBGL'](n, bufs); };
-        }
       },initExtensions:function(context) {
         // If this function is called without a specific context object, init the extensions of the currently active context.
         if (!context) context = GL.currentContext;
@@ -5729,9 +5720,9 @@ var ASM_CONSTS = {
         // Detect the presence of a few extensions manually, this GL interop layer itself will need to know if they exist.
   
         if (context.version < 2) {
-          GL.acquireInstancedArraysExtension(GLctx);
-          GL.acquireVertexArrayObjectExtension(GLctx);
-          GL.acquireDrawBuffersExtension(GLctx);
+          __webgl_acquireInstancedArraysExtension(GLctx);
+          __webgl_acquireVertexArrayObjectExtension(GLctx);
+          __webgl_acquireDrawBuffersExtension(GLctx);
         }
   
         GLctx.disjointTimerQueryExt = GLctx.getExtension("EXT_disjoint_timer_query");
@@ -5886,7 +5877,7 @@ var ASM_CONSTS = {
       if (!id) return;
       var shader = GL.shaders[id];
       if (!shader) { // glDeleteShader actually signals an error when deleting a nonexisting object, unlike some other GL delete functions.
-        GL.recordError(0x0501 /* GL_INVALID_VALUE */);
+        GL.recordError(0x501 /* GL_INVALID_VALUE */);
         return;
       }
       GLctx.deleteShader(shader);
@@ -5918,7 +5909,7 @@ var ASM_CONSTS = {
           buffer.name = id;
           objectTable[id] = buffer;
         } else {
-          GL.recordError(0x0502 /* GL_INVALID_OPERATION */);
+          GL.recordError(0x502 /* GL_INVALID_OPERATION */);
         }
         HEAP32[(((buffers)+(i*4))>>2)]=id;
       }
@@ -5936,7 +5927,7 @@ var ASM_CONSTS = {
       if (!data) {
         // GLES2 specification does not specify how to behave if data is a null pointer. Since calling this function does not make sense
         // if data == null, issue a GL error to notify user about it.
-        GL.recordError(0x0501 /* GL_INVALID_VALUE */);
+        GL.recordError(0x501 /* GL_INVALID_VALUE */);
         return;
       }
       HEAP32[((data)>>2)]=GLctx.getBufferParameter(target, value);
@@ -5953,18 +5944,18 @@ var ASM_CONSTS = {
       if (!p) {
         // GLES2 specification does not specify how to behave if p is a null pointer. Since calling this function does not make sense
         // if p == null, issue a GL error to notify user about it.
-        GL.recordError(0x0501 /* GL_INVALID_VALUE */);
+        GL.recordError(0x501 /* GL_INVALID_VALUE */);
         return;
       }
   
       if (program >= GL.counter) {
-        GL.recordError(0x0501 /* GL_INVALID_VALUE */);
+        GL.recordError(0x501 /* GL_INVALID_VALUE */);
         return;
       }
   
       var ptable = GL.programInfos[program];
       if (!ptable) {
-        GL.recordError(0x0502 /* GL_INVALID_OPERATION */);
+        GL.recordError(0x502 /* GL_INVALID_OPERATION */);
         return;
       }
   
@@ -6005,7 +5996,7 @@ var ASM_CONSTS = {
       if (!p) {
         // GLES2 specification does not specify how to behave if p is a null pointer. Since calling this function does not make sense
         // if p == null, issue a GL error to notify user about it.
-        GL.recordError(0x0501 /* GL_INVALID_VALUE */);
+        GL.recordError(0x501 /* GL_INVALID_VALUE */);
         return;
       }
       if (pname == 0x8B84) { // GL_INFO_LOG_LENGTH
@@ -6042,13 +6033,13 @@ var ASM_CONSTS = {
         case 0x9246 /* UNMASKED_RENDERER_WEBGL */:
           var s = GLctx.getParameter(name_);
           if (!s) {
-            GL.recordError(0x0500/*GL_INVALID_ENUM*/);
+            GL.recordError(0x500/*GL_INVALID_ENUM*/);
           }
           ret = stringToNewUTF8(s);
           break;
   
         case 0x1F02 /* GL_VERSION */:
-          var glVersion = GLctx.getParameter(GLctx.VERSION);
+          var glVersion = GLctx.getParameter(0x1F02 /*GL_VERSION*/);
           // return GLES version string corresponding to the version of the WebGL context
           if (GL.currentContext.version >= 2) glVersion = 'OpenGL ES 3.0 (' + glVersion + ')';
           else
@@ -6058,7 +6049,7 @@ var ASM_CONSTS = {
           ret = stringToNewUTF8(glVersion);
           break;
         case 0x8B8C /* GL_SHADING_LANGUAGE_VERSION */:
-          var glslVersion = GLctx.getParameter(GLctx.SHADING_LANGUAGE_VERSION);
+          var glslVersion = GLctx.getParameter(0x8B8C /*GL_SHADING_LANGUAGE_VERSION*/);
           // extract the version number 'N.M' from the string 'WebGL GLSL ES N.M ...'
           var ver_re = /^WebGL GLSL ES ([0-9]\.[0-9][0-9]?)(?:$| .*)/;
           var ver_num = glslVersion.match(ver_re);
@@ -6069,7 +6060,7 @@ var ASM_CONSTS = {
           ret = stringToNewUTF8(glslVersion);
           break;
         default:
-          GL.recordError(0x0500/*GL_INVALID_ENUM*/);
+          GL.recordError(0x500/*GL_INVALID_ENUM*/);
           return 0;
       }
       GL.stringCache[name_] = ret;
@@ -6953,7 +6944,7 @@ var ASM_CONSTS = {
     }
 
   
-  var ___tm_timezone=(stringToUTF8("GMT", 33744, 4), 33744);
+  var ___tm_timezone=(stringToUTF8("GMT", 33728, 4), 33728);
   
   function _tzset() {
       // TODO: Use (malleable) environment variables instead of system settings.
@@ -8137,12 +8128,10 @@ if (!Object.getOwnPropertyDescriptor(Module, "getTempRet0")) Module["getTempRet0
 if (!Object.getOwnPropertyDescriptor(Module, "setTempRet0")) Module["setTempRet0"] = function() { abort("'setTempRet0' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "callMain")) Module["callMain"] = function() { abort("'callMain' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "abort")) Module["abort"] = function() { abort("'abort' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "Pointer_stringify")) Module["Pointer_stringify"] = function() { abort("'Pointer_stringify' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "warnOnce")) Module["warnOnce"] = function() { abort("'warnOnce' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "stackSave")) Module["stackSave"] = function() { abort("'stackSave' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "stackRestore")) Module["stackRestore"] = function() { abort("'stackRestore' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "stackAlloc")) Module["stackAlloc"] = function() { abort("'stackAlloc' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "establishStackSpace")) Module["establishStackSpace"] = function() { abort("'establishStackSpace' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 Module["writeStackCookie"] = writeStackCookie;
 Module["checkStackCookie"] = checkStackCookie;
 Module["abortStackOverflow"] = abortStackOverflow;if (!Object.getOwnPropertyDescriptor(Module, "ALLOC_NORMAL")) Object.defineProperty(Module, "ALLOC_NORMAL", { configurable: true, get: function() { abort("'ALLOC_NORMAL' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") } });
@@ -8200,6 +8189,8 @@ function callMain(args) {
     var ret = entryFunction(argc, argv);
 
 
+    // In PROXY_TO_PTHREAD builds, we should never exit the runtime below, as execution is asynchronously handed
+    // off to a pthread.
     // if we're not running an evented main loop, it's time to exit
       exit(ret, /* implicit = */ true);
   }
