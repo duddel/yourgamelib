@@ -194,7 +194,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"start": 0, "audio": 0, "end": 116, "filename": "/assets/simple.frag"}, {"start": 116, "audio": 0, "end": 249, "filename": "/assets/simple.es.vert"}, {"start": 249, "audio": 0, "end": 393, "filename": "/assets/simple.es.frag"}, {"start": 393, "audio": 0, "end": 523, "filename": "/assets/simple.vert"}], "remote_package_size": 523, "package_uuid": "1c73cd54-7bda-463a-8dd2-d759d272a4ba"});
+   loadPackage({"files": [{"start": 0, "audio": 0, "end": 116, "filename": "/assets/simple.frag"}, {"start": 116, "audio": 0, "end": 249, "filename": "/assets/simple.es.vert"}, {"start": 249, "audio": 0, "end": 393, "filename": "/assets/simple.es.frag"}, {"start": 393, "audio": 0, "end": 523, "filename": "/assets/simple.vert"}], "remote_package_size": 523, "package_uuid": "95300e95-0639-4dea-a71d-b1c4ca7a06c2"});
   
   })();
   
