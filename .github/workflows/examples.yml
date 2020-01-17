@@ -18,7 +18,12 @@ jobs:
       run: |
         sudo apt update
         sudo apt install libgl1-mesa-dev xorg-dev
+        pip3 install Jinja2
       if: startsWith(matrix.os, 'ubuntu')
+    - name: initialize
+      run: |
+        cd examples
+        python3 ../tools/init.py ${{ matrix.example_name }} --noSources
     - name: configure
       run: |
         cd examples/${{ matrix.example_name }}
