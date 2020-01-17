@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
+        os: [ubuntu-16.04, ubuntu-18.04] #[ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
         example_name: [framework]
 
     steps:
@@ -46,12 +46,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: install deps
+      run: pip3 install Jinja2
     - name: install emsdk
       run: |
         git clone https://github.com/emscripten-core/emsdk.git
         cd emsdk
         ./emsdk install latest
         ./emsdk activate latest
+    - name: initialize
+      run: |
+        cd examples
+        python3 ../tools/init.py ${{ matrix.example_name }} --noSources
     - name: configure
       run: |
         source ./emsdk/emsdk_env.sh
@@ -76,6 +82,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: install deps
+      run: pip3 install Jinja2
+    - name: initialize
+      run: |
+        cd examples
+        python3 ../tools/init.py ${{ matrix.example_name }} --noSources
     - name: assemble
       run: |
         cd examples/${{ matrix.example_name }}/android
