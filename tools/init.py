@@ -1,10 +1,9 @@
-import sys
 import os
 import posixpath
 import argparse
 from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
-from jinja2 import Environment, FileSystemLoader, Template
+from jinja2 import Environment, FileSystemLoader
 
 
 def copy_file_items(items, src, dst):
@@ -38,14 +37,14 @@ ygRootRel = ygRootRel.replace(os.sep, posixpath.sep)
 # initialize new project
 if not os.path.isdir(tgtDir):
     os.mkdir(tgtDir)
-    print(f"{tgtDir} created")
+    print("{} created".format(tgtDir))
 else:
-    print(f"{tgtDir} already present")
+    print("{} already present".format(tgtDir))
 
 # assets/
 if not os.path.isdir(os.path.join(tgtDir, 'assets')):
     os.mkdir(os.path.join(tgtDir, 'assets'))
-    print(f"{os.path.join(tgtDir, 'assets')} created")
+    print("{} created".format(os.path.join(tgtDir, 'assets')))
 
 fileItemsToCopy = os.listdir(os.path.join(ygRoot, 'template'))
 
@@ -53,7 +52,7 @@ if(args.noSources):
     fileItemsToCopy = [i for i in fileItemsToCopy if not i.endswith(".cpp")]
     # todo: more patterns to exclude if --noSource requested?
 
-print(f"copying these items to {tgtDir}:")
+print("copying these items to {}:".format(tgtDir))
 print("\n".join(fileItemsToCopy))
 copy_file_items(fileItemsToCopy, os.path.join(ygRoot, 'template'), tgtDir)
 
