@@ -17,9 +17,8 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-/* prevent glfw to include any gl header by
-including gl_include.h before glfw */
 #include "yourgame/gl_include.h"
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include "yourgame/yourgame.h"
 #include "yourgame_internal/yourgame_port.h"

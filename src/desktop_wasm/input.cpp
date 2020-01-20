@@ -18,6 +18,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <map>
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include "yourgame/input.h"
 

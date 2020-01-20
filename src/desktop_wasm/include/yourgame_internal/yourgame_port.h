@@ -20,6 +20,7 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_PORT_H
 #define YOURGAME_PORT_H
 
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 namespace yourgame
