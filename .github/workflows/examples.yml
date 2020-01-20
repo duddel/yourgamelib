@@ -53,8 +53,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: install deps
-      run: pip3 install Jinja2
+    - name: setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.5'
+    - name: install python deps
+      run: |
+        python -m pip install --upgrade pip
+        pip install Jinja2
     - name: install emsdk
       run: |
         git clone https://github.com/emscripten-core/emsdk.git
@@ -64,7 +70,7 @@ jobs:
     - name: initialize
       run: |
         cd examples
-        python3 ../tools/init.py ${{ matrix.example_name }} --noSources
+        python ../tools/init.py ${{ matrix.example_name }} --noSources
     - name: configure
       run: |
         source ./emsdk/emsdk_env.sh
@@ -89,12 +95,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: install deps
-      run: pip3 install Jinja2
+    - name: setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.5'
+    - name: install python deps
+      run: |
+        python -m pip install --upgrade pip
+        pip install Jinja2
     - name: initialize
       run: |
         cd examples
-        python3 ../tools/init.py ${{ matrix.example_name }} --noSources
+        python ../tools/init.py ${{ matrix.example_name }} --noSources
     - name: assemble
       run: |
         cd examples/${{ matrix.example_name }}/android
