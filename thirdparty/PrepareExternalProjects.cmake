@@ -15,17 +15,20 @@
 # YOURGAME_COMPILE_DEFS   - compile definitions
 cmake_minimum_required(VERSION 3.6)
 
-# allows ExtProj modules to use ExternalProject_Add()
-# for downloading or cloning dependencies
-include(ExternalProject)
-
 # write initial line to file, resets the file if it exists already
 file(WRITE ${YOURGAME_EXT_PROJ_OUT_FILE} "# this file is auto-generated, do not modify!
-
 ") # file()
 
 foreach(extproj ${YOURGAME_EXT_PROJ_LIST})
+  file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE} "
+#
+# ${extproj}
+#
+") # file()
   include(${YOURGAME_EXT_PROJ_MODULE_DIR}/ExtProj-${extproj}.cmake)
   file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE} "
+list(APPEND YOURGAME_COMPILE_DEFS
+  YOURGAME_EXTPROJ_${extproj}
+)
 ") # file()
 endforeach()
