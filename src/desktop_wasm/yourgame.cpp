@@ -25,6 +25,12 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/timer.h"
 #include "yourgame_internal/mygame_external.h"
 
+#ifdef YOURGAME_EXTPROJ_imgui
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#endif
+
 INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame
@@ -107,11 +113,21 @@ int init(int argc, char *argv[])
     yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
     glfwSwapInterval(1);
-
     yourgame::initInput(_window);
 
-    mygame::init(_context);
+#ifdef YOURGAME_EXTPROJ_imgui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &imgio = ImGui::GetIO();
+    imgio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    imgio.IniFilename = NULL;
 
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(_window, true);
+    ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
+#endif
+
+    mygame::init(_context);
     return 0;
 }
 
@@ -123,15 +139,31 @@ void tick()
     _context.deltaTimeUs = _timer.tick();
     _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
-    mygame::update(_context);
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+#endif
 
+    mygame::update(_context);
     mygame::draw(_context);
+
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif
 
     glfwSwapBuffers(_window);
 }
 
 int shutdown()
 {
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+#endif
+
     if (_window != NULL)
     {
         glfwDestroyWindow(_window);
