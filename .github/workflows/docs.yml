@@ -32,7 +32,7 @@ jobs:
     - name: initialize
       run: |
         cd examples
-        python ../tools/init.py ${{ matrix.example_name }} --noSources
+        python ../tools/init.py ${{ matrix.example_name }} --noSources --extProj imgui
     - name: configure
       run: |
         source ./emsdk/emsdk_env.sh
