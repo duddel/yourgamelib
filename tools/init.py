@@ -22,6 +22,8 @@ aPars = argparse.ArgumentParser(
 aPars.add_argument("name", type=str, help='name of the new project')
 aPars.add_argument('--noSources', action='store_true',
                    help='do not copy source files from template')
+aPars.add_argument("--extProj", nargs="*", type=str, default=[],
+                   help='list of required external projects')
 args = aPars.parse_args()
 
 # name of project (from args)
@@ -68,5 +70,6 @@ templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_ROOT=ygRootRel,
     YOURGAME_PROJECT_NAME=newProjName,
-    YOURGAME_MY_SOURCES=dstSources
+    YOURGAME_MY_SOURCES=dstSources,
+    YOURGAME_EXT_PROJ=args.extProj
 ).dump(os.path.join(tgtDir, "CMakeLists.txt"))

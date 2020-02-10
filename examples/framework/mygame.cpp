@@ -23,6 +23,7 @@ freely, subject to the following restrictions:
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
 #include "yourgame/input.h"
+#include "imgui.h"
 
 namespace mygame
 {
@@ -33,6 +34,7 @@ double colorFadingT = 0.0;
 GLuint vaoHandle;
 GLuint progHandle;
 GLint unifLocLight;
+ImVec4 clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
 
 /*
 sets up a gl test scene with some basics:
@@ -140,7 +142,6 @@ void initGlTest()
     glDeleteShader(vertHandle);
     glDeleteShader(fragHandle);
 }
-
 } // namespace
 
 void init(const yourgame::context &ctx)
@@ -151,6 +152,14 @@ void init(const yourgame::context &ctx)
 
 void update(const yourgame::context &ctx)
 {
+    ImGui::Begin("main window", NULL, (ImGuiWindowFlags_NoTitleBar));
+    ImGui::ColorPicker3("clear color", (float *)&clearColor);
+    if (ImGui::Button("EXIT"))
+    {
+        yourgame::notifyShutdown();
+    }
+    ImGui::End();
+
     colorFadingT += (1.0 * ctx.deltaTimeS);
 
     if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
@@ -170,7 +179,7 @@ void update(const yourgame::context &ctx)
 void draw(const yourgame::context &ctx)
 {
     float colFade = (float)((sin(colorFadingT) * 0.5) + 0.5);
-    glClearColor(colFade, 1.0f - colFade, 0.0f, 1.0f);
+    glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // draw the gl test scene

@@ -7,6 +7,12 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+list(APPEND YOURGAME_EXT_PROJ_LIST
+{%- for EXT_PROJ in YOURGAME_EXT_PROJ %}
+  "{{ EXT_PROJ }}"
+{%- endfor -%}
+)
+
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ YOURGAME_ROOT }}
   ${CMAKE_CURRENT_BINARY_DIR}/libyourgame
@@ -16,7 +22,7 @@ add_subdirectory(
 list(APPEND MYGAME_SRC_FILES
 {%- for MY_SRC in YOURGAME_MY_SOURCES %}
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ MY_SRC }}
-{% endfor -%}
+{%- endfor -%}
 )
 
 if(YOURGAME_PLATFORM STREQUAL "android")
