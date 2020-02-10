@@ -60,4 +60,50 @@ do not include any other gl headers before or after gl_include.h
   #error no gl header included
 #endif
 
+/*
+to get a glsl version string defined:
+make sure _exactly_ one of these macros is defined
+  YOURGAME_GL_API_GL
+  YOURGAME_GL_API_GLES
+
+and the used gl (es) version with both
+  YOURGAME_GL_MAJOR and
+  YOURGAME_GL_MINOR
+*/
+#if defined(YOURGAME_GL_API_GL)
+  #if (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 0)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 110"
+  #elif (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 1)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 120"
+  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 0)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 130"
+  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 1)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 140"
+  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 2)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 150"
+  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 3)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 330"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 0)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 400"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 1)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 410"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 2)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 420"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 3)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 430"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 4)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 440"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 5)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 450"
+  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 6)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 460"
+  #endif
+#elif defined(YOURGAME_GL_API_GLES)
+  #if (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 0)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 100"
+  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 0)
+    #define YOURGAME_GLSL_VERSION_STRING "#version 300 es"
+  #endif
+#endif
+
 #endif
