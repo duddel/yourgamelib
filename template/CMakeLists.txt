@@ -42,7 +42,7 @@ if(YOURGAME_PLATFORM STREQUAL "android")
   )
 endif()
 
-if(YOURGAME_PLATFORM STREQUAL "wasm" OR YOURGAME_PLATFORM STREQUAL "desktop")
+if(YOURGAME_PLATFORM STREQUAL "web" OR YOURGAME_PLATFORM STREQUAL "desktop")
   add_executable(${CMAKE_PROJECT_NAME}
     ${MYGAME_SRC_FILES}
   )
@@ -60,7 +60,7 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
   )
 endif()
 
-if(YOURGAME_PLATFORM STREQUAL "wasm")
+if(YOURGAME_PLATFORM STREQUAL "web")
   # setting the output file extension to .html lets emscripten
   # generate an additional .html file along the .js and .wasm
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")

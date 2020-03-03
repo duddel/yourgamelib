@@ -25,7 +25,7 @@ Supported platform to date:
 
 ```bash
 YOURGAME_PLATFORM=desktop
-YOURGAME_PLATFORM=wasm
+YOURGAME_PLATFORM=web
 YOURGAME_PLATFORM=android
 ```
 
@@ -61,7 +61,7 @@ ndk-bundle  version 20.0.5594570
 In order to make assets loadable, make sure the asset files are placed:
 
 -   **desktop:** in the directory `assets/` beside the executable
--   **wasm:** in the directory `assets/` in the root file system (`/assets/`)
+-   **web:** (wasm) in the directory `assets/` in the root file system (`/assets/`)
 -   **android:** in the directory `assets/` of the app (common location)
 
 ## Example

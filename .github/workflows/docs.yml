@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_examples:
-    name: build wasm examples
+    name: build web examples
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,7 +39,7 @@ jobs:
         cd examples/${{ matrix.example_name }}
         mkdir _build
         cd _build
-        emconfigure cmake -DYOURGAME_PLATFORM=wasm ..
+        emconfigure cmake -DYOURGAME_PLATFORM=web ..
     - name: build
       run: |
         source ./emsdk/emsdk_env.sh
