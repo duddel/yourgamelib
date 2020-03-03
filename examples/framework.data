@@ -1,3 +1,14 @@
+#version 330
+
+in vec3 posi;
+out vec3 ppos;
+
+void main()
+{
+    ppos = posi;
+    gl_Position.xyz = posi;
+    gl_Position.w = 1.0;
+}
 #version 300 es
 precision mediump float;
 
@@ -9,27 +20,6 @@ void main()
 {
     color = (ppos + 0.5) * light;
 }
-#version 330
-
-in vec3 ppos;
-out vec3 color;
-uniform float light;
-
-void main()
-{
-    color = (ppos + 0.5) * light;
-}
-#version 330
-
-in vec3 posi;
-out vec3 ppos;
-
-void main()
-{
-    ppos = posi;
-    gl_Position.xyz = posi;
-    gl_Position.w = 1.0;
-}
 #version 300 es
 
 in vec3 posi;
@@ -40,4 +30,14 @@ void main()
     ppos = posi;
     gl_Position.xyz = posi;
     gl_Position.w = 1.0;
+}
+#version 330
+
+in vec3 ppos;
+out vec3 color;
+uniform float light;
+
+void main()
+{
+    color = (ppos + 0.5) * light;
 }
