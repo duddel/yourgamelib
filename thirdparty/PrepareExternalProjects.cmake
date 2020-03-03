@@ -26,6 +26,9 @@ foreach(extproj ${YOURGAME_EXT_PROJ_LIST})
 #
 ") # file()
   include(${YOURGAME_EXT_PROJ_MODULE_DIR}/ExtProj-${extproj}.cmake)
+  # add a compile definition for each available external project,
+  # replace improper characters from ${extproj} by an underscore (_)
+  string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" extproj ${extproj})
   file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE} "
 list(APPEND YOURGAME_COMPILE_DEFS
   YOURGAME_EXTPROJ_${extproj}
