@@ -66,7 +66,7 @@ namespace
 {
 yourgame::context _context;
 yourgame::Timer _timer(0U);
-bool _pendingShutdown = false;
+bool _initialized = false;
 
 EGLDisplay _display = EGL_NO_DISPLAY;
 EGLSurface _surface = EGL_NO_SURFACE;
@@ -80,19 +80,22 @@ const yourgame::context &getCtx()
     return _context;
 }
 
-void notifyShutdown()
-{
-    _pendingShutdown = true;
-}
+// do nothing. we do not exit the app manually
+void notifyShutdown() {}
 
 // INTERNAL API
-bool pendingShutdown()
+bool isInitialized()
 {
-    return _pendingShutdown;
+    return _initialized;
 }
 
 void init(struct android_app *app)
 {
+    if (_initialized)
+    {
+        return;
+    }
+
     _win = app->window;
 
     initInput(app);
@@ -195,6 +198,8 @@ void init(struct android_app *app)
 #endif
 
     mygame::init(_context);
+
+    _initialized = true;
 }
 
 void tick()
@@ -203,29 +208,36 @@ void tick()
     _context.deltaTimeUs = _timer.tick();
     _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
-// todo: manage NOT to call tick() before init()...
-if(_display != EGL_NO_DISPLAY)
-{
+    if (_display != EGL_NO_DISPLAY)
+    {
 #ifdef YOURGAME_EXTPROJ_imgui
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplAndroid_NewFrame();
-    ImGui::NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplAndroid_NewFrame();
+        ImGui::NewFrame();
 #endif
-
-    mygame::update(_context);
-    mygame::draw(_context);
-
+        mygame::update(_context);
+        mygame::draw(_context);
 #ifdef YOURGAME_EXTPROJ_imgui
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 #endif
+        eglSwapBuffers(_display, _surface);
+    }
 }
 
-    eglSwapBuffers(_display, _surface);
-}
-
-int shutdown()
+void shutdown()
 {
+    if (!_initialized)
+    {
+        return;
+    }
+
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplAndroid_Shutdown();
+    ImGui::DestroyContext();
+#endif
+
     if (_display != EGL_NO_DISPLAY)
     {
         eglMakeCurrent(_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
@@ -247,15 +259,9 @@ int shutdown()
     _eglContext = EGL_NO_CONTEXT;
     _surface = EGL_NO_SURFACE;
 
-#ifdef YOURGAME_EXTPROJ_imgui
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplAndroid_Shutdown();
-    ImGui::DestroyContext();
-#endif
-
     mygame::shutdown(_context);
 
-    return 0;
+    _initialized = false;
 }
 
 } // namespace yourgame

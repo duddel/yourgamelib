@@ -54,8 +54,8 @@ void android_main(struct android_app *app)
         int outEvents;
         struct android_poll_source *outData;
 
-        // poll all events
-        while ((ident = ALooper_pollAll(0, NULL, &outEvents, (void **)&outData)) >= 0)
+        // poll all events. if the app is not visible, this loop blocks until yourgame::isInitialized() returns true
+        while ((ident = ALooper_pollAll(yourgame::isInitialized() ? 0 : -1, NULL, &outEvents, (void **)&outData)) >= 0)
         {
             // process one event
             if (outData != NULL)
@@ -63,15 +63,20 @@ void android_main(struct android_app *app)
                 outData->process(app, outData);
             }
 
-            // shutdown if requested
+            // exit the app by returning from within the infinite loop
             if (app->destroyRequested != 0)
             {
-                yourgame::shutdown();
+                // yourgame::shutdown() should have been called already while processing the
+                // app command APP_CMD_TERM_WINDOW. but we play save here
+                if (!yourgame::isInitialized())
+                {
+                    yourgame::shutdown();
+                }
                 return;
             }
         }
 
-        // tick engine
+        // tick the engine
         yourgame::tick();
     }
 }

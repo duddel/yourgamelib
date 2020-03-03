@@ -25,10 +25,10 @@ freely, subject to the following restrictions:
 namespace yourgame
 {
 
+bool isInitialized();
 void init(struct android_app *app);
 void tick();
-int shutdown();
-bool pendingShutdown();
+void shutdown();
 void initInput(struct android_app *app);
 void initAssetFile(struct android_app *app);
 
