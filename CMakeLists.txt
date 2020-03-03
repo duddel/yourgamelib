@@ -49,6 +49,12 @@ elseif(YOURGAME_PLATFORM STREQUAL "android")
   )
 endif()
 
+# preprocessor definition to describe the platform
+string(TOUPPER ${YOURGAME_PLATFORM} platform_upper)
+list(APPEND YOURGAME_COMPILE_DEFS
+  YOURGAME_PLATFORM_${platform_upper}
+)
+
 # external projects and yourgame config
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "easyloggingpp"

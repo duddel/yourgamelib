@@ -148,6 +148,12 @@ void init(const yourgame::context &ctx)
 {
     yourgame::logi("setting up gl test scene:");
     initGlTest();
+
+#ifdef YOURGAME_PLATFORM_ANDROID
+    // arbitrary scale-up on android,
+    // todo: DPI awareness
+    ImGui::GetStyle().ScaleAllSizes(5.0f);
+#endif
 }
 
 void update(const yourgame::context &ctx)
