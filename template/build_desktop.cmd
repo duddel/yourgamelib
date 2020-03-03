@@ -5,6 +5,6 @@ IF NOT EXIST _build\ (
   cd _build
   cmake -DYOURGAME_PLATFORM=desktop ..
   cd ..
-) ELSE (
-  cd _build && cmake --build . && cd ..
 )
+
+cd _build && cmake --build . && cd ..
