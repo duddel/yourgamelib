@@ -41,8 +41,8 @@
 
 ## Dear ImGui
 
--   version: **1.72b**
--   origin: <https://github.com/ocornut/imgui/releases/tag/v1.72b>
+-   version: **1.75**
+-   origin: <https://github.com/ocornut/imgui/releases/tag/v1.75>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   examples/imgui_impl_glfw.{h,cpp}
@@ -57,6 +57,14 @@
     -   [imstb_rectpack.h](imgui/imstb_rectpack.h)
     -   [imstb_textedit.h](imgui/imstb_textedit.h)
     -   [imstb_truetype.h](imgui/imstb_truetype.h)
+
+### Dear ImGui Android back-end
+
+-   version: **0dff411 (android_native)**
+-   origin: <https://github.com/duddel/imgui/tree/0dff411cd1b2779485d64c8a27957e8abdc0b3c3>
+-   extracted from origin: see files below
+-   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
+    -   examples/imgui_impl_android.{h,cpp}
 
 ## stb
 

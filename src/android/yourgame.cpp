@@ -27,6 +27,12 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/timer.h"
 #include "yourgame_internal/mygame_external.h"
 
+#ifdef YOURGAME_EXTPROJ_imgui
+#include "imgui.h"
+#include "imgui_impl_android.h"
+#include "imgui_impl_opengl3.h"
+#endif
+
 INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame
@@ -176,6 +182,18 @@ void init(struct android_app *app)
     yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
     yourgame::logi("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
 
+#ifdef YOURGAME_EXTPROJ_imgui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &imgio = ImGui::GetIO();
+    //imgio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    //imgio.IniFilename = NULL;
+
+    ImGui::StyleColorsDark();
+    ImGui_ImplAndroid_Init(app);
+    ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
+#endif
+
     mygame::init(_context);
 }
 
@@ -185,9 +203,23 @@ void tick()
     _context.deltaTimeUs = _timer.tick();
     _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
-    mygame::update(_context);
+// todo: manage NOT to call tick() before init()...
+if(_display != EGL_NO_DISPLAY)
+{
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplAndroid_NewFrame();
+    ImGui::NewFrame();
+#endif
 
+    mygame::update(_context);
     mygame::draw(_context);
+
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif
+}
 
     eglSwapBuffers(_display, _surface);
 }
@@ -214,6 +246,12 @@ int shutdown()
     _display = EGL_NO_DISPLAY;
     _eglContext = EGL_NO_CONTEXT;
     _surface = EGL_NO_SURFACE;
+
+#ifdef YOURGAME_EXTPROJ_imgui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplAndroid_Shutdown();
+    ImGui::DestroyContext();
+#endif
 
     mygame::shutdown(_context);
 

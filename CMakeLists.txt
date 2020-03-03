@@ -139,16 +139,6 @@ if(YOURGAME_PLATFORM_GL_EXT_LOADER STREQUAL "glad")
   )
 endif()
 
-# platform specific configuration for external projects
-# imgui
-if("imgui" IN_LIST YOURGAME_EXT_PROJ_LIST)
-  if(YOURGAME_PLATFORM_GL_EXT_LOADER STREQUAL "glad")
-    list(APPEND YOURGAME_COMPILE_DEFS
-      IMGUI_IMPL_OPENGL_LOADER_GLAD
-    )
-  endif()
-endif()
-
 # prepare external projects
 # step 1: copy the script
 configure_file(
@@ -165,6 +155,7 @@ execute_process(
   "-DYOURGAME_EXT_PROJ_LIST=${YOURGAME_EXT_PROJ_LIST}"
   "-DYOURGAME_EXT_PROJ_MODULE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/thirdparty"
   "-DYOURGAME_EXT_PROJ_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/thirdparty/yourgame_ext_proj.cmake"
+  "-DYOURGAME_PLATFORM=${YOURGAME_PLATFORM}"
   RESULT_VARIABLE extProjResult
   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/thirdparty"
 )
