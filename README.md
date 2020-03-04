@@ -12,26 +12,18 @@
 
 Download or clone this repository and run the Python script `tools/init.py` from an arbitrary location, like so:
 
-```bash
-python <path_to_yourgamelib>/tools/init.py MyGame
-```
+    python <path_to_yourgamelib>/tools/init.py MyGame
 
 To integrate additional third-party libraries, use the `--extProj` option, like so:
 
-```bash
-python <path_to_yourgamelib>/tools/init.py MyGame --extProj imgui glm
-```
+    python <path_to_yourgamelib>/tools/init.py MyGame --extProj imgui glm
 
-This creates the directory `./MyGame` and initializes a new project called `MyGame` with this content:
+This creates the directory `./MyGame/` and initializes a new project called `MyGame` with this content:
 
     android/
     assets/
     build_android.bash
-    build_android.cmd
-    build_desktop.bash
-    build_desktop.cmd
-    build_web.bash
-    build_web.cmd
+      [...]
     CMakeLists.txt
     mygame.cpp
 
