@@ -1,5 +1,26 @@
 # YourGameLib - Thirdparty
 
+Here is a list of available third-party libraries ("External Projects") that can be integrated. Below is a detailed list of the origins, licenses and possible modifications for each library. Also, each library has a `ExtProj-<alias>.cmake` file that can be investigated for details about the integration.
+
+-   _By User_ (**Yes**): these libraries are made available to the user if requested. They are **not** used internally by the `yourgame` library.
+-   _By User_ (No): these libraries are integrated automatically depending on the target platform and used internally by the `yourgame` library. They should **not** be used in user code.
+
+_Todo: This distinction could be made by public/private "linking", but this is not implemented yet._
+
+| Alias                                     | Name               | By User |
+| ----------------------------------------- | ------------------ | ------- |
+| [glm](#glm)                               | glm                | **Yes** |
+| [imgui](#dear-imgui)                      | Dear Imgui         | **Yes** |
+| [stb](#stb)                               | stb                | **Yes** |
+| [tinyobjloader](#tinyobjloader)           | tinyobjloader      | **Yes** |
+| [android-native-app](#android-native-app) | Android Native App | No      |
+| [easyloggingpp](#easylogging)             | Easylogging++      | No      |
+| [glad](#glad)                             | glad               | No      |
+| [glfw](#glfw)                             | GLFW               | No      |
+| [whereami](#where-am-i)                   | Where Am I?        | No      |
+
+* * *
+
 ## Android Native App
 
 -   code is used from the Android SDK installation (no code distributed)

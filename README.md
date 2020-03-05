@@ -14,7 +14,7 @@ Download or clone this repository and run the Python script `tools/init.py` from
 
     python <path_to_yourgamelib>/tools/init.py MyGame
 
-To integrate additional third-party libraries, use the `--extProj` option, like so:
+To integrate additional [third-party libraries](thirdparty/README.md), use the `--extProj` option, like so:
 
     python <path_to_yourgamelib>/tools/init.py MyGame --extProj imgui glm
 
