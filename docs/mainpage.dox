@@ -1,22 +1,35 @@
 /**
 \mainpage
-Follow these steps to set up the build environment and to kick-start a new YourGameLib project, in just minutes!
 
-\section sec_buildenv Build Environment
-todo. mention what to install, environment variables.
+To link the yourgame library to your code and make it executable, the functions declared in the \ref mygame "mygame" namespace must be implemented:
 
-\section sec_newproject Set up a new Project
-todo. mention how to build a new project.
+- \ref mygame::init() - \copydoc mygame::init()
+- \ref mygame::update() - \copybrief mygame::update()
+- \ref mygame::draw() - \copybrief mygame::draw()
+- \ref mygame::shutdown() - \copybrief mygame::shutdown()
 
-\section sec_usetheapi Use the API
-todo. explain the api
-
-minimum example
+\section sec_minimal_example Minimal Example
+This is minimal example code, that compiles and links against the yourgame library:
 \code{.cpp}
 #include "yourgame/yourgame.h"
 namespace mygame
 {
-    // todo
+    void init(const yourgame::context &ctx) {}
+    void update(const yourgame::context &ctx) {}
+    void draw(const yourgame::context &ctx) {}
+    void shutdown(const yourgame::context &ctx) {}
 }
 \endcode
+
+\section sec_guide Guide
+See the \ref yourgame "yourgame" namespace on how to  access the functionality of the yourgame library.
+
+Todo: write a guide on how to use features, such as
+
+- timing
+- input
+- logging
+- reading assets
+- GL
+
 */
