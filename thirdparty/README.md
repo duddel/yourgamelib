@@ -89,12 +89,12 @@ _Todo: This distinction could be made by public/private "linking", but this is n
 
 ## stb
 
--   version: **052dce1 (master)**
--   origin: <https://github.com/nothings/stb/tree/052dce117ed989848a950308bd99eef55525dfb1>
+-   version: **f54acd4 (master)**
+-   origin: <https://github.com/nothings/stb/tree/f54acd4e13430c5122cab4ca657705c84aa61b08>
 -   extracted from origin: see files below
 -   license: mentioned in files
-    -   [stb_image.h](stb/stb_image.h), version: **2.23**
-    -   [stb_image_resize.h](stb/stb_image_resize.h), version: **0.96**
+    -   [stb_image.h](stb/stb_image.h), version: **2.25**
+    -   [stb_vorbis.c](stb/stb_vorbis.c), version: **1.19**
 
 ## tinyobjloader
 
