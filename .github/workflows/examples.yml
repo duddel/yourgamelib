@@ -77,7 +77,7 @@ jobs:
         cd examples/${{ matrix.example_name }}
         mkdir _build
         cd _build
-        emconfigure cmake -DYOURGAME_PLATFORM=web ..
+        emcmake cmake .. -DYOURGAME_PLATFORM=web
     - name: build
       run: |
         source ./emsdk/emsdk_env.sh
