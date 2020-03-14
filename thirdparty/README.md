@@ -87,6 +87,14 @@ _Todo: This distinction could be made by public/private "linking", but this is n
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   examples/imgui_impl_android.{h,cpp}
 
+## miniaudio
+
+-   version: **0.10.0, d1a166c (master)**
+-   origin: <https://github.com/dr-soft/miniaudio/tree/d1a166c83ab445b1c14bc83d37c84e18d172e5f5>
+-   extracted from origin:
+    -   miniaudio.h, LICENSE
+-   license: [miniaudio/LICENSE](miniaudio/LICENSE)
+
 ## stb
 
 -   version: **f54acd4 (master)**
