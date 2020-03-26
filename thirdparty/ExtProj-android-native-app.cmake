@@ -15,5 +15,6 @@ list(APPEND YOURGAME_LIBS
   android
   EGL
   log
+  OpenSLES
 )
 ") # file()

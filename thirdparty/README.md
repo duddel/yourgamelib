@@ -11,6 +11,7 @@ _Todo: This distinction could be made by public/private "linking", but this is n
 | ----------------------------------------- | ------------------ | ------- |
 | [glm](#glm)                               | glm                | **Yes** |
 | [imgui](#dear-imgui)                      | Dear Imgui         | **Yes** |
+| [miniaudio](#miniaudio)                   | miniaudio          | **Yes** |
 | [stb](#stb)                               | stb                | **Yes** |
 | [tinyobjloader](#tinyobjloader)           | tinyobjloader      | **Yes** |
 | [android-native-app](#android-native-app) | Android Native App | No      |
