@@ -27,14 +27,15 @@ jobs:
         sudo apt update
         sudo apt install libgl1-mesa-dev xorg-dev
       if: startsWith(matrix.os, 'ubuntu')
-    - name: initialize
+    - name: initialize (ubuntu)
       run: |
         cd examples/${{ matrix.example_name }}
         ./init.bash
       if: startsWith(matrix.os, 'ubuntu')
-    - name: initialize
+    - name: initialize (windows)
       run: |
         cd examples/${{ matrix.example_name }}
+        cmd
         init.cmd
       if: startsWith(matrix.os, 'windows')
     - name: configure
