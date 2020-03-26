@@ -35,9 +35,9 @@ jobs:
     - name: initialize (windows)
       run: |
         cd examples/${{ matrix.example_name }}
-        cmd
         init.cmd
       if: startsWith(matrix.os, 'windows')
+      shell: cmd
     - name: configure
       run: |
         cd examples/${{ matrix.example_name }}
