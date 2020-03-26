@@ -30,7 +30,7 @@ jobs:
     - name: initialize
       run: |
         cd examples/${{ matrix.example_name }}
-        init.bash
+        ./init.bash
       if: startsWith(matrix.os, 'ubuntu')
     - name: initialize
       run: |
@@ -76,7 +76,7 @@ jobs:
     - name: initialize
       run: |
         cd examples/${{ matrix.example_name }}
-        init.bash
+        ./init.bash
     - name: configure
       run: |
         source ./emsdk/emsdk_env.sh
@@ -112,7 +112,7 @@ jobs:
     - name: initialize
       run: |
         cd examples/${{ matrix.example_name }}
-        init.bash
+        ./init.bash
     - name: assemble
       run: |
         cd examples/${{ matrix.example_name }}/android

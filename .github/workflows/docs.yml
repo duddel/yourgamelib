@@ -32,7 +32,7 @@ jobs:
     - name: initialize
       run: |
         cd examples/${{ matrix.example_name }}
-        init.bash
+        ./init.bash
     - name: configure
       run: |
         source ./emsdk/emsdk_env.sh
