@@ -19,6 +19,10 @@ freely, subject to the following restrictions:
 */
 #include <cmath>
 #include <vector>
+#define STB_VORBIS_HEADER_ONLY
+#include "stb_vorbis.c"
+#define MINIAUDIO_IMPLEMENTATION
+#include "miniaudio.h"
 #include "yourgame/assetfile.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
@@ -30,6 +34,30 @@ namespace mygame
 
 namespace
 {
+// Audio
+bool showAudio = false;
+bool playAudio = false;
+bool audioInitialized = false;
+std::vector<uint8_t> audioData;
+ma_decoder maDecoder;
+ma_device_config maDeviceConfig;
+ma_device maDevice;
+
+void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount);
+void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount)
+{
+    if (!playAudio)
+    {
+        return;
+    }
+
+    if (ma_decoder_read_pcm_frames(&maDecoder, pOutput, frameCount) < frameCount)
+    {
+        playAudio = false;
+    }
+}
+
+// GL test scene
 double colorFadingT = 0.0;
 GLuint vaoHandle;
 GLuint progHandle;
@@ -158,13 +186,59 @@ void init(const yourgame::context &ctx)
 
 void update(const yourgame::context &ctx)
 {
+    // Main Window
     ImGui::Begin("main window", NULL, (ImGuiWindowFlags_NoTitleBar));
     ImGui::ColorPicker3("clear color", (float *)&clearColor);
     if (ImGui::Button("EXIT"))
     {
         yourgame::notifyShutdown();
     }
+    if (ImGui::Button("Audio"))
+    {
+        showAudio = true;
+    }
     ImGui::End();
+
+    // Audio
+    if (showAudio)
+    {
+        if (!audioInitialized)
+        {
+            audioData = yourgame::readAssetFile("chirp.ogg");
+
+            if (ma_decoder_init_memory_vorbis(&audioData[0], audioData.size(), NULL, &maDecoder) != MA_SUCCESS)
+            {
+                yourgame::loge("ma_decoder_init_memory_vorbis() failed");
+            }
+
+            maDeviceConfig = ma_device_config_init(ma_device_type_playback);
+            maDeviceConfig.playback.format = maDecoder.outputFormat;
+            maDeviceConfig.playback.channels = maDecoder.outputChannels;
+            maDeviceConfig.sampleRate = maDecoder.outputSampleRate;
+            maDeviceConfig.dataCallback = maDataCallback;
+            maDeviceConfig.pUserData = NULL;
+
+            if (ma_device_init(NULL, &maDeviceConfig, &maDevice) != MA_SUCCESS)
+            {
+                yourgame::loge("ma_device_init() failed");
+            }
+
+            if (ma_device_start(&maDevice) != MA_SUCCESS)
+            {
+                yourgame::loge("ma_device_start() failed");
+            }
+
+            audioInitialized = true;
+        }
+
+        ImGui::Begin("Audio", &showAudio);
+        if (ImGui::Button("Play"))
+        {
+            ma_decoder_seek_to_pcm_frame(&maDecoder, 0); // "rewind" and start playback
+            playAudio = true;
+        }
+        ImGui::End();
+    }
 
     colorFadingT += (1.0 * ctx.deltaTimeS);
 
@@ -198,6 +272,8 @@ void draw(const yourgame::context &ctx)
 
 void shutdown(const yourgame::context &ctx)
 {
+    ma_device_uninit(&maDevice);
+    ma_decoder_uninit(&maDecoder);
 }
 
 } // namespace mygame
