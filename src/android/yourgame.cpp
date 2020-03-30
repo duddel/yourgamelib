@@ -72,6 +72,21 @@ EGLDisplay _display = EGL_NO_DISPLAY;
 EGLSurface _surface = EGL_NO_SURFACE;
 EGLContext _eglContext = EGL_NO_CONTEXT;
 ANativeWindow *_win = NULL;
+
+/*
+todo: this is called every frame, but actually only required
+if the screen size changed. however, the app command
+APP_CMD_WINDOW_RESIZED is not invoked reliable.
+*/
+void updateContextWinSize()
+{
+    EGLint width, height;
+    eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
+    eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
+    _context.winWidth = width;
+    _context.winHeight = height;
+    _context.winAspectRatio = (float)width / (float)height;
+}
 } // namespace
 
 // API
@@ -173,12 +188,8 @@ void init(struct android_app *app)
     _surface = eglCreateWindowSurface(_display, config, _win, NULL);
     eglMakeCurrent(_display, _surface, _surface, _eglContext);
 
-    // get width and height of surface
-    // todo: communicate surface width and height to the framework
-    EGLint width;
-    EGLint height;
-    eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
-    eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
+    // update window size in yourgame context
+    updateContextWinSize();
 
     yourgame::logi("GL_VERSION: %v", glGetString(GL_VERSION));
     yourgame::logi("GL_VENDOR: %v", glGetString(GL_VENDOR));
@@ -204,12 +215,15 @@ void init(struct android_app *app)
 
 void tick()
 {
-    // update context
+    // update time delta in yourgame context
     _context.deltaTimeUs = _timer.tick();
     _context.deltaTimeS = ((double)_context.deltaTimeUs) * 1.0e-6;
 
     if (_display != EGL_NO_DISPLAY)
     {
+        // update window size in yourgame context
+        updateContextWinSize();
+
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplAndroid_NewFrame();

@@ -32,6 +32,9 @@ struct context
     el::Logger *logger = NULL;
     double deltaTimeS = 0.0;
     uint64_t deltaTimeUs = 0U;
+    uint32_t winWidth = 0U;
+    uint32_t winHeight = 0U;
+    float winAspectRatio = 1.0f;
 };
 
 /** \brief returns the current context */

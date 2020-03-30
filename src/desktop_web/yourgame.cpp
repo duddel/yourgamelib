@@ -42,6 +42,12 @@ yourgame::context _context;
 yourgame::Timer _timer(0U);
 bool _pendingShutdown = false;
 GLFWwindow *_window = NULL;
+void windowSizeCallback(GLFWwindow *window, int width, int height)
+{
+    _context.winWidth = width;
+    _context.winHeight = height;
+    _context.winAspectRatio = (float)width / (float)height;
+}
 } // namespace
 
 // API
@@ -98,6 +104,13 @@ int init(int argc, char *argv[])
     }
 
     glfwMakeContextCurrent(_window);
+
+    // set window size callback
+    glfwSetWindowSizeCallback(_window, windowSizeCallback);
+    // call it manually to set initial size
+    int width, height;
+    glfwGetWindowSize(_window, &width, &height);
+    windowSizeCallback(_window, width, height);
 
 #if defined(YOURGAME_GL_EXT_LOADER_GLAD)
     yourgame::logi("gladLoadGL()...");
