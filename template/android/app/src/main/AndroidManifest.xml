@@ -7,9 +7,10 @@
         android:fullBackupContent="false"
         android:hasCode="false">
 
-        <activity android:name="android.app.NativeActivity"
-            android:configChanges="orientation|keyboardHidden">
-
+        <activity
+            android:name="android.app.NativeActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <meta-data android:name="android.app.lib_name"
                 android:value="framework" />
 
