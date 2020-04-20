@@ -1,6 +1,7 @@
 **/_build*
 *.log
 docs/_doxyout
+.vscode/
 
 # Prerequisites
 *.d

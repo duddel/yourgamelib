@@ -3,9 +3,10 @@
 in vec3 posi;
 out vec3 ppos;
 
+uniform mat4 mMat;
+
 void main()
 {
     ppos = posi;
-    gl_Position.xyz = posi;
-    gl_Position.w = 1.0;
+    gl_Position = mMat * vec4(posi, 1.0);
 }

@@ -3,5 +3,6 @@
 !assets/*
 !.gitignore
 !*.cpp
+!*.h
 !init.bash
 !init.cmd
