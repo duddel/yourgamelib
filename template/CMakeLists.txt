@@ -75,8 +75,8 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   # enforce WEB GL v2 (default is v1)
   # make sure assets/ gets copied into the wasm file system
   # todo: allow projects without assets (do not copy assets/)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s USE_WEBGL2=1 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_GLFW=3 -s USE_WEBGL2=1 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s USE_WEBGL2=1 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets --shell-file shell_minimal.html")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_GLFW=3 -s USE_WEBGL2=1 --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets --shell-file shell_minimal.html")
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
