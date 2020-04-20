@@ -1,5 +1,5 @@
 <!--
-This file has been taken from:
+This file has been taken from here and been slightly modified:
 https://github.com/emscripten-core/emscripten/blob/1fc1c90941936c140827e101dce1576c60811c3d/src/shell_minimal.html
 -->
 <!doctype html>
@@ -10,11 +10,13 @@ https://github.com/emscripten-core/emscripten/blob/1fc1c90941936c140827e101dce15
     <title>Emscripten-Generated Code</title>
     <style>
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      textarea.emscripten { font-family: monospace; width: 80%; }
-      div.emscripten { text-align: center; }
-      div.emscripten_border { border: 1px solid black; }
+      textarea.emscripten { font-family: monospace; width: 80%; color: white; background-color: rgb(31, 31, 31); }
+      div.emscripten { text-align: center; color: white; }
+      div.emscripten_border { border: 0px solid rgb(0, 0, 0); }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
       canvas.emscripten { border: 0px none; background-color: black; }
+
+      body { background-color: black; }
 
       .spinner {
         height: 50px;
@@ -51,27 +53,26 @@ https://github.com/emscripten-core/emscripten/blob/1fc1c90941936c140827e101dce15
     </style>
   </head>
   <body>
-    <hr/>
     <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>emscripten</strong></center></figure>
     <div class="emscripten" id="status">Downloading...</div>
     <div class="emscripten">
       <progress value="0" max="100" id="progress" hidden=1></progress>  
     </div>
+
     <div class="emscripten_border">
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
     </div>
-    <hr/>
+
     <div class="emscripten">
-      <input type="checkbox" id="resize">Resize canvas
+      <input type="checkbox" id="resize" checked>Resize canvas
       <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer
       &nbsp;&nbsp;&nbsp;
       <input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, 
                                                                                 document.getElementById('resize').checked)">
     </div>
     
-    <hr/>
     <textarea class="emscripten" id="output" rows="8"></textarea>
-    <hr>
+
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
       var progressElement = document.getElementById('progress');
