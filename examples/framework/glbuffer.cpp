@@ -31,7 +31,9 @@ GLBuffer *GLBuffer::make(GLenum target, GLsizeiptr size, const GLvoid *data, GLe
     glGetBufferParameteriv(target, GL_BUFFER_SIZE, &checkSize);
     if (size != checkSize)
     {
-        return NULL;
+        glBindBuffer(target, 0);
+        glDeleteBuffers(1, &handle);
+        return nullptr;
     }
     else
     {
