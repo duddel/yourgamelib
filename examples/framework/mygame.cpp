@@ -29,6 +29,8 @@ freely, subject to the following restrictions:
 #include "stb_image.h"
 #include "trafo.h"
 #include "camera.h"
+#include "glbuffer.h"
+#include "glmesh.h"
 
 namespace mygame
 {
@@ -51,15 +53,15 @@ ma_device g_maDevice;
 
 // GL scene
 double g_colorFadingT = 0.0;
-GLuint g_vaoHandle;
 GLuint g_progHandle;
 GLint g_unifLocLight;
 GLint g_unifLocMMat;
 ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
 Trafo g_modelTrafo;
 Camera g_camera;
-std::vector<GLfloat> g_objPosData;
-std::vector<GLuint> g_objIdxData;
+GLMesh *g_mesh;
+const GLuint attrLocPosition = 3;
+
 } // namespace
 
 void init(const yourgame::context &ctx)
@@ -105,9 +107,8 @@ void draw(const yourgame::context &ctx)
     glUniform1f(g_unifLocLight, colFade);
     auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
     glUniformMatrix4fv(g_unifLocMMat, 1, GL_FALSE, glm::value_ptr(mvp));
-    glBindVertexArray(g_vaoHandle);
-    glDrawElements(GL_TRIANGLES, g_objIdxData.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+
+    g_mesh->draw();
 }
 
 void shutdown(const yourgame::context &ctx)
@@ -147,15 +148,27 @@ void loadObj()
     auto shapes = objRdr.GetShapes();
     auto attribs = objRdr.GetAttrib();
 
+    std::vector<GLfloat> objPosData;
     for (int i = 0; i < attribs.vertices.size(); i++)
     {
-        g_objPosData.push_back((GLfloat)attribs.vertices[i]);
+        objPosData.push_back((GLfloat)attribs.vertices[i]);
     }
 
+    std::vector<GLuint> objIdxData;
     for (auto const &idx : shapes[0].mesh.indices)
     {
-        g_objIdxData.push_back((GLuint)(idx.vertex_index));
+        objIdxData.push_back((GLuint)(idx.vertex_index));
     }
+
+    // created a GLMesh from parsed object file data
+    auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
+    auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
+    GLBuffer *posBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
+    GLBuffer *idxBuf = GLBuffer::make(GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+
+    g_mesh = GLMesh::make(
+        {{posBuf, attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}},
+        {idxBuf, GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
 }
 
 void initGlScene()
@@ -163,43 +176,6 @@ void initGlScene()
     loadObj();
 
     glEnable(GL_DEPTH_TEST);
-
-    // attribute location of position vertex data
-    const GLuint attrLocPosition = 3;
-
-    // VBO
-    auto vertPosSize = g_objPosData.size() * sizeof(g_objPosData[0]);
-    GLuint vboHandle;
-    glGenBuffers(1, &vboHandle);
-    glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
-    glBufferData(GL_ARRAY_BUFFER, vertPosSize, g_objPosData.data(), GL_STATIC_DRAW);
-    GLint checkSize = -1;
-    glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &checkSize);
-    if (vertPosSize != checkSize)
-    {
-        yourgame::loge("VBO creation failed: size of data: %v, size in buffer: %v", vertPosSize, checkSize);
-    }
-
-    // IBO
-    auto vertIdxSize = g_objIdxData.size() * sizeof(g_objIdxData[0]);
-    GLuint iboHandle;
-    glGenBuffers(1, &iboHandle);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboHandle);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, g_objIdxData.data(), GL_STATIC_DRAW);
-    checkSize = -1;
-    glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &checkSize);
-    if (vertIdxSize != checkSize)
-    {
-        yourgame::loge("IBO creation failed: size of data: %v, size in buffer: %v", vertIdxSize, checkSize);
-    }
-
-    // VAO
-    glGenVertexArrays(1, &g_vaoHandle);
-    glBindVertexArray(g_vaoHandle);
-    glEnableVertexAttribArray(attrLocPosition);
-    glVertexAttribPointer(attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboHandle);
-    glBindVertexArray(0);
 
     // shaders
 #ifdef YOURGAME_GL_API_GLES
