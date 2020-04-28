@@ -196,7 +196,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"remote_package_size": 95753, "package_uuid": "9e9ab90f-cd42-4e79-a3ee-3b1613de5189", "files": [{"end": 139, "filename": "/assets/simple.vert", "audio": 0, "start": 0}, {"end": 8697, "filename": "/assets/LICENSE_web.txt", "audio": 0, "start": 139}, {"end": 71772, "filename": "/assets/monkey.obj", "audio": 0, "start": 8697}, {"end": 82561, "filename": "/assets/LICENSE_desktop.txt", "audio": 0, "start": 71772}, {"end": 87157, "filename": "/assets/chirp.ogg", "audio": 1, "start": 82561}, {"end": 87299, "filename": "/assets/simple.es.vert", "audio": 0, "start": 87157}, {"end": 95369, "filename": "/assets/LICENSE_android.txt", "audio": 0, "start": 87299}, {"end": 95493, "filename": "/assets/monkey.mtl", "audio": 0, "start": 95369}, {"end": 95637, "filename": "/assets/simple.es.frag", "audio": 0, "start": 95493}, {"end": 95753, "filename": "/assets/simple.frag", "audio": 0, "start": 95637}]});
+   loadPackage({"files": [{"start": 0, "filename": "/assets/simple.vert", "audio": 0, "end": 139}, {"start": 139, "filename": "/assets/LICENSE_web.txt", "audio": 0, "end": 8697}, {"start": 8697, "filename": "/assets/monkey.obj", "audio": 0, "end": 71772}, {"start": 71772, "filename": "/assets/LICENSE_desktop.txt", "audio": 0, "end": 82561}, {"start": 82561, "filename": "/assets/chirp.ogg", "audio": 1, "end": 87157}, {"start": 87157, "filename": "/assets/simple.es.vert", "audio": 0, "end": 87299}, {"start": 87299, "filename": "/assets/LICENSE_android.txt", "audio": 0, "end": 95369}, {"start": 95369, "filename": "/assets/monkey.mtl", "audio": 0, "end": 95493}, {"start": 95493, "filename": "/assets/simple.es.frag", "audio": 0, "end": 95637}, {"start": 95637, "filename": "/assets/simple.frag", "audio": 0, "end": 95753}], "remote_package_size": 95753, "package_uuid": "f3a5a7de-d3b3-45f0-b51d-8f40ba0c94d0"});
   
   })();
   
@@ -893,8 +893,8 @@ var wasmMemory;
 // In the wasm backend, we polyfill the WebAssembly object,
 // so this creates a (non-native-wasm) table for us.
 var wasmTable = new WebAssembly.Table({
-  'initial': 653,
-  'maximum': 653 + 0,
+  'initial': 651,
+  'maximum': 651 + 0,
   'element': 'anyfunc'
 });
 
@@ -1515,11 +1515,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 5424016,
+    STACK_BASE = 5423936,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 181136,
-    DYNAMIC_BASE = 5424016,
-    DYNAMICTOP_PTR = 180976;
+    STACK_MAX = 181056,
+    DYNAMIC_BASE = 5423936,
+    DYNAMICTOP_PTR = 180896;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -2111,7 +2111,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
 
 
 
-// STATICTOP = STATIC_BASE + 180112;
+// STATICTOP = STATIC_BASE + 180032;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4806,7 +4806,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 180976;
+      return 180896;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -7556,7 +7556,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
     }
 
   
-  var ___tm_timezone=(stringToUTF8("GMT", 181040, 4), 181040);
+  var ___tm_timezone=(stringToUTF8("GMT", 180960, 4), 180960);
   
   function _tzset() {
       // TODO: Use (malleable) environment variables instead of system settings.
