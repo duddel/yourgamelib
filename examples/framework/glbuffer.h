@@ -25,14 +25,15 @@ freely, subject to the following restrictions:
 class GLBuffer
 {
 public:
-    GLuint m_handle;
     static GLBuffer *make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
     ~GLBuffer();
     void bind();
+    void unbindTarget();
 
 private:
     GLBuffer() {}
     GLenum m_target;
+    GLuint m_handle;
 };
 
 #endif

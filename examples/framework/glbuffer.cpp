@@ -53,3 +53,8 @@ void GLBuffer::bind()
 {
     glBindBuffer(m_target, m_handle);
 }
+
+void GLBuffer::unbindTarget()
+{
+    glBindBuffer(m_target, 0);
+}

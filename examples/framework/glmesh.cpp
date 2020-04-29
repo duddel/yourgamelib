@@ -39,8 +39,11 @@ GLMesh *GLMesh::make(std::vector<ArrBufferDescr> arDescrs, ElemArrBufferDescr el
                               arrDes.pointer);
     }
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, newMesh->m_elArDescr.buffer->m_handle);
+    newMesh->m_elArDescr.buffer->bind();
     glBindVertexArray(0);
+
+    // todo: what about unbinding the buffers (ARRAY, ELEMENT_ARRAY)
+    // after creating the VAO?
 
     return newMesh;
 }
@@ -54,4 +57,5 @@ void GLMesh::draw()
 {
     glBindVertexArray(m_vaoHandle);
     glDrawElements(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0);
+    glBindVertexArray(0);
 }
