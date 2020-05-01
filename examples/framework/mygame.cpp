@@ -31,6 +31,7 @@ freely, subject to the following restrictions:
 #include "camera.h"
 #include "glbuffer.h"
 #include "glmesh.h"
+#include "glshader.h"
 
 namespace mygame
 {
@@ -53,13 +54,11 @@ ma_device g_maDevice;
 
 // GL scene
 double g_colorFadingT = 0.0;
-GLuint g_progHandle;
-GLint g_unifLocLight;
-GLint g_unifLocMMat;
 ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
 Trafo g_modelTrafo;
 Camera g_camera;
-GLMesh *g_mesh;
+GLMesh *g_mesh = nullptr;
+GLShader *g_shader = nullptr;
 const GLuint attrLocPosition = 3;
 
 } // namespace
@@ -103,11 +102,13 @@ void draw(const yourgame::context &ctx)
     glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUseProgram(g_progHandle);
-    glUniform1f(g_unifLocLight, colFade);
-    auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
-    glUniformMatrix4fv(g_unifLocMMat, 1, GL_FALSE, glm::value_ptr(mvp));
-
+    if (g_shader)
+    {
+        g_shader->useProgram();
+        glUniform1f(g_shader->getUniformLocation("light"), colFade);
+        auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
+        glUniformMatrix4fv(g_shader->getUniformLocation("mMat"), 1, GL_FALSE, glm::value_ptr(mvp));
+    }
     g_mesh->draw();
 }
 
@@ -189,47 +190,16 @@ void initGlScene()
     std::string vertShader(vertCode.begin(), vertCode.end());
     std::string fragShader(fragCode.begin(), fragCode.end());
 
-    // vertex shader
-    const GLchar *glsrc = vertShader.c_str();
-    GLuint vertHandle = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertHandle, 1, &glsrc, NULL);
-    glCompileShader(vertHandle);
-
-    // fragment shader
-    glsrc = fragShader.c_str();
-    GLuint fragHandle = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragHandle, 1, &glsrc, NULL);
-    glCompileShader(fragHandle);
-
-    // shader program
-    g_progHandle = glCreateProgram();
-    glAttachShader(g_progHandle, vertHandle);
-    glAttachShader(g_progHandle, fragHandle);
-    glBindAttribLocation(g_progHandle, attrLocPosition, "posi");
-#ifndef YOURGAME_GL_API_GLES
-    glBindFragDataLocation(g_progHandle, 0, "color");
-#endif
-    glLinkProgram(g_progHandle);
-
-    GLint linkStatus;
-    glGetProgramiv(g_progHandle, GL_LINK_STATUS, &linkStatus);
-    if (linkStatus == GL_FALSE)
+    std::string shaderErrLog;
+    g_shader = GLShader::make({{vertShader, GL_VERTEX_SHADER},
+                               {fragShader, GL_FRAGMENT_SHADER}},
+                              {{attrLocPosition, "posi"}},
+                              {{0, "color"}},
+                              shaderErrLog);
+    if (!g_shader)
     {
-        GLint infoLen;
-        glGetShaderiv(g_progHandle, GL_INFO_LOG_LENGTH, &infoLen);
-        GLchar *infoLog = new GLchar[infoLen + 1];
-        glGetProgramInfoLog(g_progHandle, infoLen, NULL, infoLog);
-        yourgame::loge("shader program linking failed: %v", infoLog);
-        delete[] infoLog;
+        yourgame::loge("shader: %v", shaderErrLog);
     }
-
-    g_unifLocLight = glGetUniformLocation(g_progHandle, "light");
-    g_unifLocMMat = glGetUniformLocation(g_progHandle, "mMat");
-
-    glDetachShader(g_progHandle, vertHandle);
-    glDetachShader(g_progHandle, fragHandle);
-    glDeleteShader(vertHandle);
-    glDeleteShader(fragHandle);
 }
 
 void initAudio()
