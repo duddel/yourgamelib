@@ -196,7 +196,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"start": 0, "end": 139, "audio": 0, "filename": "/assets/simple.vert"}, {"start": 139, "end": 8697, "audio": 0, "filename": "/assets/LICENSE_web.txt"}, {"start": 8697, "end": 71772, "audio": 0, "filename": "/assets/monkey.obj"}, {"start": 71772, "end": 82561, "audio": 0, "filename": "/assets/LICENSE_desktop.txt"}, {"start": 82561, "end": 87157, "audio": 1, "filename": "/assets/chirp.ogg"}, {"start": 87157, "end": 87299, "audio": 0, "filename": "/assets/simple.es.vert"}, {"start": 87299, "end": 95369, "audio": 0, "filename": "/assets/LICENSE_android.txt"}, {"start": 95369, "end": 95493, "audio": 0, "filename": "/assets/monkey.mtl"}, {"start": 95493, "end": 95637, "audio": 0, "filename": "/assets/simple.es.frag"}, {"start": 95637, "end": 95753, "audio": 0, "filename": "/assets/simple.frag"}], "remote_package_size": 95753, "package_uuid": "4df5141b-b7a7-4ee2-86af-2cc3d83e31b7"});
+   loadPackage({"package_uuid": "7ae469c0-5ee1-40d7-ac88-8d568f798d55", "remote_package_size": 95753, "files": [{"filename": "/assets/simple.vert", "start": 0, "end": 139, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 139, "end": 8697, "audio": 0}, {"filename": "/assets/monkey.obj", "start": 8697, "end": 71772, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 71772, "end": 82561, "audio": 0}, {"filename": "/assets/chirp.ogg", "start": 82561, "end": 87157, "audio": 1}, {"filename": "/assets/simple.es.vert", "start": 87157, "end": 87299, "audio": 0}, {"filename": "/assets/LICENSE_android.txt", "start": 87299, "end": 95369, "audio": 0}, {"filename": "/assets/monkey.mtl", "start": 95369, "end": 95493, "audio": 0}, {"filename": "/assets/simple.es.frag", "start": 95493, "end": 95637, "audio": 0}, {"filename": "/assets/simple.frag", "start": 95637, "end": 95753, "audio": 0}]});
   
   })();
   
@@ -675,6 +675,8 @@ function addFunctionWasm(func, sig) {
   }
 
   // It's not in the table, add it now.
+
+
   var ret;
   // Reuse a free index if there is one, otherwise grow.
   if (freeTableIndexes.length) {
@@ -705,7 +707,7 @@ function addFunctionWasm(func, sig) {
     table.set(ret, wrapped);
   }
 
-  functionsInTableMap[func] = ret;
+  functionsInTableMap.set(func, ret);
 
   return ret;
 }
@@ -1515,11 +1517,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 5423936,
+    STACK_BASE = 5423920,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 181056,
-    DYNAMIC_BASE = 5423936,
-    DYNAMICTOP_PTR = 180896;
+    STACK_MAX = 181040,
+    DYNAMIC_BASE = 5423920,
+    DYNAMICTOP_PTR = 180880;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -2111,7 +2113,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
 
 
 
-// STATICTOP = STATIC_BASE + 180032;
+// STATICTOP = STATIC_BASE + 180016;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4806,7 +4808,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 180896;
+      return 180880;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -4821,6 +4823,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   function abortOnCannotGrowMemory(requestedSize) {
       abort('Cannot enlarge memory arrays to size ' + requestedSize + ' bytes (OOM). Either (1) compile with  -s INITIAL_MEMORY=X  with X higher than the current value ' + HEAP8.length + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
     }function _emscripten_resize_heap(requestedSize) {
+      requestedSize = requestedSize >>> 0;
       abortOnCannotGrowMemory(requestedSize);
     }
 
@@ -6221,12 +6224,21 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
                 case 0x8894: // ARRAY_BUFFER_BINDING
                 case 0x8B8D: // CURRENT_PROGRAM
                 case 0x8895: // ELEMENT_ARRAY_BUFFER_BINDING
-                case 0x8CA6: // FRAMEBUFFER_BINDING
+                case 0x8CA6: // FRAMEBUFFER_BINDING or DRAW_FRAMEBUFFER_BINDING
                 case 0x8CA7: // RENDERBUFFER_BINDING
                 case 0x8069: // TEXTURE_BINDING_2D
                 case 0x85B5: // WebGL 2 GL_VERTEX_ARRAY_BINDING, or WebGL 1 extension OES_vertex_array_object GL_VERTEX_ARRAY_BINDING_OES
-                case 0x8919: // GL_SAMPLER_BINDING
-                case 0x8E25: // GL_TRANSFORM_FEEDBACK_BINDING
+                case 0x8F36: // COPY_READ_BUFFER_BINDING or COPY_READ_BUFFER
+                case 0x8F37: // COPY_WRITE_BUFFER_BINDING or COPY_WRITE_BUFFER
+                case 0x88ED: // PIXEL_PACK_BUFFER_BINDING
+                case 0x88EF: // PIXEL_UNPACK_BUFFER_BINDING
+                case 0x8CAA: // READ_FRAMEBUFFER_BINDING
+                case 0x8919: // SAMPLER_BINDING
+                case 0x8C1D: // TEXTURE_BINDING_2D_ARRAY
+                case 0x806A: // TEXTURE_BINDING_3D
+                case 0x8E25: // TRANSFORM_FEEDBACK_BINDING
+                case 0x8C8F: // TRANSFORM_FEEDBACK_BUFFER_BINDING
+                case 0x8A28: // UNIFORM_BUFFER_BINDING
                 case 0x8514: { // TEXTURE_BINDING_CUBE_MAP
                   ret = 0;
                   break;
@@ -7556,7 +7568,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
     }
 
   
-  var ___tm_timezone=(stringToUTF8("GMT", 180960, 4), 180960);
+  var ___tm_timezone=(stringToUTF8("GMT", 180944, 4), 180944);
   
   function _tzset() {
       // TODO: Use (malleable) environment variables instead of system settings.
@@ -8514,12 +8526,15 @@ if (!Object.getOwnPropertyDescriptor(Module, "UNWIND_CACHE")) Module["UNWIND_CAC
 if (!Object.getOwnPropertyDescriptor(Module, "readAsmConstArgs")) Module["readAsmConstArgs"] = function() { abort("'readAsmConstArgs' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "jstoi_q")) Module["jstoi_q"] = function() { abort("'jstoi_q' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "jstoi_s")) Module["jstoi_s"] = function() { abort("'jstoi_s' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "reallyNegative")) Module["reallyNegative"] = function() { abort("'reallyNegative' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "formatString")) Module["formatString"] = function() { abort("'formatString' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "PATH")) Module["PATH"] = function() { abort("'PATH' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "PATH_FS")) Module["PATH_FS"] = function() { abort("'PATH_FS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "SYSCALLS")) Module["SYSCALLS"] = function() { abort("'SYSCALLS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "syscallMmap2")) Module["syscallMmap2"] = function() { abort("'syscallMmap2' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "syscallMunmap")) Module["syscallMunmap"] = function() { abort("'syscallMunmap' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "JSEvents")) Module["JSEvents"] = function() { abort("'JSEvents' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "specialHTMLTargets")) Module["specialHTMLTargets"] = function() { abort("'specialHTMLTargets' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "demangle")) Module["demangle"] = function() { abort("'demangle' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "demangleAll")) Module["demangleAll"] = function() { abort("'demangleAll' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "jsStackTrace")) Module["jsStackTrace"] = function() { abort("'jsStackTrace' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
