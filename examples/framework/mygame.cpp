@@ -18,7 +18,9 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <cmath>
+#include <array>
 #include <vector>
+#include <map>
 #include "miniaudio.h"
 #include "yourgame/assetfile.h"
 #include "yourgame/yourgame.h"
@@ -59,7 +61,18 @@ Trafo g_modelTrafo;
 Camera g_camera;
 GLMesh *g_mesh = nullptr;
 GLShader *g_shader = nullptr;
-const GLuint attrLocPosition = 3;
+
+// GL(SL) conventions
+const GLuint attrLocPosition = 0;
+const GLuint attrLocNormal = 1;
+const GLuint attrLocTexcoords = 2;
+const GLuint attrLocColor = 3;
+const std::string attrNamePosition = "inPosition";
+const std::string attrNameNormal = "inNormal";
+const std::string attrNameTexcoords = "inTexcoords";
+const std::string attrNameColor = "inColor";
+const GLchar *unifNameMvpMatrix = "mvpMat";
+const GLchar *unifNameModelMatrix = "modelMat";
 
 } // namespace
 
@@ -82,7 +95,7 @@ void init(const yourgame::context &ctx)
 
 void update(const yourgame::context &ctx)
 {
-    g_modelTrafo.rotateLocal(0.03f, Trafo::AXIS::X);
+    g_modelTrafo.rotateLocal(0.01f, Trafo::AXIS::X);
     g_colorFadingT += (1.0 * ctx.deltaTimeS);
 
     if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
@@ -107,7 +120,9 @@ void draw(const yourgame::context &ctx)
         g_shader->useProgram();
         glUniform1f(g_shader->getUniformLocation("light"), colFade);
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
-        glUniformMatrix4fv(g_shader->getUniformLocation("mMat"), 1, GL_FALSE, glm::value_ptr(mvp));
+        auto modelMat = g_modelTrafo.mat();
+        glUniformMatrix4fv(g_shader->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+        glUniformMatrix4fv(g_shader->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
     }
     g_mesh->draw();
 }
@@ -136,8 +151,8 @@ void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_ui
 
 void loadObj()
 {
-    auto objData = yourgame::readAssetFile("monkey.obj");
-    auto mtlData = yourgame::readAssetFile("monkey.mtl");
+    auto objData = yourgame::readAssetFile("sphere.obj");
+    auto mtlData = yourgame::readAssetFile("sphere.mtl");
 
     std::string objStr(objData.begin(), objData.end());
     std::string mtlStr(mtlData.begin(), mtlData.end());
@@ -149,26 +164,54 @@ void loadObj()
     auto shapes = objRdr.GetShapes();
     auto attribs = objRdr.GetAttrib();
 
-    std::vector<GLfloat> objPosData;
-    for (int i = 0; i < attribs.vertices.size(); i++)
-    {
-        objPosData.push_back((GLfloat)attribs.vertices[i]);
-    }
-
     std::vector<GLuint> objIdxData;
+    std::vector<GLfloat> objPosData;
+    std::vector<GLfloat> objNormalData;
+    std::vector<GLfloat> objTexCoordData;
+    std::vector<GLfloat> objColordData;
+
+    // move over shape indices and make vertices unique
+    // todo: check if assumptions below are valid (number of attrib values per vertex)
+    // todo: skip missing attributes
+    std::map<std::array<int, 3>, int> uniqueIdxMap;
+    GLuint uniqueVertCount = 0U;
     for (auto const &idx : shapes[0].mesh.indices)
     {
-        objIdxData.push_back((GLuint)(idx.vertex_index));
+        auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
+        if (mapRet.second) // new unique vertex
+        {
+            objIdxData.push_back(uniqueVertCount);
+            objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3]);
+            objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 1]);
+            objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 2]);
+            objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3]);
+            objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 1]);
+            objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 2]);
+            objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2]);
+            objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2 + 1]);
+            objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3]);
+            objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 1]);
+            objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 2]);
+
+            uniqueVertCount++;
+        }
+        else
+        {
+            objIdxData.push_back((GLuint)(mapRet.first->second));
+        }
     }
 
     // created a GLMesh from parsed object file data
     auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
+    auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
     auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
     GLBuffer *posBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
+    GLBuffer *normBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
     GLBuffer *idxBuf = GLBuffer::make(GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
 
     g_mesh = GLMesh::make(
-        {{posBuf, attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}},
+        {{posBuf, attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+         {normBuf, attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}},
         {idxBuf, GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
 }
 
@@ -193,7 +236,8 @@ void initGlScene()
     std::string shaderErrLog;
     g_shader = GLShader::make({{vertShader, GL_VERTEX_SHADER},
                                {fragShader, GL_FRAGMENT_SHADER}},
-                              {{attrLocPosition, "posi"}},
+                              {{attrLocPosition, attrNamePosition},
+                               {attrLocNormal, attrNameNormal}},
                               {{0, "color"}},
                               shaderErrLog);
     if (!g_shader)

@@ -1,12 +1,15 @@
 #version 300 es
 
-in vec3 posi;
-out vec3 ppos;
-
-uniform mat4 mMat;
+in vec3 inPosition;
+in vec3 inNormal;
+out vec3 vOutPos;
+out vec3 vOutNorm;
+uniform mat4 mvpMat;
+uniform mat4 modelMat;
 
 void main()
 {
-    ppos = posi;
-    gl_Position = mMat * vec4(posi, 1.0);
+    vOutPos = inPosition;
+    vOutNorm = (modelMat * vec4(inNormal, 0.0)).xyz;
+    gl_Position = mvpMat * vec4(inPosition, 1.0);
 }

@@ -1,10 +1,12 @@
 #version 330
 
-in vec3 ppos;
+
+in vec3 vOutPos;
+in vec3 vOutNorm;
 out vec3 color;
 uniform float light;
 
 void main()
 {
-    color = (ppos + 0.5) * light;
+    color = (vOutNorm + 1.0) * 0.5 * light;
 }
