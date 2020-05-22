@@ -34,374 +34,427 @@ freely, subject to the following restrictions:
 #include "glbuffer.h"
 #include "glmesh.h"
 #include "glshader.h"
+#include "gltexture2d.h"
 
 namespace mygame
 {
+    namespace
+    {
+        void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount);
+        void loadObj();
+        void initGlScene();
+        void initAudio();
+        void updateImgui(const yourgame::context &ctx);
 
-namespace
-{
-void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount);
-void loadObj();
-void initGlScene();
-void initAudio();
-void updateImgui(const yourgame::context &ctx);
+        // Audio
+        bool g_playAudio = false;
+        bool g_audioInitialized = false;
+        std::vector<uint8_t> g_audioData;
+        ma_decoder g_maDecoder;
+        ma_device_config g_maDeviceConfig;
+        ma_device g_maDevice;
 
-// Audio
-bool g_playAudio = false;
-bool g_audioInitialized = false;
-std::vector<uint8_t> g_audioData;
-ma_decoder g_maDecoder;
-ma_device_config g_maDeviceConfig;
-ma_device g_maDevice;
+        // GL scene
+        double g_fade = 0.0;
+        ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
+        Trafo g_modelTrafo;
+        Camera g_camera;
+        GLMesh *g_mesh = nullptr;
+        GLShader *g_shader = nullptr;
+        std::map<std::string, GLTexture2D *> g_textures;
 
-// GL scene
-double g_colorFadingT = 0.0;
-ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
-Trafo g_modelTrafo;
-Camera g_camera;
-GLMesh *g_mesh = nullptr;
-GLShader *g_shader = nullptr;
+        // GL(SL) conventions
+        const GLuint attrLocPosition = 0;
+        const GLuint attrLocNormal = 1;
+        const GLuint attrLocTexcoords = 2;
+        const GLuint attrLocColor = 3;
+        const std::string attrNamePosition = "inPosition";
+        const std::string attrNameNormal = "inNormal";
+        const std::string attrNameTexcoords = "inTexcoords";
+        const std::string attrNameColor = "inColor";
+        const GLchar *unifNameMvpMatrix = "mvpMat";
+        const GLchar *unifNameModelMatrix = "modelMat";
+        const GLchar *unifNameTexture0 = "texture0";
+        const GLchar *unifNameTexture1 = "texture1";
 
-// GL(SL) conventions
-const GLuint attrLocPosition = 0;
-const GLuint attrLocNormal = 1;
-const GLuint attrLocTexcoords = 2;
-const GLuint attrLocColor = 3;
-const std::string attrNamePosition = "inPosition";
-const std::string attrNameNormal = "inNormal";
-const std::string attrNameTexcoords = "inTexcoords";
-const std::string attrNameColor = "inColor";
-const GLchar *unifNameMvpMatrix = "mvpMat";
-const GLchar *unifNameModelMatrix = "modelMat";
+    } // namespace
 
-} // namespace
+    void init(const yourgame::context &ctx)
+    {
+        g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
+                                 glm::vec3(0.0f, 0.0f, 0.0f),
+                                 glm::vec3(0.0f, 1.0f, 0.0f));
+        g_camera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 10.0f);
+        g_modelTrafo.rotateGlobal(0.5f, Trafo::AXIS::Z);
 
-void init(const yourgame::context &ctx)
-{
-    g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
-                             glm::vec3(0.0f, 0.0f, 0.0f),
-                             glm::vec3(0.0f, 1.0f, 0.0f));
-    g_camera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 10.0f);
-    g_modelTrafo.rotateGlobal(0.5f, Trafo::AXIS::Z);
-
-    initGlScene();
+        initGlScene();
 
 #ifdef YOURGAME_PLATFORM_ANDROID
-    // arbitrary scale-up on android,
-    // todo: DPI awareness
-    ImGui::GetStyle().ScaleAllSizes(5.0f);
+        // arbitrary scale-up on android,
+        // todo: DPI awareness
+        ImGui::GetStyle().ScaleAllSizes(5.0f);
 #endif
-}
-
-void update(const yourgame::context &ctx)
-{
-    g_modelTrafo.rotateLocal(0.01f, Trafo::AXIS::X);
-    g_colorFadingT += (1.0 * ctx.deltaTimeS);
-
-    if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
-    {
-        yourgame::notifyShutdown();
     }
 
-    updateImgui(ctx);
-}
-
-void draw(const yourgame::context &ctx)
-{
-    g_camera.setAspect(ctx.winAspectRatio);
-    glViewport(0, 0, ctx.winWidth, ctx.winHeight);
-
-    float colFade = (float)((sin(g_colorFadingT) * 0.5) + 0.5);
-    glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    if (g_shader)
+    void update(const yourgame::context &ctx)
     {
-        g_shader->useProgram();
-        glUniform1f(g_shader->getUniformLocation("light"), colFade);
-        auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
-        auto modelMat = g_modelTrafo.mat();
-        glUniformMatrix4fv(g_shader->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-        glUniformMatrix4fv(g_shader->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-    }
-    g_mesh->draw();
-}
+        g_modelTrafo.rotateLocal(0.01f, Trafo::AXIS::X);
+        g_fade += (3.0 * ctx.deltaTimeS);
 
-void shutdown(const yourgame::context &ctx)
-{
-    ma_device_uninit(&g_maDevice);
-    ma_decoder_uninit(&g_maDecoder);
-    g_audioInitialized = false;
-}
-
-namespace
-{
-void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount)
-{
-    if (!g_playAudio)
-    {
-        return;
-    }
-
-    if (ma_decoder_read_pcm_frames(&g_maDecoder, pOutput, frameCount) < frameCount)
-    {
-        g_playAudio = false;
-    }
-}
-
-void loadObj()
-{
-    auto objData = yourgame::readAssetFile("sphere.obj");
-    auto mtlData = yourgame::readAssetFile("sphere.mtl");
-
-    std::string objStr(objData.begin(), objData.end());
-    std::string mtlStr(mtlData.begin(), mtlData.end());
-
-    tinyobj::ObjReader objRdr;
-    tinyobj::ObjReaderConfig objRdrCfg;
-    objRdr.ParseFromString(objStr, mtlStr, objRdrCfg);
-
-    auto shapes = objRdr.GetShapes();
-    auto attribs = objRdr.GetAttrib();
-
-    std::vector<GLuint> objIdxData;
-    std::vector<GLfloat> objPosData;
-    std::vector<GLfloat> objNormalData;
-    std::vector<GLfloat> objTexCoordData;
-    std::vector<GLfloat> objColordData;
-
-    // move over shape indices and make vertices unique
-    // todo: check if assumptions below are valid (number of attrib values per vertex)
-    // todo: skip missing attributes
-    std::map<std::array<int, 3>, int> uniqueIdxMap;
-    GLuint uniqueVertCount = 0U;
-    for (auto const &idx : shapes[0].mesh.indices)
-    {
-        auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
-        if (mapRet.second) // new unique vertex
+        if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
         {
-            objIdxData.push_back(uniqueVertCount);
-            objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3]);
-            objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 1]);
-            objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 2]);
-            objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3]);
-            objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 1]);
-            objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 2]);
-            objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2]);
-            objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2 + 1]);
-            objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3]);
-            objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 1]);
-            objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 2]);
+            yourgame::notifyShutdown();
+        }
 
-            uniqueVertCount++;
-        }
-        else
-        {
-            objIdxData.push_back((GLuint)(mapRet.first->second));
-        }
+        updateImgui(ctx);
     }
 
-    // created a GLMesh from parsed object file data
-    auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
-    auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
-    auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
-    GLBuffer *posBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
-    GLBuffer *normBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-    GLBuffer *idxBuf = GLBuffer::make(GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+    void draw(const yourgame::context &ctx)
+    {
+        g_camera.setAspect(ctx.winAspectRatio);
+        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
 
-    g_mesh = GLMesh::make(
-        {{posBuf, attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-         {normBuf, attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}},
-        {idxBuf, GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
-}
+        float sineFade = (float)((sin(g_fade) * 0.5) + 0.5);
+        glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-void initGlScene()
-{
-    loadObj();
+        if (g_shader)
+        {
+            g_shader->useProgram();
+            glUniform1f(g_shader->getUniformLocation("fade"), sineFade);
+            auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
+            auto modelMat = g_modelTrafo.mat();
+            glUniformMatrix4fv(g_shader->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            glUniformMatrix4fv(g_shader->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+        }
+        g_textures.at("gradient1.png")->bind();
+        g_textures.at("gradient2.jpg")->bind();
+        g_mesh->draw();
+        g_textures.at("gradient1.png")->unbindTarget();
+        g_textures.at("gradient2.jpg")->unbindTarget();
+    }
 
-    glEnable(GL_DEPTH_TEST);
+    void shutdown(const yourgame::context &ctx)
+    {
+        ma_device_uninit(&g_maDevice);
+        ma_decoder_uninit(&g_maDecoder);
+        g_audioInitialized = false;
+    }
 
-    // shaders
+    namespace
+    {
+        void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount)
+        {
+            if (!g_playAudio)
+            {
+                return;
+            }
+
+            if (ma_decoder_read_pcm_frames(&g_maDecoder, pOutput, frameCount) < frameCount)
+            {
+                g_playAudio = false;
+            }
+        }
+
+        void loadObj()
+        {
+            auto objData = yourgame::readAssetFile("sphere.obj");
+            auto mtlData = yourgame::readAssetFile("sphere.mtl");
+
+            std::string objStr(objData.begin(), objData.end());
+            std::string mtlStr(mtlData.begin(), mtlData.end());
+
+            tinyobj::ObjReader objRdr;
+            tinyobj::ObjReaderConfig objRdrCfg;
+            objRdr.ParseFromString(objStr, mtlStr, objRdrCfg);
+
+            auto shapes = objRdr.GetShapes();
+            auto attribs = objRdr.GetAttrib();
+
+            std::vector<GLuint> objIdxData;
+            std::vector<GLfloat> objPosData;
+            std::vector<GLfloat> objNormalData;
+            std::vector<GLfloat> objTexCoordData;
+            std::vector<GLfloat> objColordData;
+
+            // move over shape indices and make vertices unique
+            // todo: check if assumptions below are valid (number of attrib values per vertex)
+            // todo: skip missing attributes
+            std::map<std::array<int, 3>, int> uniqueIdxMap;
+            GLuint uniqueVertCount = 0U;
+            for (auto const &idx : shapes[0].mesh.indices)
+            {
+                auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
+                if (mapRet.second) // new unique vertex
+                {
+                    objIdxData.push_back(uniqueVertCount);
+                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3]);
+                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 1]);
+                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 2]);
+                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3]);
+                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 1]);
+                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 2]);
+                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2]);
+                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2 + 1]);
+                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3]);
+                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 1]);
+                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 2]);
+
+                    uniqueVertCount++;
+                }
+                else
+                {
+                    objIdxData.push_back((GLuint)(mapRet.first->second));
+                }
+            }
+
+            // created a GLMesh from parsed object file data
+            auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
+            auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
+            auto vertTexcoordsSize = objTexCoordData.size() * sizeof(objTexCoordData[0]);
+            auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
+            GLBuffer *posBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
+            GLBuffer *normBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
+            GLBuffer *texcoordsBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
+            GLBuffer *idxBuf = GLBuffer::make(GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+
+            g_mesh = GLMesh::make(
+                {{posBuf, attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+                 {normBuf, attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+                 {texcoordsBuf, attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0}},
+                {idxBuf, GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
+        }
+
+        void loadTexture(const char *filename, GLenum unit)
+        {
+            int width;
+            int height;
+            int numChannels;
+
+            auto imgData = yourgame::readAssetFile(filename);
+            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
+            if (img)
+            {
+                yourgame::logd("loaded %v: %vx%vx%v", filename, width, height, numChannels);
+                GLTexture2D *texture = GLTexture2D::make(0,
+                                                         GL_RGBA8,
+                                                         width,
+                                                         height,
+                                                         0,
+                                                         GL_RGBA,
+                                                         GL_UNSIGNED_BYTE,
+                                                         img,
+                                                         unit,
+                                                         {{GL_TEXTURE_WRAP_S, GL_REPEAT},
+                                                          {GL_TEXTURE_WRAP_T, GL_REPEAT},
+                                                          {GL_TEXTURE_MIN_FILTER, GL_LINEAR},
+                                                          {GL_TEXTURE_MAG_FILTER, GL_LINEAR}},
+                                                         false);
+                if (texture)
+                {
+                    g_textures.emplace(std::string(filename), texture);
+                }
+                stbi_image_free(img);
+            }
+            else
+            {
+                yourgame::logw("image %v failed to load", filename);
+            }
+        }
+
+        void initGlScene()
+        {
+            loadObj();
+            loadTexture("gradient1.png", GL_TEXTURE0);
+            loadTexture("gradient2.jpg", GL_TEXTURE1);
+
+            glEnable(GL_DEPTH_TEST);
+
+            // shaders
 #ifdef YOURGAME_GL_API_GLES
-    auto vertCode = yourgame::readAssetFile("simple.es.vert");
-    auto fragCode = yourgame::readAssetFile("simple.es.frag");
+            auto vertCode = yourgame::readAssetFile("simple.es.vert");
+            auto fragCode = yourgame::readAssetFile("simple.es.frag");
 #else
-    auto vertCode = yourgame::readAssetFile("simple.vert");
-    auto fragCode = yourgame::readAssetFile("simple.frag");
+            auto vertCode = yourgame::readAssetFile("simple.vert");
+            auto fragCode = yourgame::readAssetFile("simple.frag");
 #endif
 
-    std::string vertShader(vertCode.begin(), vertCode.end());
-    std::string fragShader(fragCode.begin(), fragCode.end());
+            std::string vertShader(vertCode.begin(), vertCode.end());
+            std::string fragShader(fragCode.begin(), fragCode.end());
 
-    std::string shaderErrLog;
-    g_shader = GLShader::make({{vertShader, GL_VERTEX_SHADER},
-                               {fragShader, GL_FRAGMENT_SHADER}},
-                              {{attrLocPosition, attrNamePosition},
-                               {attrLocNormal, attrNameNormal}},
-                              {{0, "color"}},
-                              shaderErrLog);
-    if (!g_shader)
-    {
-        yourgame::loge("shader: %v", shaderErrLog);
-    }
-}
-
-void initAudio()
-{
-    g_audioData = yourgame::readAssetFile("chirp.ogg");
-
-    if (ma_decoder_init_memory_vorbis(&g_audioData[0], g_audioData.size(), NULL, &g_maDecoder) != MA_SUCCESS)
-    {
-        yourgame::loge("ma_decoder_init_memory_vorbis() failed");
-    }
-
-    g_maDeviceConfig = ma_device_config_init(ma_device_type_playback);
-    g_maDeviceConfig.playback.format = g_maDecoder.outputFormat;
-    g_maDeviceConfig.playback.channels = g_maDecoder.outputChannels;
-    g_maDeviceConfig.sampleRate = g_maDecoder.outputSampleRate;
-    g_maDeviceConfig.dataCallback = maDataCallback;
-    g_maDeviceConfig.pUserData = NULL;
-
-    if (ma_device_init(NULL, &g_maDeviceConfig, &g_maDevice) != MA_SUCCESS)
-    {
-        yourgame::loge("ma_device_init() failed");
-    }
-
-    if (ma_device_start(&g_maDevice) != MA_SUCCESS)
-    {
-        yourgame::loge("ma_device_start() failed");
-    }
-
-    g_audioInitialized = true;
-}
-
-void updateImgui(const yourgame::context &ctx)
-{
-    static bool showDemoAudio = false;
-    static bool showDemoGl = true;
-    static bool showLicense = false;
-    static bool showImguiDemo = false;
-
-    // Main Menu Bar
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            if (ImGui::MenuItem("Exit"))
+            std::string shaderErrLog;
+            g_shader = GLShader::make({{vertShader, GL_VERTEX_SHADER},
+                                       {fragShader, GL_FRAGMENT_SHADER}},
+                                      {{attrLocPosition, attrNamePosition},
+                                       {attrLocNormal, attrNameNormal},
+                                       {attrLocTexcoords, attrNameTexcoords}},
+                                      {{0, "color"}},
+                                      shaderErrLog);
+            if (!g_shader)
             {
-                yourgame::notifyShutdown();
+                yourgame::loge("shader: %v", shaderErrLog);
             }
-            ImGui::EndMenu();
+
+            g_shader->useProgram();
+            glUniform1i(g_shader->getUniformLocation(unifNameTexture0), 0);
+            glUniform1i(g_shader->getUniformLocation(unifNameTexture1), 1);
         }
-        if (ImGui::BeginMenu("Demo"))
+
+        void initAudio()
         {
-            if (ImGui::MenuItem("GL", "", &showDemoGl))
+            g_audioData = yourgame::readAssetFile("chirp.ogg");
+
+            if (ma_decoder_init_memory_vorbis(&g_audioData[0], g_audioData.size(), NULL, &g_maDecoder) != MA_SUCCESS)
             {
-                showDemoGl = true;
+                yourgame::loge("ma_decoder_init_memory_vorbis() failed");
             }
-            if (ImGui::MenuItem("Audio", "", &showDemoAudio))
+
+            g_maDeviceConfig = ma_device_config_init(ma_device_type_playback);
+            g_maDeviceConfig.playback.format = g_maDecoder.outputFormat;
+            g_maDeviceConfig.playback.channels = g_maDecoder.outputChannels;
+            g_maDeviceConfig.sampleRate = g_maDecoder.outputSampleRate;
+            g_maDeviceConfig.dataCallback = maDataCallback;
+            g_maDeviceConfig.pUserData = NULL;
+
+            if (ma_device_init(NULL, &g_maDeviceConfig, &g_maDevice) != MA_SUCCESS)
             {
-                showDemoAudio = true;
+                yourgame::loge("ma_device_init() failed");
             }
-            if (ImGui::MenuItem("Imgui", "", &showImguiDemo))
+
+            if (ma_device_start(&g_maDevice) != MA_SUCCESS)
             {
-                showImguiDemo = true;
+                yourgame::loge("ma_device_start() failed");
             }
-            ImGui::EndMenu();
+
+            g_audioInitialized = true;
         }
-        if (ImGui::BeginMenu("Help"))
+
+        void updateImgui(const yourgame::context &ctx)
         {
-            if (ImGui::MenuItem("License"))
+            static bool showDemoAudio = false;
+            static bool showDemoGl = true;
+            static bool showLicense = false;
+            static bool showImguiDemo = false;
+
+            // Main Menu Bar
+            if (ImGui::BeginMainMenuBar())
             {
-                showLicense = true;
+                if (ImGui::BeginMenu("File"))
+                {
+                    if (ImGui::MenuItem("Exit"))
+                    {
+                        yourgame::notifyShutdown();
+                    }
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Demo"))
+                {
+                    if (ImGui::MenuItem("GL", "", &showDemoGl))
+                    {
+                        showDemoGl = true;
+                    }
+                    if (ImGui::MenuItem("Audio", "", &showDemoAudio))
+                    {
+                        showDemoAudio = true;
+                    }
+                    if (ImGui::MenuItem("Imgui", "", &showImguiDemo))
+                    {
+                        showImguiDemo = true;
+                    }
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Help"))
+                {
+                    if (ImGui::MenuItem("License"))
+                    {
+                        showLicense = true;
+                    }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMainMenuBar();
             }
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
 
-    if (showImguiDemo)
-    {
-        ImGui::ShowDemoWindow(&showImguiDemo);
-    }
+            if (showImguiDemo)
+            {
+                ImGui::ShowDemoWindow(&showImguiDemo);
+            }
 
-    // GL demo window
-    if (showDemoGl)
-    {
-        ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-        ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
+            // GL demo window
+            if (showDemoGl)
+            {
+                ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
 
-        // camera manipulation
-        static int projMode = 0;
-        ImGui::RadioButton("perspective", &projMode, 0);
-        ImGui::SameLine();
-        ImGui::RadioButton("orthographic", &projMode, 1);
+                // camera manipulation
+                static int projMode = 0;
+                ImGui::RadioButton("perspective", &projMode, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("orthographic", &projMode, 1);
 
-        if (projMode == 0)
-        {
-            static float f1 = 75.0f;
-            static float f2 = 0.1f;
-            static float f3 = 10.0f;
-            ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
-            ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
-            g_camera.setPerspective(f1, ctx.winAspectRatio, f2, f3);
-        }
-        else
-        {
-            static float f1 = 5.0f;
-            static float f2 = 0.0f;
-            static float f3 = 10.0f;
-            ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
-            ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
-            g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
-        }
+                if (projMode == 0)
+                {
+                    static float f1 = 75.0f;
+                    static float f2 = 0.1f;
+                    static float f3 = 10.0f;
+                    ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
+                    ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
+                    g_camera.setPerspective(f1, ctx.winAspectRatio, f2, f3);
+                }
+                else
+                {
+                    static float f1 = 5.0f;
+                    static float f2 = 0.0f;
+                    static float f3 = 10.0f;
+                    ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
+                    ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
+                    g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
+                }
 
-        ImGui::End();
-    }
+                ImGui::End();
+            }
 
-    // Audio demo window
-    if (showDemoAudio)
-    {
-        if (!g_audioInitialized)
-        {
-            initAudio();
-        }
+            // Audio demo window
+            if (showDemoAudio)
+            {
+                if (!g_audioInitialized)
+                {
+                    initAudio();
+                }
 
-        ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse));
-        if (ImGui::Button("Play"))
-        {
-            ma_decoder_seek_to_pcm_frame(&g_maDecoder, 0); // "rewind" and start playback
-            g_playAudio = true;
-        }
-        ImGui::End();
-    }
+                ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse));
+                if (ImGui::Button("Play"))
+                {
+                    ma_decoder_seek_to_pcm_frame(&g_maDecoder, 0); // "rewind" and start playback
+                    g_playAudio = true;
+                }
+                ImGui::End();
+            }
 
-    if (showLicense)
-    {
+            if (showLicense)
+            {
 #if defined(YOURGAME_PLATFORM_DESKTOP)
-        static const char licFilename[] = "LICENSE_desktop.txt";
+                static const char licFilename[] = "LICENSE_desktop.txt";
 #elif defined(YOURGAME_PLATFORM_ANDROID)
-        static const char licFilename[] = "LICENSE_android.txt";
+                static const char licFilename[] = "LICENSE_android.txt";
 #elif defined(YOURGAME_PLATFORM_WEB)
-        static const char licFilename[] = "LICENSE_web.txt";
+                static const char licFilename[] = "LICENSE_web.txt";
 #endif
 
-        auto licFileData = yourgame::readAssetFile(licFilename);
-        std::string licStr(licFileData.begin(), licFileData.end());
-        ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
-                                                   (float)(ctx.winHeight) * 0.5f),
-                                            ImVec2((float)(ctx.winWidth),
-                                                   (float)(ctx.winHeight)));
-        ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
-        /* The following procedure allows displaying long wrapped text,
-        whereas ImGui::TextWrapped() has a size limit and cuts the content. */
-        ImGui::PushTextWrapPos(0.0f);
-        ImGui::TextUnformatted(licStr.c_str());
-        ImGui::PopTextWrapPos();
-        ImGui::End();
-    }
-}
+                auto licFileData = yourgame::readAssetFile(licFilename);
+                std::string licStr(licFileData.begin(), licFileData.end());
+                ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
+                                                           (float)(ctx.winHeight) * 0.5f),
+                                                    ImVec2((float)(ctx.winWidth),
+                                                           (float)(ctx.winHeight)));
+                ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
+                /* The following procedure allows displaying long wrapped text,
+whereas ImGui::TextWrapped() has a size limit and cuts the content. */
+                ImGui::PushTextWrapPos(0.0f);
+                ImGui::TextUnformatted(licStr.c_str());
+                ImGui::PopTextWrapPos();
+                ImGui::End();
+            }
+        }
 
-} // namespace
-
+    } // namespace
 } // namespace mygame
