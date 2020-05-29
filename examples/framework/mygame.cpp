@@ -64,6 +64,8 @@ namespace mygame
         Camera g_camera;
         GLGeometry *g_geo = nullptr;
         GLShader *g_shaderTexture = nullptr;
+        GLShader *g_shaderNormal = nullptr;
+        int g_shaderToUse = 1; // 0: texture, 1: normal
         std::map<std::string, GLTexture2D *> g_textures;
 
         // GL(SL) conventions
@@ -121,20 +123,36 @@ namespace mygame
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if (g_shaderTexture)
+        // prepare draw call based on selected shader
+        if (g_shaderToUse == 1)
         {
-            g_shaderTexture->useProgram();
-            glUniform1f(g_shaderTexture->getUniformLocation("fade"), sineFade);
-            auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
-            auto modelMat = g_modelTrafo.mat();
-            glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+            if (g_shaderNormal)
+            {
+                g_shaderNormal->useProgram();
+                glUniform1f(g_shaderNormal->getUniformLocation("fade"), sineFade);
+                auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
+                auto modelMat = g_modelTrafo.mat();
+                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+            }
         }
-        g_textures.at("gradient1.png")->bind();
-        g_textures.at("gradient2.jpg")->bind();
+        else if (g_shaderToUse == 0)
+        {
+            if (g_shaderTexture)
+            {
+                g_shaderTexture->useProgram();
+                glUniform1f(g_shaderTexture->getUniformLocation("fade"), sineFade);
+                auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
+                auto modelMat = g_modelTrafo.mat();
+                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+            }
+            g_textures.at("gradient1.png")->bind();
+            g_textures.at("gradient2.jpg")->bind();
+        }
+
+        // the actual draw call
         g_geo->drawAll();
-        g_textures.at("gradient1.png")->unbindTarget();
-        g_textures.at("gradient2.jpg")->unbindTarget();
     }
 
     void shutdown(const yourgame::context &ctx)
@@ -241,6 +259,7 @@ namespace mygame
 
             glEnable(GL_DEPTH_TEST);
 
+            // Texture shader
             g_shaderTexture = loadShader(
 #ifdef YOURGAME_GL_API_GLES
                 {{GL_VERTEX_SHADER, "simple.es.vert"},
@@ -257,6 +276,20 @@ namespace mygame
             g_shaderTexture->useProgram();
             glUniform1i(g_shaderTexture->getUniformLocation(unifNameTexture0), 0);
             glUniform1i(g_shaderTexture->getUniformLocation(unifNameTexture1), 1);
+
+            // Normal shader
+            g_shaderNormal = loadShader(
+#ifdef YOURGAME_GL_API_GLES
+                {{GL_VERTEX_SHADER, "simple.es.vert"},
+                 {GL_FRAGMENT_SHADER, "normal.es.frag"}},
+#else
+                {{GL_VERTEX_SHADER, "simple.vert"},
+                 {GL_FRAGMENT_SHADER, "normal.frag"}},
+#endif
+                {{attrLocPosition, attrNamePosition},
+                 {attrLocNormal, attrNameNormal},
+                 {attrLocTexcoords, attrNameTexcoords}},
+                {{0, "color"}});
         }
 
         void initAudio()
@@ -343,6 +376,11 @@ namespace mygame
             {
                 ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
                 ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
+
+                // shader selector
+                ImGui::RadioButton("texture shader", &g_shaderToUse, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("normal shader", &g_shaderToUse, 1);
 
                 // camera manipulation
                 static int projMode = 0;
