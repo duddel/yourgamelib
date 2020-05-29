@@ -17,34 +17,49 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLSHADER_H
-#define GLSHADER_H
+#ifndef GLSHAPE_H
+#define GLSHAPE_H
 
-#include <string>
 #include <vector>
-#include <map>
 #include "yourgame/gl_include.h"
+#include "glbuffer.h"
 
-class GLShader
+class GLShape
 {
 public:
-    static GLShader *make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                          std::vector<std::pair<GLuint, std::string>> attrLocs,
-                          std::vector<std::pair<GLuint, std::string>> fragDataLocs,
-                          std::string &errorLog);
-    ~GLShader();
-    void useProgram();
-    GLint getUniformLocation(const GLchar *name);
+    struct ArrBufferDescr
+    {
+        GLuint index;
+        GLint size;
+        GLenum type;
+        GLboolean normalized;
+        GLsizei stride;
+        const GLvoid *pointer;
+    };
+
+    struct ElemArrBufferDescr
+    {
+        GLenum type;
+        GLenum drawMode;
+        GLsizei numElements;
+    };
+
+    static GLShape *make(std::vector<ArrBufferDescr> arDescrs,
+                         std::vector<GLBuffer *> arBuffers,
+                         ElemArrBufferDescr elArDescr,
+                         GLBuffer *elArBuffer);
+    ~GLShape();
+    void draw();
 
     /* deleting the copy constructor and the copy assignment operator
     prevents copying (and moving) of the object. */
-    GLShader(GLShader const &) = delete;
-    GLShader &operator=(GLShader const &) = delete;
+    GLShape(GLShape const &) = delete;
+    GLShape &operator=(GLShape const &) = delete;
 
 private:
-    GLShader() {}
-    GLuint m_programHandle;
-    std::map<std::string, GLint> m_uniformLocations;
+    GLShape() {}
+    ElemArrBufferDescr m_elArDescr;
+    GLuint m_vaoHandle;
 };
 
 #endif

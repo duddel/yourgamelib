@@ -30,6 +30,11 @@ public:
     void bind();
     void unbindTarget();
 
+    /* deleting the copy constructor and the copy assignment operator
+    prevents copying (and moving) of the object. */
+    GLBuffer(GLBuffer const &) = delete;
+    GLBuffer &operator=(GLBuffer const &) = delete;
+
 private:
     GLBuffer() {}
     GLenum m_target;

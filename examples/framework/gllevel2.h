@@ -17,34 +17,20 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLSHADER_H
-#define GLSHADER_H
+#ifndef GLLEVEL2_H
+#define GLLEVEL2_H
 
-#include <string>
-#include <vector>
-#include <map>
 #include "yourgame/gl_include.h"
+#include "gltexture2d.h"
+#include "glshader.h"
 
-class GLShader
+namespace mygame
 {
-public:
-    static GLShader *make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                          std::vector<std::pair<GLuint, std::string>> attrLocs,
-                          std::vector<std::pair<GLuint, std::string>> fragDataLocs,
-                          std::string &errorLog);
-    ~GLShader();
-    void useProgram();
-    GLint getUniformLocation(const GLchar *name);
+    GLTexture2D *loadTexture(const char *filename, GLenum unit);
 
-    /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
-    GLShader(GLShader const &) = delete;
-    GLShader &operator=(GLShader const &) = delete;
-
-private:
-    GLShader() {}
-    GLuint m_programHandle;
-    std::map<std::string, GLint> m_uniformLocations;
-};
+    GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
+                         std::vector<std::pair<GLuint, std::string>> attrLocs,
+                         std::vector<std::pair<GLuint, std::string>> fragDataLocs);
+} // namespace mygame
 
 #endif

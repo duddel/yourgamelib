@@ -32,9 +32,12 @@ freely, subject to the following restrictions:
 #include "trafo.h"
 #include "camera.h"
 #include "glbuffer.h"
-#include "glmesh.h"
+#include "glshape.h"
 #include "glshader.h"
 #include "gltexture2d.h"
+
+#include "glgeometry.h"
+#include "gllevel2.h"
 
 namespace mygame
 {
@@ -59,8 +62,8 @@ namespace mygame
         ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
         Trafo g_modelTrafo;
         Camera g_camera;
-        GLMesh *g_mesh = nullptr;
-        GLShader *g_shader = nullptr;
+        GLGeometry *g_geo = nullptr;
+        GLShader *g_shaderTexture = nullptr;
         std::map<std::string, GLTexture2D *> g_textures;
 
         // GL(SL) conventions
@@ -118,18 +121,18 @@ namespace mygame
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if (g_shader)
+        if (g_shaderTexture)
         {
-            g_shader->useProgram();
-            glUniform1f(g_shader->getUniformLocation("fade"), sineFade);
+            g_shaderTexture->useProgram();
+            glUniform1f(g_shaderTexture->getUniformLocation("fade"), sineFade);
             auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
             auto modelMat = g_modelTrafo.mat();
-            glUniformMatrix4fv(g_shader->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            glUniformMatrix4fv(g_shader->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+            glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
         }
         g_textures.at("gradient1.png")->bind();
         g_textures.at("gradient2.jpg")->bind();
-        g_mesh->draw();
+        g_geo->drawAll();
         g_textures.at("gradient1.png")->unbindTarget();
         g_textures.at("gradient2.jpg")->unbindTarget();
     }
@@ -208,96 +211,52 @@ namespace mygame
                 }
             }
 
-            // created a GLMesh from parsed object file data
+            // created Geometry object from parsed obj data
             auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
             auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
             auto vertTexcoordsSize = objTexCoordData.size() * sizeof(objTexCoordData[0]);
             auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
-            GLBuffer *posBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
-            GLBuffer *normBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-            GLBuffer *texcoordsBuf = GLBuffer::make(GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
-            GLBuffer *idxBuf = GLBuffer::make(GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
 
-            g_mesh = GLMesh::make(
-                {{posBuf, attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                 {normBuf, attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                 {texcoordsBuf, attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0}},
-                {idxBuf, GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
-        }
+            g_geo = GLGeometry::make();
+            g_geo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
+            g_geo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
+            g_geo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
+            g_geo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
 
-        void loadTexture(const char *filename, GLenum unit)
-        {
-            int width;
-            int height;
-            int numChannels;
-
-            auto imgData = yourgame::readAssetFile(filename);
-            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
-            if (img)
-            {
-                yourgame::logd("loaded %v: %vx%vx%v", filename, width, height, numChannels);
-                GLTexture2D *texture = GLTexture2D::make(0,
-                                                         GL_RGBA8,
-                                                         width,
-                                                         height,
-                                                         0,
-                                                         GL_RGBA,
-                                                         GL_UNSIGNED_BYTE,
-                                                         img,
-                                                         unit,
-                                                         {{GL_TEXTURE_WRAP_S, GL_REPEAT},
-                                                          {GL_TEXTURE_WRAP_T, GL_REPEAT},
-                                                          {GL_TEXTURE_MIN_FILTER, GL_LINEAR},
-                                                          {GL_TEXTURE_MAG_FILTER, GL_LINEAR}},
-                                                         false);
-                if (texture)
-                {
-                    g_textures.emplace(std::string(filename), texture);
-                }
-                stbi_image_free(img);
-            }
-            else
-            {
-                yourgame::logw("image %v failed to load", filename);
-            }
+            g_geo->addShape("main",
+                            {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+                             {attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+                             {attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0}},
+                            {"pos", "norm", "texcoords"},
+                            {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()},
+                            "idx");
         }
 
         void initGlScene()
         {
             loadObj();
-            loadTexture("gradient1.png", GL_TEXTURE0);
-            loadTexture("gradient2.jpg", GL_TEXTURE1);
+
+            g_textures.emplace("gradient1.png", loadTexture("gradient1.png", GL_TEXTURE0));
+            g_textures.emplace("gradient2.jpg", loadTexture("gradient2.jpg", GL_TEXTURE1));
 
             glEnable(GL_DEPTH_TEST);
 
-            // shaders
+            g_shaderTexture = loadShader(
 #ifdef YOURGAME_GL_API_GLES
-            auto vertCode = yourgame::readAssetFile("simple.es.vert");
-            auto fragCode = yourgame::readAssetFile("simple.es.frag");
+                {{GL_VERTEX_SHADER, "simple.es.vert"},
+                 {GL_FRAGMENT_SHADER, "simple.es.frag"}},
 #else
-            auto vertCode = yourgame::readAssetFile("simple.vert");
-            auto fragCode = yourgame::readAssetFile("simple.frag");
+                {{GL_VERTEX_SHADER, "simple.vert"},
+                 {GL_FRAGMENT_SHADER, "simple.frag"}},
 #endif
+                {{attrLocPosition, attrNamePosition},
+                 {attrLocNormal, attrNameNormal},
+                 {attrLocTexcoords, attrNameTexcoords}},
+                {{0, "color"}});
 
-            std::string vertShader(vertCode.begin(), vertCode.end());
-            std::string fragShader(fragCode.begin(), fragCode.end());
-
-            std::string shaderErrLog;
-            g_shader = GLShader::make({{vertShader, GL_VERTEX_SHADER},
-                                       {fragShader, GL_FRAGMENT_SHADER}},
-                                      {{attrLocPosition, attrNamePosition},
-                                       {attrLocNormal, attrNameNormal},
-                                       {attrLocTexcoords, attrNameTexcoords}},
-                                      {{0, "color"}},
-                                      shaderErrLog);
-            if (!g_shader)
-            {
-                yourgame::loge("shader: %v", shaderErrLog);
-            }
-
-            g_shader->useProgram();
-            glUniform1i(g_shader->getUniformLocation(unifNameTexture0), 0);
-            glUniform1i(g_shader->getUniformLocation(unifNameTexture1), 1);
+            g_shaderTexture->useProgram();
+            glUniform1i(g_shaderTexture->getUniformLocation(unifNameTexture0), 0);
+            glUniform1i(g_shaderTexture->getUniformLocation(unifNameTexture1), 1);
         }
 
         void initAudio()

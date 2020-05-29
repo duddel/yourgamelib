@@ -17,43 +17,38 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLMESH_H
-#define GLMESH_H
+#ifndef GLGEOMETRY_H
+#define GLGEOMETRY_H
 
+#include <string>
+#include <map>
 #include <vector>
 #include "yourgame/gl_include.h"
 #include "glbuffer.h"
+#include "glshape.h"
 
-class GLMesh
+class GLGeometry
 {
 public:
-    struct ArrBufferDescr
-    {
-        GLBuffer *buffer;
-        GLuint index;
-        GLint size;
-        GLenum type;
-        GLboolean normalized;
-        GLsizei stride;
-        const GLvoid *pointer;
-    };
+    static GLGeometry *make();
+    ~GLGeometry();
+    bool addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
+    bool addShape(std::string name,
+                  std::vector<GLShape::ArrBufferDescr> arDescrs,
+                  std::vector<std::string> arBufferNames,
+                  GLShape::ElemArrBufferDescr elArDescr,
+                  std::string elArBufferName);
+    void drawAll();
 
-    struct ElemArrBufferDescr
-    {
-        GLBuffer *buffer;
-        GLenum type;
-        GLenum drawMode;
-        GLsizei numElements;
-    };
-
-    static GLMesh *make(std::vector<ArrBufferDescr> arDescrs, ElemArrBufferDescr elArDescr);
-    ~GLMesh();
-    void draw();
+    /* deleting the copy constructor and the copy assignment operator
+    prevents copying (and moving) of the object. */
+    GLGeometry(GLGeometry const &) = delete;
+    GLGeometry &operator=(GLGeometry const &) = delete;
 
 private:
-    GLMesh() {}
-    ElemArrBufferDescr m_elArDescr;
-    GLuint m_vaoHandle;
+    GLGeometry() {}
+    std::map<std::string, GLBuffer *> m_buffers;
+    std::map<std::string, GLShape *> m_shapes;
 };
 
 #endif

@@ -23,44 +23,43 @@ freely, subject to the following restrictions:
 
 namespace
 {
-
-int compileShader(GLenum type, const GLchar *source, GLuint *handle, std::string &errorLog)
-{
-    const GLchar *glsrc = source;
-    *handle = glCreateShader(type);
-    glShaderSource(*handle, 1, &glsrc, NULL);
-    glCompileShader(*handle);
-
-    GLint status;
-    glGetShaderiv(*handle, GL_COMPILE_STATUS, &status);
-    if (status == GL_FALSE)
+    int compileShader(GLenum type, const GLchar *source, GLuint *handle, std::string &errorLog)
     {
-        GLint infoLen;
-        glGetShaderiv(*handle, GL_INFO_LOG_LENGTH, &infoLen);
-        GLchar *infoLog = new GLchar[infoLen + 1];
-        glGetShaderInfoLog(*handle, infoLen, NULL, infoLog);
-        errorLog += infoLog;
-        delete[] infoLog;
-        glDeleteShader(*handle);
-        return -1;
-    }
+        const GLchar *glsrc = source;
+        *handle = glCreateShader(type);
+        glShaderSource(*handle, 1, &glsrc, NULL);
+        glCompileShader(*handle);
 
-    return 0;
-}
+        GLint status;
+        glGetShaderiv(*handle, GL_COMPILE_STATUS, &status);
+        if (status == GL_FALSE)
+        {
+            GLint infoLen;
+            glGetShaderiv(*handle, GL_INFO_LOG_LENGTH, &infoLen);
+            GLchar *infoLog = new GLchar[infoLen + 1];
+            glGetShaderInfoLog(*handle, infoLen, NULL, infoLog);
+            errorLog += infoLog;
+            delete[] infoLog;
+            glDeleteShader(*handle);
+            return -1;
+        }
+
+        return 0;
+    }
 
 } // namespace
 
-GLShader *GLShader::make(std::vector<ShaderDescr> shdrDescrs,
-                         std::vector<AttribLocDescr> attrLocDescrs,
-                         std::vector<FragDataLocDescr> fragDataLocDescrs,
+GLShader *GLShader::make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
+                         std::vector<std::pair<GLuint, std::string>> attrLocs,
+                         std::vector<std::pair<GLuint, std::string>> fragDataLocs,
                          std::string &errorLog)
 {
     std::vector<GLuint> shdrHandles;
 
-    for (const auto &shdrDes : shdrDescrs)
+    for (const auto &shdrDes : shaderCodes)
     {
         GLuint handle;
-        if (compileShader(shdrDes.type, shdrDes.source.c_str(), &handle, errorLog) != 0)
+        if (compileShader(shdrDes.first, shdrDes.second.c_str(), &handle, errorLog) != 0)
         {
             for (const auto &shdrHandle : shdrHandles)
             {
@@ -78,15 +77,15 @@ GLShader *GLShader::make(std::vector<ShaderDescr> shdrDescrs,
         glAttachShader(progHandle, shdrHandle);
     }
 
-    for (const auto &attr : attrLocDescrs)
+    for (const auto &attr : attrLocs)
     {
-        glBindAttribLocation(progHandle, attr.index, attr.name.c_str());
+        glBindAttribLocation(progHandle, attr.first, attr.second.c_str());
     }
 
 #ifndef YOURGAME_GL_API_GLES
-    for (const auto &frag : fragDataLocDescrs)
+    for (const auto &frag : fragDataLocs)
     {
-        glBindFragDataLocation(progHandle, frag.colorNumber, frag.name.c_str());
+        glBindFragDataLocation(progHandle, frag.first, frag.second.c_str());
     }
 #endif
 

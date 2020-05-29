@@ -17,43 +17,51 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include "glmesh.h"
+#include "glshape.h"
 
-GLMesh *GLMesh::make(std::vector<ArrBufferDescr> arDescrs, ElemArrBufferDescr elArDescr)
+GLShape *GLShape::make(std::vector<ArrBufferDescr> arDescrs,
+                       std::vector<GLBuffer *> arBuffers,
+                       ElemArrBufferDescr elArDescr,
+                       GLBuffer *elArBuffer)
 {
-    GLMesh *newMesh = new GLMesh();
-    newMesh->m_elArDescr = elArDescr;
-
-    glGenVertexArrays(1, &newMesh->m_vaoHandle);
-    glBindVertexArray(newMesh->m_vaoHandle);
-
-    for (const auto &arrDes : arDescrs)
+    if (arDescrs.size() != arBuffers.size())
     {
-        arrDes.buffer->bind();
-        glEnableVertexAttribArray(arrDes.index);
-        glVertexAttribPointer(arrDes.index,
-                              arrDes.size,
-                              arrDes.type,
-                              arrDes.normalized,
-                              arrDes.stride,
-                              arrDes.pointer);
+        return nullptr;
     }
 
-    newMesh->m_elArDescr.buffer->bind();
+    GLShape *newShape = new GLShape();
+    newShape->m_elArDescr = elArDescr;
+
+    glGenVertexArrays(1, &newShape->m_vaoHandle);
+    glBindVertexArray(newShape->m_vaoHandle);
+
+    for (auto i = 0; i < arDescrs.size(); i++)
+    {
+        arBuffers[i]->bind();
+        glEnableVertexAttribArray(arDescrs[i].index);
+        glVertexAttribPointer(arDescrs[i].index,
+                              arDescrs[i].size,
+                              arDescrs[i].type,
+                              arDescrs[i].normalized,
+                              arDescrs[i].stride,
+                              arDescrs[i].pointer);
+    }
+
+    elArBuffer->bind();
     glBindVertexArray(0);
 
     // todo: what about unbinding the buffers (ARRAY, ELEMENT_ARRAY)
     // after creating the VAO?
 
-    return newMesh;
+    return newShape;
 }
 
-GLMesh::~GLMesh()
+GLShape::~GLShape()
 {
     glDeleteVertexArrays(1, &m_vaoHandle);
 }
 
-void GLMesh::draw()
+void GLShape::draw()
 {
     glBindVertexArray(m_vaoHandle);
     glDrawElements(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0);
