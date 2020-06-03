@@ -11,5 +11,5 @@ uniform float fade;
 
 void main()
 {
-    color = (vOutNorm + 1.0) * 0.5 * (fade * 0.75 + 0.25);
+    color = (normalize(vOutNorm) + 1.0) * 0.5 * (fade * 0.75 + 0.25);
 }

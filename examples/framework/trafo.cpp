@@ -51,6 +51,18 @@ void Trafo::translateGlobal(float distance, AXIS ax)
     m_matInvalidated = true;
 }
 
+void Trafo::setScaleLocal(glm::vec3 const &scale)
+{
+    m_scale = scale;
+    m_matInvalidated = true;
+}
+
+void Trafo::setScaleLocal(float scale)
+{
+    m_scale = glm::vec3(scale);
+    m_matInvalidated = true;
+}
+
 void Trafo::pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up)
 {
     auto dir = glm::normalize(center - eye);
@@ -72,7 +84,7 @@ void Trafo::updateMatrixIfInvalidated()
 {
     if (m_matInvalidated)
     {
-        m_mat = glm::translate(m_eye) * glm::mat4(m_rot);
+        m_mat = glm::translate(m_eye) * glm::mat4(m_rot) * glm::scale(m_scale);
         m_matInvalidated = false;
     }
 }

@@ -39,12 +39,15 @@ public:
     void rotateGlobal(float angle, AXIS ax);
     void translateLocal(float distance, AXIS ax);
     void translateGlobal(float distance, AXIS ax);
+    void setScaleLocal(glm::vec3 const &scale);
+    void setScaleLocal(float scale);
     void pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
     void lookAt(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
 
 private:
     glm::vec3 m_eye = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::quat m_rot = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+    glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::mat4 m_mat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
                                 0.0f, 1.0f, 0.0f, 0.0f,
                                 0.0f, 0.0f, 1.0f, 0.0f,

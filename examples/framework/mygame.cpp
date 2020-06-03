@@ -18,7 +18,6 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <cmath>
-#include <array>
 #include <vector>
 #include <map>
 #include "miniaudio.h"
@@ -27,15 +26,10 @@ freely, subject to the following restrictions:
 #include "yourgame/gl_include.h"
 #include "yourgame/input.h"
 #include "imgui.h"
-#include "tiny_obj_loader.h"
-#include "stb_image.h"
 #include "trafo.h"
 #include "camera.h"
-#include "glbuffer.h"
-#include "glshape.h"
 #include "glshader.h"
 #include "gltexture2d.h"
-
 #include "glgeometry.h"
 #include "gllevel2.h"
 
@@ -59,6 +53,9 @@ namespace mygame
 
         // GL scene
         double g_fade = 0.0;
+        float g_modelScale = 0.025f;
+        float g_rotation = 0.01f;
+        bool g_rotationOn = true;
         ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
         Trafo g_modelTrafo;
         Camera g_camera;
@@ -67,30 +64,14 @@ namespace mygame
         GLShader *g_shaderNormal = nullptr;
         int g_shaderToUse = 1; // 0: texture, 1: normal
         std::map<std::string, GLTexture2D *> g_textures;
-
-        // GL(SL) conventions
-        const GLuint attrLocPosition = 0;
-        const GLuint attrLocNormal = 1;
-        const GLuint attrLocTexcoords = 2;
-        const GLuint attrLocColor = 3;
-        const std::string attrNamePosition = "inPosition";
-        const std::string attrNameNormal = "inNormal";
-        const std::string attrNameTexcoords = "inTexcoords";
-        const std::string attrNameColor = "inColor";
-        const GLchar *unifNameMvpMatrix = "mvpMat";
-        const GLchar *unifNameModelMatrix = "modelMat";
-        const GLchar *unifNameTexture0 = "texture0";
-        const GLchar *unifNameTexture1 = "texture1";
-
     } // namespace
 
     void init(const yourgame::context &ctx)
     {
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
-                                 glm::vec3(0.0f, 0.0f, 0.0f),
+                                 glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
         g_camera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 10.0f);
-        g_modelTrafo.rotateGlobal(0.5f, Trafo::AXIS::Z);
 
         initGlScene();
 
@@ -103,7 +84,11 @@ namespace mygame
 
     void update(const yourgame::context &ctx)
     {
-        g_modelTrafo.rotateLocal(0.01f, Trafo::AXIS::X);
+        g_modelTrafo.setScaleLocal(g_modelScale);
+        if (g_rotationOn)
+        {
+            g_modelTrafo.rotateLocal(g_rotation, Trafo::AXIS::Y);
+        }
         g_fade += (3.0 * ctx.deltaTimeS);
 
         if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
@@ -177,87 +162,13 @@ namespace mygame
             }
         }
 
-        void loadObj()
-        {
-            auto objData = yourgame::readAssetFile("sphere.obj");
-            auto mtlData = yourgame::readAssetFile("sphere.mtl");
-
-            std::string objStr(objData.begin(), objData.end());
-            std::string mtlStr(mtlData.begin(), mtlData.end());
-
-            tinyobj::ObjReader objRdr;
-            tinyobj::ObjReaderConfig objRdrCfg;
-            objRdr.ParseFromString(objStr, mtlStr, objRdrCfg);
-
-            auto shapes = objRdr.GetShapes();
-            auto attribs = objRdr.GetAttrib();
-
-            std::vector<GLuint> objIdxData;
-            std::vector<GLfloat> objPosData;
-            std::vector<GLfloat> objNormalData;
-            std::vector<GLfloat> objTexCoordData;
-            std::vector<GLfloat> objColordData;
-
-            // move over shape indices and make vertices unique
-            // todo: check if assumptions below are valid (number of attrib values per vertex)
-            // todo: skip missing attributes
-            std::map<std::array<int, 3>, int> uniqueIdxMap;
-            GLuint uniqueVertCount = 0U;
-            for (auto const &idx : shapes[0].mesh.indices)
-            {
-                auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
-                if (mapRet.second) // new unique vertex
-                {
-                    objIdxData.push_back(uniqueVertCount);
-                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3]);
-                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 1]);
-                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 2]);
-                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3]);
-                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 1]);
-                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 2]);
-                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2]);
-                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2 + 1]);
-                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3]);
-                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 1]);
-                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 2]);
-
-                    uniqueVertCount++;
-                }
-                else
-                {
-                    objIdxData.push_back((GLuint)(mapRet.first->second));
-                }
-            }
-
-            // created Geometry object from parsed obj data
-            auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
-            auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
-            auto vertTexcoordsSize = objTexCoordData.size() * sizeof(objTexCoordData[0]);
-            auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
-
-            g_geo = GLGeometry::make();
-            g_geo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
-            g_geo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-            g_geo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
-            g_geo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
-
-            g_geo->addShape("main",
-                            {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                             {attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                             {attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0}},
-                            {"pos", "norm", "texcoords"},
-                            {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()},
-                            "idx");
-        }
-
         void initGlScene()
         {
-            loadObj();
+            glEnable(GL_DEPTH_TEST);
 
+            g_geo = loadGeometry("ship_dark.obj", "ship_dark.mtl");
             g_textures.emplace("gradient1.png", loadTexture("gradient1.png", GL_TEXTURE0));
             g_textures.emplace("gradient2.jpg", loadTexture("gradient2.jpg", GL_TEXTURE1));
-
-            glEnable(GL_DEPTH_TEST);
 
             // Texture shader
             g_shaderTexture = loadShader(
@@ -376,6 +287,14 @@ namespace mygame
             {
                 ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
                 ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
+
+                // rotation
+                ImGui::Checkbox("", &g_rotationOn);
+                ImGui::SameLine();
+                ImGui::SliderFloat("rotation", &g_rotation, -0.1f, 0.1f);
+
+                // model scale
+                ImGui::InputFloat("model scale", &g_modelScale, 0.001f, 100.0f, "%.3f");
 
                 // shader selector
                 ImGui::RadioButton("texture shader", &g_shaderToUse, 0);

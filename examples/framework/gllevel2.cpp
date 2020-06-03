@@ -17,14 +17,31 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include <string>
+#include <vector>
+#include <map>
+#include <array>
 #include "stb_image.h"
+#include "tiny_obj_loader.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/assetfile.h"
-#include "gltexture2d.h"
-#include "glshader.h"
+#include "gllevel2.h"
 
 namespace mygame
 {
+    const GLuint attrLocPosition = 0;
+    const GLuint attrLocNormal = 1;
+    const GLuint attrLocTexcoords = 2;
+    const GLuint attrLocColor = 3;
+    const std::string attrNamePosition = "inPosition";
+    const std::string attrNameNormal = "inNormal";
+    const std::string attrNameTexcoords = "inTexcoords";
+    const std::string attrNameColor = "inColor";
+    const GLchar *unifNameMvpMatrix = "mvpMat";
+    const GLchar *unifNameModelMatrix = "modelMat";
+    const GLchar *unifNameTexture0 = "texture0";
+    const GLchar *unifNameTexture1 = "texture1";
+
     GLTexture2D *loadTexture(const char *filename, GLenum unit)
     {
         int width;
@@ -81,5 +98,86 @@ namespace mygame
         }
 
         return newShader;
+    }
+
+    GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename)
+    {
+        auto objData = yourgame::readAssetFile(objFilename);
+        auto mtlData = yourgame::readAssetFile(mtlFilename);
+
+        std::string objStr(objData.begin(), objData.end());
+        std::string mtlStr(mtlData.begin(), mtlData.end());
+
+        tinyobj::ObjReader objRdr;
+        tinyobj::ObjReaderConfig objRdrCfg;
+        objRdr.ParseFromString(objStr, mtlStr, objRdrCfg);
+
+        auto shapes = objRdr.GetShapes();
+        auto attribs = objRdr.GetAttrib();
+
+        std::vector<GLuint> objIdxData;
+        std::vector<GLfloat> objPosData;
+        std::vector<GLfloat> objNormalData;
+        std::vector<GLfloat> objTexCoordData;
+        std::vector<GLfloat> objColordData;
+
+        std::map<std::array<int, 3>, int> uniqueIdxMap;
+        GLuint uniqueVertCount = 0U;
+        // all shapes of obj are merged into one. alternatively, create
+        // objIdxData for each shape and add multiple shapes to
+        // GLGeometry *newGeo below.
+        for (auto const &shape : shapes)
+        {
+            // move over shape indices and make vertices unique
+            // todo: check if assumptions below are valid (number of attrib values per vertex)
+            // todo: skip missing attributes (by checking attribs)
+            for (auto const &idx : shape.mesh.indices)
+            {
+                auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
+                if (mapRet.second) // new unique vertex
+                {
+                    objIdxData.push_back(uniqueVertCount);
+                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3]);
+                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 1]);
+                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 2]);
+                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3]);
+                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 1]);
+                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 2]);
+                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2]);
+                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2 + 1]);
+                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3]);
+                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 1]);
+                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 2]);
+
+                    uniqueVertCount++;
+                }
+                else
+                {
+                    objIdxData.push_back((GLuint)(mapRet.first->second));
+                }
+            }
+        }
+
+        // created Geometry object from parsed obj data
+        auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
+        auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
+        auto vertTexcoordsSize = objTexCoordData.size() * sizeof(objTexCoordData[0]);
+        auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
+
+        GLGeometry *newGeo = GLGeometry::make();
+        newGeo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
+        newGeo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
+        newGeo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
+        newGeo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+
+        newGeo->addShape("main",
+                         {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+                          {attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+                          {attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0}},
+                         {"pos", "norm", "texcoords"},
+                         {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()},
+                         "idx");
+
+        return newGeo;
     }
 } // namespace mygame

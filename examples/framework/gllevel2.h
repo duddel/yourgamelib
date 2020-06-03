@@ -23,14 +23,30 @@ freely, subject to the following restrictions:
 #include "yourgame/gl_include.h"
 #include "gltexture2d.h"
 #include "glshader.h"
+#include "glgeometry.h"
 
 namespace mygame
 {
+    extern const GLuint attrLocPosition;
+    extern const GLuint attrLocNormal;
+    extern const GLuint attrLocTexcoords;
+    extern const GLuint attrLocColor;
+    extern const std::string attrNamePosition;
+    extern const std::string attrNameNormal;
+    extern const std::string attrNameTexcoords;
+    extern const std::string attrNameColor;
+    extern const GLchar *unifNameMvpMatrix;
+    extern const GLchar *unifNameModelMatrix;
+    extern const GLchar *unifNameTexture0;
+    extern const GLchar *unifNameTexture1;
+
     GLTexture2D *loadTexture(const char *filename, GLenum unit);
 
     GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
                          std::vector<std::pair<GLuint, std::string>> attrLocs,
                          std::vector<std::pair<GLuint, std::string>> fragDataLocs);
+
+    GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename);
 } // namespace mygame
 
 #endif
