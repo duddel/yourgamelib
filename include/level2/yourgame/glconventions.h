@@ -17,15 +17,13 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLLEVEL2_H
-#define GLLEVEL2_H
+#ifndef YOURGAME_GLCONVENTIONS_H
+#define YOURGAME_GLCONVENTIONS_H
 
+#include <string>
 #include "yourgame/gl_include.h"
-#include "gltexture2d.h"
-#include "glshader.h"
-#include "glgeometry.h"
 
-namespace mygame
+namespace yourgame
 {
     extern const GLuint attrLocPosition;
     extern const GLuint attrLocNormal;
@@ -39,14 +37,6 @@ namespace mygame
     extern const GLchar *unifNameModelMatrix;
     extern const GLchar *unifNameTexture0;
     extern const GLchar *unifNameTexture1;
-
-    GLTexture2D *loadTexture(const char *filename, GLenum unit);
-
-    GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
-                         std::vector<std::pair<GLuint, std::string>> attrLocs,
-                         std::vector<std::pair<GLuint, std::string>> fragDataLocs);
-
-    GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename);
-} // namespace mygame
+}
 
 #endif

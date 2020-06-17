@@ -17,7 +17,10 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include "glshape.h"
+#include "yourgame/glshape.h"
+
+namespace yourgame
+{
 
 GLShape *GLShape::make(std::vector<ArrBufferDescr> arDescrs,
                        std::vector<GLBuffer *> arBuffers,
@@ -66,4 +69,6 @@ void GLShape::draw()
     glBindVertexArray(m_vaoHandle);
     glDrawElements(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0);
     glBindVertexArray(0);
+}
+
 }

@@ -17,44 +17,23 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include <string>
 #include "yourgame/gl_include.h"
-#include "glbuffer.h"
 
-GLBuffer *GLBuffer::make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
+#include "yourgame/glconventions.h" // ToDo: why is this include required?
+
+namespace yourgame
 {
-    GLuint handle;
-    glGenBuffers(1, &handle);
-    glBindBuffer(target, handle);
-    glBufferData(target, size, data, usage);
-
-    GLint checkSize = -1;
-    glGetBufferParameteriv(target, GL_BUFFER_SIZE, &checkSize);
-    if (size != checkSize)
-    {
-        glBindBuffer(target, 0);
-        glDeleteBuffers(1, &handle);
-        return nullptr;
-    }
-    else
-    {
-        GLBuffer *newBuf = new GLBuffer();
-        newBuf->m_target = target;
-        newBuf->m_handle = handle;
-        return newBuf;
-    }
-}
-
-GLBuffer::~GLBuffer()
-{
-    glDeleteBuffers(1, &m_handle);
-}
-
-void GLBuffer::bind()
-{
-    glBindBuffer(m_target, m_handle);
-}
-
-void GLBuffer::unbindTarget()
-{
-    glBindBuffer(m_target, 0);
+    const GLuint attrLocPosition = 0;
+    const GLuint attrLocNormal = 1;
+    const GLuint attrLocTexcoords = 2;
+    const GLuint attrLocColor = 3;
+    const std::string attrNamePosition = "inPosition";
+    const std::string attrNameNormal = "inNormal";
+    const std::string attrNameTexcoords = "inTexcoords";
+    const std::string attrNameColor = "inColor";
+    const GLchar *unifNameMvpMatrix = "mvpMat";
+    const GLchar *unifNameModelMatrix = "modelMat";
+    const GLchar *unifNameTexture0 = "texture0";
+    const GLchar *unifNameTexture1 = "texture1";
 }

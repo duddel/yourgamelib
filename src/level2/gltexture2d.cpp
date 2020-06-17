@@ -18,7 +18,10 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include "yourgame/gl_include.h"
-#include "gltexture2d.h"
+#include "yourgame/gltexture2d.h"
+
+namespace yourgame
+{
 
 GLTexture2D *GLTexture2D::make(GLint level,
                                GLint internalformat,
@@ -79,4 +82,6 @@ void GLTexture2D::unbindTarget()
 {
     glActiveTexture(m_unit);
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 }

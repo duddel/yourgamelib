@@ -17,49 +17,46 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLSHAPE_H
-#define GLSHAPE_H
+#ifndef YOURGAME_GLTEXTURE2D_H
+#define YOURGAME_GLTEXTURE2D_H
 
 #include <vector>
+#include <utility> // pair
 #include "yourgame/gl_include.h"
-#include "glbuffer.h"
 
-class GLShape
+namespace yourgame
+{
+
+class GLTexture2D
 {
 public:
-    struct ArrBufferDescr
-    {
-        GLuint index;
-        GLint size;
-        GLenum type;
-        GLboolean normalized;
-        GLsizei stride;
-        const GLvoid *pointer;
-    };
-
-    struct ElemArrBufferDescr
-    {
-        GLenum type;
-        GLenum drawMode;
-        GLsizei numElements;
-    };
-
-    static GLShape *make(std::vector<ArrBufferDescr> arDescrs,
-                         std::vector<GLBuffer *> arBuffers,
-                         ElemArrBufferDescr elArDescr,
-                         GLBuffer *elArBuffer);
-    ~GLShape();
-    void draw();
+    static GLTexture2D *make(GLint level,
+                             GLint internalformat,
+                             GLsizei width,
+                             GLsizei height,
+                             GLint border,
+                             GLenum format,
+                             GLenum type,
+                             const void *data,
+                             GLenum unit,
+                             std::vector<std::pair<GLenum, GLint>> parameteri,
+                             bool generateMipmap);
 
     /* deleting the copy constructor and the copy assignment operator
     prevents copying (and moving) of the object. */
-    GLShape(GLShape const &) = delete;
-    GLShape &operator=(GLShape const &) = delete;
+    GLTexture2D(GLTexture2D const &) = delete;
+    GLTexture2D &operator=(GLTexture2D const &) = delete;
+
+    ~GLTexture2D();
+    void bind();
+    void unbindTarget();
 
 private:
-    GLShape() {}
-    ElemArrBufferDescr m_elArDescr;
-    GLuint m_vaoHandle;
+    GLTexture2D() {}
+    GLuint m_handle;
+    GLenum m_unit;
 };
+
+}
 
 #endif

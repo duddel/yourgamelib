@@ -17,7 +17,9 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include "trafo.h"
+#include "yourgame/trafo.h"
+
+namespace yourgame{
 
 glm::mat4 Trafo::mat()
 {
@@ -120,4 +122,6 @@ glm::vec3 Trafo::getAxisGlobal(AXIS ax)
         return glm::vec3(0.0f, 0.0f, 1.0f);
         break;
     }
+}
+
 }

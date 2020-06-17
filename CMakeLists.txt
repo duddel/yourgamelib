@@ -38,7 +38,7 @@ endif()
 
 # inc dirs (api)
 list(APPEND YOURGAME_INC_DIRS
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/base
 )
 # inc dirs (internal)
 list(APPEND YOURGAME_INC_DIRS_PRIVATE

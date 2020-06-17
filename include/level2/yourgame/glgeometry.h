@@ -17,28 +17,43 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLBUFFER_H
-#define GLBUFFER_H
+#ifndef YOURGAME_GLGEOMETRY_H
+#define YOURGAME_GLGEOMETRY_H
 
+#include <string>
+#include <map>
+#include <vector>
 #include "yourgame/gl_include.h"
+#include "glbuffer.h"
+#include "glshape.h"
 
-class GLBuffer
+namespace yourgame
+{
+
+class GLGeometry
 {
 public:
-    static GLBuffer *make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
-    ~GLBuffer();
-    void bind();
-    void unbindTarget();
+    static GLGeometry *make();
+    ~GLGeometry();
+    bool addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
+    bool addShape(std::string name,
+                  std::vector<GLShape::ArrBufferDescr> arDescrs,
+                  std::vector<std::string> arBufferNames,
+                  GLShape::ElemArrBufferDescr elArDescr,
+                  std::string elArBufferName);
+    void drawAll();
 
     /* deleting the copy constructor and the copy assignment operator
     prevents copying (and moving) of the object. */
-    GLBuffer(GLBuffer const &) = delete;
-    GLBuffer &operator=(GLBuffer const &) = delete;
+    GLGeometry(GLGeometry const &) = delete;
+    GLGeometry &operator=(GLGeometry const &) = delete;
 
 private:
-    GLBuffer() {}
-    GLenum m_target;
-    GLuint m_handle;
+    GLGeometry() {}
+    std::map<std::string, GLBuffer *> m_buffers;
+    std::map<std::string, GLShape *> m_shapes;
 };
+
+}
 
 #endif

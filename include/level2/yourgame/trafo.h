@@ -17,12 +17,15 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef TRAFO_H
-#define TRAFO_H
+#ifndef YOURGAME_TRAFO_H
+#define YOURGAME_TRAFO_H
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+
+namespace yourgame
+{
 
 class Trafo
 {
@@ -57,5 +60,7 @@ private:
     glm::vec3 getAxisLocal(AXIS ax);
     glm::vec3 getAxisGlobal(AXIS ax);
 };
+
+}
 
 #endif

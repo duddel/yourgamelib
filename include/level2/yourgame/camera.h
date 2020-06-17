@@ -17,13 +17,16 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef CAMERA_H
-#define CAMERA_H
+#ifndef YOURGAME_CAMERA_H
+#define YOURGAME_CAMERA_H
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
-#include "trafo.h"
+#include "yourgame/trafo.h"
+
+namespace yourgame
+{
 
 class Camera
 {
@@ -68,5 +71,7 @@ private:
     bool m_pMatInvalidated = false;
     void updatePMatIfInvalidated();
 };
+
+}
 
 #endif

@@ -17,34 +17,49 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef GLSHADER_H
-#define GLSHADER_H
-
-#include <string>
-#include <vector>
-#include <map>
 #include "yourgame/gl_include.h"
+#include "yourgame/glbuffer.h"
 
-class GLShader
+namespace yourgame
 {
-public:
-    static GLShader *make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                          std::vector<std::pair<GLuint, std::string>> attrLocs,
-                          std::vector<std::pair<GLuint, std::string>> fragDataLocs,
-                          std::string &errorLog);
-    ~GLShader();
-    void useProgram();
-    GLint getUniformLocation(const GLchar *name);
 
-    /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
-    GLShader(GLShader const &) = delete;
-    GLShader &operator=(GLShader const &) = delete;
+GLBuffer *GLBuffer::make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
+{
+    GLuint handle;
+    glGenBuffers(1, &handle);
+    glBindBuffer(target, handle);
+    glBufferData(target, size, data, usage);
 
-private:
-    GLShader() {}
-    GLuint m_programHandle;
-    std::map<std::string, GLint> m_uniformLocations;
-};
+    GLint checkSize = -1;
+    glGetBufferParameteriv(target, GL_BUFFER_SIZE, &checkSize);
+    if (size != checkSize)
+    {
+        glBindBuffer(target, 0);
+        glDeleteBuffers(1, &handle);
+        return nullptr;
+    }
+    else
+    {
+        GLBuffer *newBuf = new GLBuffer();
+        newBuf->m_target = target;
+        newBuf->m_handle = handle;
+        return newBuf;
+    }
+}
 
-#endif
+GLBuffer::~GLBuffer()
+{
+    glDeleteBuffers(1, &m_handle);
+}
+
+void GLBuffer::bind()
+{
+    glBindBuffer(m_target, m_handle);
+}
+
+void GLBuffer::unbindTarget()
+{
+    glBindBuffer(m_target, 0);
+}
+
+}

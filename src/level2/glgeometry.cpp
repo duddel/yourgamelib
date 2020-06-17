@@ -17,7 +17,10 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include "glgeometry.h"
+#include "yourgame/glgeometry.h"
+
+namespace yourgame
+{
 
 GLGeometry *GLGeometry::make()
 {
@@ -88,4 +91,6 @@ void GLGeometry::drawAll()
     {
         s.second->draw();
     }
+}
+
 }

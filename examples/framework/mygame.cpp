@@ -21,17 +21,10 @@ freely, subject to the following restrictions:
 #include <vector>
 #include <map>
 #include "miniaudio.h"
-#include "yourgame/assetfile.h"
-#include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
-#include "yourgame/input.h"
+#include "yourgame/yourgame.h"
+#include "yourgame/level2.h"
 #include "imgui.h"
-#include "trafo.h"
-#include "camera.h"
-#include "glshader.h"
-#include "gltexture2d.h"
-#include "glgeometry.h"
-#include "gllevel2.h"
 
 namespace mygame
 {
@@ -57,13 +50,13 @@ namespace mygame
         float g_rotation = 0.01f;
         bool g_rotationOn = true;
         ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
-        Trafo g_modelTrafo;
-        Camera g_camera;
-        GLGeometry *g_geo = nullptr;
-        GLShader *g_shaderTexture = nullptr;
-        GLShader *g_shaderNormal = nullptr;
+        yourgame::Trafo g_modelTrafo;
+        yourgame::Camera g_camera;
+        yourgame::GLGeometry *g_geo = nullptr;
+        yourgame::GLShader *g_shaderTexture = nullptr;
+        yourgame::GLShader *g_shaderNormal = nullptr;
         int g_shaderToUse = 1; // 0: texture, 1: normal
-        std::map<std::string, GLTexture2D *> g_textures;
+        std::map<std::string, yourgame::GLTexture2D *> g_textures;
     } // namespace
 
     void init(const yourgame::context &ctx)
@@ -87,7 +80,7 @@ namespace mygame
         g_modelTrafo.setScaleLocal(g_modelScale);
         if (g_rotationOn)
         {
-            g_modelTrafo.rotateLocal(g_rotation, Trafo::AXIS::Y);
+            g_modelTrafo.rotateLocal(g_rotation, yourgame::Trafo::AXIS::Y);
         }
         g_fade += (3.0 * ctx.deltaTimeS);
 
@@ -117,8 +110,8 @@ namespace mygame
                 glUniform1f(g_shaderNormal->getUniformLocation("fade"), sineFade);
                 auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
                 auto modelMat = g_modelTrafo.mat();
-                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
             }
         }
         else if (g_shaderToUse == 0)
@@ -129,8 +122,8 @@ namespace mygame
                 glUniform1f(g_shaderTexture->getUniformLocation("fade"), sineFade);
                 auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
                 auto modelMat = g_modelTrafo.mat();
-                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
             }
             g_textures.at("gradient1.png")->bind();
             g_textures.at("gradient2.jpg")->bind();
@@ -166,12 +159,12 @@ namespace mygame
         {
             glEnable(GL_DEPTH_TEST);
 
-            g_geo = loadGeometry("ship_dark.obj", "ship_dark.mtl");
-            g_textures.emplace("gradient1.png", loadTexture("gradient1.png", GL_TEXTURE0));
-            g_textures.emplace("gradient2.jpg", loadTexture("gradient2.jpg", GL_TEXTURE1));
+            g_geo = yourgame::loadGeometry("ship_dark.obj", "ship_dark.mtl");
+            g_textures.emplace("gradient1.png", yourgame::loadTexture("gradient1.png", GL_TEXTURE0));
+            g_textures.emplace("gradient2.jpg", yourgame::loadTexture("gradient2.jpg", GL_TEXTURE1));
 
             // Texture shader
-            g_shaderTexture = loadShader(
+            g_shaderTexture = yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
                 {{GL_VERTEX_SHADER, "simple.es.vert"},
                  {GL_FRAGMENT_SHADER, "simple.es.frag"}},
@@ -179,17 +172,17 @@ namespace mygame
                 {{GL_VERTEX_SHADER, "simple.vert"},
                  {GL_FRAGMENT_SHADER, "simple.frag"}},
 #endif
-                {{attrLocPosition, attrNamePosition},
-                 {attrLocNormal, attrNameNormal},
-                 {attrLocTexcoords, attrNameTexcoords}},
+                {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                 {yourgame::attrLocNormal, yourgame::attrNameNormal},
+                 {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
                 {{0, "color"}});
 
             g_shaderTexture->useProgram();
-            glUniform1i(g_shaderTexture->getUniformLocation(unifNameTexture0), 0);
-            glUniform1i(g_shaderTexture->getUniformLocation(unifNameTexture1), 1);
+            glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture0), 0);
+            glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture1), 1);
 
             // Normal shader
-            g_shaderNormal = loadShader(
+            g_shaderNormal = yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
                 {{GL_VERTEX_SHADER, "simple.es.vert"},
                  {GL_FRAGMENT_SHADER, "normal.es.frag"}},
@@ -197,9 +190,9 @@ namespace mygame
                 {{GL_VERTEX_SHADER, "simple.vert"},
                  {GL_FRAGMENT_SHADER, "normal.frag"}},
 #endif
-                {{attrLocPosition, attrNamePosition},
-                 {attrLocNormal, attrNameNormal},
-                 {attrLocTexcoords, attrNameTexcoords}},
+                {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                 {yourgame::attrLocNormal, yourgame::attrNameNormal},
+                 {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
                 {{0, "color"}});
         }
 
@@ -364,7 +357,7 @@ namespace mygame
                                                            (float)(ctx.winHeight)));
                 ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
                 /* The following procedure allows displaying long wrapped text,
-whereas ImGui::TextWrapped() has a size limit and cuts the content. */
+                whereas ImGui::TextWrapped() has a size limit and cuts the content. */
                 ImGui::PushTextWrapPos(0.0f);
                 ImGui::TextUnformatted(licStr.c_str());
                 ImGui::PopTextWrapPos();

@@ -19,7 +19,10 @@ freely, subject to the following restrictions:
 */
 #include <string>
 #include "yourgame/gl_include.h"
-#include "glshader.h"
+#include "yourgame/glshader.h"
+
+namespace yourgame
+{
 
 namespace
 {
@@ -145,4 +148,6 @@ GLint GLShader::getUniformLocation(const GLchar *name)
         m_uniformLocations[unifName] = unifLoc;
         return unifLoc;
     }
+}
+
 }

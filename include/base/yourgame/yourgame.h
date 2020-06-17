@@ -23,6 +23,9 @@ freely, subject to the following restrictions:
 #include <cstdint> // uint64_t
 #include <string>
 #include "easylogging++.h"
+// the following includes are part of the yourgame (base) API
+#include "yourgame/assetfile.h"
+#include "yourgame/input.h"
 
 namespace yourgame
 {

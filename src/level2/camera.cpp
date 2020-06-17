@@ -18,7 +18,9 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <glm/glm.hpp>
-#include "camera.h"
+#include "yourgame/camera.h"
+
+namespace yourgame{
 
 glm::mat4 Camera::vMat()
 {
@@ -128,4 +130,6 @@ void Camera::updatePMatIfInvalidated()
         }
         m_pMatInvalidated = false;
     }
+}
+
 }

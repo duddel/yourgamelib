@@ -25,23 +25,13 @@ freely, subject to the following restrictions:
 #include "tiny_obj_loader.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/assetfile.h"
-#include "gllevel2.h"
+#include "yourgame/glconventions.h"
+#include "yourgame/gltexture2d.h"
+#include "yourgame/glshader.h"
+#include "yourgame/glgeometry.h"
 
-namespace mygame
+namespace yourgame
 {
-    const GLuint attrLocPosition = 0;
-    const GLuint attrLocNormal = 1;
-    const GLuint attrLocTexcoords = 2;
-    const GLuint attrLocColor = 3;
-    const std::string attrNamePosition = "inPosition";
-    const std::string attrNameNormal = "inNormal";
-    const std::string attrNameTexcoords = "inTexcoords";
-    const std::string attrNameColor = "inColor";
-    const GLchar *unifNameMvpMatrix = "mvpMat";
-    const GLchar *unifNameModelMatrix = "modelMat";
-    const GLchar *unifNameTexture0 = "texture0";
-    const GLchar *unifNameTexture1 = "texture1";
-
     GLTexture2D *loadTexture(const char *filename, GLenum unit)
     {
         int width;
