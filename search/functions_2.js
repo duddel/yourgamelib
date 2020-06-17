@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init',['init',['../namespacemygame.html#a528fdb6e9f36c4835180483e0a9b32ec',1,'mygame']]]
+  ['shutdown',['shutdown',['../namespacemygame.html#aea006c10610f03c7b22357367224109a',1,'mygame']]]
 ];
