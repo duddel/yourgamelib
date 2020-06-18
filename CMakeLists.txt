@@ -42,15 +42,15 @@ list(APPEND YOURGAME_INC_DIRS
 )
 # inc dirs (internal)
 list(APPEND YOURGAME_INC_DIRS_PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal/common
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "web")
   list(APPEND YOURGAME_INC_DIRS_PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal/desktop_web
   )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   list(APPEND YOURGAME_INC_DIRS_PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal/android
   )
 endif()
 
