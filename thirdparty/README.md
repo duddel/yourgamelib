@@ -1,11 +1,9 @@
 # YourGameLib - Thirdparty
 
-Here is a list of available third-party libraries ("External Projects") that can be integrated. Below is a detailed list of the origins, licenses and possible modifications for each library. Also, each library has a `ExtProj-<alias>.cmake` file that can be investigated for details about the integration.
+Here is a list of available third-party libraries ("External Projects") that can be integrated. Below is a detailed list of the origins, licenses and possible modifications for each library. Also, each library has a `ExtProj-<alias>.cmake` file (in [cmake/](../cmake)) that can be investigated for details about the integration.
 
 -   _By User_ (**Yes**): these libraries are made available to the user if requested. They are **not** used internally by the `yourgame` library.
 -   _By User_ (No): these libraries are integrated automatically depending on the target platform and used internally by the `yourgame` library. They should **not** be used in user code.
-
-_Todo: This distinction could be made by public/private "linking", but this is not implemented yet._
 
 | Alias                                     | Name               | By User |
 | ----------------------------------------- | ------------------ | ------- |
@@ -25,7 +23,7 @@ _Todo: This distinction could be made by public/private "linking", but this is n
 ## Android Native App
 
 -   code is used from the Android SDK installation (no code distributed)
--   see [ExtProj-android-native-app.cmake](ExtProj-android-native-app.cmake)
+-   see [ExtProj-android-native-app.cmake](../cmake/ExtProj-android-native-app.cmake)
 -   license: check license information included in Android SDK
 
 ## Easylogging++

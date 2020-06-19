@@ -4,6 +4,7 @@
 #
 # YOURGAME_EXT_PROJ_LIST        - list of external projects
 # YOURGAME_EXT_PROJ_MODULE_DIR  - absolute path to directory of ExtProj-<proj>.cmake modules
+# YOURGAME_EXT_PROJ_CODE_DIR    - absolute path to the root directory of external project code
 # YOURGAME_EXT_PROJ_OUT_FILE    - absolute path to output file
 #
 # the modules (ExtProj-<proj>.cmake) may write CMake commands,

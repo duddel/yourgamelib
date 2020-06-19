@@ -6,9 +6,9 @@ file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
   ELPP_STL_LOGGING
 )
 list(APPEND YOURGAME_INC_DIRS
-  ${YOURGAME_EXT_PROJ_MODULE_DIR}/easyloggingpp
+  ${YOURGAME_EXT_PROJ_CODE_DIR}/easyloggingpp
 )
 list(APPEND YOURGAME_SRC_FILES
-  ${YOURGAME_EXT_PROJ_MODULE_DIR}/easyloggingpp/easylogging++.cc
+  ${YOURGAME_EXT_PROJ_CODE_DIR}/easyloggingpp/easylogging++.cc
 )
 ") # file()

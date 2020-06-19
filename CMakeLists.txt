@@ -153,7 +153,7 @@ endif()
 # prepare external projects
 # step 1: copy the script
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/PrepareExternalProjects.cmake"
+  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/PrepareExternalProjects.cmake"
   "${CMAKE_CURRENT_BINARY_DIR}/thirdparty/CMakeLists.txt" COPYONLY
 )
 # step 2:
@@ -164,7 +164,8 @@ configure_file(
 execute_process(
   COMMAND "${CMAKE_COMMAND}" .
   "-DYOURGAME_EXT_PROJ_LIST=${YOURGAME_EXT_PROJ_LIST}"
-  "-DYOURGAME_EXT_PROJ_MODULE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/thirdparty"
+  "-DYOURGAME_EXT_PROJ_MODULE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+  "-DYOURGAME_EXT_PROJ_CODE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/thirdparty"
   "-DYOURGAME_EXT_PROJ_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/thirdparty/yourgame_ext_proj.cmake"
   "-DYOURGAME_PLATFORM=${YOURGAME_PLATFORM}"
   RESULT_VARIABLE extProjResult
