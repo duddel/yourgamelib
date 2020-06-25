@@ -5,18 +5,19 @@ Here is a list of available third-party libraries ("External Projects") that can
 -   _By User_ (**Yes**): these libraries are made available to the user if requested. They are **not** used internally by the `yourgame` library.
 -   _By User_ (No): these libraries are integrated automatically depending on the target platform and used internally by the `yourgame` library. They should **not** be used in user code.
 
-| Alias                                     | Name               | By User |
-| ----------------------------------------- | ------------------ | ------- |
-| [glm](#glm)                               | glm                | **Yes** |
-| [imgui](#dear-imgui)                      | Dear Imgui         | **Yes** |
-| [miniaudio](#miniaudio)                   | miniaudio          | **Yes** |
-| [stb](#stb)                               | stb                | **Yes** |
-| [tinyobjloader](#tinyobjloader)           | tinyobjloader      | **Yes** |
-| [android-native-app](#android-native-app) | Android Native App | No      |
-| [easyloggingpp](#easylogging)             | Easylogging++      | No      |
-| [glad](#glad)                             | glad               | No      |
-| [glfw](#glfw)                             | GLFW               | No      |
-| [whereami](#where-am-i)                   | Where Am I?        | No      |
+| Alias                                     | Name                | By User |
+| ----------------------------------------- | ------------------- | ------- |
+| [glm](#glm)                               | glm                 | **Yes** |
+| [imgui](#dear-imgui)                      | Dear Imgui          | **Yes** |
+| [json](#json-for-modern-c++)              | JSON for Modern C++ | **Yes** |
+| [miniaudio](#miniaudio)                   | miniaudio           | **Yes** |
+| [stb](#stb)                               | stb                 | **Yes** |
+| [tinyobjloader](#tinyobjloader)           | tinyobjloader       | **Yes** |
+| [android-native-app](#android-native-app) | Android Native App  | No      |
+| [easyloggingpp](#easylogging)             | Easylogging++       | No      |
+| [glad](#glad)                             | glad                | No      |
+| [glfw](#glfw)                             | GLFW                | No      |
+| [whereami](#where-am-i)                   | Where Am I?         | No      |
 
 * * *
 
@@ -85,6 +86,14 @@ Here is a list of available third-party libraries ("External Projects") that can
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   examples/imgui_impl_android.{h,cpp}
+
+## JSON for Modern C++
+
+-   version: **3.8.0**
+-   origin: <https://github.com/nlohmann/json/releases/tag/v3.8.0>
+-   extracted from origin:
+    -   json.hpp, LICENSE.MIT
+-   [json/LICENSE.MIT](json/LICENSE.MIT)
 
 ## miniaudio
 
