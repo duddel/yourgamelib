@@ -3,4 +3,4 @@
 cd %~dp0
 cd ..
 
-python ../tools/init.py framework level2 --noSources --extProj imgui
+python ../tools/init.py framework level2 --noSources --extProj imgui json box2d

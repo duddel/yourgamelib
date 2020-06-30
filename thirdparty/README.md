@@ -7,6 +7,7 @@ Here is a list of available third-party libraries ("External Projects") that can
 
 | Alias                                     | Name                | By User |
 | ----------------------------------------- | ------------------- | ------- |
+| [box2d](#box2d)                           | Box2D               | **Yes** |
 | [glm](#glm)                               | glm                 | **Yes** |
 | [imgui](#dear-imgui)                      | Dear Imgui          | **Yes** |
 | [json](#json-for-modern-c++)              | JSON for Modern C++ | **Yes** |
@@ -26,6 +27,19 @@ Here is a list of available third-party libraries ("External Projects") that can
 -   code is used from the Android SDK installation (no code distributed)
 -   see [ExtProj-android-native-app.cmake](../cmake/ExtProj-android-native-app.cmake)
 -   license: check license information included in Android SDK
+
+## Box2D
+
+-   version: **4de0ea3, 2.4.0 (unreleased)**
+-   origin: <https://github.com/erincatto/box2d/tree/4de0ea3f1e9511ebd4c85b52e200a8bd9c2fae9e>
+-   extracted from origin:
+    -   LICENSE
+    -   include/*
+    -   src/collision/*
+    -   src/common/*
+    -   src/dynamics/*
+    -   src/rope/*
+-   license: [box2d/LICENSE](box2d/LICENSE)
 
 ## Easylogging++
 

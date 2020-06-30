@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 #include "yourgame/yourgame.h"
 #include "yourgame/level2.h"
 #include "imgui.h"
+#include "box2d/box2d.h"
 
 namespace mygame
 {
