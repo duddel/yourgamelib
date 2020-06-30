@@ -31,7 +31,7 @@ void tick();
 int shutdown();
 bool pendingShutdown();
 void initInput(GLFWwindow *window);
-void initAssetFile();
+void initFileIO();
 
 } // namespace yourgame
 

@@ -17,37 +17,38 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include <cstdint>
+#include <cstdio>
 #include <vector>
-#include <android_native_app_glue.h>
-#include <android/asset_manager.h>
 
-namespace yourgame
+namespace yourgame_internal
 {
-namespace
-{
-AAssetManager *_assetManager;
-}
-
-void initAssetFile(struct android_app *app)
-{
-    _assetManager = app->activity->assetManager;
-}
-
-std::vector<uint8_t> readAssetFile(const char *filename)
-{
-    std::vector<uint8_t> buf{'\0'};
-    AAsset *assDesc = AAssetManager_open(_assetManager,
-                                         filename,
-                                         AASSET_MODE_BUFFER);
-    if (assDesc)
+    int readFile(const char *filename, std::vector<uint8_t> &dst)
     {
-        auto nBytes = AAsset_getLength(assDesc);
-        buf.resize(nBytes);
-        int64_t nBytesRead = AAsset_read(assDesc, buf.data(), buf.size());
-        AAsset_close(assDesc);
+        std::FILE *f = std::fopen(filename, "rb");
+        if (f)
+        {
+            std::fseek(f, 0, SEEK_END);
+            auto nBytes = std::ftell(f);
+            dst.resize(nBytes);
+            std::rewind(f);
+            std::fread(&dst[0], 1, dst.size(), f);
+            std::fclose(f);
+            return 0;
+        }
+        return -1;
     }
-    // todo: check buf.size() against nBytesRead and handle error case
-    return buf;
-}
 
-} // namespace yourgame
+    int writeFile(const char *filename, const void *data, size_t numBytes)
+    {
+        int ret = -1;
+        std::FILE *f = std::fopen(filename, "wb");
+        if (f)
+        {
+            std::fwrite(data, 1, numBytes, f);
+            ret = std::ferror(f);
+            std::fclose(f);
+        }
+        return ret;
+    }
+} // namespace yourgame_internal

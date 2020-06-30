@@ -24,7 +24,7 @@ freely, subject to the following restrictions:
 #include "stb_image.h"
 #include "tiny_obj_loader.h"
 #include "yourgame/yourgame.h"
-#include "yourgame/assetfile.h"
+#include "yourgame/fileio.h"
 #include "yourgame/glconventions.h"
 #include "yourgame/gltexture2d.h"
 #include "yourgame/glshader.h"
@@ -37,7 +37,8 @@ namespace yourgame
         int width;
         int height;
         int numChannels;
-        auto imgData = yourgame::readAssetFile(filename);
+        std::vector<uint8_t> imgData;
+        yourgame::readAssetFile(filename, imgData);
         auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
 
         if (img)
@@ -75,7 +76,8 @@ namespace yourgame
 
         for (const auto &shdrFile : shaderFilenames)
         {
-            auto shdrCode = yourgame::readAssetFile(shdrFile.second.c_str());
+            std::vector<uint8_t> shdrCode;
+            yourgame::readAssetFile(shdrFile.second.c_str(), shdrCode);
             shaderCodes.push_back(std::make_pair(shdrFile.first, std::string(shdrCode.begin(), shdrCode.end())));
         }
 
@@ -92,8 +94,11 @@ namespace yourgame
 
     GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename)
     {
-        auto objData = yourgame::readAssetFile(objFilename);
-        auto mtlData = yourgame::readAssetFile(mtlFilename);
+        std::vector<uint8_t> objData;
+        std::vector<uint8_t> mtlData;
+
+        yourgame::readAssetFile(objFilename, objData);
+        yourgame::readAssetFile(mtlFilename, mtlData);
 
         std::string objStr(objData.begin(), objData.end());
         std::string mtlStr(mtlData.begin(), mtlData.end());

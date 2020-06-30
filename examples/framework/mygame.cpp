@@ -198,7 +198,7 @@ namespace mygame
 
         void initAudio()
         {
-            g_audioData = yourgame::readAssetFile("chirp.ogg");
+            yourgame::readAssetFile("chirp.ogg", g_audioData);
 
             if (ma_decoder_init_memory_vorbis(&g_audioData[0], g_audioData.size(), NULL, &g_maDecoder) != MA_SUCCESS)
             {
@@ -231,6 +231,7 @@ namespace mygame
             static bool showDemoGl = true;
             static bool showLicense = false;
             static bool showImguiDemo = false;
+            static bool showSaveFile = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -257,6 +258,10 @@ namespace mygame
                     {
                         showImguiDemo = true;
                     }
+                    if (ImGui::MenuItem("Save file", "", &showSaveFile))
+                    {
+                        showSaveFile = true;
+                    }
                     ImGui::EndMenu();
                 }
                 if (ImGui::BeginMenu("Help"))
@@ -270,6 +275,7 @@ namespace mygame
                 ImGui::EndMainMenuBar();
             }
 
+            // Imgui demo window
             if (showImguiDemo)
             {
                 ImGui::ShowDemoWindow(&showImguiDemo);
@@ -339,6 +345,32 @@ namespace mygame
                 ImGui::End();
             }
 
+            // save file demo window
+            if (showSaveFile)
+            {
+                static int testValue = 0;
+
+                ImGui::Begin("Save file", &showSaveFile, (ImGuiWindowFlags_NoCollapse));
+                if (ImGui::Button("load"))
+                {
+                    std::vector<uint8_t> fileData;
+                    // try to read save file
+                    if (!yourgame::readSaveFile("testValue.bin", fileData))
+                    {
+                        testValue = *((int *)fileData.data());
+                    }
+                }
+                ImGui::SameLine();
+
+                if (ImGui::Button("save"))
+                {
+                    yourgame::writeSaveFile("testValue.bin", &testValue, sizeof(testValue));
+                }
+
+                ImGui::SliderInt("persistent integer", &testValue, -100, 100);
+                ImGui::End();
+            }
+
             if (showLicense)
             {
 #if defined(YOURGAME_PLATFORM_DESKTOP)
@@ -349,7 +381,8 @@ namespace mygame
                 static const char licFilename[] = "LICENSE_web.txt";
 #endif
 
-                auto licFileData = yourgame::readAssetFile(licFilename);
+                std::vector<uint8_t> licFileData;
+                yourgame::readAssetFile(licFilename, licFileData);
                 std::string licStr(licFileData.begin(), licFileData.end());
                 ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
                                                            (float)(ctx.winHeight) * 0.5f),

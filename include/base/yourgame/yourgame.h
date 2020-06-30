@@ -24,7 +24,7 @@ freely, subject to the following restrictions:
 #include <string>
 #include "easylogging++.h"
 // the following includes are part of the yourgame (base) API
-#include "yourgame/assetfile.h"
+#include "yourgame/fileio.h"
 #include "yourgame/input.h"
 
 namespace yourgame

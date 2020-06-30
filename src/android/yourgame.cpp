@@ -65,7 +65,7 @@ protected:
 namespace
 {
 yourgame::context _context;
-yourgame::Timer _timer(0U);
+yourgame_internal::Timer _timer(0U);
 bool _initialized = false;
 
 EGLDisplay _display = EGL_NO_DISPLAY;
@@ -114,7 +114,7 @@ void init(struct android_app *app)
     _win = app->window;
 
     initInput(app);
-    initAssetFile(app);
+    initFileIO(app);
 
     // initialize logging
     _context.logger = el::Loggers::getLogger("default");

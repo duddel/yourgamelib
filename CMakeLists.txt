@@ -18,18 +18,19 @@ endif()
 
 # sources
 list(APPEND YOURGAME_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/file.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/timer.cpp
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "web")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/assetfile.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/fileio.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/yourgame.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/assetfile.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/fileio.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/android/input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/android/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/android/yourgame.cpp

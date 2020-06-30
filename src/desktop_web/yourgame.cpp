@@ -39,7 +39,7 @@ namespace yourgame
 namespace
 {
 yourgame::context _context;
-yourgame::Timer _timer(0U);
+yourgame_internal::Timer _timer(0U);
 bool _pendingShutdown = false;
 GLFWwindow *_window = NULL;
 void windowSizeCallback(GLFWwindow *window, int width, int height)
@@ -74,7 +74,7 @@ int init(int argc, char *argv[])
     _context.logger = el::Loggers::getLogger("default");
 
     // initialize asset loading
-    initAssetFile();
+    initFileIO();
 
     // check the timer clock
     yourgame::logi("timer clock is%v monotonic", _timer.isMonotonic() ? "" : " NOT");

@@ -17,28 +17,26 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_TIMER_H
-#define YOURGAME_INTERNAL_TIMER_H
+#ifndef YOURGAME_FILEIO_H
+#define YOURGAME_FILEIO_H
 
-#include <cstdint> // uint64_t
+#include <cstdint>
+#include <vector>
 
-namespace yourgame_internal
+namespace yourgame
 {
+    /** \brief reads an entire file (from asset file location) and returns it as a vector of bytes */
+    int readAssetFile(const char *filename, std::vector<uint8_t> &dst);
 
-    class Timer
-    {
-    public:
-        Timer(uint64_t targetTicktimeUs);
-        uint64_t tick();
-        bool isMonotonic() { return _monotonic; }
+    /** \brief reads an entire file (from save file location) and returns it as a vector of bytes */
+    int readSaveFile(const char *filename, std::vector<uint8_t> &dst);
 
-    private:
-        bool _monotonic;
-        uint64_t _timeLastTick;
-        uint64_t _targetTicktime;
-        uint64_t getNow();
-    };
+    /** \brief writes numBytes bytes from data to a file called filename in the save file location.
+        overwrites the file if it exists */
+    int writeSaveFile(const char *filename, const void *data, size_t numBytes);
 
-} // namespace yourgame_internal
+    /** \brief returns the absolute path to the save file filename */
+    void saveFilePath(const char *filename, std::string &dst);
+} // namespace yourgame
 
 #endif

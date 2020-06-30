@@ -30,7 +30,7 @@ void init(struct android_app *app);
 void tick();
 void shutdown();
 void initInput(struct android_app *app);
-void initAssetFile(struct android_app *app);
+void initFileIO(struct android_app *app);
 
 } // namespace yourgame
 

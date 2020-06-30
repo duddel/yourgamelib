@@ -63,9 +63,18 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
     "$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/assets"
   )
 
+  # create savefiles/ beside the executable
+  add_custom_command(
+    TARGET ${CMAKE_PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+    "$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/savefiles"
+  )
+
   if(CPACK_GENERATOR)
     install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION .)
     install(DIRECTORY assets DESTINATION .)
+    install(DIRECTORY DESTINATION ./savefiles) # create empty savefiles/
     set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
     include(CPack)
   endif()

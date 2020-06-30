@@ -33,70 +33,70 @@ not relying on that. instead, check if CLOCK_MONOTONIC works at run-time: checkM
 #include <cstdint> // uint64_t
 #include "yourgame_internal/timer.h"
 
-namespace yourgame
+namespace yourgame_internal
 {
 
-namespace
-{
-bool checkMonotonic()
-{
-#if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__linux__) || defined(__unix__))
-  struct timespec theTimeNow;
-  return (clock_gettime(CLOCK_MONOTONIC, &theTimeNow) == 0);
-#elif defined(_WIN32)
-  return true;
-#endif
-}
-} // namespace
-
-Timer::Timer(uint64_t targetTicktimeUs) : _targetTicktime(targetTicktimeUs),
-                                          _monotonic(checkMonotonic()),
-                                          _timeLastTick(getNow()) {}
-
-uint64_t Timer::tick()
-{
-  uint64_t timePassed;
-  uint64_t timeNow;
-
-  do
-  {
-    timeNow = getNow();
-    // security check for non-monotonic clocks
-    if (timeNow < _timeLastTick)
+    namespace
     {
-      timePassed = 0U;
-      break;
-    }
-    else
-    {
-      timePassed = (timeNow - _timeLastTick);
-    }
-  } while (timePassed < _targetTicktime);
-
-  _timeLastTick = timeNow;
-  return timePassed;
-}
-
-uint64_t Timer::getNow()
-{
+        bool checkMonotonic()
+        {
 #if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__linux__) || defined(__unix__))
-  if (_monotonic)
-  {
-    struct timespec theTimeNow;
-    clock_gettime(CLOCK_MONOTONIC, &theTimeNow);
-    return (uint64_t)(theTimeNow.tv_sec * 1000000 + (theTimeNow.tv_nsec / 1000));
-  }
-  else
-  {
-    // todo: implement fallback for non-monotonic POSIX clocks (gettimeofday()?)
-    return 0U;
-  }
+            struct timespec theTimeNow;
+            return (clock_gettime(CLOCK_MONOTONIC, &theTimeNow) == 0);
 #elif defined(_WIN32)
-  LARGE_INTEGER perfTime, perfFreq;
-  QueryPerformanceFrequency(&perfFreq);
-  QueryPerformanceCounter(&perfTime);
-  return (uint64_t)((perfTime.QuadPart * 1000000) / perfFreq.QuadPart);
+            return true;
 #endif
-}
+        }
+    } // namespace
 
-} // namespace yourgame
+    Timer::Timer(uint64_t targetTicktimeUs) : _targetTicktime(targetTicktimeUs),
+                                              _monotonic(checkMonotonic()),
+                                              _timeLastTick(getNow()) {}
+
+    uint64_t Timer::tick()
+    {
+        uint64_t timePassed;
+        uint64_t timeNow;
+
+        do
+        {
+            timeNow = getNow();
+            // security check for non-monotonic clocks
+            if (timeNow < _timeLastTick)
+            {
+                timePassed = 0U;
+                break;
+            }
+            else
+            {
+                timePassed = (timeNow - _timeLastTick);
+            }
+        } while (timePassed < _targetTicktime);
+
+        _timeLastTick = timeNow;
+        return timePassed;
+    }
+
+    uint64_t Timer::getNow()
+    {
+#if (defined(__MINGW32__) || defined(__CYGWIN__) || defined(__linux__) || defined(__unix__))
+        if (_monotonic)
+        {
+            struct timespec theTimeNow;
+            clock_gettime(CLOCK_MONOTONIC, &theTimeNow);
+            return (uint64_t)(theTimeNow.tv_sec * 1000000 + (theTimeNow.tv_nsec / 1000));
+        }
+        else
+        {
+            // todo: implement fallback for non-monotonic POSIX clocks (gettimeofday()?)
+            return 0U;
+        }
+#elif defined(_WIN32)
+        LARGE_INTEGER perfTime, perfFreq;
+        QueryPerformanceFrequency(&perfFreq);
+        QueryPerformanceCounter(&perfTime);
+        return (uint64_t)((perfTime.QuadPart * 1000000) / perfFreq.QuadPart);
+#endif
+    }
+
+} // namespace yourgame_internal

@@ -17,18 +17,16 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_ASSETFILE_H
-#define YOURGAME_ASSETFILE_H
+#ifndef YOURGAME_INTERNAL_FILE_H
+#define YOURGAME_INTERNAL_FILE_H
 
 #include <cstdint>
 #include <vector>
 
-namespace yourgame
+namespace yourgame_internal
 {
-/** \brief reads an entire file (from packed assets) and returns it as a vector of bytes
-\attention assets have to be placed in a platform specific location, see: todo reference
-*/
-std::vector<uint8_t> readAssetFile(const char *filename);
-} // namespace yourgame
+    int readFile(const char *filename, std::vector<uint8_t> &dst);
+    int writeFile(const char *filename, const void *data, size_t numBytes);
+} // namespace yourgame_internal
 
 #endif

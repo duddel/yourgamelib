@@ -1,7 +1,5 @@
-#include "yourgame/assetfile.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
-#include "yourgame/input.h"
 
 namespace mygame
 {
