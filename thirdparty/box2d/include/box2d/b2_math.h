@@ -29,7 +29,10 @@
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 inline bool b2IsValid(float x)
 {
-	return isfinite(x);
+// YOURGAME_MODIFICATION start
+// seen with gcc 5.4.0 on ubuntu 16.04: isfinite() is not declared in global namespace (use std::)
+    return std::isfinite(x); //return isfinite(x);
+// YOURGAME_MODIFICATION end
 }
 
 #define	b2Sqrt(x)	sqrtf(x)

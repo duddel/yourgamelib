@@ -39,6 +39,7 @@ Here is a list of available third-party libraries ("External Projects") that can
     -   src/common/*
     -   src/dynamics/*
     -   src/rope/*
+-   modifications are marked with `YOURGAME_MODIFICATION`
 -   license: [box2d/LICENSE](box2d/LICENSE)
 
 ## Easylogging++
