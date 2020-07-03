@@ -233,6 +233,7 @@ namespace mygame
             static bool showLicense = false;
             static bool showImguiDemo = false;
             static bool showSaveFile = false;
+            static bool showBox2d = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -262,6 +263,10 @@ namespace mygame
                     if (ImGui::MenuItem("Save file", "", &showSaveFile))
                     {
                         showSaveFile = true;
+                    }
+                    if (ImGui::MenuItem("Box2D", "", &showBox2d))
+                    {
+                        showBox2d = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -372,6 +377,58 @@ namespace mygame
                 ImGui::End();
             }
 
+            // Box2D demo window
+            static bool box2dInitialized = false;
+            static b2World *box2dWorld;
+            if (showBox2d)
+            {
+                static b2Body *box2dDynBody;
+
+                if (!box2dInitialized)
+                {
+                    box2dWorld = new b2World(b2Vec2(0.0f, -10.0f));
+
+                    // ground body
+                    b2BodyDef box2dGroundBodyDef;
+                    box2dGroundBodyDef.position.Set(0.0f, -10.0f);
+                    b2Body *box2dGroundBody = box2dWorld->CreateBody(&box2dGroundBodyDef);
+                    b2PolygonShape box2dGroundBodyShape;
+                    box2dGroundBodyShape.SetAsBox(50.0f, 9.0f);
+                    box2dGroundBody->CreateFixture(&box2dGroundBodyShape, 0.0f);
+
+                    // dynamic box
+                    b2BodyDef box2dDynBodyDef;
+                    box2dDynBodyDef.type = b2_dynamicBody;
+                    box2dDynBodyDef.position.Set(0.0f, 8.0f);
+                    box2dDynBody = box2dWorld->CreateBody(&box2dDynBodyDef);
+                    b2PolygonShape box2dDynBodyShape;
+                    box2dDynBodyShape.SetAsBox(1.0f, 1.0f);
+                    b2FixtureDef box2dDynBodyFixtureDef;
+                    box2dDynBodyFixtureDef.shape = &box2dDynBodyShape;
+                    box2dDynBodyFixtureDef.density = 1.0f;
+                    box2dDynBodyFixtureDef.restitution = 0.75f;
+                    box2dDynBody->CreateFixture(&box2dDynBodyFixtureDef);
+
+                    box2dInitialized = true;
+                }
+
+                // simulate Box2D world
+                box2dWorld->Step(ctx.deltaTimeS, 6, 2);
+
+                // the vertical slider gets updated with box2dTestHeight every frame,
+                // indicating the height of the dropping Box2D body
+                float box2dTestHeight = (float)box2dDynBody->GetPosition().y;
+                ImGui::Begin("Box2D", &showBox2d, (ImGuiWindowFlags_NoCollapse));
+                ImGui::VSliderFloat("", ImVec2(50, 150), &box2dTestHeight, 0.0f, 10.0f);
+                ImGui::End();
+            }
+            else if (box2dInitialized)
+            {
+                delete box2dWorld;
+                box2dInitialized = false;
+            }
+
+            // license window
             if (showLicense)
             {
 #if defined(YOURGAME_PLATFORM_DESKTOP)
