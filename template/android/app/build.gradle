@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "yourgame.example.framework"
+        applicationId "yourgame.project.{{ YOURGAME_PROJECT_NAME_LOWER }}"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1

@@ -29,6 +29,7 @@ args = aPars.parse_args()
 
 # name of project (from args)
 newProjName = args.name
+newProjNameLower = args.name.lower()
 
 # scope (from args)
 newProjScope = args.scope
@@ -67,9 +68,7 @@ ldr = FileSystemLoader(tgtDir)
 jEnv = Environment(loader=ldr)
 
 # process CMakeLists.txt
-dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")]
-# todo: extend source file pattern
-
+dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")] # todo: extend source file pattern
 templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_ROOT=ygRootRel,
@@ -78,3 +77,15 @@ templ.stream(
     YOURGAME_MY_SOURCES=dstSources,
     YOURGAME_EXT_PROJ=args.extProj
 ).dump(os.path.join(tgtDir, "CMakeLists.txt"))
+
+# process android build.gradle
+templ = jEnv.get_template("android/app/build.gradle")
+templ.stream(
+    YOURGAME_PROJECT_NAME_LOWER=newProjNameLower
+).dump(os.path.join(tgtDir, 'android', 'app', 'build.gradle'))
+
+# process android Manifest
+templ = jEnv.get_template("android/app/src/main/AndroidManifest.xml")
+templ.stream(
+    YOURGAME_PROJECT_NAME=newProjName
+).dump(os.path.join(tgtDir, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'))
