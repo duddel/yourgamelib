@@ -26,14 +26,47 @@ namespace mygame
 {
     void init(const yourgame::context &ctx)
     {
+        glClearColor(0.0f, 0.1f, 0.125f, 1.0f);
     }
 
     void update(const yourgame::context &ctx)
     {
+        ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
+        ImGui::SetNextWindowSize(ImVec2(ctx.winWidth, ctx.winHeight));
+
+        ImGui::SetNextWindowContentSize(ImVec2(ctx.winWidth, ctx.winHeight));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+
+        ImGui::Begin("main menu", nullptr, (ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDecoration));
+
+        // menu items
+        ImGui::SetCursorPos(ImVec2(ctx.winWidth * 0.05f, ctx.winHeight * 0.45f));
+        if (ImGui::Button("START", ImVec2(200.0f, 30.0f)))
+        {
+        }
+        // ImGui::GetCursorScreenPos() can be used as well...
+        ImGui::SetCursorPos(ImVec2(ctx.winWidth * 0.05f, ctx.winHeight * 0.45f + 40.0f));
+        if (ImGui::Button("SETTINGS", ImVec2(200.0f, 30.0f)))
+        {
+        }
+        ImGui::SetCursorPos(ImVec2(ctx.winWidth * 0.05f, ctx.winHeight * 0.45f + 40.0f * 2.0f));
+        if (ImGui::Button("HELP", ImVec2(200.0f, 30.0f)))
+        {
+        }
+        ImGui::SetCursorPos(ImVec2(ctx.winWidth * 0.05f, ctx.winHeight * 0.45f + 40.0f * 3.0f));
+        if (ImGui::Button("QUIT", ImVec2(200.0f, 30.0f)))
+        {
+            yourgame::notifyShutdown();
+        }
+
+        ImGui::End();
+        ImGui::PopStyleVar();
     }
 
     void draw(const yourgame::context &ctx)
     {
+        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     void shutdown(const yourgame::context &ctx)
