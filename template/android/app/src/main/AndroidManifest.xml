@@ -3,6 +3,7 @@
     package="yourgame.project">
 
     <application
+        android:label="{{ YOURGAME_PROJECT_NAME }}"
         android:allowBackup="false"
         android:fullBackupContent="false"
         android:hasCode="false">
