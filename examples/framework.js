@@ -192,7 +192,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"package_uuid": "ea1ebb49-b99c-4925-a701-fa1a5a3a0ca5", "remote_package_size": 699559, "files": [{"filename": "/assets/LICENSE_desktop.txt", "start": 0, "audio": 0, "end": 10789}, {"filename": "/assets/simple.vert", "start": 10789, "audio": 0, "end": 11136}, {"filename": "/assets/LICENSE_android.txt", "start": 11136, "audio": 0, "end": 19206}, {"filename": "/assets/sphere.mtl", "start": 19206, "audio": 0, "end": 19389}, {"filename": "/assets/sphere.obj", "start": 19389, "audio": 0, "end": 47595}, {"filename": "/assets/normal.es.frag", "start": 47595, "audio": 0, "end": 47814}, {"filename": "/assets/simple.frag", "start": 47814, "audio": 0, "end": 48083}, {"filename": "/assets/ship_dark.obj", "start": 48083, "audio": 0, "end": 667721}, {"filename": "/assets/gradient2.jpg", "start": 667721, "audio": 0, "end": 682487}, {"filename": "/assets/chirp.ogg", "start": 682487, "audio": 1, "end": 687083}, {"filename": "/assets/ship_dark.mtl", "start": 687083, "audio": 0, "end": 687653}, {"filename": "/assets/normal.frag", "start": 687653, "audio": 0, "end": 687845}, {"filename": "/assets/simple.es.frag", "start": 687845, "audio": 0, "end": 688141}, {"filename": "/assets/gradient1.png", "start": 688141, "audio": 0, "end": 690651}, {"filename": "/assets/simple.es.vert", "start": 690651, "audio": 0, "end": 691001}, {"filename": "/assets/LICENSE_web.txt", "start": 691001, "audio": 0, "end": 699559}]});
+   loadPackage({"files": [{"filename": "/assets/LICENSE_desktop.txt", "end": 10789, "audio": 0, "start": 0}, {"filename": "/assets/simple.vert", "end": 11136, "audio": 0, "start": 10789}, {"filename": "/assets/LICENSE_android.txt", "end": 19206, "audio": 0, "start": 11136}, {"filename": "/assets/sphere.mtl", "end": 19389, "audio": 0, "start": 19206}, {"filename": "/assets/sphere.obj", "end": 47595, "audio": 0, "start": 19389}, {"filename": "/assets/normal.es.frag", "end": 47814, "audio": 0, "start": 47595}, {"filename": "/assets/simple.frag", "end": 48083, "audio": 0, "start": 47814}, {"filename": "/assets/ship_dark.obj", "end": 667721, "audio": 0, "start": 48083}, {"filename": "/assets/gradient2.jpg", "end": 682487, "audio": 0, "start": 667721}, {"filename": "/assets/chirp.ogg", "end": 687083, "audio": 1, "start": 682487}, {"filename": "/assets/ship_dark.mtl", "end": 687653, "audio": 0, "start": 687083}, {"filename": "/assets/normal.frag", "end": 687845, "audio": 0, "start": 687653}, {"filename": "/assets/simple.es.frag", "end": 688141, "audio": 0, "start": 687845}, {"filename": "/assets/gradient1.png", "end": 690651, "audio": 0, "start": 688141}, {"filename": "/assets/simple.es.vert", "end": 691001, "audio": 0, "start": 690651}, {"filename": "/assets/LICENSE_web.txt", "end": 699559, "audio": 0, "start": 691001}], "remote_package_size": 699559, "package_uuid": "738570eb-00af-474c-b08f-5afab0465ef4"});
   
   })();
   
@@ -795,7 +795,7 @@ var noExitRuntime;if (Module['noExitRuntime']) noExitRuntime = Module['noExitRun
 
 
 if (typeof WebAssembly !== 'object') {
-  abort('No WebAssembly support found. Build with -s WASM=0 to target JavaScript instead.');
+  abort('no native wasm support detected');
 }
 
 
@@ -1983,6 +1983,8 @@ function createWasm() {
       return WebAssembly.instantiate(binary, info);
     }).then(receiver, function(reason) {
       err('failed to asynchronously prepare wasm: ' + reason);
+
+
       abort(reason);
     });
   }
@@ -2114,7 +2116,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   
   function _atexit(func, arg) {
       warnOnce('atexit() called, but EXIT_RUNTIME is not set, so atexits() will not be called. set EXIT_RUNTIME to 1 (see the FAQ)');
-      __ATEXIT__.unshift({ func: func, arg: arg });
+  
     }function ___cxa_atexit(a0,a1
   ) {
   return _atexit(a0,a1);
@@ -5928,6 +5930,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   function _glBlendFuncSeparate(x0, x1, x2, x3) { GLctx['blendFuncSeparate'](x0, x1, x2, x3) }
 
   function _glBufferData(target, size, data, usage) {
+  
       if (GL.currentContext.version >= 2) { // WebGL 2 provides new garbage-free entry points to call to WebGL. Use those always when possible.
         if (data) {
           GLctx.bufferData(target, HEAPU8, usage, data, size);
@@ -8291,6 +8294,8 @@ if (!Object.getOwnPropertyDescriptor(Module, "UNWIND_CACHE")) Module["UNWIND_CAC
 if (!Object.getOwnPropertyDescriptor(Module, "readAsmConstArgs")) Module["readAsmConstArgs"] = function() { abort("'readAsmConstArgs' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "jstoi_q")) Module["jstoi_q"] = function() { abort("'jstoi_q' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "jstoi_s")) Module["jstoi_s"] = function() { abort("'jstoi_s' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "listenOnce")) Module["listenOnce"] = function() { abort("'listenOnce' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "autoResumeAudioContext")) Module["autoResumeAudioContext"] = function() { abort("'autoResumeAudioContext' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "abortStackOverflow")) Module["abortStackOverflow"] = function() { abort("'abortStackOverflow' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "reallyNegative")) Module["reallyNegative"] = function() { abort("'reallyNegative' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "formatString")) Module["formatString"] = function() { abort("'formatString' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
@@ -8327,6 +8332,7 @@ if (!Object.getOwnPropertyDescriptor(Module, "emscriptenWebGLGet")) Module["emsc
 if (!Object.getOwnPropertyDescriptor(Module, "emscriptenWebGLGetTexPixelData")) Module["emscriptenWebGLGetTexPixelData"] = function() { abort("'emscriptenWebGLGetTexPixelData' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "emscriptenWebGLGetUniform")) Module["emscriptenWebGLGetUniform"] = function() { abort("'emscriptenWebGLGetUniform' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "emscriptenWebGLGetVertexAttrib")) Module["emscriptenWebGLGetVertexAttrib"] = function() { abort("'emscriptenWebGLGetVertexAttrib' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "writeGLArray")) Module["writeGLArray"] = function() { abort("'writeGLArray' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "AL")) Module["AL"] = function() { abort("'AL' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "SDL_unicode")) Module["SDL_unicode"] = function() { abort("'SDL_unicode' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "SDL_ttfContext")) Module["SDL_ttfContext"] = function() { abort("'SDL_ttfContext' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
