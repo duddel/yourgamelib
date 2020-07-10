@@ -6,10 +6,13 @@
         android:label="{{ YOURGAME_PROJECT_NAME }}"
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:hasCode="false">
+        android:hasCode="true">
 
+        <!-- We use an extension of the android NativeActivity, implemented in yourgame.project.MainActivity.
+        To use the unaltered android NativeActivity, set android:name="android.app.NativeActivity".
+        android:hasCode can then be "false", if there is no Kotlin/Java wrapper code -->
         <activity
-            android:name="android.app.NativeActivity"
+            android:name="yourgame.project.MainActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <meta-data android:name="android.app.lib_name"
