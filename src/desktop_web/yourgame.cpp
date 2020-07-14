@@ -61,6 +61,11 @@ void notifyShutdown()
     _pendingShutdown = true;
 }
 
+int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
+{
+    return -1;
+}
+
 // INTERNAL API
 bool pendingShutdown()
 {

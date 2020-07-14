@@ -20,6 +20,7 @@ freely, subject to the following restrictions:
 #include <android/native_window.h>
 #include <android_native_app_glue.h>
 #include <android/log.h>
+#include <jni.h>
 #include <EGL/egl.h>
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
@@ -72,6 +73,7 @@ EGLDisplay _display = EGL_NO_DISPLAY;
 EGLSurface _surface = EGL_NO_SURFACE;
 EGLContext _eglContext = EGL_NO_CONTEXT;
 ANativeWindow *_win = NULL;
+struct android_app *_app = NULL;
 
 /*
 todo: this is called every frame, but actually only required
@@ -98,6 +100,56 @@ const yourgame::context &getCtx()
 // do nothing. we do not exit the app manually
 void notifyShutdown() {}
 
+int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
+{
+    // the whole procedure (get environment, etc.) is done every time to
+    // not risk inconsistencies with global references to JNI objects.
+
+    JavaVM* jVM = _app->activity->vm;
+    JNIEnv* jEnv = NULL;
+
+    // todo: clearify JNI version to request
+    jint jniRet = jVM->GetEnv((void**)&jEnv, JNI_VERSION_1_6);
+    if(jniRet == JNI_ERR)
+    {
+        return -1;
+    }
+
+    jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
+    if(jniRet != JNI_OK)
+    {
+        return -2;
+    }
+
+    jclass natActClazz = jEnv->GetObjectClass(_app->activity->clazz);
+    if(natActClazz == NULL)
+    {
+        return -3;
+    }
+
+    // get the "method ID"
+    jmethodID methodID = jEnv->GetMethodID(natActClazz, "receiveCmd", "(IIII)I");
+    if(methodID == NULL)
+    {
+        return -4;
+    }
+
+    // call the actual method
+    jint methodRet = jEnv->CallIntMethod(_app->activity->clazz, methodID, cmdId, data0, data1, data2);
+    if(methodRet != 0)
+    {
+        return -10;
+    }
+
+    jniRet = jVM->DetachCurrentThread();
+    if(jniRet != JNI_OK)
+    {
+        return -5;
+    }
+
+    return 0;
+}
+
 // INTERNAL API
 bool isInitialized()
 {
@@ -112,6 +164,7 @@ void init(struct android_app *app)
     }
 
     _win = app->window;
+    _app = app;
 
     initInput(app);
     initFileIO(app);

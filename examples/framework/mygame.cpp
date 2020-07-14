@@ -69,6 +69,9 @@ namespace mygame
 
         initGlScene();
 
+        // arbitrary test command
+        yourgame::sendCmdToEnv(1, 10, 1024, -15);
+
 #ifdef YOURGAME_PLATFORM_ANDROID
         // arbitrary scale-up on android,
         // todo: DPI awareness

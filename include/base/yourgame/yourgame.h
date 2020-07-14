@@ -47,6 +47,9 @@ const yourgame::context &getCtx();
 \attention no effect on platforms other than `desktop` */
 void notifyShutdown();
 
+/** \brief sends a (user-defined) command to the application host environment */
+int sendCmdToEnv(int cmdId, int data0, int data1, int data2);
+
 /** \brief log debug */
 template <typename T, typename... Args>
 inline void logd(const char *s, const T &value, const Args &... args)
