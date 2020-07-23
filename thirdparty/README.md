@@ -112,8 +112,8 @@ Here is a list of available third-party libraries ("External Projects") that can
 
 ## miniaudio
 
--   version: **0.10.0, d1a166c (master)**
--   origin: <https://github.com/dr-soft/miniaudio/tree/d1a166c83ab445b1c14bc83d37c84e18d172e5f5>
+-   version: **0.10.15, b80f7f9 (master)**
+-   origin: <https://github.com/dr-soft/miniaudio/tree/b80f7f949152f93a0af499b4d6d07b8e60d0e673>
 -   extracted from origin:
     -   miniaudio.h, LICENSE
 -   license: [miniaudio/LICENSE](miniaudio/LICENSE)
