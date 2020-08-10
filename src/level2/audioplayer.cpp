@@ -276,10 +276,10 @@ namespace yourgame
         }
         ma_mutex_unlock(&g_mtxSources);
 
-        return 0;
+        return ret;
     }
 
-    int audioSetChannelGains(int sourceId, std::vector<float> gains)
+    int audioSetChannelGains(int sourceId, const std::vector<float> &gains)
     {
         int ret = 0;
 

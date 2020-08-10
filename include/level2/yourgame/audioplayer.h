@@ -34,7 +34,7 @@ namespace yourgame
     int audioPlay(std::string filename, bool loop = false);
     int audioStop(int sourceId);
     int audioPause(int sourceId, bool pause);
-    int audioSetChannelGains(int sourceId, std::vector<float> gains);
+    int audioSetChannelGains(int sourceId, const std::vector<float> &gains);
 } // namespace yourgame
 
 #endif
