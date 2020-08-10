@@ -14,6 +14,11 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 {%- endfor -%}
 )
 
+{%- if YOURGAME_BARE == true %}
+# bare
+set(YOURGAME_BARE TRUE)
+{%- endif %}
+
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ YOURGAME_ROOT }}
   ${CMAKE_CURRENT_BINARY_DIR}/libyourgame
@@ -83,13 +88,19 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
   # enforce GLFW v3 API (default is v2)
   # enforce WEB GL v2 (default is v1)
-  # make sure assets/ gets copied into the wasm file system
-  # todo: allow projects without assets (do not copy assets/)
   set(C_CXX_FLAGS_FOR_EM
     "-s USE_GLFW=3 \
     -s USE_WEBGL2=1 \
-    --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets \
     --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/shell.html")
+  # make sure assets/ gets copied into the wasm file system,
+  # but only if any asset files exist
+  file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
+  if(ASSET_FILES)
+    set(C_CXX_FLAGS_FOR_EM
+      "${C_CXX_FLAGS_FOR_EM} \
+      --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
+  endif()
+
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
 endif()

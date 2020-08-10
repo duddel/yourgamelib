@@ -12,8 +12,9 @@ set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
 
 # toolbox
-# todo: add option "bare" for projects without toolbox
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Toolbox.cmake)
+if(NOT DEFINED YOURGAME_BARE)
+  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Toolbox.cmake)
+endif()
 
 # sources
 list(APPEND YOURGAME_SRC_FILES
