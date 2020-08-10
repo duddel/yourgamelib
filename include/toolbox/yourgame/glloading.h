@@ -17,20 +17,15 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_LEVEL2_H
-#define YOURGAME_LEVEL2_H
+#ifndef YOURGAME_GLLOADING_H
+#define YOURGAME_GLLOADING_H
 
+#include <string>
+#include <vector>
 #include "yourgame/gl_include.h"
-// the following includes are part of the yourgame (level2) API
-#include "yourgame/audioplayer.h"
-#include "yourgame/camera.h"
-#include "yourgame/glbuffer.h"
-#include "yourgame/glconventions.h"
 #include "yourgame/glgeometry.h"
 #include "yourgame/glshader.h"
-#include "yourgame/glshape.h"
 #include "yourgame/gltexture2d.h"
-#include "yourgame/trafo.h"
 
 namespace yourgame
 {
@@ -41,6 +36,6 @@ namespace yourgame
                          std::vector<std::pair<GLuint, std::string>> fragDataLocs);
 
     GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename);
-}
+} // namespace yourgame
 
 #endif

@@ -10,8 +10,6 @@
 
 ## Kick-start
 
-> **ToDo:** Mention Scopes
-
 Download or clone this repository and run the Python script `tools/init.py` from an arbitrary location, like so:
 
     python <path_to_yourgamelib>/tools/init.py MyGame

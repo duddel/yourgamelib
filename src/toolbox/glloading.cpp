@@ -175,4 +175,4 @@ namespace yourgame
 
         return newGeo;
     }
-} // namespace mygame
+} // namespace yourgame

@@ -11,10 +11,9 @@ set(YOURGAME_GL_MINOR 3)
 set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
 
-# scope
-if(DEFINED YOURGAME_SCOPE)
-  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Scope-${YOURGAME_SCOPE}.cmake)
-endif()
+# toolbox
+# todo: add option "bare" for projects without toolbox
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Toolbox.cmake)
 
 # sources
 list(APPEND YOURGAME_SRC_FILES

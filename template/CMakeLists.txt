@@ -14,9 +14,6 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 {%- endfor -%}
 )
 
-# scope
-set(YOURGAME_SCOPE "{{ YOURGAME_SCOPE_NAME }}")
-
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ YOURGAME_ROOT }}
   ${CMAKE_CURRENT_BINARY_DIR}/libyourgame

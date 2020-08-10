@@ -20,7 +20,6 @@ def copy_file_items(items, src, dst):
 aPars = argparse.ArgumentParser(
     description="Initialize a new YourGameLib project from template")
 aPars.add_argument("name", type=str, help='name of the new project')
-aPars.add_argument("scope", type=str, help='scope of the new project')
 aPars.add_argument('--noSources', action='store_true',
                    help='do not copy source files from template')
 aPars.add_argument("--extProj", nargs="*", type=str, default=[],
@@ -30,9 +29,6 @@ args = aPars.parse_args()
 # name of project (from args)
 newProjName = args.name
 newProjNameLower = args.name.lower()
-
-# scope (from args)
-newProjScope = args.scope
 
 # assuming this script lies in yourgamelib/tools, this computes the relative
 # path from new project root to yourgamelib/
@@ -73,7 +69,6 @@ templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_ROOT=ygRootRel,
     YOURGAME_PROJECT_NAME=newProjName,
-    YOURGAME_SCOPE_NAME=newProjScope,
     YOURGAME_MY_SOURCES=dstSources,
     YOURGAME_EXT_PROJ=args.extProj
 ).dump(os.path.join(tgtDir, "CMakeLists.txt"))
