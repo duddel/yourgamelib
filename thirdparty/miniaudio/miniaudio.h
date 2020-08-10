@@ -1,11 +1,12 @@
 /*
 Audio playback and capture library. Choice of public domain or MIT-0. See license statements at the end of this file.
-miniaudio - v0.10.15 - 2020-07-15
+miniaudio - v0.10.16 - TBD
 
 David Reid - davidreidsoftware@gmail.com
 
-Website: https://miniaud.io
-GitHub:  https://github.com/dr-soft/miniaudio
+Website:       https://miniaud.io
+Documentation: https://miniaud.io/docs
+GitHub:        https://github.com/dr-soft/miniaudio
 */
 
 /*
@@ -18,7 +19,7 @@ miniaudio is a single file library for audio playback and capture. To use it, do
     #include "miniaudio.h"
     ```
 
-You can do `#include miniaudio.h` in other parts of the program just like any other header.
+You can do `#include "miniaudio.h"` in other parts of the program just like any other header.
 
 miniaudio uses the concept of a "device" as the abstraction for physical devices. The idea is that you choose a physical device to emit or capture audio from,
 and then move data to/from the device when miniaudio tells you to. Data is delivered to and from devices asynchronously via a callback which you specify when
@@ -39,25 +40,27 @@ but you could allocate it on the heap if that suits your situation better.
         // frameCount frames.
     }
 
-    ...
+    int main()
+    {
+        ma_device_config config = ma_device_config_init(ma_device_type_playback);
+        config.playback.format   = ma_format_f32;   // Set to ma_format_unknown to use the device's native format.
+        config.playback.channels = 2;               // Set to 0 to use the device's native channel count.
+        config.sampleRate        = 48000;           // Set to 0 to use the device's native sample rate.
+        config.dataCallback      = data_callback;   // This function will be called when miniaudio needs more data.
+        config.pUserData         = pMyCustomData;   // Can be accessed from the device object (device.pUserData).
 
-    ma_device_config config = ma_device_config_init(ma_device_type_playback);
-    config.playback.format   = MY_FORMAT;
-    config.playback.channels = MY_CHANNEL_COUNT;
-    config.sampleRate        = MY_SAMPLE_RATE;
-    config.dataCallback      = data_callback;
-    config.pUserData         = pMyCustomData;   // Can be accessed from the device object (device.pUserData).
+        ma_device device;
+        if (ma_device_init(NULL, &config, &device) != MA_SUCCESS) {
+            return -1;  // Failed to initialize the device.
+        }
 
-    ma_device device;
-    if (ma_device_init(NULL, &config, &device) != MA_SUCCESS) {
-        ... An error occurred ...
+        ma_device_start(&device);     // The device is sleeping by default so you'll need to start it manually.
+
+        // Do something here. Probably your program's main loop.
+
+        ma_device_uninit(&device);    // This will stop the device so no need to do that manually.
+        return 0;
     }
-
-    ma_device_start(&device);     // The device is sleeping by default so you'll need to start it manually.
-
-    ...
-
-    ma_device_uninit(&device);    // This will stop the device so no need to do that manually.
     ```
 
 In the example above, `data_callback()` is where audio data is written and read from the device. The idea is in playback mode you cause sound to be emitted
@@ -161,22 +164,22 @@ backends and enumerating devices. The example below shows how to enumerate devic
         // Error.
     }
 
-    ma_device_info* pPlaybackDeviceInfos;
-    ma_uint32 playbackDeviceCount;
-    ma_device_info* pCaptureDeviceInfos;
-    ma_uint32 captureDeviceCount;
-    if (ma_context_get_devices(&context, &pPlaybackDeviceInfos, &playbackDeviceCount, &pCaptureDeviceInfos, &captureDeviceCount) != MA_SUCCESS) {
+    ma_device_info* pPlaybackInfos;
+    ma_uint32 playbackCount;
+    ma_device_info* pCaptureInfos;
+    ma_uint32 captureCount;
+    if (ma_context_get_devices(&context, &pPlaybackInfos, &playbackCount, &pCaptureInfos, &captureCount) != MA_SUCCESS) {
         // Error.
     }
 
-    // Loop over each device info and do something with it. Here we just print the name with their index. You may want to give the user the
-    // opportunity to choose which device they'd prefer.
-    for (ma_uint32 iDevice = 0; iDevice < playbackDeviceCount; iDevice += 1) {
-        printf("%d - %s\n", iDevice, pPlaybackDeviceInfos[iDevice].name);
+    // Loop over each device info and do something with it. Here we just print the name with their index. You may want
+    // to give the user the opportunity to choose which device they'd prefer.
+    for (ma_uint32 iDevice = 0; iDevice < playbackCount; iDevice += 1) {
+        printf("%d - %s\n", iDevice, pPlaybackInfos[iDevice].name);
     }
 
     ma_device_config config = ma_device_config_init(ma_device_type_playback);
-    config.playback.pDeviceID = &pPlaybackDeviceInfos[chosenPlaybackDeviceIndex].id;
+    config.playback.pDeviceID = &pPlaybackInfos[chosenPlaybackDeviceIndex].id;
     config.playback.format    = MY_FORMAT;
     config.playback.channels  = MY_CHANNEL_COUNT;
     config.sampleRate         = MY_SAMPLE_RATE;
@@ -381,8 +384,18 @@ All formats are native-endian.
 
 4. Decoding
 ===========
-The `ma_decoder` API is used for reading audio files. Built in support is included for WAV, FLAC and MP3. Support for Vorbis is enabled via stb_vorbis which
-can be enabled by including the header section before the implementation of miniaudio, like the following:
+The `ma_decoder` API is used for reading audio files. The following formats are supported:
+
+    +---------+------------------+----------+
+    | Format  | Decoding Backend | Built-In |
+    +---------+------------------+----------+
+    | WAV     | dr_wav           | Yes      |
+    | MP3     | dr_mp3           | Yes      |
+    | FLAC    | dr_flac          | Yes      |
+    | Vorbis  | stb_vorbis       | No       |
+    +---------+------------------+----------+
+
+Vorbis is supported via stb_vorbis which can be enabled by including the header section before the implementation of miniaudio, like the following:
 
     ```c
     #define STB_VORBIS_HEADER_ONLY
@@ -398,16 +411,16 @@ can be enabled by including the header section before the implementation of mini
 
 A copy of stb_vorbis is included in the "extras" folder in the miniaudio repository (https://github.com/dr-soft/miniaudio).
 
-Built-in decoders are implemented via dr_wav, dr_flac and dr_mp3. These are amalgamated into the implementation section of miniaudio. You can disable the
-built-in decoders by specifying one or more of the following options before the miniaudio implementation:
+Built-in decoders are amalgamated into the implementation section of miniaudio. You can disable the built-in decoders by specifying one or more of the
+following options before the miniaudio implementation:
 
     ```c
     #define MA_NO_WAV
-    #define MA_NO_FLAC
     #define MA_NO_MP3
+    #define MA_NO_FLAC
     ```
 
-Disabling built-in versions of dr_wav, dr_flac and dr_mp3 is useful if you use these libraries independantly of the `ma_decoder` API.
+Disabling built-in decoding libraries is useful if you use these libraries independantly of the `ma_decoder` API.
 
 A decoder can be initialized from a file with `ma_decoder_init_file()`, a block of memory with `ma_decoder_init_memory()`, or from data delivered via callbacks
 with `ma_decoder_init()`. Here is an example for loading a decoder from a file:
@@ -569,7 +582,14 @@ Channel conversion is used for channel rearrangement and conversion from one cha
 conversion. Below is an example of initializing a simple channel converter which converts from mono to stereo.
 
     ```c
-    ma_channel_converter_config config = ma_channel_converter_config_init(ma_format, 1, NULL, 2, NULL, ma_channel_mix_mode_default, NULL);
+    ma_channel_converter_config config = ma_channel_converter_config_init(
+        ma_format,                      // Sample format
+        1,                              // Input channels
+        NULL,                           // Input channel map
+        2,                              // Output channels
+        NULL,                           // Output channel map
+        ma_channel_mix_mode_default);   // The mixing algorithm to use when combining channels.
+
     result = ma_channel_converter_init(&config, &converter);
     if (result != MA_SUCCESS) {
         // Error.
@@ -595,7 +615,7 @@ Input and output PCM frames are always interleaved. Deinterleaved layouts are no
 
 6.2.1. Channel Mapping
 ----------------------
-In addition to converting from one channel count to another, like the example above, The channel converter can also be used to rearrange channels. When
+In addition to converting from one channel count to another, like the example above, the channel converter can also be used to rearrange channels. When
 initializing the channel converter, you can optionally pass in channel maps for both the input and output frames. If the channel counts are the same, and each
 channel map contains the same channel positions with the exception that they're in a different order, a simple shuffling of the channels will be performed. If,
 however, there is not a 1:1 mapping of channel positions, or the channel counts differ, the input channels will be mixed based on a mixing mode which is
@@ -627,7 +647,7 @@ be one of the following:
     | ma_standard_channel_map_flac      | FLAC channel map.                                         |
     | ma_standard_channel_map_vorbis    | Vorbis channel map.                                       |
     | ma_standard_channel_map_sound4    | FreeBSD's sound(4).                                       |
-    | ma_standard_channel_map_sndio     | sndio channel map. http://www.sndio.org/tips.html         |
+    | ma_standard_channel_map_sndio     | sndio channel map. http://www.sndio.org/tips.html.        |
     | ma_standard_channel_map_webaudio  | https://webaudio.github.io/web-audio-api/#ChannelOrdering | 
     +-----------------------------------+-----------------------------------------------------------+
 
@@ -692,7 +712,13 @@ Below are the channel maps used by default in miniaudio (ma_standard_channel_map
 Resampling is achieved with the `ma_resampler` object. To create a resampler object, do something like the following:
 
     ```c
-    ma_resampler_config config = ma_resampler_config_init(ma_format_s16, channels, sampleRateIn, sampleRateOut, ma_resample_algorithm_linear);
+    ma_resampler_config config = ma_resampler_config_init(
+        ma_format_s16,
+        channels,
+        sampleRateIn,
+        sampleRateOut,
+        ma_resample_algorithm_linear);
+
     ma_resampler resampler;
     ma_result result = ma_resampler_init(&config, &resampler);
     if (result != MA_SUCCESS) {
@@ -1077,7 +1103,13 @@ adjust the volume of low frequencies, the high shelf filter does the same thing 
 miniaudio supports generation of sine, square, triangle and sawtooth waveforms. This is achieved with the `ma_waveform` API. Example:
 
     ```c
-    ma_waveform_config config = ma_waveform_config_init(FORMAT, CHANNELS, SAMPLE_RATE, ma_waveform_type_sine, amplitude, frequency);
+    ma_waveform_config config = ma_waveform_config_init(
+        FORMAT,
+        CHANNELS,
+        SAMPLE_RATE,
+        ma_waveform_type_sine,
+        amplitude,
+        frequency);
 
     ma_waveform waveform;
     ma_result result = ma_waveform_init(&config, &waveform);
@@ -1093,7 +1125,7 @@ miniaudio supports generation of sine, square, triangle and sawtooth waveforms. 
 The amplitude, frequency and sample rate can be changed dynamically with `ma_waveform_set_amplitude()`, `ma_waveform_set_frequency()` and
 `ma_waveform_set_sample_rate()` respectively.
 
-You can reverse the waveform by setting the amplitude to a negative value. You can use this to control whether or not a sawtooth has a positive or negative
+You can invert the waveform by setting the amplitude to a negative value. You can use this to control whether or not a sawtooth has a positive or negative
 ramp, for example.
 
 Below are the supported waveform types:
@@ -1114,7 +1146,12 @@ Below are the supported waveform types:
 miniaudio supports generation of white, pink and Brownian noise via the `ma_noise` API. Example:
 
     ```c
-    ma_noise_config config = ma_noise_config_init(FORMAT, CHANNELS, ma_noise_type_white, SEED, amplitude);
+    ma_noise_config config = ma_noise_config_init(
+        FORMAT,
+        CHANNELS,
+        ma_noise_type_white,
+        SEED,
+        amplitude);
 
     ma_noise noise;
     ma_result result = ma_noise_init(&config, &noise);
@@ -1151,13 +1188,19 @@ Below are the supported noise types.
 
 9. Audio Buffers
 ================
-miniaudio supports reading from a buffer of raw audio data via the `ma_audio_buffer` API. This can read from both memory that's managed by the application, but
-can also handle the memory management for you internally. The way memory is managed is flexible and should support most use cases.
+miniaudio supports reading from a buffer of raw audio data via the `ma_audio_buffer` API. This can read from memory that's managed by the application, but
+can also handle the memory management for you internally. Memory management is flexible and should support most use cases.
 
 Audio buffers are initialised using the standard configuration system used everywhere in miniaudio:
 
     ```c
-    ma_audio_buffer_config config = ma_audio_buffer_config_init(format, channels, sizeInFrames, pExistingData, &allocationCallbacks);
+    ma_audio_buffer_config config = ma_audio_buffer_config_init(
+        format,
+        channels,
+        sizeInFrames,
+        pExistingData,
+        &allocationCallbacks);
+
     ma_audio_buffer buffer;
     result = ma_audio_buffer_init(&config, &buffer);
     if (result != MA_SUCCESS) {
@@ -1169,14 +1212,20 @@ Audio buffers are initialised using the standard configuration system used every
     ma_audio_buffer_uninit(&buffer);
     ```
 
-In the example above, the memory pointed to by `pExistingData` will _not_ be copied which is how an application can handle memory allocations themselves. If
-you would rather make a copy of the data, use `ma_audio_buffer_init_copy()`. To uninitialize the buffer, use `ma_audio_buffer_uninit()`.
+In the example above, the memory pointed to by `pExistingData` will _not_ be copied and is how an application can do self-managed memory allocation. If you
+would rather make a copy of the data, use `ma_audio_buffer_init_copy()`. To uninitialize the buffer, use `ma_audio_buffer_uninit()`.
 
 Sometimes it can be convenient to allocate the memory for the `ma_audio_buffer` structure _and_ the raw audio data in a contiguous block of memory. That is,
 the raw audio data will be located immediately after the `ma_audio_buffer` structure. To do this, use `ma_audio_buffer_alloc_and_init()`:
 
     ```c
-    ma_audio_buffer_config config = ma_audio_buffer_config_init(format, channels, sizeInFrames, pExistingData, &allocationCallbacks);
+    ma_audio_buffer_config config = ma_audio_buffer_config_init(
+        format,
+        channels,
+        sizeInFrames,
+        pExistingData,
+        &allocationCallbacks);
+
     ma_audio_buffer* pBuffer
     result = ma_audio_buffer_alloc_and_init(&config, &pBuffer);
     if (result != MA_SUCCESS) {
@@ -1251,8 +1300,8 @@ ring buffer that operates on bytes you would call `ma_rb_init()` which leaves th
 fourth parameter is an optional pre-allocated buffer and the fifth parameter is a pointer to a `ma_allocation_callbacks` structure for custom memory allocation
 routines. Passing in `NULL` for this results in `MA_MALLOC()` and `MA_FREE()` being used.
 
-Use `ma_pcm_rb_init_ex()` if you need a deinterleaved buffer. The data for each sub-buffer is offset from each other based on the stride. To manage your sub-
-buffers you can use `ma_pcm_rb_get_subbuffer_stride()`, `ma_pcm_rb_get_subbuffer_offset()` and `ma_pcm_rb_get_subbuffer_ptr()`.
+Use `ma_pcm_rb_init_ex()` if you need a deinterleaved buffer. The data for each sub-buffer is offset from each other based on the stride. To manage your
+sub-buffers you can use `ma_pcm_rb_get_subbuffer_stride()`, `ma_pcm_rb_get_subbuffer_offset()` and `ma_pcm_rb_get_subbuffer_ptr()`.
 
 Use 'ma_pcm_rb_acquire_read()` and `ma_pcm_rb_acquire_write()` to retrieve a pointer to a section of the ring buffer. You specify the number of frames you
 need, and on output it will set to what was actually acquired. If the read or write pointer is positioned such that the number of frames requested will require
@@ -1269,7 +1318,7 @@ the consumer thread, and the write pointer forward by the producer thread. If th
 there is too little space between the pointers, move the write pointer forward.
 
 You can use a ring buffer at the byte level instead of the PCM frame level by using the `ma_rb` API. This is exactly the same, only you will use the `ma_rb`
-functions instead of `ma_pcm_rb` and instead of frame counts pass around byte counts.
+functions instead of `ma_pcm_rb` and instead of frame counts you will pass around byte counts.
 
 The maximum size of the buffer in bytes is `0x7FFFFFFF-(MA_SIMD_ALIGNMENT-1)` due to the most significant bit being used to encode a loop flag and the internally
 managed buffers always being aligned to MA_SIMD_ALIGNMENT.
@@ -1374,7 +1423,7 @@ extern "C" {
 
 #define MA_VERSION_MAJOR    0
 #define MA_VERSION_MINOR    10
-#define MA_VERSION_REVISION 15
+#define MA_VERSION_REVISION 16
 #define MA_VERSION_STRING   MA_XSTRINGIFY(MA_VERSION_MAJOR) "." MA_XSTRINGIFY(MA_VERSION_MINOR) "." MA_XSTRINGIFY(MA_VERSION_REVISION)
 
 #if defined(_MSC_VER) && !defined(__clang__)
@@ -1898,7 +1947,7 @@ MA_API void ma_version(ma_uint32* pMajor, ma_uint32* pMinor, ma_uint32* pRevisio
 /*
 Retrieves the version of miniaudio as a string which can be useful for logging purposes.
 */
-MA_API const char* ma_version_string();
+MA_API const char* ma_version_string(void);
 
 
 /**************************************************************************************************************************************************************
@@ -3162,6 +3211,8 @@ typedef struct
     {
         ma_ios_session_category sessionCategory;
         ma_uint32 sessionCategoryOptions;
+        ma_bool32 noAudioSessionActivate;   /* iOS only. When set to true, does not perform an explicit [[AVAudioSession sharedInstace] setActive:true] on initialization. */
+        ma_bool32 noAudioSessionDeactivate; /* iOS only. When set to true, does not perform an explicit [[AVAudioSession sharedInstace] setActive:false] on uninitialization. */
     } coreaudio;
     struct
     {
@@ -3430,6 +3481,8 @@ struct ma_context
             ma_proc AudioUnitRender;
             
             /*AudioComponent*/ ma_ptr component;
+            
+            ma_bool32 noAudioSessionDeactivate; /* For tracking whether or not the iOS audio session should be explicitly deactivated. Set from the config in ma_context_init__coreaudio(). */
         } coreaudio;
 #endif
 #ifdef MA_SUPPORT_SNDIO
@@ -3502,7 +3555,14 @@ struct ma_context
 #ifdef MA_SUPPORT_OPENSL
         struct
         {
-            int _unused;
+            ma_handle libOpenSLES;
+            ma_handle SL_IID_ENGINE;
+            ma_handle SL_IID_AUDIOIODEVICECAPABILITIES;
+            ma_handle SL_IID_ANDROIDSIMPLEBUFFERQUEUE;
+            ma_handle SL_IID_RECORD;
+            ma_handle SL_IID_PLAY;
+            ma_handle SL_IID_OUTPUTMIX;
+            ma_proc   slCreateEngine;
         } opensl;
 #endif
 #ifdef MA_SUPPORT_WEBAUDIO
@@ -3603,6 +3663,7 @@ struct ma_device
     } resampling;
     struct
     {
+        ma_device_id id;                    /* If using an explicit device, will be set to a copy of the ID used for initialization. Otherwise cleared to 0. */
         char name[256];                     /* Maybe temporary. Likely to be replaced with a query API. */
         ma_share_mode shareMode;            /* Set to whatever was passed in when the device was initialized. */
         ma_bool32 usingDefaultFormat     : 1;
@@ -3621,6 +3682,7 @@ struct ma_device
     } playback;
     struct
     {
+        ma_device_id id;                    /* If using an explicit device, will be set to a copy of the ID used for initialization. Otherwise cleared to 0. */
         char name[256];                     /* Maybe temporary. Likely to be replaced with a query API. */
         ma_share_mode shareMode;            /* Set to whatever was passed in when the device was initialized. */
         ma_bool32 usingDefaultFormat     : 1;
@@ -6276,7 +6338,7 @@ MA_API void ma_version(ma_uint32* pMajor, ma_uint32* pMinor, ma_uint32* pRevisio
     }
 }
 
-MA_API const char* ma_version_string()
+MA_API const char* ma_version_string(void)
 {
     return MA_VERSION_STRING;
 }
@@ -11019,8 +11081,6 @@ typedef struct
 #define WAVE_FORMAT_IEEE_FLOAT  0x0003
 #endif
 
-static GUID MA_GUID_NULL = {0x00000000, 0x0000, 0x0000, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
-
 /* Converts an individual Win32-style channel identifier (SPEAKER_FRONT_LEFT, etc.) to miniaudio. */
 static ma_uint8 ma_channel_id_to_ma__win32(DWORD id)
 {
@@ -11125,6 +11185,12 @@ static ma_bool32 ma_is_guid_equal(const void* a, const void* b)
 #else
 #define ma_is_guid_equal(a, b) IsEqualGUID((const GUID*)a, (const GUID*)b)
 #endif
+
+static MA_INLINE ma_bool32 ma_is_guid_null(const void* guid)
+{
+    static GUID nullguid = {0x00000000, 0x0000, 0x0000, {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}};
+    return ma_is_guid_equal(guid, &nullguid);
+}
 
 static ma_format ma_format_from_WAVEFORMATEX(const WAVEFORMATEX* pWF)
 {
@@ -11839,16 +11905,38 @@ static ULONG STDMETHODCALLTYPE ma_IMMNotificationClient_Release(ma_IMMNotificati
     return (ULONG)newRefCount;
 }
 
-
 static HRESULT STDMETHODCALLTYPE ma_IMMNotificationClient_OnDeviceStateChanged(ma_IMMNotificationClient* pThis, LPCWSTR pDeviceID, DWORD dwNewState)
 {
+    ma_bool32 isThisDevice = MA_FALSE;
+
 #ifdef MA_DEBUG_OUTPUT
-    /*printf("IMMNotificationClient_OnDeviceStateChanged(pDeviceID=%S, dwNewState=%u)\n", (pDeviceID != NULL) ? pDeviceID : L"(NULL)", (unsigned int)dwNewState);*/
+    printf("IMMNotificationClient_OnDeviceStateChanged(pDeviceID=%S, dwNewState=%u)\n", (pDeviceID != NULL) ? pDeviceID : L"(NULL)", (unsigned int)dwNewState);
 #endif
 
-    (void)pThis;
-    (void)pDeviceID;
-    (void)dwNewState;
+    if ((dwNewState & MA_MM_DEVICE_STATE_ACTIVE) != 0) {
+        return S_OK;
+    }
+
+    /*
+    There have been reports of a hang when a playback device is disconnected. The idea with this code is to explicitly stop the device if we detect
+    that the device is disabled or has been unplugged.
+    */
+    if (pThis->pDevice->type == ma_device_type_capture || pThis->pDevice->type == ma_device_type_duplex || pThis->pDevice->type == ma_device_type_loopback) {
+        if (wcscmp(pThis->pDevice->capture.id.wasapi, pDeviceID) == 0) {
+            isThisDevice = MA_TRUE;
+        }
+    }
+
+    if (pThis->pDevice->type == ma_device_type_playback || pThis->pDevice->type == ma_device_type_duplex) {
+        if (wcscmp(pThis->pDevice->playback.id.wasapi, pDeviceID) == 0) {
+            isThisDevice = MA_TRUE;
+        }
+    }
+
+    if (isThisDevice) {
+        ma_device_stop(pThis->pDevice);
+    }
+    
     return S_OK;
 }
 
@@ -12127,6 +12215,8 @@ static ma_result ma_context_create_IMMDeviceEnumerator__wasapi(ma_context* pCont
 
     MA_ASSERT(pContext           != NULL);
     MA_ASSERT(ppDeviceEnumerator != NULL);
+
+    *ppDeviceEnumerator = NULL; /* Safety. */
 
     hr = ma_CoCreateInstance(pContext, MA_CLSID_MMDeviceEnumerator, NULL, CLSCTX_ALL, MA_IID_IMMDeviceEnumerator, (void**)&pDeviceEnumerator);
     if (FAILED(hr)) {
@@ -13322,7 +13412,7 @@ static ma_result ma_device_init__wasapi(ma_context* pContext, const ma_device_co
             pDevice->wasapi.allowPlaybackAutoStreamRouting = MA_TRUE;
         }
 
-        if (pDevice->wasapi.allowCaptureAutoStreamRouting || pDevice->wasapi.allowPlaybackAutoStreamRouting) {
+        //if (pDevice->wasapi.allowCaptureAutoStreamRouting || pDevice->wasapi.allowPlaybackAutoStreamRouting) {
             ma_IMMDeviceEnumerator* pDeviceEnumerator;
             HRESULT hr = ma_CoCreateInstance(pContext, MA_CLSID_MMDeviceEnumerator, NULL, CLSCTX_ALL, MA_IID_IMMDeviceEnumerator, (void**)&pDeviceEnumerator);
             if (FAILED(hr)) {
@@ -13341,7 +13431,7 @@ static ma_result ma_device_init__wasapi(ma_context* pContext, const ma_device_co
                 /* Not the end of the world if we fail to register the notification callback. We just won't support automatic stream routing. */
                 ma_IMMDeviceEnumerator_Release(pDeviceEnumerator);
             }
-        }
+        //}
     }
 #endif
 
@@ -13437,11 +13527,17 @@ static ma_result ma_device_stop__wasapi(ma_device* pDevice)
     MA_ASSERT(pDevice != NULL);
 
     /*
-    We need to explicitly signal the capture event in loopback mode to ensure we return from WaitForSingleObject() when nothing is being played. When nothing
+    It's possible for the main loop to get stuck if the device is disconnected.
+    
+    In loopback mode it's possible for WaitForSingleObject() to get stuck in a deadlock when nothing is being played. When nothing
     is being played, the event is never signalled internally by WASAPI which means we will deadlock when stopping the device.
     */
-    if (pDevice->type == ma_device_type_loopback) {
+    if (pDevice->type == ma_device_type_capture || pDevice->type == ma_device_type_duplex || pDevice->type == ma_device_type_duplex) {
         SetEvent((HANDLE)pDevice->wasapi.hEventCapture);
+    }
+
+    if (pDevice->type == ma_device_type_playback || pDevice->type == ma_device_type_duplex) {
+        SetEvent((HANDLE)pDevice->wasapi.hEventPlayback);
     }
 
     return MA_SUCCESS;
@@ -13514,7 +13610,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                 if (pMappedDeviceBufferPlayback == NULL) {
                     /* WASAPI is weird with exclusive mode. You need to wait on the event _before_ querying the available frames. */
                     if (pDevice->playback.shareMode == ma_share_mode_exclusive) {
-                        if (WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE) == WAIT_FAILED) {
+                        if (WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE) != WAIT_OBJECT_0) {
                             return MA_ERROR;   /* Wait failed. */
                         }
                     }
@@ -13538,7 +13634,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                     if (framesAvailablePlayback == 0) {
                         /* In exclusive mode we waited at the top. */
                         if (pDevice->playback.shareMode != ma_share_mode_exclusive) {
-                            if (WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE) == WAIT_FAILED) {
+                            if (WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE) != WAIT_OBJECT_0) {
                                 return MA_ERROR;   /* Wait failed. */
                             }
                         }
@@ -13563,7 +13659,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                     /* Try grabbing some captured data if we haven't already got a mapped buffer. */
                     if (pMappedDeviceBufferCapture == NULL) {
                         if (pDevice->capture.shareMode == ma_share_mode_shared) {
-                            if (WaitForSingleObject(pDevice->wasapi.hEventCapture, INFINITE) == WAIT_FAILED) {
+                            if (WaitForSingleObject(pDevice->wasapi.hEventCapture, INFINITE) != WAIT_OBJECT_0) {
                                 return MA_ERROR;   /* Wait failed. */
                             }
                         }
@@ -13580,7 +13676,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                         if (framesAvailableCapture == 0) {
                             /* In exclusive mode we waited at the top. */
                             if (pDevice->capture.shareMode != ma_share_mode_shared) {
-                                if (WaitForSingleObject(pDevice->wasapi.hEventCapture, INFINITE) == WAIT_FAILED) {
+                                if (WaitForSingleObject(pDevice->wasapi.hEventCapture, INFINITE) != WAIT_OBJECT_0) {
                                     return MA_ERROR;   /* Wait failed. */
                                 }
                             }
@@ -13823,7 +13919,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                 DWORD flagsCapture;    /* Passed to IAudioCaptureClient_GetBuffer(). */
 
                 /* Wait for data to become available first. */
-                if (WaitForSingleObject(pDevice->wasapi.hEventCapture, INFINITE) == WAIT_FAILED) {
+                if (WaitForSingleObject(pDevice->wasapi.hEventCapture, INFINITE) != WAIT_OBJECT_0) {
                     exitLoop = MA_TRUE;
                     break;   /* Wait failed. */
                 }
@@ -13921,7 +14017,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                 ma_uint32 framesAvailablePlayback;
 
                 /* Wait for space to become available first. */
-                if (WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE) == WAIT_FAILED) {
+                if (WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE) != WAIT_OBJECT_0) {
                     exitLoop = MA_TRUE;
                     break;   /* Wait failed. */
                 }
@@ -14009,8 +14105,11 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
         the speakers. This is a problem for very short sounds because it'll result in a significant portion of it not getting played.
         */
         if (pDevice->wasapi.isStartedPlayback) {
+            /* We need to make sure we put a timeout here or else we'll risk getting stuck in a deadlock in some cases. */
+            DWORD waitTime = pDevice->wasapi.actualPeriodSizeInFramesPlayback / pDevice->playback.internalSampleRate;
+
             if (pDevice->playback.shareMode == ma_share_mode_exclusive) {
-                WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE);
+                WaitForSingleObject(pDevice->wasapi.hEventPlayback, waitTime);
             } else {
                 ma_uint32 prevFramesAvaialablePlayback = (ma_uint32)-1;
                 ma_uint32 framesAvailablePlayback;
@@ -14033,7 +14132,7 @@ static ma_result ma_device_main_loop__wasapi(ma_device* pDevice)
                     }
                     prevFramesAvaialablePlayback = framesAvailablePlayback;
 
-                    WaitForSingleObject(pDevice->wasapi.hEventPlayback, INFINITE);
+                    WaitForSingleObject(pDevice->wasapi.hEventPlayback, waitTime);
                     ResetEvent(pDevice->wasapi.hEventPlayback); /* Manual reset. */
                 }
             }
@@ -14781,7 +14880,7 @@ static BOOL CALLBACK ma_context_get_device_info_callback__dsound(LPGUID lpGuid, 
     ma_context_get_device_info_callback_data__dsound* pData = (ma_context_get_device_info_callback_data__dsound*)lpContext;
     MA_ASSERT(pData != NULL);
 
-    if ((pData->pDeviceID == NULL || ma_is_guid_equal(pData->pDeviceID->dsound, &MA_GUID_NULL)) && (lpGuid == NULL || ma_is_guid_equal(lpGuid, &MA_GUID_NULL))) {
+    if ((pData->pDeviceID == NULL || ma_is_guid_null(pData->pDeviceID->dsound)) && (lpGuid == NULL || ma_is_guid_null(lpGuid))) {
         /* Default device. */
         ma_strncpy_s(pData->pDeviceInfo->name, sizeof(pData->pDeviceInfo->name), lpcstrDescription, (size_t)-1);
         pData->found = MA_TRUE;
@@ -16140,7 +16239,7 @@ static ma_result ma_context_get_device_info_from_WAVECAPS(ma_context* pContext, 
       usually fit within the 31 characters of the fixed sized buffer, so what I'm going to do is parse that string for the component
       name, and then concatenate the name from the registry.
     */
-    if (!ma_is_guid_equal(&pCaps->NameGuid, &MA_GUID_NULL)) {
+    if (!ma_is_guid_null(&pCaps->NameGuid)) {
         wchar_t guidStrW[256];
         if (((MA_PFN_StringFromGUID2)pContext->win32.StringFromGUID2)(&pCaps->NameGuid, guidStrW, ma_countof(guidStrW)) > 0) {
             char guidStr[256];
@@ -23565,6 +23664,15 @@ static ma_bool32 ma_context_is_device_id_equal__coreaudio(ma_context* pContext, 
     return strcmp(pID0->coreaudio, pID1->coreaudio) == 0;
 }
 
+#if !defined(MA_APPLE_DESKTOP)
+static void ma_AVAudioSessionPortDescription_to_device_info(AVAudioSessionPortDescription* pPortDesc, ma_device_info* pInfo)
+{
+    MA_ZERO_OBJECT(pInfo);
+    ma_strncpy_s(pInfo->name,         sizeof(pInfo->name),         [pPortDesc.portName UTF8String], (size_t)-1);
+    ma_strncpy_s(pInfo->id.coreaudio, sizeof(pInfo->id.coreaudio), [pPortDesc.UID      UTF8String], (size_t)-1);
+}
+#endif
+
 static ma_result ma_context_enumerate_devices__coreaudio(ma_context* pContext, ma_enum_devices_callback_proc callback, void* pUserData)
 {
 #if defined(MA_APPLE_DESKTOP)
@@ -23604,19 +23712,22 @@ static ma_result ma_context_enumerate_devices__coreaudio(ma_context* pContext, m
     
     ma_free(pDeviceObjectIDs, &pContext->allocationCallbacks);
 #else
-    /* Only supporting default devices on non-Desktop platforms. */
     ma_device_info info;
+    NSArray *pInputs  = [[[AVAudioSession sharedInstance] currentRoute] inputs];
+    NSArray *pOutputs = [[[AVAudioSession sharedInstance] currentRoute] outputs];
     
-    MA_ZERO_OBJECT(&info);
-    ma_strncpy_s(info.name, sizeof(info.name), MA_DEFAULT_PLAYBACK_DEVICE_NAME, (size_t)-1);
-    if (!callback(pContext, ma_device_type_playback, &info, pUserData)) {
-        return MA_SUCCESS;
+    for (AVAudioSessionPortDescription* pPortDesc in pOutputs) {
+        ma_AVAudioSessionPortDescription_to_device_info(pPortDesc, &info);
+        if (!callback(pContext, ma_device_type_playback, &info, pUserData)) {
+            return MA_SUCCESS;
+        }
     }
     
-    MA_ZERO_OBJECT(&info);
-    ma_strncpy_s(info.name, sizeof(info.name), MA_DEFAULT_CAPTURE_DEVICE_NAME, (size_t)-1);
-    if (!callback(pContext, ma_device_type_capture, &info, pUserData)) {
-        return MA_SUCCESS;
+    for (AVAudioSessionPortDescription* pPortDesc in pInputs) {
+        ma_AVAudioSessionPortDescription_to_device_info(pPortDesc, &info);
+        if (!callback(pContext, ma_device_type_capture, &info, pUserData)) {
+            return MA_SUCCESS;
+        }
     }
 #endif
     
@@ -23732,12 +23843,41 @@ static ma_result ma_context_get_device_info__coreaudio(ma_context* pContext, ma_
         AudioUnitElement formatElement;
         AudioStreamBasicDescription bestFormat;
         UInt32 propSize;
-
-        if (deviceType == ma_device_type_playback) {
-            ma_strncpy_s(pDeviceInfo->name, sizeof(pDeviceInfo->name), MA_DEFAULT_PLAYBACK_DEVICE_NAME, (size_t)-1);
+        
+        /* We want to ensure we use a consistent device name to device enumeration. */
+        if (pDeviceID != NULL) {
+            ma_bool32 found = MA_FALSE;
+            if (deviceType == ma_device_type_playback) {
+                NSArray *pOutputs = [[[AVAudioSession sharedInstance] currentRoute] outputs];
+                for (AVAudioSessionPortDescription* pPortDesc in pOutputs) {
+                    if (strcmp(pDeviceID->coreaudio, [pPortDesc.UID UTF8String]) == 0) {
+                        ma_AVAudioSessionPortDescription_to_device_info(pPortDesc, pDeviceInfo);
+                        found = MA_TRUE;
+                        break;
+                    }
+                }
+            } else {
+                NSArray *pInputs = [[[AVAudioSession sharedInstance] currentRoute] inputs];
+                for (AVAudioSessionPortDescription* pPortDesc in pInputs) {
+                    if (strcmp(pDeviceID->coreaudio, [pPortDesc.UID UTF8String]) == 0) {
+                        ma_AVAudioSessionPortDescription_to_device_info(pPortDesc, pDeviceInfo);
+                        found = MA_TRUE;
+                        break;
+                    }
+                }
+            }
+            
+            if (!found) {
+                return MA_DOES_NOT_EXIST;
+            }
         } else {
-            ma_strncpy_s(pDeviceInfo->name, sizeof(pDeviceInfo->name), MA_DEFAULT_CAPTURE_DEVICE_NAME, (size_t)-1);
+            if (deviceType == ma_device_type_playback) {
+                ma_strncpy_s(pDeviceInfo->name, sizeof(pDeviceInfo->name), MA_DEFAULT_PLAYBACK_DEVICE_NAME, (size_t)-1);
+            } else {
+                ma_strncpy_s(pDeviceInfo->name, sizeof(pDeviceInfo->name), MA_DEFAULT_CAPTURE_DEVICE_NAME, (size_t)-1);
+            }
         }
+        
     
         /*
         Retrieving device information is more annoying on mobile than desktop. For simplicity I'm locking this down to whatever format is
@@ -24539,6 +24679,28 @@ static ma_result ma_device_init_internal__coreaudio(ma_context* pContext, ma_dev
         ((ma_AudioComponentInstanceDispose_proc)pContext->coreaudio.AudioComponentInstanceDispose)(pData->audioUnit);
         return ma_result_from_OSStatus(result);
     }
+#else
+    /*
+    For some reason it looks like Apple is only allowing selection of the input device. There does not appear to be any way to change
+    the default output route. I have no idea why this is like this, but for now we'll only be able to configure capture devices.
+    */
+    if (pDeviceID != NULL) {
+        if (deviceType == ma_device_type_capture) {
+            ma_bool32 found = MA_FALSE;
+            NSArray *pInputs = [[[AVAudioSession sharedInstance] currentRoute] inputs];
+            for (AVAudioSessionPortDescription* pPortDesc in pInputs) {
+                if (strcmp(pDeviceID->coreaudio, [pPortDesc.UID UTF8String]) == 0) {
+                    [[AVAudioSession sharedInstance] setPreferredInput:pPortDesc error:nil];
+                    found = MA_TRUE;
+                    break;
+                }
+            }
+            
+            if (found == MA_FALSE) {
+                return MA_DOES_NOT_EXIST;
+            }
+        }
+    }
 #endif
     
     /*
@@ -25129,6 +25291,14 @@ static ma_result ma_context_uninit__coreaudio(ma_context* pContext)
     MA_ASSERT(pContext != NULL);
     MA_ASSERT(pContext->backend == ma_backend_coreaudio);
     
+#if defined(MA_APPLE_MOBILE)
+    if (!pContext->coreaudio.noAudioSessionDeactivate) {
+        if (![[AVAudioSession sharedInstance] setActive:false error:nil]) {
+            return ma_context_post_error(pContext, NULL, MA_LOG_LEVEL_ERROR, "Failed to deactivate audio session.", MA_FAILED_TO_INIT_BACKEND);
+        }
+    }
+#endif
+    
 #if !defined(MA_NO_RUNTIME_LINKING) && !defined(MA_APPLE_MOBILE)
     ma_dlclose(pContext, pContext->coreaudio.hAudioUnit);
     ma_dlclose(pContext, pContext->coreaudio.hCoreAudio);
@@ -25166,7 +25336,9 @@ static AVAudioSessionCategory ma_to_AVAudioSessionCategory(ma_ios_session_catego
 
 static ma_result ma_context_init__coreaudio(const ma_context_config* pConfig, ma_context* pContext)
 {
+#if !defined(MA_APPLE_MOBILE)
     ma_result result;
+#endif
 
     MA_ASSERT(pConfig != NULL);
     MA_ASSERT(pContext != NULL);
@@ -25201,6 +25373,12 @@ static ma_result ma_context_init__coreaudio(const ma_context_config* pConfig, ma
                 if (![pAudioSession setCategory: ma_to_AVAudioSessionCategory(pConfig->coreaudio.sessionCategory) withOptions:options error:nil]) {
                     return MA_INVALID_OPERATION;    /* Failed to set session category. */
                 }
+            }
+        }
+        
+        if (!pConfig->coreaudio.noAudioSessionActivate) {
+            if (![pAudioSession setActive:true error:nil]) {
+                return ma_context_post_error(pContext, NULL, MA_LOG_LEVEL_ERROR, "Failed to activate audio session.", MA_FAILED_TO_INIT_BACKEND);
             }
         }
     }
@@ -25334,6 +25512,8 @@ static ma_result ma_context_init__coreaudio(const ma_context_config* pConfig, ma
         return result;
     }
 #endif
+
+    pContext->coreaudio.noAudioSessionDeactivate = pConfig->coreaudio.noAudioSessionDeactivate;
 
     return MA_SUCCESS;
 }
@@ -28740,10 +28920,13 @@ OpenSL|ES Backend
 #include <SLES/OpenSLES_Android.h>
 #endif
 
+typedef SLresult (SLAPIENTRY * ma_slCreateEngine_proc)(SLObjectItf* pEngine, SLuint32 numOptions, SLEngineOption* pEngineOptions, SLuint32 numInterfaces, SLInterfaceID* pInterfaceIds, SLboolean* pInterfaceRequired);
+
 /* OpenSL|ES has one-per-application objects :( */
-SLObjectItf g_maEngineObjectSL = NULL;
-SLEngineItf g_maEngineSL = NULL;
-ma_uint32 g_maOpenSLInitCounter = 0;
+static SLObjectItf g_maEngineObjectSL    = NULL;
+static SLEngineItf g_maEngineSL          = NULL;
+static ma_uint32   g_maOpenSLInitCounter = 0;
+static ma_spinlock g_maOpenSLSpinlock    = 0;   /* For init/uninit. */
 
 #define MA_OPENSL_OBJ(p)         (*((SLObjectItf)(p)))
 #define MA_OPENSL_OUTPUTMIX(p)   (*((SLOutputMixItf)(p)))
@@ -28959,7 +29142,7 @@ static ma_result ma_context_enumerate_devices__opensl(ma_context* pContext, ma_e
     SLint32 deviceCount = sizeof(pDeviceIDs) / sizeof(pDeviceIDs[0]);
 
     SLAudioIODeviceCapabilitiesItf deviceCaps;
-    SLresult resultSL = (*g_maEngineObjectSL)->GetInterface(g_maEngineObjectSL, SL_IID_AUDIOIODEVICECAPABILITIES, &deviceCaps);
+    SLresult resultSL = (*g_maEngineObjectSL)->GetInterface(g_maEngineObjectSL, (SLInterfaceID)pContext->opensl.SL_IID_AUDIOIODEVICECAPABILITIES, &deviceCaps);
     if (resultSL != SL_RESULT_SUCCESS) {
         /* The interface may not be supported so just report a default device. */
         goto return_default_device;
@@ -29065,7 +29248,7 @@ static ma_result ma_context_get_device_info__opensl(ma_context* pContext, ma_dev
     */
 #if 0 && !defined(MA_ANDROID)
     SLAudioIODeviceCapabilitiesItf deviceCaps;
-    SLresult resultSL = (*g_maEngineObjectSL)->GetInterface(g_maEngineObjectSL, SL_IID_AUDIOIODEVICECAPABILITIES, &deviceCaps);
+    SLresult resultSL = (*g_maEngineObjectSL)->GetInterface(g_maEngineObjectSL, (SLInterfaceID)pContext->opensl.SL_IID_AUDIOIODEVICECAPABILITIES, &deviceCaps);
     if (resultSL != SL_RESULT_SUCCESS) {
         /* The interface may not be supported so just report a default device. */
         goto return_default_device;
@@ -29354,7 +29537,7 @@ static ma_result ma_device_init__opensl(ma_context* pContext, const ma_device_co
     SLresult resultSL;
     ma_uint32 periodSizeInFrames;
     size_t bufferSizeInBytes;
-    const SLInterfaceID itfIDs1[] = {SL_IID_ANDROIDSIMPLEBUFFERQUEUE};
+    SLInterfaceID itfIDs1[1];
     const SLboolean itfIDsRequired1[] = {SL_BOOLEAN_TRUE};
 #endif
 
@@ -29375,6 +29558,8 @@ static ma_result ma_device_init__opensl(ma_context* pContext, const ma_device_co
     queues).
     */
 #ifdef MA_ANDROID
+    itfIDs1[0] = (SLInterfaceID)pContext->opensl.SL_IID_ANDROIDSIMPLEBUFFERQUEUE;
+
     /* No exclusive mode with OpenSL|ES. */
     if (((pConfig->deviceType == ma_device_type_playback || pConfig->deviceType == ma_device_type_duplex) && pConfig->playback.shareMode == ma_share_mode_exclusive) ||
         ((pConfig->deviceType == ma_device_type_capture  || pConfig->deviceType == ma_device_type_duplex) && pConfig->capture.shareMode  == ma_share_mode_exclusive)) {
@@ -29431,13 +29616,13 @@ static ma_result ma_device_init__opensl(ma_context* pContext, const ma_device_co
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to realize audio recorder.", ma_result_from_OpenSL(resultSL));
         }
 
-        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioRecorderObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioRecorderObj, SL_IID_RECORD, &pDevice->opensl.pAudioRecorder);
+        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioRecorderObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioRecorderObj, (SLInterfaceID)pContext->opensl.SL_IID_RECORD, &pDevice->opensl.pAudioRecorder);
         if (resultSL != SL_RESULT_SUCCESS) {
             ma_device_uninit__opensl(pDevice);
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to retrieve SL_IID_RECORD interface.", ma_result_from_OpenSL(resultSL));
         }
 
-        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioRecorderObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioRecorderObj, SL_IID_ANDROIDSIMPLEBUFFERQUEUE, &pDevice->opensl.pBufferQueueCapture);
+        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioRecorderObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioRecorderObj, (SLInterfaceID)pContext->opensl.SL_IID_ANDROIDSIMPLEBUFFERQUEUE, &pDevice->opensl.pBufferQueueCapture);
         if (resultSL != SL_RESULT_SUCCESS) {
             ma_device_uninit__opensl(pDevice);
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to retrieve SL_IID_ANDROIDSIMPLEBUFFERQUEUE interface.", ma_result_from_OpenSL(resultSL));
@@ -29490,7 +29675,7 @@ static ma_result ma_device_init__opensl(ma_context* pContext, const ma_device_co
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to realize output mix object.", ma_result_from_OpenSL(resultSL));
         }
 
-        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pOutputMixObj)->GetInterface((SLObjectItf)pDevice->opensl.pOutputMixObj, SL_IID_OUTPUTMIX, &pDevice->opensl.pOutputMix);
+        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pOutputMixObj)->GetInterface((SLObjectItf)pDevice->opensl.pOutputMixObj, (SLInterfaceID)pContext->opensl.SL_IID_OUTPUTMIX, &pDevice->opensl.pOutputMix);
         if (resultSL != SL_RESULT_SUCCESS) {
             ma_device_uninit__opensl(pDevice);
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to retrieve SL_IID_OUTPUTMIX interface.", ma_result_from_OpenSL(resultSL));
@@ -29534,13 +29719,13 @@ static ma_result ma_device_init__opensl(ma_context* pContext, const ma_device_co
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to realize audio player.", ma_result_from_OpenSL(resultSL));
         }
 
-        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioPlayerObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioPlayerObj, SL_IID_PLAY, &pDevice->opensl.pAudioPlayer);
+        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioPlayerObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioPlayerObj, (SLInterfaceID)pContext->opensl.SL_IID_PLAY, &pDevice->opensl.pAudioPlayer);
         if (resultSL != SL_RESULT_SUCCESS) {
             ma_device_uninit__opensl(pDevice);
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to retrieve SL_IID_PLAY interface.", ma_result_from_OpenSL(resultSL));
         }
 
-        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioPlayerObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioPlayerObj, SL_IID_ANDROIDSIMPLEBUFFERQUEUE, &pDevice->opensl.pBufferQueuePlayback);
+        resultSL = MA_OPENSL_OBJ(pDevice->opensl.pAudioPlayerObj)->GetInterface((SLObjectItf)pDevice->opensl.pAudioPlayerObj, (SLInterfaceID)pContext->opensl.SL_IID_ANDROIDSIMPLEBUFFERQUEUE, &pDevice->opensl.pBufferQueuePlayback);
         if (resultSL != SL_RESULT_SUCCESS) {
             ma_device_uninit__opensl(pDevice);
             return ma_post_error(pDevice, MA_LOG_LEVEL_ERROR, "[OpenSL] Failed to retrieve SL_IID_ANDROIDSIMPLEBUFFERQUEUE interface.", ma_result_from_OpenSL(resultSL));
@@ -29739,9 +29924,52 @@ static ma_result ma_context_uninit__opensl(ma_context* pContext)
     (void)pContext;
 
     /* Uninit global data. */
-    if (g_maOpenSLInitCounter > 0) {
-        if (c89atomic_fetch_sub_32(&g_maOpenSLInitCounter, 1) == 1) {
+    ma_spinlock_lock(&g_maOpenSLSpinlock);
+    {
+        MA_ASSERT(g_maOpenSLInitCounter > 0);   /* If you've triggered this, it means you have ma_context_init/uninit mismatch. Each successful call to ma_context_init() must be matched up with a call to ma_context_uninit(). */
+
+        g_maOpenSLInitCounter -= 1;
+        if (g_maOpenSLInitCounter == 0) {
             (*g_maEngineObjectSL)->Destroy(g_maEngineObjectSL);
+        }
+    }
+    ma_spinlock_unlock(&g_maOpenSLSpinlock);
+
+    return MA_SUCCESS;
+}
+
+static ma_result ma_dlsym_SLInterfaceID__opensl(ma_context* pContext, const char* pName, ma_handle* pHandle)
+{
+    /* We need to return an error if the symbol cannot be found. This is important because there have been reports that some symbols do not exist. */
+    ma_handle* p = (ma_handle*)ma_dlsym(pContext, pContext->opensl.libOpenSLES, pName);
+    if (p == NULL) {
+        ma_post_log_messagef(pContext, NULL, MA_LOG_LEVEL_INFO, "[OpenSL|ES] Cannot find symbol %s", pName);
+        return MA_NO_BACKEND;
+    }
+
+    *pHandle = *p;
+    return MA_SUCCESS;
+}
+
+static ma_result ma_context_init_engine_nolock__opensl(ma_context* pContext)
+{
+    g_maOpenSLInitCounter += 1;
+    if (g_maOpenSLInitCounter == 1) {
+        SLresult resultSL;
+
+        resultSL = ((ma_slCreateEngine_proc)pContext->opensl.slCreateEngine)(&g_maEngineObjectSL, 0, NULL, 0, NULL, NULL);
+        if (resultSL != SL_RESULT_SUCCESS) {
+            g_maOpenSLInitCounter -= 1;
+            return ma_result_from_OpenSL(resultSL);
+        }
+
+        (*g_maEngineObjectSL)->Realize(g_maEngineObjectSL, SL_BOOLEAN_FALSE);
+
+        resultSL = (*g_maEngineObjectSL)->GetInterface(g_maEngineObjectSL, (SLInterfaceID)pContext->opensl.SL_IID_ENGINE, &g_maEngineSL);
+        if (resultSL != SL_RESULT_SUCCESS) {
+            (*g_maEngineObjectSL)->Destroy(g_maEngineObjectSL);
+            g_maOpenSLInitCounter -= 1;
+            return ma_result_from_OpenSL(resultSL);
         }
     }
 
@@ -29750,27 +29978,81 @@ static ma_result ma_context_uninit__opensl(ma_context* pContext)
 
 static ma_result ma_context_init__opensl(const ma_context_config* pConfig, ma_context* pContext)
 {
+    ma_result result;
+    size_t i;
+    const char* libOpenSLESNames[] = {
+        "libOpenSLES.so"
+    };
+
     MA_ASSERT(pContext != NULL);
 
     (void)pConfig;
 
-    /* Initialize global data first if applicable. */
-    if (c89atomic_fetch_add_32(&g_maOpenSLInitCounter, 1) == 0) {
-        SLresult resultSL = slCreateEngine(&g_maEngineObjectSL, 0, NULL, 0, NULL, NULL);
-        if (resultSL != SL_RESULT_SUCCESS) {
-            c89atomic_fetch_sub_32(&g_maOpenSLInitCounter, 1);
-            return ma_result_from_OpenSL(resultSL);
-        }
-
-        (*g_maEngineObjectSL)->Realize(g_maEngineObjectSL, SL_BOOLEAN_FALSE);
-
-        resultSL = (*g_maEngineObjectSL)->GetInterface(g_maEngineObjectSL, SL_IID_ENGINE, &g_maEngineSL);
-        if (resultSL != SL_RESULT_SUCCESS) {
-            (*g_maEngineObjectSL)->Destroy(g_maEngineObjectSL);
-            c89atomic_fetch_sub_32(&g_maOpenSLInitCounter, 1);
-            return ma_result_from_OpenSL(resultSL);
+    /*
+    Dynamically link against libOpenSLES.so. I have now had multiple reports that SL_IID_ANDROIDSIMPLEBUFFERQUEUE cannot be found. One
+    report was happening at compile time and another at runtime. To try working around this, I'm going to link to libOpenSLES at runtime
+    and extract the symbols rather than reference them directly. This should, hopefully, fix these issues as the compiler won't see any
+    references to the symbols and will hopefully skip the checks.
+    */
+    for (i = 0; i < ma_countof(libOpenSLESNames); i += 1) {
+        pContext->opensl.libOpenSLES = ma_dlopen(pContext, libOpenSLESNames[i]);
+        if (pContext->opensl.libOpenSLES != NULL) {
+            break;
         }
     }
+
+    if (pContext->opensl.libOpenSLES == NULL) {
+        return MA_NO_BACKEND;   /* Couldn't find libOpenSLES.so */
+    }
+
+    result = ma_dlsym_SLInterfaceID__opensl(pContext, "SL_IID_ENGINE", &pContext->opensl.SL_IID_ENGINE);
+    if (result != MA_SUCCESS) {
+        return result;
+    }
+
+    result = ma_dlsym_SLInterfaceID__opensl(pContext, "SL_IID_AUDIOIODEVICECAPABILITIES", &pContext->opensl.SL_IID_AUDIOIODEVICECAPABILITIES);
+    if (result != MA_SUCCESS) {
+        return result;
+    }
+
+    result = ma_dlsym_SLInterfaceID__opensl(pContext, "SL_IID_ANDROIDSIMPLEBUFFERQUEUE", &pContext->opensl.SL_IID_ANDROIDSIMPLEBUFFERQUEUE);
+    if (result != MA_SUCCESS) {
+        return result;
+    }
+
+    result = ma_dlsym_SLInterfaceID__opensl(pContext, "SL_IID_RECORD", &pContext->opensl.SL_IID_RECORD);
+    if (result != MA_SUCCESS) {
+        return result;
+    }
+
+    result = ma_dlsym_SLInterfaceID__opensl(pContext, "SL_IID_PLAY", &pContext->opensl.SL_IID_PLAY);
+    if (result != MA_SUCCESS) {
+        return result;
+    }
+
+    result = ma_dlsym_SLInterfaceID__opensl(pContext, "SL_IID_OUTPUTMIX", &pContext->opensl.SL_IID_OUTPUTMIX);
+    if (result != MA_SUCCESS) {
+        return result;
+    }
+
+    pContext->opensl.slCreateEngine = (ma_proc)ma_dlsym(pContext, pContext->opensl.libOpenSLES, "slCreateEngine");
+    if (pContext->opensl.slCreateEngine == NULL) {
+        ma_post_log_message(pContext, NULL, MA_LOG_LEVEL_INFO, "[OpenSL|ES] Cannot find symbol slCreateEngine.");
+        return MA_NO_BACKEND;
+    }
+
+
+    /* Initialize global data first if applicable. */
+    ma_spinlock_lock(&g_maOpenSLSpinlock);
+    {
+        result = ma_context_init_engine_nolock__opensl(pContext);
+    }
+    ma_spinlock_unlock(&g_maOpenSLSpinlock);
+
+    if (result != MA_SUCCESS) {
+        return result;  /* Failed to initialize the OpenSL engine. */
+    }
+
 
     pContext->isBackendAsynchronous = MA_TRUE;
 
@@ -31220,6 +31502,13 @@ MA_API ma_result ma_device_init(ma_context* pContext, const ma_device_config* pC
         }
     }
 
+    if (config.playback.pDeviceID != NULL) {
+        MA_COPY_MEMORY(&pDevice->playback.id, config.playback.pDeviceID, sizeof(pDevice->playback.id));
+    }
+    if (config.capture.pDeviceID != NULL) {
+        MA_COPY_MEMORY(&pDevice->capture.id, config.capture.pDeviceID, sizeof(pDevice->capture.id));
+    }
+
     pDevice->noPreZeroedOutputBuffer = config.noPreZeroedOutputBuffer;
     pDevice->noClip = config.noClip;
     pDevice->masterVolumeFactor = 1;
@@ -31591,7 +31880,6 @@ MA_API ma_result ma_device_stop(ma_device* pDevice)
         ma_device__set_state(pDevice, MA_STATE_STOPPING);
 
         /* There's no need to wake up the thread like we do when starting. */
-
         if (pDevice->pContext->onDeviceStop) {
             result = pDevice->pContext->onDeviceStop(pDevice);
         } else {
@@ -40942,7 +41230,7 @@ MA_API ma_result ma_data_source_read_pcm_frames(ma_data_source* pDataSource, voi
                 If we encounted an error from the read callback, make sure it's propagated to the caller. The caller may need to know whether or not MA_BUSY is returned which is
                 not necessarily considered an error. 
                 */
-                if (result != MA_SUCCESS) {
+                if (result != MA_SUCCESS && result != MA_AT_END) {
                     break;
                 }
 
@@ -40950,7 +41238,7 @@ MA_API ma_result ma_data_source_read_pcm_frames(ma_data_source* pDataSource, voi
                 We can determine if we've reached the end by checking the return value of the onRead() callback. If it's less than what we requested it means
                 we've reached the end. To loop back to the start, all we need to do is seek back to the first frame.
                 */
-                if (framesProcessed < framesRemaining) {
+                if (framesProcessed < framesRemaining || result == MA_AT_END) {
                     if (ma_data_source_seek_to_pcm_frame(pDataSource, 0) != MA_SUCCESS) {
                         break;
                     }
@@ -40961,7 +41249,10 @@ MA_API ma_result ma_data_source_read_pcm_frames(ma_data_source* pDataSource, voi
                 }
             }
 
-            *pFramesRead = totalFramesProcessed;
+            if (pFramesRead != NULL) {
+                *pFramesRead = totalFramesProcessed;
+            }
+
             return result;
         }
     }
@@ -42167,7 +42458,7 @@ extern "C" {
 #define DRWAV_XSTRINGIFY(x)     DRWAV_STRINGIFY(x)
 #define DRWAV_VERSION_MAJOR     0
 #define DRWAV_VERSION_MINOR     12
-#define DRWAV_VERSION_REVISION  7
+#define DRWAV_VERSION_REVISION  8
 #define DRWAV_VERSION_STRING    DRWAV_XSTRINGIFY(DRWAV_VERSION_MAJOR) "." DRWAV_XSTRINGIFY(DRWAV_VERSION_MINOR) "." DRWAV_XSTRINGIFY(DRWAV_VERSION_REVISION)
 #include <stddef.h>
 #ifdef _MSC_VER
@@ -42298,7 +42589,7 @@ typedef drwav_int32 drwav_result;
 #endif
 #define DRWAV_SEQUENTIAL            0x00000001
 DRWAV_API void drwav_version(drwav_uint32* pMajor, drwav_uint32* pMinor, drwav_uint32* pRevision);
-DRWAV_API const char* drwav_version_string();
+DRWAV_API const char* drwav_version_string(void);
 typedef enum
 {
     drwav_seek_origin_start,
@@ -42540,7 +42831,7 @@ extern "C" {
 #define DRFLAC_XSTRINGIFY(x)     DRFLAC_STRINGIFY(x)
 #define DRFLAC_VERSION_MAJOR     0
 #define DRFLAC_VERSION_MINOR     12
-#define DRFLAC_VERSION_REVISION  15
+#define DRFLAC_VERSION_REVISION  16
 #define DRFLAC_VERSION_STRING    DRFLAC_XSTRINGIFY(DRFLAC_VERSION_MAJOR) "." DRFLAC_XSTRINGIFY(DRFLAC_VERSION_MINOR) "." DRFLAC_XSTRINGIFY(DRFLAC_VERSION_REVISION)
 #include <stddef.h>
 #ifdef _MSC_VER
@@ -42618,7 +42909,7 @@ typedef drflac_uint32        drflac_bool32;
     #define DRFLAC_DEPRECATED
 #endif
 DRFLAC_API void drflac_version(drflac_uint32* pMajor, drflac_uint32* pMinor, drflac_uint32* pRevision);
-DRFLAC_API const char* drflac_version_string();
+DRFLAC_API const char* drflac_version_string(void);
 #ifndef DR_FLAC_BUFFER_SIZE
 #define DR_FLAC_BUFFER_SIZE   4096
 #endif
@@ -42902,7 +43193,7 @@ extern "C" {
 #define DRMP3_XSTRINGIFY(x)     DRMP3_STRINGIFY(x)
 #define DRMP3_VERSION_MAJOR     0
 #define DRMP3_VERSION_MINOR     6
-#define DRMP3_VERSION_REVISION  13
+#define DRMP3_VERSION_REVISION  15
 #define DRMP3_VERSION_STRING    DRMP3_XSTRINGIFY(DRMP3_VERSION_MAJOR) "." DRMP3_XSTRINGIFY(DRMP3_VERSION_MINOR) "." DRMP3_XSTRINGIFY(DRMP3_VERSION_REVISION)
 #include <stddef.h>
 #ifdef _MSC_VER
@@ -43035,7 +43326,7 @@ typedef drmp3_int32 drmp3_result;
     #define DRMP3_INLINE
 #endif
 DRMP3_API void drmp3_version(drmp3_uint32* pMajor, drmp3_uint32* pMinor, drmp3_uint32* pRevision);
-DRMP3_API const char* drmp3_version_string();
+DRMP3_API const char* drmp3_version_string(void);
 typedef struct
 {
     int frame_bytes, channels, hz, layer, bitrate_kbps;
@@ -44599,6 +44890,16 @@ MA_API ma_result ma_decoder_init_memory_raw(const void* pData, size_t dataSize, 
     return ma_decoder__postinit(&config, pDecoder);
 }
 
+
+#if defined(MA_HAS_WAV)    || \
+    defined(MA_HAS_MP3)    || \
+    defined(MA_HAS_FLAC)   || \
+    defined(MA_HAS_VORBIS) || \
+    defined(MA_HAS_OPUS)
+#define MA_HAS_PATH_API
+#endif
+
+#if defined(MA_HAS_PATH_API)
 static const char* ma_path_file_name(const char* path)
 {
     const char* fileName;
@@ -44765,6 +45066,7 @@ static ma_bool32 ma_path_extension_equal_w(const wchar_t* path, const wchar_t* e
     }
 #endif
 }
+#endif  /* MA_HAS_PATH_API */
 
 
 
@@ -46699,7 +47001,7 @@ DRWAV_API void drwav_version(drwav_uint32* pMajor, drwav_uint32* pMinor, drwav_u
         *pRevision = DRWAV_VERSION_REVISION;
     }
 }
-DRWAV_API const char* drwav_version_string()
+DRWAV_API const char* drwav_version_string(void)
 {
     return DRWAV_VERSION_STRING;
 }
@@ -50612,7 +50914,7 @@ DRFLAC_API void drflac_version(drflac_uint32* pMajor, drflac_uint32* pMinor, drf
         *pRevision = DRFLAC_VERSION_REVISION;
     }
 }
-DRFLAC_API const char* drflac_version_string()
+DRFLAC_API const char* drflac_version_string(void)
 {
     return DRFLAC_VERSION_STRING;
 }
@@ -58474,7 +58776,7 @@ DRMP3_API void drmp3_version(drmp3_uint32* pMajor, drmp3_uint32* pMinor, drmp3_u
         *pRevision = DRMP3_VERSION_REVISION;
     }
 }
-DRMP3_API const char* drmp3_version_string()
+DRMP3_API const char* drmp3_version_string(void)
 {
     return DRMP3_VERSION_STRING;
 }
@@ -60352,7 +60654,9 @@ static drmp3_uint32 drmp3_decode_next_frame_ex__callbacks(drmp3* pMP3, drmp3d_sa
         drmp3dec_frame_info info;
         if (pMP3->dataSize < DRMP3_MIN_DATA_CHUNK_SIZE) {
             size_t bytesRead;
-            memmove(pMP3->pData, pMP3->pData + pMP3->dataConsumed, pMP3->dataSize);
+            if (pMP3->pData != NULL) {
+                memmove(pMP3->pData, pMP3->pData + pMP3->dataConsumed, pMP3->dataSize);
+            }
             pMP3->dataConsumed = 0;
             if (pMP3->dataCapacity < DRMP3_DATA_CHUNK_SIZE) {
                 drmp3_uint8* pNewData;
@@ -62003,6 +62307,17 @@ The following miscellaneous changes have also been made.
 /*
 REVISION HISTORY
 ================
+v0.10.16 - TBD
+  - WASAPI: Fix a potential crash due to using an uninitialized variable.
+  - OpenSL: Enable runtime linking.
+  - OpenSL: Fix a multithreading bug when initializing and uninitializing multiple contexts at the same time.
+  - iOS: Improvements to device enumeration.
+  - Fix a crash in ma_data_source_read_pcm_frames() when the output frame count parameter is NULL.
+  - Fix a bug in ma_data_source_read_pcm_frames() where looping doesn't work.
+  - Fix some compilation warnings on Windows when both DirectSound and WinMM are disabled.
+  - Fix some compilation warnings when no decoders are enabled.
+  - Updates to documentation.
+
 v0.10.15 - 2020-07-15
   - Fix a bug when converting bit-masked channel maps to miniaudio channel maps. This affects the WASAPI and OpenSL backends.
 
