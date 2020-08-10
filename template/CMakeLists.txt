@@ -1,3 +1,6 @@
+# initialized from yourgamelib commit:
+# {{ YOURGAME_COMMIT_SHA_INIT }}
+
 cmake_minimum_required(VERSION 3.6)
 
 project({{ YOURGAME_PROJECT_NAME }})
@@ -19,6 +22,13 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 set(YOURGAME_BARE TRUE)
 {%- endif %}
 
+# the initial value of YOURGAME_COMMIT_SHA_REQUESTED is the commit of yourgamelib
+# during initialization of this project.
+# it should be adjusted if another (newer) version of yourgamelib is supported.
+# it could be used to retrieve that commit of yourgamelib (before add_subdirectory())
+set(YOURGAME_COMMIT_SHA_REQUESTED {{ YOURGAME_COMMIT_SHA_INIT }})
+
+# add the actual yourgame library as a subdirectory
 add_subdirectory(
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ YOURGAME_ROOT }}
   ${CMAKE_CURRENT_BINARY_DIR}/libyourgame

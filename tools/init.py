@@ -4,6 +4,7 @@ import argparse
 from distutils.dir_util import copy_tree
 from distutils.file_util import copy_file
 from jinja2 import Environment, FileSystemLoader
+import git
 
 
 def copy_file_items(items, src, dst):
@@ -39,6 +40,11 @@ tgtDir = os.path.join(os.getcwd(), newProjName)
 ygRootRel = os.path.relpath(ygRoot, start=tgtDir)
 ygRootRel = ygRootRel.replace(os.sep, posixpath.sep)
 
+# get git information about yourgamelib
+gitRepo = git.Repo(ygRoot)
+gitSha = gitRepo.head.object.hexsha
+print("yourgamelib commit: {}".format(gitSha))
+
 # initialize new project
 if not os.path.isdir(tgtDir):
     os.mkdir(tgtDir)
@@ -69,6 +75,7 @@ jEnv = Environment(loader=ldr)
 dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")] # todo: extend source file pattern
 templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
+    YOURGAME_COMMIT_SHA_INIT=gitSha,
     YOURGAME_ROOT=ygRootRel,
     YOURGAME_PROJECT_NAME=newProjName,
     YOURGAME_BARE=args.bare,

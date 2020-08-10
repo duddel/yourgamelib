@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
+find_package(Git)
 
 # enforce C++11 and disable extensions
 set(CMAKE_CXX_STANDARD 11)
@@ -10,6 +11,22 @@ set(YOURGAME_GL_MAJOR 3)
 set(YOURGAME_GL_MINOR 3)
 set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
+
+# get git commit sha and test it against the requested commit of the project
+execute_process(COMMAND
+  "${GIT_EXECUTABLE}" rev-parse HEAD
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  OUTPUT_VARIABLE YOURGAME_COMMIT_SHA_ACTUAL
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+if(YOURGAME_COMMIT_SHA_REQUESTED STREQUAL YOURGAME_COMMIT_SHA_ACTUAL)
+  message("The requested yourgamelib commit ${YOURGAME_COMMIT_SHA_REQUESTED} \
+  matches yourgamelib in ${CMAKE_CURRENT_SOURCE_DIR}")
+else()
+  message(WARNING "The requested yourgamelib commit ${YOURGAME_COMMIT_SHA_REQUESTED} \
+  does NOT MATCH yourgamelib in ${CMAKE_CURRENT_SOURCE_DIR} \
+  YOURGAME_COMMIT_SHA_ACTUAL: ${YOURGAME_COMMIT_SHA_ACTUAL}")  
+endif()
 
 # toolbox
 if(NOT DEFINED YOURGAME_BARE)

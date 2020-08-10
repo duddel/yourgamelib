@@ -10,13 +10,13 @@
 
 ## Kick-start
 
-Download or clone this repository and run the Python script `tools/init.py` from an arbitrary location, like so:
+Clone this repository and run the Python script `tools/init.py` from an arbitrary location, like so:
 
     python <path_to_yourgamelib>/tools/init.py MyGame
 
 To integrate additional [third-party libraries](thirdparty/README.md), use the `--extProj` option, like so:
 
-    python <path_to_yourgamelib>/tools/init.py MyGame --extProj imgui glm
+    python <path_to_yourgamelib>/tools/init.py MyGame --extProj imgui box2d
 
 This creates the directory `./MyGame/` and initializes a new project called `MyGame` with this content:
 
@@ -37,7 +37,11 @@ All files placed in `assets/` will be packed and made available to be loaded by 
 
 To initialize a new project, you need:
 
--   `Python 3.5+` with `Jinja2`
+-   `Git 1.7.0+`
+
+-   `Python 3.5+` with
+    -   `Jinja2`
+    -   `gitpython`
 
 To build for target `desktop`, you need:
 
