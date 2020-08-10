@@ -20,7 +20,6 @@ freely, subject to the following restrictions:
 #include <cmath>
 #include <vector>
 #include <map>
-#include "miniaudio.h"
 #include "yourgame/gl_include.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/level2.h"
@@ -31,19 +30,9 @@ namespace mygame
 {
     namespace
     {
-        void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount);
         void loadObj();
         void initGlScene();
-        void initAudio();
         void updateImgui(const yourgame::context &ctx);
-
-        // Audio
-        bool g_playAudio = false;
-        bool g_audioInitialized = false;
-        std::vector<uint8_t> g_audioData;
-        ma_decoder g_maDecoder;
-        ma_device_config g_maDeviceConfig;
-        ma_device g_maDevice;
 
         // GL scene
         double g_fade = 0.0;
@@ -139,26 +128,14 @@ namespace mygame
 
     void shutdown(const yourgame::context &ctx)
     {
-        ma_device_uninit(&g_maDevice);
-        ma_decoder_uninit(&g_maDecoder);
-        g_audioInitialized = false;
+        if(yourgame::audioIsInitialized())
+        {
+            yourgame::audioShutdown();
+        }
     }
 
     namespace
     {
-        void maDataCallback(ma_device *pDevice, void *pOutput, const void *pInput, ma_uint32 frameCount)
-        {
-            if (!g_playAudio)
-            {
-                return;
-            }
-
-            if (ma_decoder_read_pcm_frames(&g_maDecoder, pOutput, frameCount) < frameCount)
-            {
-                g_playAudio = false;
-            }
-        }
-
         void initGlScene()
         {
             glEnable(GL_DEPTH_TEST);
@@ -198,35 +175,6 @@ namespace mygame
                  {yourgame::attrLocNormal, yourgame::attrNameNormal},
                  {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
                 {{0, "color"}});
-        }
-
-        void initAudio()
-        {
-            yourgame::readAssetFile("chirp.ogg", g_audioData);
-
-            if (ma_decoder_init_memory_vorbis(&g_audioData[0], g_audioData.size(), NULL, &g_maDecoder) != MA_SUCCESS)
-            {
-                yourgame::loge("ma_decoder_init_memory_vorbis() failed");
-            }
-
-            g_maDeviceConfig = ma_device_config_init(ma_device_type_playback);
-            g_maDeviceConfig.playback.format = g_maDecoder.outputFormat;
-            g_maDeviceConfig.playback.channels = g_maDecoder.outputChannels;
-            g_maDeviceConfig.sampleRate = g_maDecoder.outputSampleRate;
-            g_maDeviceConfig.dataCallback = maDataCallback;
-            g_maDeviceConfig.pUserData = NULL;
-
-            if (ma_device_init(NULL, &g_maDeviceConfig, &g_maDevice) != MA_SUCCESS)
-            {
-                yourgame::loge("ma_device_init() failed");
-            }
-
-            if (ma_device_start(&g_maDevice) != MA_SUCCESS)
-            {
-                yourgame::loge("ma_device_start() failed");
-            }
-
-            g_audioInitialized = true;
         }
 
         void updateImgui(const yourgame::context &ctx)
@@ -335,23 +283,61 @@ namespace mygame
                 }
 
                 ImGui::End();
-            }
 
-            // Audio demo window
-            if (showDemoAudio)
-            {
-                if (!g_audioInitialized)
+                // Audio demo window
+                if (showDemoAudio)
                 {
-                    initAudio();
-                }
+                    const int numAudioSources = 5;
 
-                ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse));
-                if (ImGui::Button("Play"))
-                {
-                    ma_decoder_seek_to_pcm_frame(&g_maDecoder, 0); // "rewind" and start playback
-                    g_playAudio = true;
+                    if (!yourgame::audioIsInitialized())
+                    {
+                        yourgame::audioInit(2, 44100, numAudioSources);
+                        yourgame::audioStoreFile("jingles_SAX07_mono_11025.ogg");
+                        yourgame::audioStoreFile("jingles_PIZZI00.ogg");
+                    }
+
+                    ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                    if (ImGui::Button("Play"))
+                    {
+                        yourgame::audioPlay("jingles_PIZZI00.ogg");
+                    }
+                    ImGui::SameLine();
+
+                    if (ImGui::Button("Play Loop"))
+                    {
+                        yourgame::audioPlay("jingles_SAX07_mono_11025.ogg", true);
+                    }
+
+                    static float audioBalance[numAudioSources] = {0.0f};
+                    static bool audioPause[numAudioSources] = {false};
+                    // manipulate source
+                    for (int i = 0; i < numAudioSources; i++)
+                    {
+                        // gain slider
+                        ImGui::SliderFloat(("balance " + std::to_string(i)).c_str(), &audioBalance[i], -1.0f, 1.0f);
+                        yourgame::audioSetChannelGains(i,
+                                                       {std::fmin(1.0f - audioBalance[i], 1.0f),
+                                                        std::fmin(1.0f + audioBalance[i], 1.0f)});
+                        ImGui::SameLine();
+
+                        // pause/unpause
+                        ImGui::Checkbox(("pause " + std::to_string(i)).c_str(), &audioPause[i]);
+                        yourgame::audioPause(i, audioPause[i]);
+                        ImGui::SameLine();
+
+                        // stop
+                        if (ImGui::Button(("stop " + std::to_string(i)).c_str()))
+                        {
+                            yourgame::audioStop(i);
+                        }
+                    }
+
+                    ImGui::End();
                 }
-                ImGui::End();
+                else if (yourgame::audioIsInitialized())
+                {
+                    yourgame::audioShutdown();
+                }
             }
 
             // save file demo window

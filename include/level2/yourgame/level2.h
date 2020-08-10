@@ -22,6 +22,7 @@ freely, subject to the following restrictions:
 
 #include "yourgame/gl_include.h"
 // the following includes are part of the yourgame (level2) API
+#include "yourgame/audioplayer.h"
 #include "yourgame/camera.h"
 #include "yourgame/glbuffer.h"
 #include "yourgame/glconventions.h"

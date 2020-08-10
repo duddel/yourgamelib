@@ -17,7 +17,24 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#define TINYOBJLOADER_IMPLEMENTATION
-#include "tiny_obj_loader.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#ifndef YOURGAME_AUDIOPLAYER_H
+#define YOURGAME_AUDIOPLAYER_H
+
+#include <string>
+#include <vector>
+#include "miniaudio.h"
+
+namespace yourgame
+{
+    int audioInit(ma_uint32 numChannels, ma_uint32 sampleRate, int numSources);
+    void audioShutdown();
+    bool audioIsInitialized();
+    int audioStoreFile(std::string filename);
+
+    int audioPlay(std::string filename, bool loop = false);
+    int audioStop(int sourceId);
+    int audioPause(int sourceId, bool pause);
+    int audioSetChannelGains(int sourceId, std::vector<float> gains);
+} // namespace yourgame
+
+#endif

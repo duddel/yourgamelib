@@ -6,6 +6,7 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 )
 
 list(APPEND YOURGAME_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/level2/audioplayer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/level2/camera.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/level2/glbuffer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/level2/glconventions.cpp
