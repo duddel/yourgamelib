@@ -94,18 +94,49 @@ namespace yourgame
 
     GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename)
     {
+        // load obj and mtl files from assets...
         std::vector<uint8_t> objData;
         std::vector<uint8_t> mtlData;
 
-        yourgame::readAssetFile(objFilename, objData);
-        yourgame::readAssetFile(mtlFilename, mtlData);
+        if (yourgame::readAssetFile(objFilename, objData))
+        {
+            yourgame::loge("loadGeometry(): failed to load obj file %v", objFilename);
+            return nullptr;
+        }
+
+        if (mtlFilename)
+        {
+            if (yourgame::readAssetFile(mtlFilename, mtlData))
+            {
+                yourgame::loge("loadGeometry(): failed to load mtl file %v", mtlFilename);
+                return nullptr;
+            }
+        }
 
         std::string objStr(objData.begin(), objData.end());
-        std::string mtlStr(mtlData.begin(), mtlData.end());
+        std::string mtlStr;
+        if (mtlFilename)
+        {
+            mtlStr = std::string(mtlData.begin(), mtlData.end());
+        }
+        else
+        {
+            mtlStr = "";
+        }
 
+        // parse obj file...
+        // triangulate faces and load vertex colors.
+        // colors (or default colors) are always written,
+        // even if no or not all colors are defined in obj
         tinyobj::ObjReader objRdr;
         tinyobj::ObjReaderConfig objRdrCfg;
-        objRdr.ParseFromString(objStr, mtlStr, objRdrCfg);
+        objRdrCfg.triangulate = true;
+        objRdrCfg.vertex_color = true;
+        if (!objRdr.ParseFromString(objStr, mtlStr, objRdrCfg))
+        {
+            yourgame::loge("tinyobj::ObjReader::ParseFromString failed");
+            return nullptr;
+        }
 
         auto shapes = objRdr.GetShapes();
         auto attribs = objRdr.GetAttrib();
@@ -124,25 +155,40 @@ namespace yourgame
         for (auto const &shape : shapes)
         {
             // move over shape indices and make vertices unique
+            // assuming: positions and colors are always available
             // todo: check if assumptions below are valid (number of attrib values per vertex)
-            // todo: skip missing attributes (by checking attribs)
+            // todo: improve performance
             for (auto const &idx : shape.mesh.indices)
             {
                 auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
                 if (mapRet.second) // new unique vertex
                 {
-                    objIdxData.push_back(uniqueVertCount);
-                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3]);
-                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 1]);
-                    objPosData.push_back((GLfloat)attribs.vertices[idx.vertex_index * 3 + 2]);
-                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3]);
-                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 1]);
-                    objNormalData.push_back((GLfloat)attribs.normals[idx.normal_index * 3 + 2]);
-                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2]);
-                    objTexCoordData.push_back((GLfloat)attribs.texcoords[idx.texcoord_index * 2 + 1]);
-                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3]);
-                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 1]);
-                    objColordData.push_back((GLfloat)attribs.colors[idx.vertex_index * 3 + 2]);
+                    try
+                    {
+                        objIdxData.push_back(uniqueVertCount);
+                        objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3));
+                        objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 1));
+                        objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 2));
+                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3));
+                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 1));
+                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 2));
+                        if (attribs.normals.size() > 0)
+                        {
+                            objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3));
+                            objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3 + 1));
+                            objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3 + 2));
+                        }
+                        if (attribs.texcoords.size() > 0)
+                        {
+                            objTexCoordData.push_back((GLfloat)attribs.texcoords.at(idx.texcoord_index * 2));
+                            objTexCoordData.push_back((GLfloat)attribs.texcoords.at(idx.texcoord_index * 2 + 1));
+                        }
+                    }
+                    catch (...)
+                    {
+                        yourgame::loge("loadGeometry(): %v has faulty obj vertex data", objFilename);
+                        return nullptr;
+                    }
 
                     uniqueVertCount++;
                 }
@@ -153,25 +199,39 @@ namespace yourgame
             }
         }
 
-        // created Geometry object from parsed obj data
+        GLGeometry *newGeo = GLGeometry::make();
+
         auto vertPosSize = objPosData.size() * sizeof(objPosData[0]);
         auto vertNormSize = objNormalData.size() * sizeof(objNormalData[0]);
         auto vertTexcoordsSize = objTexCoordData.size() * sizeof(objTexCoordData[0]);
+        auto vertColorSize = objColordData.size() * sizeof(objColordData[0]);
         auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
 
-        GLGeometry *newGeo = GLGeometry::make();
-        newGeo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
-        newGeo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-        newGeo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
-        newGeo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+        // add available buffers to new Geometry and configure
+        // the Geometry shape...
+        std::vector<GLShape::ArrBufferDescr> arDescrs =
+            {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
+             {attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}};
 
-        newGeo->addShape("main",
-                         {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                          {attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                          {attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0}},
-                         {"pos", "norm", "texcoords"},
-                         {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()},
-                         "idx");
+        std::vector<std::string> arBufferNames = {"pos", "color"};
+
+        newGeo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
+        newGeo->addBuffer("color", GL_ARRAY_BUFFER, vertColorSize, objColordData.data(), GL_STATIC_DRAW);
+        newGeo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+        if (vertNormSize > 0)
+        {
+            newGeo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
+            arDescrs.push_back({attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0});
+            arBufferNames.push_back("norm");
+        }
+        if (vertTexcoordsSize > 0)
+        {
+            newGeo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
+            arDescrs.push_back({attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0});
+            arBufferNames.push_back("texcoords");
+        }
+
+        newGeo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
 
         return newGeo;
     }
