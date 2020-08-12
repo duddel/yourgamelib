@@ -192,7 +192,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/ship_dark.mtl", "audio": 0, "start": 0, "end": 570}, {"filename": "/assets/LICENSE_desktop.txt", "audio": 0, "start": 570, "end": 11359}, {"filename": "/assets/simple.vert", "audio": 0, "start": 11359, "end": 11706}, {"filename": "/assets/simple.frag", "audio": 0, "start": 11706, "end": 11975}, {"filename": "/assets/sphere.mtl", "audio": 0, "start": 11975, "end": 12158}, {"filename": "/assets/sphere.obj", "audio": 0, "start": 12158, "end": 40364}, {"filename": "/assets/ship_dark.obj", "audio": 0, "start": 40364, "end": 660002}, {"filename": "/assets/jingles_SAX07.ogg", "audio": 1, "start": 660002, "end": 690902}, {"filename": "/assets/normal.frag", "audio": 0, "start": 690902, "end": 691094}, {"filename": "/assets/simple.es.frag", "audio": 0, "start": 691094, "end": 691390}, {"filename": "/assets/gradient2.jpg", "audio": 0, "start": 691390, "end": 706156}, {"filename": "/assets/simple.es.vert", "audio": 0, "start": 706156, "end": 706506}, {"filename": "/assets/normal.es.frag", "audio": 0, "start": 706506, "end": 706725}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "audio": 1, "start": 706725, "end": 718542}, {"filename": "/assets/LICENSE_android.txt", "audio": 0, "start": 718542, "end": 726612}, {"filename": "/assets/gradient1.png", "audio": 0, "start": 726612, "end": 729122}, {"filename": "/assets/LICENSE_web.txt", "audio": 0, "start": 729122, "end": 737680}, {"filename": "/assets/jingles_PIZZI00.ogg", "audio": 1, "start": 737680, "end": 748062}], "package_uuid": "6b0013cb-64fa-420a-a73c-e259a9e9e14c", "remote_package_size": 748062});
+   loadPackage({"files": [{"start": 0, "end": 570, "filename": "/assets/ship_dark.mtl", "audio": 0}, {"start": 570, "end": 11359, "filename": "/assets/LICENSE_desktop.txt", "audio": 0}, {"start": 11359, "end": 11706, "filename": "/assets/simple.vert", "audio": 0}, {"start": 11706, "end": 11975, "filename": "/assets/simple.frag", "audio": 0}, {"start": 11975, "end": 12158, "filename": "/assets/sphere.mtl", "audio": 0}, {"start": 12158, "end": 40364, "filename": "/assets/sphere.obj", "audio": 0}, {"start": 40364, "end": 660002, "filename": "/assets/ship_dark.obj", "audio": 0}, {"start": 660002, "end": 690902, "filename": "/assets/jingles_SAX07.ogg", "audio": 1}, {"start": 690902, "end": 691094, "filename": "/assets/normal.frag", "audio": 0}, {"start": 691094, "end": 691390, "filename": "/assets/simple.es.frag", "audio": 0}, {"start": 691390, "end": 706156, "filename": "/assets/gradient2.jpg", "audio": 0}, {"start": 706156, "end": 706506, "filename": "/assets/simple.es.vert", "audio": 0}, {"start": 706506, "end": 706725, "filename": "/assets/normal.es.frag", "audio": 0}, {"start": 706725, "end": 718542, "filename": "/assets/jingles_SAX07_mono_11025.ogg", "audio": 1}, {"start": 718542, "end": 726612, "filename": "/assets/LICENSE_android.txt", "audio": 0}, {"start": 726612, "end": 729122, "filename": "/assets/gradient1.png", "audio": 0}, {"start": 729122, "end": 737680, "filename": "/assets/LICENSE_web.txt", "audio": 0}, {"start": 737680, "end": 748062, "filename": "/assets/jingles_PIZZI00.ogg", "audio": 1}], "remote_package_size": 748062, "package_uuid": "29a23fee-257c-46fb-8776-0995fd493c8d"});
   
   })();
   
@@ -1478,11 +1478,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 5428400,
+    STACK_BASE = 5428544,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 185520,
-    DYNAMIC_BASE = 5428400,
-    DYNAMICTOP_PTR = 185360;
+    STACK_MAX = 185664,
+    DYNAMIC_BASE = 5428544,
+    DYNAMICTOP_PTR = 185504;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -2061,7 +2061,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
 
 
 
-// STATICTOP = STATIC_BASE + 184496;
+// STATICTOP = STATIC_BASE + 184640;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -2117,8 +2117,10 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
       abort('Assertion failed: ' + UTF8ToString(condition) + ', at: ' + [filename ? UTF8ToString(filename) : 'unknown filename', line, func ? UTF8ToString(func) : 'unknown function']);
     }
 
-  function ___cxa_allocate_exception(size) {
-      return _malloc(size);
+  
+  var ExceptionInfoAttrs={DESTRUCTOR_OFFSET:0,REFCOUNT_OFFSET:4,TYPE_OFFSET:8,CAUGHT_OFFSET:12,RETHROWN_OFFSET:13,SIZE:16};function ___cxa_allocate_exception(size) {
+      // Thrown object is prepended by exception metadata block
+      return _malloc(size + ExceptionInfoAttrs.SIZE) + ExceptionInfoAttrs.SIZE;
     }
 
   
@@ -2131,22 +2133,79 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   }
 
   
-  var exceptionInfos={};
+  function ExceptionInfo(excPtr) {
+      this.excPtr = excPtr;
+      this.ptr = excPtr - ExceptionInfoAttrs.SIZE;
+  
+      this.set_type = function(type) {
+        HEAP32[(((this.ptr)+(ExceptionInfoAttrs.TYPE_OFFSET))>>2)]=type;
+      };
+  
+      this.get_type = function() {
+        return HEAP32[(((this.ptr)+(ExceptionInfoAttrs.TYPE_OFFSET))>>2)];
+      };
+  
+      this.set_destructor = function(destructor) {
+        HEAP32[(((this.ptr)+(ExceptionInfoAttrs.DESTRUCTOR_OFFSET))>>2)]=destructor;
+      };
+  
+      this.get_destructor = function() {
+        return HEAP32[(((this.ptr)+(ExceptionInfoAttrs.DESTRUCTOR_OFFSET))>>2)];
+      };
+  
+      this.set_refcount = function(refcount) {
+        HEAP32[(((this.ptr)+(ExceptionInfoAttrs.REFCOUNT_OFFSET))>>2)]=refcount;
+      };
+  
+      this.set_caught = function (caught) {
+        caught = caught ? 1 : 0;
+        HEAP8[(((this.ptr)+(ExceptionInfoAttrs.CAUGHT_OFFSET))>>0)]=caught;
+      };
+  
+      this.get_caught = function () {
+        return HEAP8[(((this.ptr)+(ExceptionInfoAttrs.CAUGHT_OFFSET))>>0)] != 0;
+      };
+  
+      this.set_rethrown = function (rethrown) {
+        rethrown = rethrown ? 1 : 0;
+        HEAP8[(((this.ptr)+(ExceptionInfoAttrs.RETHROWN_OFFSET))>>0)]=rethrown;
+      };
+  
+      this.get_rethrown = function () {
+        return HEAP8[(((this.ptr)+(ExceptionInfoAttrs.RETHROWN_OFFSET))>>0)] != 0;
+      };
+  
+      // Initialize native structure fields. Should be called once after allocated.
+      this.init = function(type, destructor) {
+        this.set_type(type);
+        this.set_destructor(destructor);
+        this.set_refcount(0);
+        this.set_caught(false);
+        this.set_rethrown(false);
+      }
+  
+      this.add_ref = function() {
+        var value = HEAP32[(((this.ptr)+(ExceptionInfoAttrs.REFCOUNT_OFFSET))>>2)];
+        HEAP32[(((this.ptr)+(ExceptionInfoAttrs.REFCOUNT_OFFSET))>>2)]=value + 1;
+      };
+  
+      // Returns true if last reference released.
+      this.release_ref = function() {
+        var prev = HEAP32[(((this.ptr)+(ExceptionInfoAttrs.REFCOUNT_OFFSET))>>2)];
+        HEAP32[(((this.ptr)+(ExceptionInfoAttrs.REFCOUNT_OFFSET))>>2)]=prev - 1;
+        assert(prev > 0);
+        return prev === 1;
+      };
+    }
   
   var exceptionLast=0;
   
   function __ZSt18uncaught_exceptionv() { // std::uncaught_exception()
       return __ZSt18uncaught_exceptionv.uncaught_exceptions > 0;
     }function ___cxa_throw(ptr, type, destructor) {
-      exceptionInfos[ptr] = {
-        ptr: ptr,
-        adjusted: [ptr],
-        type: type,
-        destructor: destructor,
-        refcount: 0,
-        caught: false,
-        rethrown: false
-      };
+      var info = new ExceptionInfo(ptr);
+      // Initialize ExceptionInfo content after it was allocated in __cxa_allocate_exception.
+      info.init(type, destructor);
       exceptionLast = ptr;
       if (!("uncaught_exception" in __ZSt18uncaught_exceptionv)) {
         __ZSt18uncaught_exceptionv.uncaught_exceptions = 1;
@@ -4764,7 +4823,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 185360;
+      return 185504;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -4824,6 +4883,8 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
             func();
           } catch (e) {
             if (e instanceof ExitStatus) {
+              return;
+            } else if (e == 'unwind') {
               return;
             } else {
               if (e && typeof e === 'object' && e.stack) err('exception thrown: ' + [e, e.stack]);
@@ -5725,6 +5786,11 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   function __webgl_enable_WEBGL_draw_instanced_base_vertex_base_instance(ctx) {
       // Closure is expected to be allowed to minify the '.dibvbi' property, so not accessing it quoted.
       return !!(ctx.dibvbi = ctx.getExtension('WEBGL_draw_instanced_base_vertex_base_instance'));
+    }
+  
+  function __webgl_enable_WEBGL_multi_draw(ctx) {
+      // Closure is expected to be allowed to minify the '.multiDrawWebgl' property, so not accessing it quoted.
+      return !!(ctx.multiDrawWebgl = ctx.getExtension('WEBGL_multi_draw'));
     }var GL={counter:1,buffers:[],programs:[],framebuffers:[],renderbuffers:[],textures:[],uniforms:[],shaders:[],vaos:[],contexts:[],offscreenCanvases:{},timerQueriesEXT:[],queries:[],samplers:[],transformFeedbacks:[],syncs:[],programInfos:{},stringCache:{},stringiCache:{},unpackAlignment:4,recordError:function recordError(errorCode) {
         if (!GL.lastError) {
           GL.lastError = errorCode;
@@ -5819,6 +5885,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
         __webgl_enable_WEBGL_draw_instanced_base_vertex_base_instance(GLctx);
   
         GLctx.disjointTimerQueryExt = GLctx.getExtension("EXT_disjoint_timer_query");
+        __webgl_enable_WEBGL_multi_draw(GLctx);
   
         // These are the 'safe' feature-enabling extensions that don't add any performance impact related to e.g. debugging, and
         // should be enabled by default so that client GLES2/GL code will not need to go through extra hoops to get its stuff working.
@@ -7549,7 +7616,7 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
     }
 
   
-  var ___tm_timezone=(stringToUTF8("GMT", 185424, 4), 185424);
+  var ___tm_timezone=(stringToUTF8("GMT", 185568, 4), 185568);
   
   function _tzset() {
       // TODO: Use (malleable) environment variables instead of system settings.
@@ -8163,9 +8230,6 @@ var _emscripten_main_thread_process_queued_calls = Module["_emscripten_main_thre
 var ___set_stack_limit = Module["___set_stack_limit"] = createExportWrapper("__set_stack_limit");
 
 /** @type {function(...*):?} */
-var __growWasmMemory = Module["__growWasmMemory"] = createExportWrapper("__growWasmMemory");
-
-/** @type {function(...*):?} */
 var dynCall_ii = Module["dynCall_ii"] = createExportWrapper("dynCall_ii");
 
 /** @type {function(...*):?} */
@@ -8251,6 +8315,9 @@ var dynCall_iiiiiiii = Module["dynCall_iiiiiiii"] = createExportWrapper("dynCall
 
 /** @type {function(...*):?} */
 var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
+
+/** @type {function(...*):?} */
+var __growWasmMemory = Module["__growWasmMemory"] = createExportWrapper("__growWasmMemory");
 
 
 
@@ -8363,8 +8430,9 @@ if (!Object.getOwnPropertyDescriptor(Module, "convertI32PairToI53")) Module["con
 if (!Object.getOwnPropertyDescriptor(Module, "convertU32PairToI53")) Module["convertU32PairToI53"] = function() { abort("'convertU32PairToI53' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "exceptionLast")) Module["exceptionLast"] = function() { abort("'exceptionLast' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "exceptionCaught")) Module["exceptionCaught"] = function() { abort("'exceptionCaught' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "exceptionInfos")) Module["exceptionInfos"] = function() { abort("'exceptionInfos' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "exception_deAdjust")) Module["exception_deAdjust"] = function() { abort("'exception_deAdjust' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "ExceptionInfoAttrs")) Module["ExceptionInfoAttrs"] = function() { abort("'ExceptionInfoAttrs' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "ExceptionInfo")) Module["ExceptionInfo"] = function() { abort("'ExceptionInfo' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
+if (!Object.getOwnPropertyDescriptor(Module, "CatchInfo")) Module["CatchInfo"] = function() { abort("'CatchInfo' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "exception_addRef")) Module["exception_addRef"] = function() { abort("'exception_addRef' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "exception_decRef")) Module["exception_decRef"] = function() { abort("'exception_decRef' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "Browser")) Module["Browser"] = function() { abort("'Browser' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
