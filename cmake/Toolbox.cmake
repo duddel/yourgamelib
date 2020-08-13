@@ -1,5 +1,6 @@
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "glm"
+  "imgui"
   "miniaudio"
   "stb"
   "tinyobjloader"
@@ -15,6 +16,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshader.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshape.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gltexture2d.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/headerlibs.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/trafo.cpp
 )
 

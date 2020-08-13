@@ -21,3 +21,7 @@ freely, subject to the following restrictions:
 #include "tiny_obj_loader.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#define STB_VORBIS_HEADER_ONLY
+#include "stb_vorbis.c"
+#define MINIAUDIO_IMPLEMENTATION
+#include "miniaudio.h"
