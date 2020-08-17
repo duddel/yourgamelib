@@ -10,11 +10,12 @@ out vec2 vOutTex;
 
 uniform mat4 mvpMat;
 uniform mat4 modelMat;
+uniform mat3 normalMat;
 
 void main()
 {
-    vOutPos = inPosition;
-    vOutNorm = (modelMat * vec4(inNormal, 0.0)).xyz;
+    vOutPos = (modelMat * vec4(inPosition, 1.0)).xyz;
+    vOutNorm = normalMat * inNormal;
     vOutTex = inTexcoords;
     gl_Position = mvpMat * vec4(inPosition, 1.0);
 }

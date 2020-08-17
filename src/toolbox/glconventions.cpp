@@ -34,6 +34,7 @@ namespace yourgame
     const std::string attrNameColor = "inColor";
     const GLchar *unifNameMvpMatrix = "mvpMat";
     const GLchar *unifNameModelMatrix = "modelMat";
+    const GLchar *unifNameNormalMatrix = "normalMat";
     const GLchar *unifNameTexture0 = "texture0";
     const GLchar *unifNameTexture1 = "texture1";
 }

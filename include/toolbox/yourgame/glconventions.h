@@ -35,6 +35,7 @@ namespace yourgame
     extern const std::string attrNameColor;
     extern const GLchar *unifNameMvpMatrix;
     extern const GLchar *unifNameModelMatrix;
+    extern const GLchar *unifNameNormalMatrix;
     extern const GLchar *unifNameTexture0;
     extern const GLchar *unifNameTexture1;
 }

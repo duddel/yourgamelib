@@ -95,16 +95,18 @@ namespace mygame
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // prepare draw call based on selected shader
+        auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
+        auto modelMat = g_modelTrafo.mat();
+        auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
         if (g_shaderToUse == 1)
         {
             if (g_shaderNormal)
             {
                 g_shaderNormal->useProgram();
                 glUniform1f(g_shaderNormal->getUniformLocation("fade"), sineFade);
-                auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
-                auto modelMat = g_modelTrafo.mat();
                 glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
                 glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_shaderNormal->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
             }
         }
         else if (g_shaderToUse == 0)
@@ -113,10 +115,9 @@ namespace mygame
             {
                 g_shaderTexture->useProgram();
                 glUniform1f(g_shaderTexture->getUniformLocation("fade"), sineFade);
-                auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
-                auto modelMat = g_modelTrafo.mat();
                 glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
                 glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_shaderTexture->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
             }
             g_textures.at("gradient1.png")->bind();
             g_textures.at("gradient2.jpg")->bind();
@@ -128,7 +129,7 @@ namespace mygame
 
     void shutdown(const yourgame::context &ctx)
     {
-        if(yourgame::audioIsInitialized())
+        if (yourgame::audioIsInitialized())
         {
             yourgame::audioShutdown();
         }
