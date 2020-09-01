@@ -77,8 +77,8 @@ Here is a list of available third-party libraries ("External Projects") that can
 
 ## Dear ImGui
 
--   version: **1.75**
--   origin: <https://github.com/ocornut/imgui/releases/tag/v1.75>
+-   version: **1.78**
+-   origin: <https://github.com/ocornut/imgui/releases/tag/v1.78>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   examples/imgui_impl_glfw.{h,cpp}
@@ -96,8 +96,8 @@ Here is a list of available third-party libraries ("External Projects") that can
 
 ### Dear ImGui Android back-end
 
--   version: **0dff411 (android_native)**
--   origin: <https://github.com/duddel/imgui/tree/0dff411cd1b2779485d64c8a27957e8abdc0b3c3>
+-   version: **fcef730 (android_native)**
+-   origin: <https://github.com/duddel/imgui/tree/fcef730fc095874d2231d95e6fdde4e3bdc7b767>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   examples/imgui_impl_android.{h,cpp}
