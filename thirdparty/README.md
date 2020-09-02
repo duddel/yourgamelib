@@ -8,6 +8,7 @@ Here is a list of available third-party libraries ("External Projects") that can
 | Alias                                     | Name                | By User |
 | ----------------------------------------- | ------------------- | ------- |
 | [box2d](#box2d)                           | Box2D               | **Yes** |
+| [flecs](#flecs)                           | Flecs               | **Yes** |
 | [glm](#glm)                               | glm                 | **Yes** |
 | [imgui](#dear-imgui)                      | Dear Imgui          | **Yes** |
 | [json](#json-for-modern-c++)              | JSON for Modern C++ | **Yes** |
@@ -34,11 +35,11 @@ Here is a list of available third-party libraries ("External Projects") that can
 -   origin: <https://github.com/erincatto/box2d/tree/4de0ea3f1e9511ebd4c85b52e200a8bd9c2fae9e>
 -   extracted from origin:
     -   LICENSE
-    -   include/*
-    -   src/collision/*
-    -   src/common/*
-    -   src/dynamics/*
-    -   src/rope/*
+    -   include/\*
+    -   src/collision/\*
+    -   src/common/\*
+    -   src/dynamics/\*
+    -   src/rope/\*
 -   modifications are marked with `YOURGAME_MODIFICATION`
 -   license: [box2d/LICENSE](box2d/LICENSE)
 
@@ -49,6 +50,14 @@ Here is a list of available third-party libraries ("External Projects") that can
 -   extracted from origin:
     -   LICENSE, easylogging++.{h,cc}
 -   license: [easyloggingpp/LICENSE](easyloggingpp/LICENSE)
+
+## Flecs
+
+-   version: **2.1.1**
+-   origin: <https://github.com/SanderMertens/flecs/releases/tag/v2.1.1>
+-   extracted from origin:
+    -   LICENSE, flecs.{h,c}
+-   license: [flecs/LICENSE](flecs/LICENSE)
 
 ## glad
 

@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 #include "yourgame/toolbox.h"
 #include "imgui.h"
 #include "box2d/box2d.h"
+#include "flecs.h"
 
 namespace mygame
 {
@@ -186,6 +187,7 @@ namespace mygame
             static bool showImguiDemo = false;
             static bool showSaveFile = false;
             static bool showBox2d = false;
+            static bool showFlecs = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -219,6 +221,10 @@ namespace mygame
                     if (ImGui::MenuItem("Box2D", "", &showBox2d))
                     {
                         showBox2d = true;
+                    }
+                    if (ImGui::MenuItem("Flecs", "", &showFlecs))
+                    {
+                        showFlecs = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -416,6 +422,37 @@ namespace mygame
             {
                 delete box2dWorld;
                 box2dInitialized = false;
+            }
+
+            // Flecs demo window
+            static bool flecsInitialized = false;
+            static flecs::world *flecsWorld;
+            if (showFlecs)
+            {
+                if (!flecsInitialized)
+                {
+                    flecsWorld = new flecs::world();
+                    flecsWorld->component<float>();
+                    flecsWorld->system<float>().each([](flecs::entity e, float &v) {
+                        v = v > 10.0f ? 0.0f : v + 0.1f;
+                    });
+                    flecsWorld->entity("SimpleEntity").set<float>({5.0});
+
+                    flecsInitialized = true;
+                }
+
+                flecsWorld->progress();
+
+                // indicate entity component via vertical slider
+                float entityVal = *(flecsWorld->lookup("SimpleEntity").get<float>());
+                ImGui::Begin("Flecs", &showFlecs, (ImGuiWindowFlags_NoCollapse));
+                ImGui::VSliderFloat("", ImVec2(50, 150), &entityVal, 0.0f, 10.0f);
+                ImGui::End();
+            }
+            else if (flecsInitialized)
+            {
+                delete flecsWorld;
+                flecsInitialized = false;
             }
 
             // license window
