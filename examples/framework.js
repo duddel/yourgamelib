@@ -189,7 +189,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/LICENSE_web.txt", "audio": 0, "end": 8558, "start": 0}, {"filename": "/assets/simple.es.vert", "audio": 0, "end": 8944, "start": 8558}, {"filename": "/assets/gradient1.png", "audio": 0, "end": 11454, "start": 8944}, {"filename": "/assets/ship_dark.obj", "audio": 0, "end": 631092, "start": 11454}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "audio": 1, "end": 642909, "start": 631092}, {"filename": "/assets/jingles_PIZZI00.ogg", "audio": 1, "end": 653291, "start": 642909}, {"filename": "/assets/sphere.obj", "audio": 0, "end": 681497, "start": 653291}, {"filename": "/assets/LICENSE_android.txt", "audio": 0, "end": 689567, "start": 681497}, {"filename": "/assets/LICENSE_desktop.txt", "audio": 0, "end": 700356, "start": 689567}, {"filename": "/assets/sphere.mtl", "audio": 0, "end": 700539, "start": 700356}, {"filename": "/assets/gradient2.jpg", "audio": 0, "end": 715305, "start": 700539}, {"filename": "/assets/normal.frag", "audio": 0, "end": 715497, "start": 715305}, {"filename": "/assets/jingles_SAX07.ogg", "audio": 1, "end": 746397, "start": 715497}, {"filename": "/assets/normal.es.frag", "audio": 0, "end": 746616, "start": 746397}, {"filename": "/assets/simple.es.frag", "audio": 0, "end": 746912, "start": 746616}, {"filename": "/assets/ship_dark.mtl", "audio": 0, "end": 747482, "start": 746912}, {"filename": "/assets/simple.vert", "audio": 0, "end": 747865, "start": 747482}, {"filename": "/assets/simple.frag", "audio": 0, "end": 748134, "start": 747865}], "remote_package_size": 748134, "package_uuid": "f16b2d49-9596-4d21-8674-b31f109038c0"});
+   loadPackage({"files": [{"filename": "/assets/LICENSE_web.txt", "audio": 0, "end": 8558, "start": 0}, {"filename": "/assets/simple.es.vert", "audio": 0, "end": 8944, "start": 8558}, {"filename": "/assets/gradient1.png", "audio": 0, "end": 11454, "start": 8944}, {"filename": "/assets/ship_dark.obj", "audio": 0, "end": 631092, "start": 11454}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "audio": 1, "end": 642909, "start": 631092}, {"filename": "/assets/jingles_PIZZI00.ogg", "audio": 1, "end": 653291, "start": 642909}, {"filename": "/assets/sphere.obj", "audio": 0, "end": 681497, "start": 653291}, {"filename": "/assets/LICENSE_android.txt", "audio": 0, "end": 689567, "start": 681497}, {"filename": "/assets/LICENSE_desktop.txt", "audio": 0, "end": 700356, "start": 689567}, {"filename": "/assets/sphere.mtl", "audio": 0, "end": 700539, "start": 700356}, {"filename": "/assets/gradient2.jpg", "audio": 0, "end": 715305, "start": 700539}, {"filename": "/assets/normal.frag", "audio": 0, "end": 715497, "start": 715305}, {"filename": "/assets/jingles_SAX07.ogg", "audio": 1, "end": 746397, "start": 715497}, {"filename": "/assets/normal.es.frag", "audio": 0, "end": 746616, "start": 746397}, {"filename": "/assets/simple.es.frag", "audio": 0, "end": 746912, "start": 746616}, {"filename": "/assets/ship_dark.mtl", "audio": 0, "end": 747482, "start": 746912}, {"filename": "/assets/simple.vert", "audio": 0, "end": 747865, "start": 747482}, {"filename": "/assets/simple.frag", "audio": 0, "end": 748134, "start": 747865}], "remote_package_size": 748134, "package_uuid": "4679a8fb-1327-42df-89ec-090d2c248a18"});
   
   })();
   
@@ -1470,7 +1470,7 @@ assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' 
     wasmMemory = new WebAssembly.Memory({
       'initial': INITIAL_INITIAL_MEMORY / WASM_PAGE_SIZE
       ,
-      'maximum': INITIAL_INITIAL_MEMORY / WASM_PAGE_SIZE
+      'maximum': 2147483648 / WASM_PAGE_SIZE
     });
   }
 
@@ -1483,6 +1483,7 @@ if (wasmMemory) {
 // specifically provide the memory length with Module['INITIAL_MEMORY'].
 INITIAL_INITIAL_MEMORY = buffer.byteLength;
 assert(INITIAL_INITIAL_MEMORY % WASM_PAGE_SIZE === 0);
+assert(65536 % WASM_PAGE_SIZE === 0);
 updateGlobalBufferAndViews(buffer);
 
 HEAP32[DYNAMICTOP_PTR>>2] = DYNAMIC_BASE;
@@ -2658,6 +2659,13 @@ var ASM_CONSTS = {
         },write:function(stream, buffer, offset, length, position, canOwn) {
           // The data buffer should be a typed array view
           assert(!(buffer instanceof ArrayBuffer));
+          // If the buffer is located in main memory (HEAP), and if
+          // memory can grow, we can't hold on to references of the
+          // memory buffer, as they may get invalidated. That means we
+          // need to do copy its contents.
+          if (buffer.buffer === HEAP8.buffer) {
+            canOwn = false;
+          }
   
           if (!length) return 0;
           var node = stream.node;
@@ -4775,11 +4783,61 @@ var ASM_CONSTS = {
       return HEAPU8.length;
     }
   
-  function abortOnCannotGrowMemory(requestedSize) {
-      abort('Cannot enlarge memory arrays to size ' + requestedSize + ' bytes (OOM). Either (1) compile with  -s INITIAL_MEMORY=X  with X higher than the current value ' + HEAP8.length + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
+  function emscripten_realloc_buffer(size) {
+      try {
+        // round size grow request up to wasm page size (fixed 64KB per spec)
+        wasmMemory.grow((size - buffer.byteLength + 65535) >>> 16); // .grow() takes a delta compared to the previous size
+        updateGlobalBufferAndViews(wasmMemory.buffer);
+        return 1 /*success*/;
+      } catch(e) {
+        console.error('emscripten_realloc_buffer: Attempted to grow heap from ' + buffer.byteLength  + ' bytes to ' + size + ' bytes, but got error: ' + e);
+      }
     }function _emscripten_resize_heap(requestedSize) {
       requestedSize = requestedSize >>> 0;
-      abortOnCannotGrowMemory(requestedSize);
+      var oldSize = _emscripten_get_heap_size();
+      // With pthreads, races can happen (another thread might increase the size in between), so return a failure, and let the caller retry.
+      assert(requestedSize > oldSize);
+  
+  
+      // Memory resize rules:
+      // 1. When resizing, always produce a resized heap that is at least 16MB (to avoid tiny heap sizes receiving lots of repeated resizes at startup)
+      // 2. Always increase heap size to at least the requested size, rounded up to next page multiple.
+      // 3a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap geometrically: increase the heap size according to 
+      //                                         MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%),
+      //                                         At most overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
+      // 3b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap linearly: increase the heap size by at least MEMORY_GROWTH_LINEAR_STEP bytes.
+      // 4. Max size for the heap is capped at 2048MB-WASM_PAGE_SIZE, or by MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
+      // 5. If we were unable to allocate as much memory, it may be due to over-eager decision to excessively reserve due to (3) above.
+      //    Hence if an allocation fails, cut down on the amount of excess growth, in an attempt to succeed to perform a smaller allocation.
+  
+      // A limit was set for how much we can grow. We should not exceed that
+      // (the wasm binary specifies it, so if we tried, we'd fail anyhow).
+      var maxHeapSize = 2147483648;
+      if (requestedSize > maxHeapSize) {
+        err('Cannot enlarge memory, asked to go up to ' + requestedSize + ' bytes, but the limit is ' + maxHeapSize + ' bytes!');
+        return false;
+      }
+  
+      var minHeapSize = 16777216;
+  
+      // Loop through potential heap size increases. If we attempt a too eager reservation that fails, cut down on the
+      // attempted size and reserve a smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
+      for(var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
+        // but limit overreserving (default to capping at +96MB overgrowth at most)
+        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
+  
+  
+        var newSize = Math.min(maxHeapSize, alignUp(Math.max(minHeapSize, requestedSize, overGrownHeapSize), 65536));
+  
+        var replacement = emscripten_realloc_buffer(newSize);
+        if (replacement) {
+  
+          return true;
+        }
+      }
+      err('Failed to grow the heap from ' + oldSize + ' bytes to ' + newSize + ' bytes, not enough memory!');
+      return false;
     }
 
   
@@ -8336,7 +8394,6 @@ if (!Object.getOwnPropertyDescriptor(Module, "setTempRet0")) Module["setTempRet0
 if (!Object.getOwnPropertyDescriptor(Module, "callMain")) Module["callMain"] = function() { abort("'callMain' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "abort")) Module["abort"] = function() { abort("'abort' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "stringToNewUTF8")) Module["stringToNewUTF8"] = function() { abort("'stringToNewUTF8' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "abortOnCannotGrowMemory")) Module["abortOnCannotGrowMemory"] = function() { abort("'abortOnCannotGrowMemory' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "emscripten_realloc_buffer")) Module["emscripten_realloc_buffer"] = function() { abort("'emscripten_realloc_buffer' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "ENV")) Module["ENV"] = function() { abort("'ENV' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "ERRNO_CODES")) Module["ERRNO_CODES"] = function() { abort("'ERRNO_CODES' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
