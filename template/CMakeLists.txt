@@ -98,9 +98,13 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
   # enforce GLFW v3 API (default is v2)
   # enforce WEB GL v2 (default is v1)
+  # ALLOW_MEMORY_GROWTH=1 was added after commit bd08b66, where initializing
+  # of flecs caused the web app to crash
+  # todo: what exactly does ALLOW_MEMORY_GROWTH mean?
   set(C_CXX_FLAGS_FOR_EM
     "-s USE_GLFW=3 \
     -s USE_WEBGL2=1 \
+    -s ALLOW_MEMORY_GROWTH=1 \
     --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/shell.html")
   # make sure assets/ gets copied into the wasm file system,
   # but only if any asset files exist
