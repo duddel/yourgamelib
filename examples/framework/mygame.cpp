@@ -27,20 +27,6 @@ freely, subject to the following restrictions:
 #include "box2d/box2d.h"
 #include "flecs.h"
 
-// Flecs components,
-// todo: they need to be defined in global scope, otherwise flecs complains
-// when the flecs world is re-initialized (with new after delete):
-// "component registered twice with a different name [...]"
-struct flecsDistance
-{
-    float s;
-};
-
-struct flecsVelocity
-{
-    float v;
-};
-
 namespace mygame
 {
     namespace
@@ -62,6 +48,17 @@ namespace mygame
         yourgame::GLShader *g_shaderNormal = nullptr;
         int g_shaderToUse = 1; // 0: texture, 1: normal
         std::map<std::string, yourgame::GLTexture2D *> g_textures;
+
+        // Flecs components
+        struct flecsDistance
+        {
+            float s;
+        };
+
+        struct flecsVelocity
+        {
+            float v;
+        };
     } // namespace
 
     void init(const yourgame::context &ctx)
