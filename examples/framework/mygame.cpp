@@ -27,6 +27,20 @@ freely, subject to the following restrictions:
 #include "box2d/box2d.h"
 #include "flecs.h"
 
+// Flecs components,
+// todo: they need to be defined in global scope, otherwise flecs complains
+// when the flecs world is re-initialized (with new after delete):
+// "component registered twice with a different name [...]"
+struct flecsDistance
+{
+    float s;
+};
+
+struct flecsVelocity
+{
+    float v;
+};
+
 namespace mygame
 {
     namespace
@@ -429,24 +443,40 @@ namespace mygame
             static flecs::world *flecsWorld;
             if (showFlecs)
             {
+                ImGui::Begin("Flecs", &showFlecs, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+
                 if (!flecsInitialized)
                 {
                     flecsWorld = new flecs::world();
-                    flecsWorld->component<float>();
-                    flecsWorld->system<float>().each([](flecs::entity e, float &v) {
-                        v = v > 10.0f ? 0.0f : v + 0.1f;
+
+                    // register components
+                    flecsWorld->component<flecsDistance>();
+                    flecsWorld->component<flecsVelocity>();
+
+                    // add movement system
+                    flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel) {
+                        float newS = dist.s + vel.v * e.delta_time();
+                        dist.s = newS > 10.0f ? newS - 10.0f : newS;
                     });
-                    flecsWorld->entity("SimpleEntity").set<float>({5.0});
+
+                    // add drawing system
+                    flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist) {
+                        // indicate entity components via sliders
+                        float entityVal = dist.s;
+                        ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f);
+                    });
+
+                    // add some entities
+                    for (int i = 1; i < 11; i++)
+                    {
+                        flecsWorld->entity().set<flecsDistance>({5.0}).set<flecsVelocity>({(float)i});
+                    }
 
                     flecsInitialized = true;
                 }
 
                 flecsWorld->progress();
 
-                // indicate entity component via vertical slider
-                float entityVal = *(flecsWorld->lookup("SimpleEntity").get<float>());
-                ImGui::Begin("Flecs", &showFlecs, (ImGuiWindowFlags_NoCollapse));
-                ImGui::VSliderFloat("", ImVec2(50, 150), &entityVal, 0.0f, 10.0f);
                 ImGui::End();
             }
             else if (flecsInitialized)
