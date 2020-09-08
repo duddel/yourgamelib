@@ -189,7 +189,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"start": 0, "audio": 0, "end": 8558, "filename": "/assets/LICENSE_web.txt"}, {"start": 8558, "audio": 0, "end": 8944, "filename": "/assets/simple.es.vert"}, {"start": 8944, "audio": 0, "end": 11454, "filename": "/assets/gradient1.png"}, {"start": 11454, "audio": 0, "end": 631092, "filename": "/assets/ship_dark.obj"}, {"start": 631092, "audio": 1, "end": 642909, "filename": "/assets/jingles_SAX07_mono_11025.ogg"}, {"start": 642909, "audio": 1, "end": 653291, "filename": "/assets/jingles_PIZZI00.ogg"}, {"start": 653291, "audio": 0, "end": 681497, "filename": "/assets/sphere.obj"}, {"start": 681497, "audio": 0, "end": 689567, "filename": "/assets/LICENSE_android.txt"}, {"start": 689567, "audio": 0, "end": 700356, "filename": "/assets/LICENSE_desktop.txt"}, {"start": 700356, "audio": 0, "end": 700539, "filename": "/assets/sphere.mtl"}, {"start": 700539, "audio": 0, "end": 715305, "filename": "/assets/gradient2.jpg"}, {"start": 715305, "audio": 0, "end": 715497, "filename": "/assets/normal.frag"}, {"start": 715497, "audio": 1, "end": 746397, "filename": "/assets/jingles_SAX07.ogg"}, {"start": 746397, "audio": 0, "end": 746616, "filename": "/assets/normal.es.frag"}, {"start": 746616, "audio": 0, "end": 746912, "filename": "/assets/simple.es.frag"}, {"start": 746912, "audio": 0, "end": 747482, "filename": "/assets/ship_dark.mtl"}, {"start": 747482, "audio": 0, "end": 747865, "filename": "/assets/simple.vert"}, {"start": 747865, "audio": 0, "end": 748134, "filename": "/assets/simple.frag"}], "remote_package_size": 748134, "package_uuid": "fdbc59c9-6e78-460c-a989-d05965ad9392"});
+   loadPackage({"remote_package_size": 748134, "files": [{"audio": 0, "start": 0, "end": 8558, "filename": "/assets/LICENSE_web.txt"}, {"audio": 0, "start": 8558, "end": 8944, "filename": "/assets/simple.es.vert"}, {"audio": 0, "start": 8944, "end": 11454, "filename": "/assets/gradient1.png"}, {"audio": 0, "start": 11454, "end": 631092, "filename": "/assets/ship_dark.obj"}, {"audio": 1, "start": 631092, "end": 642909, "filename": "/assets/jingles_SAX07_mono_11025.ogg"}, {"audio": 1, "start": 642909, "end": 653291, "filename": "/assets/jingles_PIZZI00.ogg"}, {"audio": 0, "start": 653291, "end": 681497, "filename": "/assets/sphere.obj"}, {"audio": 0, "start": 681497, "end": 689567, "filename": "/assets/LICENSE_android.txt"}, {"audio": 0, "start": 689567, "end": 700356, "filename": "/assets/LICENSE_desktop.txt"}, {"audio": 0, "start": 700356, "end": 700539, "filename": "/assets/sphere.mtl"}, {"audio": 0, "start": 700539, "end": 715305, "filename": "/assets/gradient2.jpg"}, {"audio": 0, "start": 715305, "end": 715497, "filename": "/assets/normal.frag"}, {"audio": 1, "start": 715497, "end": 746397, "filename": "/assets/jingles_SAX07.ogg"}, {"audio": 0, "start": 746397, "end": 746616, "filename": "/assets/normal.es.frag"}, {"audio": 0, "start": 746616, "end": 746912, "filename": "/assets/simple.es.frag"}, {"audio": 0, "start": 746912, "end": 747482, "filename": "/assets/ship_dark.mtl"}, {"audio": 0, "start": 747482, "end": 747865, "filename": "/assets/simple.vert"}, {"audio": 0, "start": 747865, "end": 748134, "filename": "/assets/simple.frag"}], "package_uuid": "e2d575eb-1be7-43ae-ab31-4b07966349ae"});
   
   })();
   
@@ -8249,6 +8249,9 @@ var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__w
 var _free = Module["_free"] = createExportWrapper("free");
 
 /** @type {function(...*):?} */
+var _realloc = Module["_realloc"] = createExportWrapper("realloc");
+
+/** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
 
 /** @type {function(...*):?} */
@@ -8286,6 +8289,12 @@ var stackRestore = Module["stackRestore"] = createExportWrapper("stackRestore");
 
 /** @type {function(...*):?} */
 var stackAlloc = Module["stackAlloc"] = createExportWrapper("stackAlloc");
+
+/** @type {function(...*):?} */
+var _saveSetjmp = Module["_saveSetjmp"] = createExportWrapper("saveSetjmp");
+
+/** @type {function(...*):?} */
+var _testSetjmp = Module["_testSetjmp"] = createExportWrapper("testSetjmp");
 
 /** @type {function(...*):?} */
 var _emscripten_main_thread_process_queued_calls = Module["_emscripten_main_thread_process_queued_calls"] = createExportWrapper("emscripten_main_thread_process_queued_calls");
