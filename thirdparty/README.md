@@ -3,25 +3,28 @@
 Here is a list of third-party libraries ("External Projects") that can optionally be integrated, or are mandatory for specific target platforms. Below is a detailed list of the origins, licenses and possible modifications for each library. Also, each library has a `ExtProj-<alias>.cmake` file (in [cmake/](../cmake)) that can be investigated for details about the integration.
 
 ## Optional libraries
-| Alias                                     | Name                | Desktop | Android | Web |
-| ----------------------------------------- | ------------------- | ------- | ------- | --- |
-| [box2d](#box2d)                           | Box2D               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [flecs](#flecs)                           | Flecs               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [glm](#glm)                               | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [imgui](#dear-imgui)                      | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [json](#json-for-modern-c++)              | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [miniaudio](#miniaudio)                   | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [stb](#stb)                               | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [tinyobjloader](#tinyobjloader)           | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+
+| Alias                           | Name                | Desktop            | Android            | Web                |
+| ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
+| [box2d](#box2d)                 | Box2D               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [flecs](#flecs)                 | Flecs               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [lua](#lua)                     | Lua                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [miniaudio](#miniaudio)         | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 ## Mandatory dependencies
-| Alias                                     | Name                | Desktop | Android | Web |
-| ----------------------------------------- | ------------------- | ------- | ------- | --- |
-| [android-native-app](#android-native-app) | Android Native App  |         | :heavy_check_mark: | |
-| [easyloggingpp](#easylogging)             | Easylogging++       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [glad](#glad)                             | glad                | :heavy_check_mark: | | |
-| [glfw](#glfw)                             | GLFW                | :heavy_check_mark: | | |
-| [whereami](#where-am-i)                   | Where Am I?         | :heavy_check_mark: | | |
+
+| Alias                                     | Name               | Desktop            | Android            | Web                |
+| ----------------------------------------- | ------------------ | ------------------ | ------------------ | ------------------ |
+| [android-native-app](#android-native-app) | Android Native App |                    | :heavy_check_mark: |                    |
+| [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [glad](#glad)                             | glad               | :heavy_check_mark: |                    |                    |
+| [glfw](#glfw)                             | GLFW               | :heavy_check_mark: |                    |                    |
+| [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark: |                    |                    |
 
 * * *
 
@@ -119,7 +122,15 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 -   origin: <https://github.com/nlohmann/json/releases/tag/v3.8.0>
 -   extracted from origin:
     -   json.hpp, LICENSE.MIT
--   [json/LICENSE.MIT](json/LICENSE.MIT)
+-   license: [json/LICENSE.MIT](json/LICENSE.MIT)
+
+## Lua
+
+-   version: **5.4.0**
+-   origin: <https://github.com/lua/lua/releases/tag/v5.4.0>
+-   extracted from origin:
+    -   all .h and .c files from repo root
+-   license: see end of file [lua/lua.h](lua/lua.h)
 
 ## miniaudio
 
