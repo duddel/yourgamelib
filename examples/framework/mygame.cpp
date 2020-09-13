@@ -26,6 +26,12 @@ freely, subject to the following restrictions:
 #include "imgui.h"
 #include "box2d/box2d.h"
 #include "flecs.h"
+extern "C"
+{
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+}
 
 namespace mygame
 {
@@ -199,6 +205,7 @@ namespace mygame
             static bool showSaveFile = false;
             static bool showBox2d = false;
             static bool showFlecs = false;
+            static bool showLua = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -236,6 +243,10 @@ namespace mygame
                     if (ImGui::MenuItem("Flecs", "", &showFlecs))
                     {
                         showFlecs = true;
+                    }
+                    if (ImGui::MenuItem("Lua", "", &showLua))
+                    {
+                        showLua = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -480,6 +491,56 @@ namespace mygame
             {
                 delete flecsWorld;
                 flecsInitialized = false;
+            }
+
+            // Lua demo window
+            static bool luaInitialized = false;
+            static lua_State *luaState;
+            if (showLua)
+            {
+                static char luaSource[1024] =
+                    "function f(x)\n"
+                    "    return math.cos(x*2)\n"
+                    "end\n";
+
+                if (!luaInitialized)
+                {
+                    // create a Lua state and open standard libraries
+                    luaState = luaL_newstate();
+                    luaL_openlibs(luaState);
+                    luaL_dostring(luaState, luaSource);
+                    luaInitialized = true;
+                }
+
+                // input/output of Lua function f() that is called below
+                static float outVal = 0.0f;
+                static float inVal = 0.0f;
+                inVal = inVal > 6.28318530718f ? 0.0f : inVal + 0.02f;
+
+                // call Lua function f() and get result
+                lua_getglobal(luaState, "f");
+                lua_pushnumber(luaState, inVal);
+                lua_call(luaState, 1, 1);
+                outVal = lua_tonumber(luaState, 1);
+                lua_pop(luaState, 1);
+
+                // indicate input and output of Lua function f() with sliders
+                ImGui::Begin("Lua", &showLua, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                ImGui::SliderFloat("x", &inVal, 0.0f, 6.28318530718f);
+                ImGui::InputTextMultiline("Lua", luaSource, IM_ARRAYSIZE(luaSource));
+                ImGui::SliderFloat("f(x)", &outVal, -1.0f, 1.0f);
+                if (ImGui::Button("Compile"))
+                {
+                    luaL_dostring(luaState, luaSource);
+                }
+                ImGui::SameLine();
+                ImGui::Text("Beware! No errors get catched!");
+                ImGui::End();
+            }
+            else if (luaInitialized)
+            {
+                lua_close(luaState);
+                luaInitialized = false;
             }
 
             // license window
