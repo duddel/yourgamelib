@@ -3,9 +3,9 @@
 [![Examples](https://github.com/duddel/yourgamelib/workflows/examples/badge.svg)](https://github.com/duddel/yourgamelib/actions?query=workflow%3Aexamples)
 [![Docs](https://github.com/duddel/yourgamelib/workflows/docs/badge.svg)](https://github.com/duddel/yourgamelib/actions?query=workflow%3Adocs)
 
-**Framework for game-like applications - based on CMake, C++, OpenGL (ES)**
+**Framework for game-like applications - based on CMake, C++11, OpenGL (ES)**
 
--   Kick-start cross-platform OpenGL projects written in C/C++
+-   Kick-start cross-platform OpenGL projects written in C++11
 -   Automated integration of common third-party libraries
 
 ## Kick-start
@@ -16,22 +16,15 @@ Clone this repository and run the Python script `tools/init.py` from an arbitrar
 
 To integrate additional [third-party libraries](thirdparty/README.md), use the `--extProj` option, like so:
 
-    python <path_to_yourgamelib>/tools/init.py MyGame --extProj imgui box2d
+    python <path_to_yourgamelib>/tools/init.py MyGame --extProj box2d lua
 
-This creates the directory `./MyGame/` and initializes a new project called `MyGame` with this content:
+This creates the directory `./MyGame/` and initializes a new project called `MyGame`.
 
-    android/
-    assets/
-    build_android.bash
-      [...]
-    CMakeLists.txt
-    mygame.cpp
+:zap: The minimum example can be build for all available platforms using the `build_[..]` scripts (see requirements below). See the [API documentation](https://duddel.github.io/yourgamelib/) and the [examples/](examples/) on how to create something ontop of the template.
 
-The minimum example can be build for all available platforms using the `build_[..]` scripts (see requirements below). See the [API documentation](https://duddel.github.io/yourgamelib/) and the [examples/](examples/) on how to create something ontop of the template.
+:zap: All files placed in `assets/` will be packed and made available to be loaded by the application at runtime.
 
-All files placed in `assets/` will be packed and made available to be loaded by the application at runtime.
-
-> **NOTE:** `yourgamelib` is pulled into `MyGame` via CMake `add_subdirectory()`. This path needs to be adjusted in `CMakeLists.txt` if the projects are moved around.
+:zap: `yourgamelib` is pulled into `MyGame` via CMake `add_subdirectory()`. This path needs to be adjusted in `CMakeLists.txt` if the projects are moved around. Alternatively, `MyGame` can be configured to clone `yourgamelib` by itself to make it independent of the original `yourgamelib` location. See [template/CMakeLists.txt](template/CMakeLists.txt) on how to do this.
 
 ## Requirements
 
