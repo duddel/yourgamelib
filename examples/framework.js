@@ -189,7 +189,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"package_uuid": "316e8465-632f-4349-b8dc-0d516c965d6d", "files": [{"start": 0, "audio": 0, "filename": "/assets/LICENSE_web.txt", "end": 8558}, {"start": 8558, "audio": 0, "filename": "/assets/simple.es.vert", "end": 8944}, {"start": 8944, "audio": 0, "filename": "/assets/gradient1.png", "end": 11454}, {"start": 11454, "audio": 0, "filename": "/assets/ship_dark.obj", "end": 631092}, {"start": 631092, "audio": 1, "filename": "/assets/jingles_SAX07_mono_11025.ogg", "end": 642909}, {"start": 642909, "audio": 1, "filename": "/assets/jingles_PIZZI00.ogg", "end": 653291}, {"start": 653291, "audio": 0, "filename": "/assets/sphere.obj", "end": 681497}, {"start": 681497, "audio": 0, "filename": "/assets/LICENSE_android.txt", "end": 689567}, {"start": 689567, "audio": 0, "filename": "/assets/LICENSE_desktop.txt", "end": 700356}, {"start": 700356, "audio": 0, "filename": "/assets/sphere.mtl", "end": 700539}, {"start": 700539, "audio": 0, "filename": "/assets/gradient2.jpg", "end": 715305}, {"start": 715305, "audio": 0, "filename": "/assets/normal.frag", "end": 715497}, {"start": 715497, "audio": 1, "filename": "/assets/jingles_SAX07.ogg", "end": 746397}, {"start": 746397, "audio": 0, "filename": "/assets/normal.es.frag", "end": 746616}, {"start": 746616, "audio": 0, "filename": "/assets/simple.es.frag", "end": 746912}, {"start": 746912, "audio": 0, "filename": "/assets/ship_dark.mtl", "end": 747482}, {"start": 747482, "audio": 0, "filename": "/assets/simple.vert", "end": 747865}, {"start": 747865, "audio": 0, "filename": "/assets/simple.frag", "end": 748134}], "remote_package_size": 748134});
+   loadPackage({"remote_package_size": 748134, "package_uuid": "cb737ed1-7d44-4a3a-812b-b58c9ba4f7b3", "files": [{"filename": "/assets/normal.frag", "end": 192, "start": 0, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "end": 31092, "start": 192, "audio": 1}, {"filename": "/assets/jingles_PIZZI00.ogg", "end": 41474, "start": 31092, "audio": 1}, {"filename": "/assets/gradient2.jpg", "end": 56240, "start": 41474, "audio": 0}, {"filename": "/assets/gradient1.png", "end": 58750, "start": 56240, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "end": 69539, "start": 58750, "audio": 0}, {"filename": "/assets/normal.es.frag", "end": 69758, "start": 69539, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "end": 78316, "start": 69758, "audio": 0}, {"filename": "/assets/sphere.obj", "end": 106522, "start": 78316, "audio": 0}, {"filename": "/assets/simple.frag", "end": 106791, "start": 106522, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "end": 107361, "start": 106791, "audio": 0}, {"filename": "/assets/simple.es.vert", "end": 107747, "start": 107361, "audio": 0}, {"filename": "/assets/ship_dark.obj", "end": 727385, "start": 107747, "audio": 0}, {"filename": "/assets/simple.vert", "end": 727768, "start": 727385, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "end": 739585, "start": 727768, "audio": 1}, {"filename": "/assets/simple.es.frag", "end": 739881, "start": 739585, "audio": 0}, {"filename": "/assets/sphere.mtl", "end": 740064, "start": 739881, "audio": 0}, {"filename": "/assets/LICENSE_android.txt", "end": 748134, "start": 740064, "audio": 0}]});
   
   })();
   
@@ -719,7 +719,6 @@ var GLOBAL_BASE = 1024;
 
 
 
-
 // === Preamble library stuff ===
 
 // Documentation for the public APIs defined in this file must be updated in:
@@ -893,6 +892,9 @@ function cwrap(ident, returnType, argTypes, opts) {
     return ccall(ident, returnType, argTypes, arguments, opts);
   }
 }
+
+// We used to include malloc/free by default in the past. Show a helpful error in
+// builds with assertions.
 
 var ALLOC_NORMAL = 0; // Tries to use _malloc()
 var ALLOC_STACK = 1; // Lives for the duration of the current function call
@@ -1410,8 +1412,7 @@ function updateGlobalBufferAndViews(buf) {
   Module['HEAPF64'] = HEAPF64 = new Float64Array(buf);
 }
 
-var STATIC_BASE = 1024,
-    STACK_BASE = 5469712,
+var STACK_BASE = 5469712,
     STACKTOP = STACK_BASE,
     STACK_MAX = 226832,
     DYNAMIC_BASE = 5469712;
@@ -1933,11 +1934,6 @@ var ASM_CONSTS = {
  20858: function($0) {miniaudio.get_device_by_index($0).webaudio.suspend();}
 };
 
-
-
-
-// STATICTOP = STATIC_BASE + 225808;
-/* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
 
@@ -4922,9 +4918,15 @@ var ASM_CONSTS = {
   function _longjmp(env, value) {
       _setThrew(env, value || 1);
       throw 'longjmp';
-    }function _emscripten_longjmp(env, value) {
-      _longjmp(env, value);
-    }
+    }function _emscripten_longjmp(a0,a1
+  ) {
+  return _longjmp(a0,a1);
+  }
+
+  function _emscripten_longjmp_jmpbuf(a0,a1
+  ) {
+  return _longjmp(a0,a1);
+  }
 
   function _emscripten_memcpy_big(dest, src, num) {
       HEAPU8.copyWithin(dest, src, src + num);
@@ -8431,7 +8433,10 @@ function intArrayToString(array) {
 }
 
 
-var asmLibraryArg = { "__assert_fail": ___assert_fail, "__clock_gettime": ___clock_gettime, "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__gmtime_r": ___gmtime_r, "__indirect_function_table": wasmTable, "__localtime_r": ___localtime_r, "__map_file": ___map_file, "__sys_dup2": ___sys_dup2, "__sys_dup3": ___sys_dup3, "__sys_fcntl64": ___sys_fcntl64, "__sys_ioctl": ___sys_ioctl, "__sys_lstat64": ___sys_lstat64, "__sys_mkdir": ___sys_mkdir, "__sys_munmap": ___sys_munmap, "__sys_open": ___sys_open, "__sys_rename": ___sys_rename, "__sys_rmdir": ___sys_rmdir, "__sys_stat64": ___sys_stat64, "__sys_unlink": ___sys_unlink, "abort": _abort, "clock": _clock, "clock_gettime": _clock_gettime, "difftime": _difftime, "emscripten_asm_const_int": _emscripten_asm_const_int, "emscripten_longjmp": _emscripten_longjmp, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_set_main_loop": _emscripten_set_main_loop, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "getTempRet0": _getTempRet0, "gettimeofday": _gettimeofday, "glActiveTexture": _glActiveTexture, "glAttachShader": _glAttachShader, "glBindAttribLocation": _glBindAttribLocation, "glBindBuffer": _glBindBuffer, "glBindSampler": _glBindSampler, "glBindTexture": _glBindTexture, "glBindVertexArray": _glBindVertexArray, "glBlendEquation": _glBlendEquation, "glBlendEquationSeparate": _glBlendEquationSeparate, "glBlendFunc": _glBlendFunc, "glBlendFuncSeparate": _glBlendFuncSeparate, "glBufferData": _glBufferData, "glClear": _glClear, "glClearColor": _glClearColor, "glCompileShader": _glCompileShader, "glCreateProgram": _glCreateProgram, "glCreateShader": _glCreateShader, "glDeleteBuffers": _glDeleteBuffers, "glDeleteProgram": _glDeleteProgram, "glDeleteShader": _glDeleteShader, "glDeleteTextures": _glDeleteTextures, "glDeleteVertexArrays": _glDeleteVertexArrays, "glDetachShader": _glDetachShader, "glDisable": _glDisable, "glDrawElements": _glDrawElements, "glEnable": _glEnable, "glEnableVertexAttribArray": _glEnableVertexAttribArray, "glGenBuffers": _glGenBuffers, "glGenTextures": _glGenTextures, "glGenVertexArrays": _glGenVertexArrays, "glGenerateMipmap": _glGenerateMipmap, "glGetAttribLocation": _glGetAttribLocation, "glGetBufferParameteriv": _glGetBufferParameteriv, "glGetIntegerv": _glGetIntegerv, "glGetProgramInfoLog": _glGetProgramInfoLog, "glGetProgramiv": _glGetProgramiv, "glGetShaderInfoLog": _glGetShaderInfoLog, "glGetShaderiv": _glGetShaderiv, "glGetString": _glGetString, "glGetUniformLocation": _glGetUniformLocation, "glIsEnabled": _glIsEnabled, "glLinkProgram": _glLinkProgram, "glPixelStorei": _glPixelStorei, "glScissor": _glScissor, "glShaderSource": _glShaderSource, "glTexImage2D": _glTexImage2D, "glTexParameteri": _glTexParameteri, "glUniform1f": _glUniform1f, "glUniform1i": _glUniform1i, "glUniformMatrix3fv": _glUniformMatrix3fv, "glUniformMatrix4fv": _glUniformMatrix4fv, "glUseProgram": _glUseProgram, "glVertexAttribPointer": _glVertexAttribPointer, "glViewport": _glViewport, "glfwCreateStandardCursor": _glfwCreateStandardCursor, "glfwCreateWindow": _glfwCreateWindow, "glfwDestroyCursor": _glfwDestroyCursor, "glfwDestroyWindow": _glfwDestroyWindow, "glfwGetClipboardString": _glfwGetClipboardString, "glfwGetCursorPos": _glfwGetCursorPos, "glfwGetFramebufferSize": _glfwGetFramebufferSize, "glfwGetInputMode": _glfwGetInputMode, "glfwGetJoystickAxes": _glfwGetJoystickAxes, "glfwGetJoystickButtons": _glfwGetJoystickButtons, "glfwGetMouseButton": _glfwGetMouseButton, "glfwGetTime": _glfwGetTime, "glfwGetWindowSize": _glfwGetWindowSize, "glfwInit": _glfwInit, "glfwMakeContextCurrent": _glfwMakeContextCurrent, "glfwPollEvents": _glfwPollEvents, "glfwSetCharCallback": _glfwSetCharCallback, "glfwSetClipboardString": _glfwSetClipboardString, "glfwSetCursor": _glfwSetCursor, "glfwSetCursorPos": _glfwSetCursorPos, "glfwSetCursorPosCallback": _glfwSetCursorPosCallback, "glfwSetErrorCallback": _glfwSetErrorCallback, "glfwSetInputMode": _glfwSetInputMode, "glfwSetKeyCallback": _glfwSetKeyCallback, "glfwSetMouseButtonCallback": _glfwSetMouseButtonCallback, "glfwSetScrollCallback": _glfwSetScrollCallback, "glfwSetWindowSizeCallback": _glfwSetWindowSizeCallback, "glfwSwapBuffers": _glfwSwapBuffers, "glfwSwapInterval": _glfwSwapInterval, "glfwTerminate": _glfwTerminate, "glfwWindowHint": _glfwWindowHint, "invoke_vii": invoke_vii, "localtime_r": _localtime_r, "memory": wasmMemory, "mktime": _mktime, "nanosleep": _nanosleep, "pthread_attr_destroy": _pthread_attr_destroy, "pthread_attr_init": _pthread_attr_init, "pthread_create": _pthread_create, "pthread_join": _pthread_join, "setTempRet0": _setTempRet0, "strftime": _strftime, "strftime_l": _strftime_l, "system": _system, "time": _time };
+
+/* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
+
+var asmLibraryArg = { "__assert_fail": ___assert_fail, "__clock_gettime": ___clock_gettime, "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__gmtime_r": ___gmtime_r, "__indirect_function_table": wasmTable, "__localtime_r": ___localtime_r, "__map_file": ___map_file, "__sys_dup2": ___sys_dup2, "__sys_dup3": ___sys_dup3, "__sys_fcntl64": ___sys_fcntl64, "__sys_ioctl": ___sys_ioctl, "__sys_lstat64": ___sys_lstat64, "__sys_mkdir": ___sys_mkdir, "__sys_munmap": ___sys_munmap, "__sys_open": ___sys_open, "__sys_rename": ___sys_rename, "__sys_rmdir": ___sys_rmdir, "__sys_stat64": ___sys_stat64, "__sys_unlink": ___sys_unlink, "abort": _abort, "clock": _clock, "clock_gettime": _clock_gettime, "difftime": _difftime, "emscripten_asm_const_int": _emscripten_asm_const_int, "emscripten_longjmp": _emscripten_longjmp, "emscripten_longjmp_jmpbuf": _emscripten_longjmp_jmpbuf, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_set_main_loop": _emscripten_set_main_loop, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "getTempRet0": _getTempRet0, "gettimeofday": _gettimeofday, "glActiveTexture": _glActiveTexture, "glAttachShader": _glAttachShader, "glBindAttribLocation": _glBindAttribLocation, "glBindBuffer": _glBindBuffer, "glBindSampler": _glBindSampler, "glBindTexture": _glBindTexture, "glBindVertexArray": _glBindVertexArray, "glBlendEquation": _glBlendEquation, "glBlendEquationSeparate": _glBlendEquationSeparate, "glBlendFunc": _glBlendFunc, "glBlendFuncSeparate": _glBlendFuncSeparate, "glBufferData": _glBufferData, "glClear": _glClear, "glClearColor": _glClearColor, "glCompileShader": _glCompileShader, "glCreateProgram": _glCreateProgram, "glCreateShader": _glCreateShader, "glDeleteBuffers": _glDeleteBuffers, "glDeleteProgram": _glDeleteProgram, "glDeleteShader": _glDeleteShader, "glDeleteTextures": _glDeleteTextures, "glDeleteVertexArrays": _glDeleteVertexArrays, "glDetachShader": _glDetachShader, "glDisable": _glDisable, "glDrawElements": _glDrawElements, "glEnable": _glEnable, "glEnableVertexAttribArray": _glEnableVertexAttribArray, "glGenBuffers": _glGenBuffers, "glGenTextures": _glGenTextures, "glGenVertexArrays": _glGenVertexArrays, "glGenerateMipmap": _glGenerateMipmap, "glGetAttribLocation": _glGetAttribLocation, "glGetBufferParameteriv": _glGetBufferParameteriv, "glGetIntegerv": _glGetIntegerv, "glGetProgramInfoLog": _glGetProgramInfoLog, "glGetProgramiv": _glGetProgramiv, "glGetShaderInfoLog": _glGetShaderInfoLog, "glGetShaderiv": _glGetShaderiv, "glGetString": _glGetString, "glGetUniformLocation": _glGetUniformLocation, "glIsEnabled": _glIsEnabled, "glLinkProgram": _glLinkProgram, "glPixelStorei": _glPixelStorei, "glScissor": _glScissor, "glShaderSource": _glShaderSource, "glTexImage2D": _glTexImage2D, "glTexParameteri": _glTexParameteri, "glUniform1f": _glUniform1f, "glUniform1i": _glUniform1i, "glUniformMatrix3fv": _glUniformMatrix3fv, "glUniformMatrix4fv": _glUniformMatrix4fv, "glUseProgram": _glUseProgram, "glVertexAttribPointer": _glVertexAttribPointer, "glViewport": _glViewport, "glfwCreateStandardCursor": _glfwCreateStandardCursor, "glfwCreateWindow": _glfwCreateWindow, "glfwDestroyCursor": _glfwDestroyCursor, "glfwDestroyWindow": _glfwDestroyWindow, "glfwGetClipboardString": _glfwGetClipboardString, "glfwGetCursorPos": _glfwGetCursorPos, "glfwGetFramebufferSize": _glfwGetFramebufferSize, "glfwGetInputMode": _glfwGetInputMode, "glfwGetJoystickAxes": _glfwGetJoystickAxes, "glfwGetJoystickButtons": _glfwGetJoystickButtons, "glfwGetMouseButton": _glfwGetMouseButton, "glfwGetTime": _glfwGetTime, "glfwGetWindowSize": _glfwGetWindowSize, "glfwInit": _glfwInit, "glfwMakeContextCurrent": _glfwMakeContextCurrent, "glfwPollEvents": _glfwPollEvents, "glfwSetCharCallback": _glfwSetCharCallback, "glfwSetClipboardString": _glfwSetClipboardString, "glfwSetCursor": _glfwSetCursor, "glfwSetCursorPos": _glfwSetCursorPos, "glfwSetCursorPosCallback": _glfwSetCursorPosCallback, "glfwSetErrorCallback": _glfwSetErrorCallback, "glfwSetInputMode": _glfwSetInputMode, "glfwSetKeyCallback": _glfwSetKeyCallback, "glfwSetMouseButtonCallback": _glfwSetMouseButtonCallback, "glfwSetScrollCallback": _glfwSetScrollCallback, "glfwSetWindowSizeCallback": _glfwSetWindowSizeCallback, "glfwSwapBuffers": _glfwSwapBuffers, "glfwSwapInterval": _glfwSwapInterval, "glfwTerminate": _glfwTerminate, "glfwWindowHint": _glfwWindowHint, "invoke_vii": invoke_vii, "localtime_r": _localtime_r, "memory": wasmMemory, "mktime": _mktime, "nanosleep": _nanosleep, "pthread_attr_destroy": _pthread_attr_destroy, "pthread_attr_init": _pthread_attr_init, "pthread_create": _pthread_create, "pthread_join": _pthread_join, "setTempRet0": _setTempRet0, "strftime": _strftime, "strftime_l": _strftime_l, "system": _system, "time": _time };
 var asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
@@ -8559,7 +8564,6 @@ if (!Object.getOwnPropertyDescriptor(Module, "cwrap")) Module["cwrap"] = functio
 if (!Object.getOwnPropertyDescriptor(Module, "setValue")) Module["setValue"] = function() { abort("'setValue' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "getValue")) Module["getValue"] = function() { abort("'getValue' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "allocate")) Module["allocate"] = function() { abort("'allocate' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "getMemory")) Module["getMemory"] = function() { abort("'getMemory' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ). Alternatively, forcing filesystem support (-s FORCE_FILESYSTEM=1) can export this for you") };
 if (!Object.getOwnPropertyDescriptor(Module, "UTF8ArrayToString")) Module["UTF8ArrayToString"] = function() { abort("'UTF8ArrayToString' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "UTF8ToString")) Module["UTF8ToString"] = function() { abort("'UTF8ToString' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "stringToUTF8Array")) Module["stringToUTF8Array"] = function() { abort("'stringToUTF8Array' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
@@ -8584,7 +8588,6 @@ Module["FS_createLazyFile"] = FS.createLazyFile;
 Module["FS_createLink"] = FS.createLink;
 Module["FS_createDevice"] = FS.createDevice;
 Module["FS_unlink"] = FS.unlink;
-if (!Object.getOwnPropertyDescriptor(Module, "dynamicAlloc")) Module["dynamicAlloc"] = function() { abort("'dynamicAlloc' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "getLEB")) Module["getLEB"] = function() { abort("'getLEB' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "getFunctionTables")) Module["getFunctionTables"] = function() { abort("'getFunctionTables' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "alignFunctionTables")) Module["alignFunctionTables"] = function() { abort("'alignFunctionTables' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
@@ -8660,7 +8663,6 @@ if (!Object.getOwnPropertyDescriptor(Module, "convertI32PairToI53")) Module["con
 if (!Object.getOwnPropertyDescriptor(Module, "convertU32PairToI53")) Module["convertU32PairToI53"] = function() { abort("'convertU32PairToI53' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "exceptionLast")) Module["exceptionLast"] = function() { abort("'exceptionLast' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "exceptionCaught")) Module["exceptionCaught"] = function() { abort("'exceptionCaught' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
-if (!Object.getOwnPropertyDescriptor(Module, "exceptionThrowBuf")) Module["exceptionThrowBuf"] = function() { abort("'exceptionThrowBuf' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "ExceptionInfoAttrs")) Module["ExceptionInfoAttrs"] = function() { abort("'ExceptionInfoAttrs' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "ExceptionInfo")) Module["ExceptionInfo"] = function() { abort("'ExceptionInfo' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "CatchInfo")) Module["CatchInfo"] = function() { abort("'CatchInfo' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
