@@ -2,6 +2,7 @@
 # {{ YOURGAME_COMMIT_SHA_INIT }}
 
 cmake_minimum_required(VERSION 3.6)
+find_package(Git)
 
 project({{ YOURGAME_PROJECT_NAME }})
 
@@ -25,12 +26,32 @@ set(YOURGAME_BARE TRUE)
 # the initial value of YOURGAME_COMMIT_SHA_REQUESTED is the commit of yourgamelib
 # during initialization of this project.
 # it should be adjusted if another (newer) version of yourgamelib is supported.
-# it could be used to retrieve that commit of yourgamelib (before add_subdirectory())
 set(YOURGAME_COMMIT_SHA_REQUESTED {{ YOURGAME_COMMIT_SHA_INIT }})
+
+# determine the source location of the yourgame library code:
+# changing the following line to
+#   if(YES)
+# lets CMake clone the yourgame library to the requested commit (via GitHub).
+# otherwise, the original path, where this project has been initialized from, is used.
+if(NO)
+  # clone yourgame library
+  execute_process(COMMAND "${GIT_EXECUTABLE}" clone https://github.com/duddel/yourgamelib
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  )
+  # reset yourgame clone to the requested commit
+  execute_process( COMMAND "${GIT_EXECUTABLE}" reset "${YOURGAME_COMMIT_SHA_REQUESTED}" --hard
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib"
+  )
+  # use the newly cloned yourgame library path
+  set(YOURGAME_LIBRARY_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib)
+else()
+  # use the original yourgame library path from initialization of this project
+  set(YOURGAME_LIBRARY_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/{{ YOURGAME_ROOT }})
+endif()
 
 # add the actual yourgame library as a subdirectory
 add_subdirectory(
-  ${CMAKE_CURRENT_SOURCE_DIR}/{{ YOURGAME_ROOT }}
+  ${YOURGAME_LIBRARY_ROOT}
   ${CMAKE_CURRENT_BINARY_DIR}/libyourgame
 )
 
