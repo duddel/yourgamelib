@@ -35,6 +35,17 @@ extern "C"
 
 namespace mygame
 {
+    // Flecs components
+    struct flecsDistance
+    {
+        float s;
+    };
+
+    struct flecsVelocity
+    {
+        float v;
+    };
+
     namespace
     {
         void loadObj();
@@ -54,17 +65,6 @@ namespace mygame
         yourgame::GLShader *g_shaderNormal = nullptr;
         int g_shaderToUse = 1; // 0: texture, 1: normal
         std::map<std::string, yourgame::GLTexture2D *> g_textures;
-
-        // Flecs components
-        struct flecsDistance
-        {
-            float s;
-        };
-
-        struct flecsVelocity
-        {
-            float v;
-        };
     } // namespace
 
     void init(const yourgame::context &ctx)
