@@ -7,6 +7,7 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 | Alias                           | Name                | Desktop            | Android            | Web                |
 | ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
 | [box2d](#box2d)                 | Box2D               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [choreograph](#choreograph)     | Choreograph         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [flecs](#flecs)                 | Flecs               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
@@ -47,6 +48,15 @@ Here is a list of third-party libraries ("External Projects") that can optionall
     -   src/rope/\*
 -   modifications are marked with `YOURGAME_MODIFICATION`
 -   license: [box2d/LICENSE](box2d/LICENSE)
+
+## Choreograph
+
+-   version: **3463198, 0.4.0**
+-   origin: <https://github.com/sansumbrella/Choreograph/tree/34631980702f5d3745ac29d262712dd81b594ade>
+-   extracted from origin:
+    -   LICENSE.md
+    -   src/*
+-   license: [choreograph/LICENSE.md](choreograph/LICENSE.md)
 
 ## Easylogging++
 

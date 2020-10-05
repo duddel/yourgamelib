@@ -26,6 +26,7 @@ freely, subject to the following restrictions:
 #include "imgui.h"
 #include "box2d/box2d.h"
 #include "flecs.h"
+#include "choreograph/Choreograph.h"
 extern "C"
 {
 #include "lua.h"
@@ -206,6 +207,7 @@ namespace mygame
             static bool showBox2d = false;
             static bool showFlecs = false;
             static bool showLua = false;
+            static bool showChoreograph = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -247,6 +249,10 @@ namespace mygame
                     if (ImGui::MenuItem("Lua", "", &showLua))
                     {
                         showLua = true;
+                    }
+                    if (ImGui::MenuItem("Choreograph", "", &showChoreograph))
+                    {
+                        showChoreograph = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -374,7 +380,7 @@ namespace mygame
             {
                 static int testValue = 0;
 
-                ImGui::Begin("Save file", &showSaveFile, (ImGuiWindowFlags_NoCollapse));
+                ImGui::Begin("Save file", &showSaveFile, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
                 if (ImGui::Button("load"))
                 {
                     std::vector<uint8_t> fileData;
@@ -541,6 +547,47 @@ namespace mygame
             {
                 lua_close(luaState);
                 luaInitialized = false;
+            }
+
+            // Choreograph demo window
+            static bool choreographInitialized = false;
+            static choreograph::Timeline *choreoTimeline;
+            static choreograph::Output<float> *choreoTarget1;
+            static choreograph::Output<float> *choreoTarget2;
+            static choreograph::Output<float> *choreoTarget3;
+            if (showChoreograph)
+            {
+                if (!choreographInitialized)
+                {
+                    choreoTimeline = new choreograph::Timeline();
+                    choreoTarget1 = new choreograph::Output<float>();
+                    choreoTarget2 = new choreograph::Output<float>();
+                    choreoTarget3 = new choreograph::Output<float>();
+                    choreograph::PhraseRef<float> choreoPhrase1 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseNone());
+                    choreograph::PhraseRef<float> choreoPhrase2 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutQuad());
+                    choreograph::PhraseRef<float> choreoPhrase3 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutExpo());
+                    choreoTimeline->apply(choreoTarget1).then(choreograph::makePingPong(choreoPhrase1, 10.0f));
+                    choreoTimeline->apply(choreoTarget2).then(choreograph::makePingPong(choreoPhrase2, 10.0f));
+                    choreoTimeline->apply(choreoTarget3).then(choreograph::makePingPong(choreoPhrase3, 10.0f));
+
+                    choreographInitialized = true;
+                }
+
+                choreoTimeline->step(ctx.deltaTimeS);
+
+                ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);
+                ImGui::SliderFloat("quad", choreoTarget2->valuePtr(), -5.0f, 10.0f);
+                ImGui::SliderFloat("expo", choreoTarget3->valuePtr(), -5.0f, 10.0f);
+                ImGui::End();
+            }
+            else if (choreographInitialized)
+            {
+                delete choreoTimeline;
+                delete choreoTarget1;
+                delete choreoTarget2;
+                delete choreoTarget3;
+                choreographInitialized = false;
             }
 
             // license window
