@@ -15,6 +15,7 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 | [lua](#lua)                     | Lua                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [miniaudio](#miniaudio)         | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [tinyfsm](#tinyfsm)             | TinyFSM             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 ## Mandatory dependencies
@@ -159,6 +160,14 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 -   license: mentioned in files
     -   [stb_image.h](stb/stb_image.h), version: **2.25**
     -   [stb_vorbis.c](stb/stb_vorbis.c), version: **1.19**
+
+## TinyFSM
+
+-   version: **0.3.2**
+-   origin: <https://github.com/digint/tinyfsm/releases/tag/v0.3.2>
+-   extracted from origin:
+    -   COPYING, tinyfsm.hpp
+-   license: [tinyfsm/COPYING](tinyfsm/COPYING)
 
 ## tinyobjloader
 

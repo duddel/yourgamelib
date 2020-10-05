@@ -27,6 +27,7 @@ freely, subject to the following restrictions:
 #include "box2d/box2d.h"
 #include "flecs.h"
 #include "choreograph/Choreograph.h"
+#include "tinyfsm.hpp"
 extern "C"
 {
 #include "lua.h"
@@ -208,6 +209,7 @@ namespace mygame
             static bool showFlecs = false;
             static bool showLua = false;
             static bool showChoreograph = false;
+            static bool showTinyFSM = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -253,6 +255,10 @@ namespace mygame
                     if (ImGui::MenuItem("Choreograph", "", &showChoreograph))
                     {
                         showChoreograph = true;
+                    }
+                    if (ImGui::MenuItem("TinyFSM", "", &showTinyFSM))
+                    {
+                        showTinyFSM = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -588,6 +594,25 @@ namespace mygame
                 delete choreoTarget2;
                 delete choreoTarget3;
                 choreographInitialized = false;
+            }
+
+            // TinyFSM demo window
+            static bool tinyFsmInitialized = false;
+            if (showTinyFSM)
+            {
+                if (!tinyFsmInitialized)
+                {
+                    // init tinyFSM
+                    // todo: no example yet
+                }
+
+                ImGui::Begin("TinyFSM", &showTinyFSM, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                ImGui::End();
+            }
+            else if (tinyFsmInitialized)
+            {
+                // shutdown tinyFSM
+                tinyFsmInitialized = false;
             }
 
             // license window
