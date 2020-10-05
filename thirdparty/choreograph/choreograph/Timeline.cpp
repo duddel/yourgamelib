@@ -25,6 +25,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// YOURGAME_MODIFICATION start
+// seen with Visual Studio 16 2019 (MSVC 19.27.29111.0): error C3861:
+// 'back_inserter': identifier not found (include <iterator> to fix)
+#include <iterator>
+// YOURGAME_MODIFICATION end
 #include "Timeline.h"
 #include "detail/VectorManipulation.hpp"
 

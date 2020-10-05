@@ -56,6 +56,7 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 -   extracted from origin:
     -   LICENSE.md
     -   src/*
+-   modifications are marked with `YOURGAME_MODIFICATION`
 -   license: [choreograph/LICENSE.md](choreograph/LICENSE.md)
 
 ## Easylogging++
