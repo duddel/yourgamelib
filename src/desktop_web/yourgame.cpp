@@ -163,8 +163,7 @@ void tick()
     ImGui::NewFrame();
 #endif
 
-    mygame::update(_context);
-    mygame::draw(_context);
+    mygame::tick(_context);
 
 #ifdef YOURGAME_EXTPROJ_imgui
     ImGui::Render();

@@ -4,8 +4,7 @@
 To link the yourgame library to your code and make it executable, the functions declared in the \ref mygame "mygame" namespace must be implemented:
 
 - \ref mygame::init() - \copydoc mygame::init()
-- \ref mygame::update() - \copybrief mygame::update()
-- \ref mygame::draw() - \copybrief mygame::draw()
+- \ref mygame::tick() - \copybrief mygame::tick()
 - \ref mygame::shutdown() - \copybrief mygame::shutdown()
 
 \section sec_minimal_example Minimal Example
@@ -15,21 +14,12 @@ This is minimal example code, that compiles and links against the yourgame libra
 namespace mygame
 {
     void init(const yourgame::context &ctx) {}
-    void update(const yourgame::context &ctx) {}
-    void draw(const yourgame::context &ctx) {}
+    void tick(const yourgame::context &ctx) {}
     void shutdown(const yourgame::context &ctx) {}
 }
 \endcode
 
 \section sec_guide Guide
-See the \ref yourgame "yourgame" namespace on how to  access the functionality of the yourgame library.
-
-Todo: write a guide on how to use features, such as
-
-- timing
-- input
-- logging
-- reading assets
-- GL
+See the \ref yourgame "yourgame" namespace on how to access the functionality of the yourgame library.
 
 */

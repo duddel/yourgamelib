@@ -88,7 +88,7 @@ namespace mygame
 #endif
     }
 
-    void update(const yourgame::context &ctx)
+    void tick(const yourgame::context &ctx)
     {
         g_modelTrafo.setScaleLocal(g_modelScale);
         if (g_rotationOn)
@@ -103,10 +103,7 @@ namespace mygame
         }
 
         updateImgui(ctx);
-    }
 
-    void draw(const yourgame::context &ctx)
-    {
         g_camera.setAspect(ctx.winAspectRatio);
         glViewport(0, 0, ctx.winWidth, ctx.winHeight);
 
@@ -641,6 +638,5 @@ namespace mygame
                 ImGui::End();
             }
         }
-
     } // namespace
 } // namespace mygame

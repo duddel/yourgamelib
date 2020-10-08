@@ -282,8 +282,7 @@ void tick()
         ImGui_ImplAndroid_NewFrame();
         ImGui::NewFrame();
 #endif
-        mygame::update(_context);
-        mygame::draw(_context);
+        mygame::tick(_context);
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
