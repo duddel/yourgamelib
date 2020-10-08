@@ -1,6 +1,7 @@
-INPUT                   = ../include/yourgame \
+INPUT                   = ../include/base/yourgame \
+                          ../include/toolbox/yourgame \
                           ../docs \
-                          ../src/include/yourgame_internal/mygame_external.h
+                          ../src/include_internal/common/yourgame_internal/mygame_external.h
 EXTRACT_ALL             = YES
 OUTPUT_DIRECTORY        = ./_doxyout
 PROJECT_NAME            = "YourGameLib API"
