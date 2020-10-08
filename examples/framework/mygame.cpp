@@ -27,7 +27,7 @@ freely, subject to the following restrictions:
 #include "box2d/box2d.h"
 #include "flecs.h"
 #include "choreograph/Choreograph.h"
-#include "tinyfsm.hpp"
+#include "fsm.hpp"
 extern "C"
 {
 #include "lua.h"
@@ -209,7 +209,7 @@ namespace mygame
             static bool showFlecs = false;
             static bool showLua = false;
             static bool showChoreograph = false;
-            static bool showTinyFSM = false;
+            static bool showFsm = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -256,9 +256,9 @@ namespace mygame
                     {
                         showChoreograph = true;
                     }
-                    if (ImGui::MenuItem("TinyFSM", "", &showTinyFSM))
+                    if (ImGui::MenuItem("fsm", "", &showFsm))
                     {
-                        showTinyFSM = true;
+                        showFsm = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -596,23 +596,22 @@ namespace mygame
                 choreographInitialized = false;
             }
 
-            // TinyFSM demo window
-            static bool tinyFsmInitialized = false;
-            if (showTinyFSM)
+            // fsm demo window
+            // todo: no example yet
+            static bool fsmInitialized = false;
+            if (showFsm)
             {
-                if (!tinyFsmInitialized)
+                if (!fsmInitialized)
                 {
-                    // init tinyFSM
-                    // todo: no example yet
+                    fsmInitialized = true;
                 }
 
-                ImGui::Begin("TinyFSM", &showTinyFSM, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                ImGui::Begin("fsm", &showFsm, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
                 ImGui::End();
             }
-            else if (tinyFsmInitialized)
+            else if (fsmInitialized)
             {
-                // shutdown tinyFSM
-                tinyFsmInitialized = false;
+                fsmInitialized = false;
             }
 
             // license window
