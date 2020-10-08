@@ -66,23 +66,14 @@ $(function() {
 <div class="textblock"><p>To link the yourgame library to your code and make it executable, the functions declared in the mygame namespace must be implemented:</p>
 <ul>
 <li>mygame::init() -</li>
-<li>mygame::update() -</li>
-<li>mygame::draw() -</li>
+<li>mygame::tick() -</li>
 <li>mygame::shutdown() -</li>
 </ul>
 <h1><a class="anchor" id="sec_minimal_example"></a>
 Minimal Example</h1>
-<p>This is minimal example code, that compiles and links against the yourgame library: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;yourgame/yourgame.h&quot;</span></div><div class="line"><span class="keyword">namespace </span>mygame</div><div class="line">{</div><div class="line">    <span class="keywordtype">void</span> init(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">    <span class="keywordtype">void</span> update(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">    <span class="keywordtype">void</span> draw(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">    <span class="keywordtype">void</span> shutdown(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">}</div></div><!-- fragment --><h1><a class="anchor" id="sec_guide"></a>
+<p>This is minimal example code, that compiles and links against the yourgame library: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;yourgame/yourgame.h&quot;</span></div><div class="line"><span class="keyword">namespace </span>mygame</div><div class="line">{</div><div class="line">    <span class="keywordtype">void</span> init(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">    <span class="keywordtype">void</span> tick(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">    <span class="keywordtype">void</span> shutdown(<span class="keyword">const</span> yourgame::context &amp;ctx) {}</div><div class="line">}</div></div><!-- fragment --><h1><a class="anchor" id="sec_guide"></a>
 Guide</h1>
-<p>See the yourgame namespace on how to access the functionality of the yourgame library.</p>
-<p>Todo: write a guide on how to use features, such as</p>
-<ul>
-<li>timing</li>
-<li>input</li>
-<li>logging</li>
-<li>reading assets</li>
-<li>GL </li>
-</ul>
+<p>See the yourgame namespace on how to access the functionality of the yourgame library. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
