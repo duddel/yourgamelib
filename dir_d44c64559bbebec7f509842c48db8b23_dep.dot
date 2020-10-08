@@ -1,0 +1,12 @@
+digraph "/home/runner/work/yourgamelib/yourgamelib/include" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_d44c64559bbebec7f509842c48db8b23 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_d44c64559bbebec7f509842c48db8b23.html"];
+    dir_d44c64559bbebec7f509842c48db8b23 [shape=plaintext label="include"];
+    dir_ab1c81409f0df724f17c9ef30afee877 [shape=box label="base" color="red" fillcolor="white" style="filled" URL="dir_ab1c81409f0df724f17c9ef30afee877.html"];
+    dir_dc8d4286420b7aa8efcc9a53b027321f [shape=box label="toolbox" color="red" fillcolor="white" style="filled" URL="dir_dc8d4286420b7aa8efcc9a53b027321f.html"];
+  }
+  dir_dc8d4286420b7aa8efcc9a53b027321f->dir_ab1c81409f0df724f17c9ef30afee877 [headlabel="7", labeldistance=1.5 headhref="dir_000003_000001.html"];
+}
