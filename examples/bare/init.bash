@@ -3,4 +3,4 @@
 cd "${0%/*}"
 cd ..
 
-python ../tools/init.py bare --bare
+python ../init.py bare --bare

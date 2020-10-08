@@ -33,9 +33,9 @@ args = aPars.parse_args()
 newProjName = args.name
 newProjNameLower = args.name.lower()
 
-# assuming this script lies in yourgamelib/tools, this computes the relative
+# assuming this script lies in yourgamelib/, this computes the relative
 # path from new project root to yourgamelib/
-ygRoot = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
+ygRoot = os.path.normpath(os.path.dirname(__file__))
 tgtDir = os.path.join(os.getcwd(), newProjName)
 ygRootRel = os.path.relpath(ygRoot, start=tgtDir)
 ygRootRel = ygRootRel.replace(os.sep, posixpath.sep)

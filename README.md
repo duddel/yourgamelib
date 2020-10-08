@@ -10,13 +10,13 @@
 
 ## Kick-start
 
-Clone this repository and run the Python script `tools/init.py` from an arbitrary location, like so:
+Clone this repository and run the Python script `init.py` from an arbitrary location, like so:
 
-    python <path_to_yourgamelib>/tools/init.py MyGame
+    python <path_to_yourgamelib>/init.py MyGame
 
 To integrate additional [third-party libraries](thirdparty/README.md), use the `--extProj` option, like so:
 
-    python <path_to_yourgamelib>/tools/init.py MyGame --extProj box2d lua
+    python <path_to_yourgamelib>/init.py MyGame --extProj box2d lua
 
 This creates the directory `./MyGame/` and initializes a new project called `MyGame`.
 
