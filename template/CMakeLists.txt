@@ -34,14 +34,18 @@ set(YOURGAME_COMMIT_SHA_REQUESTED {{ YOURGAME_COMMIT_SHA_INIT }})
 # lets CMake clone the yourgame library to the requested commit (via GitHub).
 # otherwise, the original path, where this project has been initialized from, is used.
 if(NO)
-  # clone yourgame library
-  execute_process(COMMAND "${GIT_EXECUTABLE}" clone https://github.com/duddel/yourgamelib
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  )
-  # reset yourgame clone to the requested commit
-  execute_process( COMMAND "${GIT_EXECUTABLE}" reset "${YOURGAME_COMMIT_SHA_REQUESTED}" --hard
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib"
-  )
+  if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib)
+    message("${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib exists, leaving unchanged")
+  else()
+    # clone yourgame library
+    execute_process(COMMAND "${GIT_EXECUTABLE}" clone https://github.com/duddel/yourgamelib
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    )
+    # reset yourgame clone to the requested commit
+    execute_process( COMMAND "${GIT_EXECUTABLE}" reset "${YOURGAME_COMMIT_SHA_REQUESTED}" --hard
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib"
+    )
+  endif()
   # use the newly cloned yourgame library path
   set(YOURGAME_LIBRARY_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib)
 else()
