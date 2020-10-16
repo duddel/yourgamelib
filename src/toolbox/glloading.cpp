@@ -21,14 +21,19 @@ freely, subject to the following restrictions:
 #include <vector>
 #include <map>
 #include <array>
+#include <exception>
 #include "stb_image.h"
 #include "tiny_obj_loader.h"
+#include "nlohmann/json.hpp"
 #include "yourgame/yourgame.h"
 #include "yourgame/fileio.h"
 #include "yourgame/glconventions.h"
 #include "yourgame/gltexture2d.h"
+#include "yourgame/gltextureatlas.h"
 #include "yourgame/glshader.h"
 #include "yourgame/glgeometry.h"
+
+using json = nlohmann::json;
 
 namespace yourgame
 {
@@ -66,6 +71,58 @@ namespace yourgame
             yourgame::logw("image %v failed to load", filename);
             return nullptr;
         }
+    }
+
+    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit)
+    {
+        std::vector<uint8_t> atlasFile;
+        if (yourgame::readAssetFile(filename, atlasFile))
+        {
+            yourgame::loge("failed to load %v", filename);
+            return nullptr;
+        }
+
+        json jAtlas;
+        try
+        {
+            jAtlas = json::parse(atlasFile);
+        }
+        catch (std::exception &e)
+        {
+            yourgame::loge("failed to parse json from %v: %v", filename, e.what());
+            return nullptr;
+        }
+
+        GLTextureAtlas *newAtlas = new GLTextureAtlas();
+
+        for (auto &jTex : jAtlas["textures"])
+        {
+            // todo: always assume .png for crunch atlasses?
+            std::string texFileName = jTex["name"].get<std::string>() + ".png";
+
+            auto newTex = yourgame::loadTexture(texFileName.c_str(), unit);
+            if (newTex)
+            {
+                newAtlas->pushTexture(newTex);
+
+                for (auto &jImg : jTex["images"])
+                {
+                    newAtlas->pushCoords(jImg["n"].get<std::string>(),
+                                         (float)(jImg["x"].get<double>() / (double)newTex->m_width),
+                                         (float)((jImg["x"].get<double>() + jImg["w"].get<double>()) / (double)newTex->m_width),
+                                         (float)(1.0 - ((jImg["y"].get<double>() + jImg["h"].get<double>()) / (double)newTex->m_height)),
+                                         (float)(1.0 - (jImg["y"].get<double>() / (double)newTex->m_height)));
+                }
+            }
+            else
+            {
+                yourgame::loge("failed to load texture from file %v referenced in atlas %v", texFileName, filename);
+                delete newAtlas;
+                return nullptr;
+            }
+        }
+
+        return newAtlas;
     }
 
     GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,

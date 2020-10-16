@@ -17,28 +17,45 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_GLLOADING_H
-#define YOURGAME_GLLOADING_H
+#ifndef YOURGAME_GLTEXTUREATLAS_H
+#define YOURGAME_GLTEXTUREATLAS_H
 
-#include <string>
 #include <vector>
-#include "yourgame/gl_include.h"
-#include "yourgame/glgeometry.h"
-#include "yourgame/glshader.h"
+#include <map>
+#include <string>
 #include "yourgame/gltexture2d.h"
-#include "yourgame/gltextureatlas.h"
 
 namespace yourgame
 {
-    GLTexture2D *loadTexture(const char *filename, GLenum unit);
+    class GLTextureAtlas
+    {
+    public:
+        struct Coords
+        {
+            float uMin;
+            float uMax;
+            float vMin;
+            float vMax;
+            yourgame::GLTexture2D *tex;
+        };
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit);
+        GLTextureAtlas();
 
-    GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
-                         std::vector<std::pair<GLuint, std::string>> attrLocs,
-                         std::vector<std::pair<GLuint, std::string>> fragDataLocs);
+        /* deleting the copy constructor and the copy assignment operator
+        prevents copying (and moving) of the object. */
+        GLTextureAtlas(GLTextureAtlas const &) = delete;
+        GLTextureAtlas &operator=(GLTextureAtlas const &) = delete;
 
-    GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename);
+        ~GLTextureAtlas();
+
+        void pushTexture(yourgame::GLTexture2D *newTex);
+        void pushCoords(std::string name, float uMin, float uMax, float vMin, float vMax);
+        bool getCoords(std::string name, Coords &dst);
+
+    private:
+        std::vector<yourgame::GLTexture2D *> m_textures;
+        std::map<std::string, Coords> m_coords;
+    };
 } // namespace yourgame
 
 #endif

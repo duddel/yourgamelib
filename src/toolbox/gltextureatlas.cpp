@@ -17,20 +17,42 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_TOOLBOX_H
-#define YOURGAME_TOOLBOX_H
-
-// the following includes are part of the yourgame (toolbox) API
-#include "yourgame/audioplayer.h"
-#include "yourgame/camera.h"
-#include "yourgame/glbuffer.h"
-#include "yourgame/glconventions.h"
-#include "yourgame/glgeometry.h"
-#include "yourgame/glloading.h"
-#include "yourgame/glshader.h"
-#include "yourgame/glshape.h"
-#include "yourgame/gltexture2d.h"
 #include "yourgame/gltextureatlas.h"
-#include "yourgame/trafo.h"
 
-#endif
+namespace yourgame
+{
+    GLTextureAtlas::GLTextureAtlas() {}
+
+    GLTextureAtlas::~GLTextureAtlas()
+    {
+        for (auto t : m_textures)
+        {
+            delete t;
+        }
+    }
+
+    void GLTextureAtlas::pushTexture(yourgame::GLTexture2D *newTex)
+    {
+        m_textures.push_back(newTex);
+    }
+
+    void GLTextureAtlas::pushCoords(std::string name, float uMin, float uMax, float vMin, float vMax)
+    {
+        m_coords[name] = Coords{uMin, uMax, vMin, vMax, m_textures.back()};
+    }
+
+    bool GLTextureAtlas::getCoords(std::string name, Coords &dst)
+    {
+        auto it = m_coords.find(name);
+        if (it == m_coords.end())
+        {
+            return false;
+        }
+        else
+        {
+            dst = it->second;
+            return true;
+        }
+    }
+
+} // namespace yourgame

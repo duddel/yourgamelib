@@ -63,6 +63,8 @@ GLTexture2D *GLTexture2D::make(GLint level,
     GLTexture2D *newTexture = new GLTexture2D();
     newTexture->m_unit = unit;
     newTexture->m_handle = handle;
+    newTexture->m_width = width;
+    newTexture->m_height = height;
 
     return newTexture;
 }

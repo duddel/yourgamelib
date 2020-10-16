@@ -51,6 +51,9 @@ public:
     void bind();
     void unbindTarget();
 
+    GLsizei m_width;
+    GLsizei m_height;
+
 private:
     GLTexture2D() {}
     GLuint m_handle;
