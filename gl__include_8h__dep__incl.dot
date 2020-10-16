@@ -30,5 +30,9 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/base/yourgame/gl_incl
   Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node9 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/gltexture2d.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gltexture2d_8h.html"];
   Node9 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/gltextureatlas.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gltextureatlas_8h.html"];
+  Node10 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node9 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

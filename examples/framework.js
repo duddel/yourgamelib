@@ -189,7 +189,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"package_uuid": "7a38a110-a27a-4af3-b1cc-634ff7de6cc5", "remote_package_size": 748134, "files": [{"start": 0, "end": 8558, "filename": "/assets/LICENSE_web.txt", "audio": 0}, {"start": 8558, "end": 8941, "filename": "/assets/simple.vert", "audio": 0}, {"start": 8941, "end": 20758, "filename": "/assets/jingles_SAX07_mono_11025.ogg", "audio": 1}, {"start": 20758, "end": 20950, "filename": "/assets/normal.frag", "audio": 0}, {"start": 20950, "end": 31739, "filename": "/assets/LICENSE_desktop.txt", "audio": 0}, {"start": 31739, "end": 32035, "filename": "/assets/simple.es.frag", "audio": 0}, {"start": 32035, "end": 34545, "filename": "/assets/gradient1.png", "audio": 0}, {"start": 34545, "end": 42615, "filename": "/assets/LICENSE_android.txt", "audio": 0}, {"start": 42615, "end": 73515, "filename": "/assets/jingles_SAX07.ogg", "audio": 1}, {"start": 73515, "end": 88281, "filename": "/assets/gradient2.jpg", "audio": 0}, {"start": 88281, "end": 98663, "filename": "/assets/jingles_PIZZI00.ogg", "audio": 1}, {"start": 98663, "end": 126869, "filename": "/assets/sphere.obj", "audio": 0}, {"start": 126869, "end": 127088, "filename": "/assets/normal.es.frag", "audio": 0}, {"start": 127088, "end": 127658, "filename": "/assets/ship_dark.mtl", "audio": 0}, {"start": 127658, "end": 127841, "filename": "/assets/sphere.mtl", "audio": 0}, {"start": 127841, "end": 747479, "filename": "/assets/ship_dark.obj", "audio": 0}, {"start": 747479, "end": 747748, "filename": "/assets/simple.frag", "audio": 0}, {"start": 747748, "end": 748134, "filename": "/assets/simple.es.vert", "audio": 0}]});
+   loadPackage({"files": [{"audio": 0, "filename": "/assets/LICENSE_web.txt", "start": 0, "end": 8558}, {"audio": 0, "filename": "/assets/simple.vert", "start": 8558, "end": 8941}, {"audio": 1, "filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 8941, "end": 20758}, {"audio": 0, "filename": "/assets/normal.frag", "start": 20758, "end": 20950}, {"audio": 0, "filename": "/assets/LICENSE_desktop.txt", "start": 20950, "end": 31739}, {"audio": 0, "filename": "/assets/simple.es.frag", "start": 31739, "end": 32035}, {"audio": 0, "filename": "/assets/gradient1.png", "start": 32035, "end": 34545}, {"audio": 0, "filename": "/assets/LICENSE_android.txt", "start": 34545, "end": 42615}, {"audio": 1, "filename": "/assets/jingles_SAX07.ogg", "start": 42615, "end": 73515}, {"audio": 0, "filename": "/assets/gradient2.jpg", "start": 73515, "end": 88281}, {"audio": 1, "filename": "/assets/jingles_PIZZI00.ogg", "start": 88281, "end": 98663}, {"audio": 0, "filename": "/assets/sphere.obj", "start": 98663, "end": 126869}, {"audio": 0, "filename": "/assets/normal.es.frag", "start": 126869, "end": 127088}, {"audio": 0, "filename": "/assets/ship_dark.mtl", "start": 127088, "end": 127658}, {"audio": 0, "filename": "/assets/sphere.mtl", "start": 127658, "end": 127841}, {"audio": 0, "filename": "/assets/ship_dark.obj", "start": 127841, "end": 747479}, {"audio": 0, "filename": "/assets/simple.frag", "start": 747479, "end": 747748}, {"audio": 0, "filename": "/assets/simple.es.vert", "start": 747748, "end": 748134}], "remote_package_size": 748134, "package_uuid": "9ee69698-e522-4946-8878-5ab68079779e"});
   
   })();
   
@@ -476,8 +476,6 @@ var NODEFS = 'NODEFS is no longer included by default; build with -lnodefs.js';
 
 
 
-
-// {{PREAMBLE_ADDITIONS}}
 
 var STACK_ALIGN = 16;
 
@@ -1401,18 +1399,17 @@ function writeStackCookie() {
   HEAPU32[(STACK_MAX >> 2)+1] = 0x2135467;
   HEAPU32[(STACK_MAX >> 2)+2] = 0x89BACDFE;
   // Also test the global address 0 for integrity.
-  // We don't do this with ASan because ASan does its own checks for this.
   HEAP32[0] = 0x63736d65; /* 'emsc' */
 }
 
 function checkStackCookie() {
+  if (ABORT) return;
   var cookie1 = HEAPU32[(STACK_MAX >> 2)+1];
   var cookie2 = HEAPU32[(STACK_MAX >> 2)+2];
   if (cookie1 != 0x2135467 || cookie2 != 0x89BACDFE) {
     abort('Stack overflow! Stack cookie has been overwritten, expected hex dwords 0x89BACDFE and 0x2135467, but received 0x' + cookie2.toString(16) + ' ' + cookie1.toString(16));
   }
   // Also test the global address 0 for integrity.
-  // We don't do this with ASan because ASan does its own checks for this.
   if (HEAP32[0] !== 0x63736d65 /* 'emsc' */) abort('Runtime error: The application has corrupted its heap memory area (address zero)!');
 }
 
@@ -1637,7 +1634,7 @@ function abort(what) {
   throw e;
 }
 
-var memoryInitializer = null;
+// {{MEM_INITIALIZER}}
 
 
 
@@ -1848,8 +1845,6 @@ var ASM_CONSTS = {
 
 
 
-
-// {{PRE_LIBRARY}}
 
 
   function abortStackOverflow(allocSize) {
@@ -2103,17 +2098,25 @@ var ASM_CONSTS = {
       if (_tzset.called) return;
       _tzset.called = true;
   
-      // timezone is specified as seconds west of UTC ("The external variable
-      // `timezone` shall be set to the difference, in seconds, between
-      // Coordinated Universal Time (UTC) and local standard time."), the same
-      // as returned by getTimezoneOffset().
-      // See http://pubs.opengroup.org/onlinepubs/009695399/functions/tzset.html
-      HEAP32[((__get_timezone())>>2)]=(new Date()).getTimezoneOffset() * 60;
-  
       var currentYear = new Date().getFullYear();
       var winter = new Date(currentYear, 0, 1);
       var summer = new Date(currentYear, 6, 1);
-      HEAP32[((__get_daylight())>>2)]=Number(winter.getTimezoneOffset() != summer.getTimezoneOffset());
+      var winterOffset = winter.getTimezoneOffset();
+      var summerOffset = summer.getTimezoneOffset();
+  
+      // Local standard timezone offset. Local standard time is not adjusted for daylight savings.
+      // This code uses the fact that getTimezoneOffset returns a greater value during Standard Time versus Daylight Saving Time (DST). 
+      // Thus it determines the expected output during Standard Time, and it compares whether the output of the given date the same (Standard) or less (DST).
+      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
+  
+      // timezone is specified as seconds west of UTC ("The external variable
+      // `timezone` shall be set to the difference, in seconds, between
+      // Coordinated Universal Time (UTC) and local standard time."), the same
+      // as returned by stdTimezoneOffset.
+      // See http://pubs.opengroup.org/onlinepubs/009695399/functions/tzset.html
+      HEAP32[((__get_timezone())>>2)]=stdTimezoneOffset * 60;
+  
+      HEAP32[((__get_daylight())>>2)]=Number(winterOffset != summerOffset);
   
       function extractZone(date) {
         var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
@@ -2123,7 +2126,7 @@ var ASM_CONSTS = {
       var summerName = extractZone(summer);
       var winterNamePtr = allocateUTF8(winterName);
       var summerNamePtr = allocateUTF8(summerName);
-      if (summer.getTimezoneOffset() < winter.getTimezoneOffset()) {
+      if (summerOffset < winterOffset) {
         // Northern hemisphere
         HEAP32[((__get_tzname())>>2)]=winterNamePtr;
         HEAP32[(((__get_tzname())+(4))>>2)]=summerNamePtr;
@@ -4793,11 +4796,6 @@ var ASM_CONSTS = {
       throw 'longjmp';
     }
   function _emscripten_longjmp(a0,a1
-  ) {
-  return _longjmp(a0,a1);
-  }
-
-  function _emscripten_longjmp_jmpbuf(a0,a1
   ) {
   return _longjmp(a0,a1);
   }
@@ -8315,10 +8313,149 @@ function intArrayToString(array) {
 
 
 __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
-var asmLibraryArg = { "__assert_fail": ___assert_fail, "__clock_gettime": ___clock_gettime, "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__gmtime_r": ___gmtime_r, "__localtime_r": ___localtime_r, "__sys_dup2": ___sys_dup2, "__sys_dup3": ___sys_dup3, "__sys_fcntl64": ___sys_fcntl64, "__sys_ioctl": ___sys_ioctl, "__sys_lstat64": ___sys_lstat64, "__sys_mkdir": ___sys_mkdir, "__sys_open": ___sys_open, "__sys_rename": ___sys_rename, "__sys_rmdir": ___sys_rmdir, "__sys_stat64": ___sys_stat64, "__sys_unlink": ___sys_unlink, "abort": _abort, "clock": _clock, "clock_gettime": _clock_gettime, "difftime": _difftime, "emscripten_asm_const_int": _emscripten_asm_const_int, "emscripten_longjmp": _emscripten_longjmp, "emscripten_longjmp_jmpbuf": _emscripten_longjmp_jmpbuf, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_set_main_loop": _emscripten_set_main_loop, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "getTempRet0": _getTempRet0, "gettimeofday": _gettimeofday, "glActiveTexture": _glActiveTexture, "glAttachShader": _glAttachShader, "glBindAttribLocation": _glBindAttribLocation, "glBindBuffer": _glBindBuffer, "glBindSampler": _glBindSampler, "glBindTexture": _glBindTexture, "glBindVertexArray": _glBindVertexArray, "glBlendEquation": _glBlendEquation, "glBlendEquationSeparate": _glBlendEquationSeparate, "glBlendFunc": _glBlendFunc, "glBlendFuncSeparate": _glBlendFuncSeparate, "glBufferData": _glBufferData, "glClear": _glClear, "glClearColor": _glClearColor, "glCompileShader": _glCompileShader, "glCreateProgram": _glCreateProgram, "glCreateShader": _glCreateShader, "glDeleteBuffers": _glDeleteBuffers, "glDeleteProgram": _glDeleteProgram, "glDeleteShader": _glDeleteShader, "glDeleteTextures": _glDeleteTextures, "glDeleteVertexArrays": _glDeleteVertexArrays, "glDetachShader": _glDetachShader, "glDisable": _glDisable, "glDrawElements": _glDrawElements, "glEnable": _glEnable, "glEnableVertexAttribArray": _glEnableVertexAttribArray, "glGenBuffers": _glGenBuffers, "glGenTextures": _glGenTextures, "glGenVertexArrays": _glGenVertexArrays, "glGenerateMipmap": _glGenerateMipmap, "glGetAttribLocation": _glGetAttribLocation, "glGetBufferParameteriv": _glGetBufferParameteriv, "glGetIntegerv": _glGetIntegerv, "glGetProgramInfoLog": _glGetProgramInfoLog, "glGetProgramiv": _glGetProgramiv, "glGetShaderInfoLog": _glGetShaderInfoLog, "glGetShaderiv": _glGetShaderiv, "glGetString": _glGetString, "glGetUniformLocation": _glGetUniformLocation, "glIsEnabled": _glIsEnabled, "glLinkProgram": _glLinkProgram, "glPixelStorei": _glPixelStorei, "glScissor": _glScissor, "glShaderSource": _glShaderSource, "glTexImage2D": _glTexImage2D, "glTexParameteri": _glTexParameteri, "glUniform1f": _glUniform1f, "glUniform1i": _glUniform1i, "glUniformMatrix3fv": _glUniformMatrix3fv, "glUniformMatrix4fv": _glUniformMatrix4fv, "glUseProgram": _glUseProgram, "glVertexAttribPointer": _glVertexAttribPointer, "glViewport": _glViewport, "glfwCreateStandardCursor": _glfwCreateStandardCursor, "glfwCreateWindow": _glfwCreateWindow, "glfwDestroyCursor": _glfwDestroyCursor, "glfwDestroyWindow": _glfwDestroyWindow, "glfwGetClipboardString": _glfwGetClipboardString, "glfwGetCursorPos": _glfwGetCursorPos, "glfwGetFramebufferSize": _glfwGetFramebufferSize, "glfwGetInputMode": _glfwGetInputMode, "glfwGetJoystickAxes": _glfwGetJoystickAxes, "glfwGetJoystickButtons": _glfwGetJoystickButtons, "glfwGetMouseButton": _glfwGetMouseButton, "glfwGetTime": _glfwGetTime, "glfwGetWindowSize": _glfwGetWindowSize, "glfwInit": _glfwInit, "glfwMakeContextCurrent": _glfwMakeContextCurrent, "glfwPollEvents": _glfwPollEvents, "glfwSetCharCallback": _glfwSetCharCallback, "glfwSetClipboardString": _glfwSetClipboardString, "glfwSetCursor": _glfwSetCursor, "glfwSetCursorPos": _glfwSetCursorPos, "glfwSetCursorPosCallback": _glfwSetCursorPosCallback, "glfwSetErrorCallback": _glfwSetErrorCallback, "glfwSetInputMode": _glfwSetInputMode, "glfwSetKeyCallback": _glfwSetKeyCallback, "glfwSetMouseButtonCallback": _glfwSetMouseButtonCallback, "glfwSetScrollCallback": _glfwSetScrollCallback, "glfwSetWindowSizeCallback": _glfwSetWindowSizeCallback, "glfwSwapBuffers": _glfwSwapBuffers, "glfwSwapInterval": _glfwSwapInterval, "glfwTerminate": _glfwTerminate, "glfwWindowHint": _glfwWindowHint, "invoke_vii": invoke_vii, "localtime_r": _localtime_r, "memory": wasmMemory, "mktime": _mktime, "nanosleep": _nanosleep, "pthread_attr_destroy": _pthread_attr_destroy, "pthread_attr_init": _pthread_attr_init, "pthread_create": _pthread_create, "pthread_join": _pthread_join, "setTempRet0": _setTempRet0, "strftime": _strftime, "strftime_l": _strftime_l, "system": _system, "time": _time };
+var asmLibraryArg = {
+  "__assert_fail": ___assert_fail,
+  "__clock_gettime": ___clock_gettime,
+  "__cxa_allocate_exception": ___cxa_allocate_exception,
+  "__cxa_atexit": ___cxa_atexit,
+  "__cxa_throw": ___cxa_throw,
+  "__gmtime_r": ___gmtime_r,
+  "__localtime_r": ___localtime_r,
+  "__sys_dup2": ___sys_dup2,
+  "__sys_dup3": ___sys_dup3,
+  "__sys_fcntl64": ___sys_fcntl64,
+  "__sys_ioctl": ___sys_ioctl,
+  "__sys_lstat64": ___sys_lstat64,
+  "__sys_mkdir": ___sys_mkdir,
+  "__sys_open": ___sys_open,
+  "__sys_rename": ___sys_rename,
+  "__sys_rmdir": ___sys_rmdir,
+  "__sys_stat64": ___sys_stat64,
+  "__sys_unlink": ___sys_unlink,
+  "abort": _abort,
+  "clock": _clock,
+  "clock_gettime": _clock_gettime,
+  "difftime": _difftime,
+  "emscripten_asm_const_int": _emscripten_asm_const_int,
+  "emscripten_longjmp": _emscripten_longjmp,
+  "emscripten_memcpy_big": _emscripten_memcpy_big,
+  "emscripten_resize_heap": _emscripten_resize_heap,
+  "emscripten_set_main_loop": _emscripten_set_main_loop,
+  "environ_get": _environ_get,
+  "environ_sizes_get": _environ_sizes_get,
+  "exit": _exit,
+  "fd_close": _fd_close,
+  "fd_read": _fd_read,
+  "fd_seek": _fd_seek,
+  "fd_write": _fd_write,
+  "getTempRet0": _getTempRet0,
+  "gettimeofday": _gettimeofday,
+  "glActiveTexture": _glActiveTexture,
+  "glAttachShader": _glAttachShader,
+  "glBindAttribLocation": _glBindAttribLocation,
+  "glBindBuffer": _glBindBuffer,
+  "glBindSampler": _glBindSampler,
+  "glBindTexture": _glBindTexture,
+  "glBindVertexArray": _glBindVertexArray,
+  "glBlendEquation": _glBlendEquation,
+  "glBlendEquationSeparate": _glBlendEquationSeparate,
+  "glBlendFunc": _glBlendFunc,
+  "glBlendFuncSeparate": _glBlendFuncSeparate,
+  "glBufferData": _glBufferData,
+  "glClear": _glClear,
+  "glClearColor": _glClearColor,
+  "glCompileShader": _glCompileShader,
+  "glCreateProgram": _glCreateProgram,
+  "glCreateShader": _glCreateShader,
+  "glDeleteBuffers": _glDeleteBuffers,
+  "glDeleteProgram": _glDeleteProgram,
+  "glDeleteShader": _glDeleteShader,
+  "glDeleteTextures": _glDeleteTextures,
+  "glDeleteVertexArrays": _glDeleteVertexArrays,
+  "glDetachShader": _glDetachShader,
+  "glDisable": _glDisable,
+  "glDrawElements": _glDrawElements,
+  "glEnable": _glEnable,
+  "glEnableVertexAttribArray": _glEnableVertexAttribArray,
+  "glGenBuffers": _glGenBuffers,
+  "glGenTextures": _glGenTextures,
+  "glGenVertexArrays": _glGenVertexArrays,
+  "glGenerateMipmap": _glGenerateMipmap,
+  "glGetAttribLocation": _glGetAttribLocation,
+  "glGetBufferParameteriv": _glGetBufferParameteriv,
+  "glGetIntegerv": _glGetIntegerv,
+  "glGetProgramInfoLog": _glGetProgramInfoLog,
+  "glGetProgramiv": _glGetProgramiv,
+  "glGetShaderInfoLog": _glGetShaderInfoLog,
+  "glGetShaderiv": _glGetShaderiv,
+  "glGetString": _glGetString,
+  "glGetUniformLocation": _glGetUniformLocation,
+  "glIsEnabled": _glIsEnabled,
+  "glLinkProgram": _glLinkProgram,
+  "glPixelStorei": _glPixelStorei,
+  "glScissor": _glScissor,
+  "glShaderSource": _glShaderSource,
+  "glTexImage2D": _glTexImage2D,
+  "glTexParameteri": _glTexParameteri,
+  "glUniform1f": _glUniform1f,
+  "glUniform1i": _glUniform1i,
+  "glUniformMatrix3fv": _glUniformMatrix3fv,
+  "glUniformMatrix4fv": _glUniformMatrix4fv,
+  "glUseProgram": _glUseProgram,
+  "glVertexAttribPointer": _glVertexAttribPointer,
+  "glViewport": _glViewport,
+  "glfwCreateStandardCursor": _glfwCreateStandardCursor,
+  "glfwCreateWindow": _glfwCreateWindow,
+  "glfwDestroyCursor": _glfwDestroyCursor,
+  "glfwDestroyWindow": _glfwDestroyWindow,
+  "glfwGetClipboardString": _glfwGetClipboardString,
+  "glfwGetCursorPos": _glfwGetCursorPos,
+  "glfwGetFramebufferSize": _glfwGetFramebufferSize,
+  "glfwGetInputMode": _glfwGetInputMode,
+  "glfwGetJoystickAxes": _glfwGetJoystickAxes,
+  "glfwGetJoystickButtons": _glfwGetJoystickButtons,
+  "glfwGetMouseButton": _glfwGetMouseButton,
+  "glfwGetTime": _glfwGetTime,
+  "glfwGetWindowSize": _glfwGetWindowSize,
+  "glfwInit": _glfwInit,
+  "glfwMakeContextCurrent": _glfwMakeContextCurrent,
+  "glfwPollEvents": _glfwPollEvents,
+  "glfwSetCharCallback": _glfwSetCharCallback,
+  "glfwSetClipboardString": _glfwSetClipboardString,
+  "glfwSetCursor": _glfwSetCursor,
+  "glfwSetCursorPos": _glfwSetCursorPos,
+  "glfwSetCursorPosCallback": _glfwSetCursorPosCallback,
+  "glfwSetErrorCallback": _glfwSetErrorCallback,
+  "glfwSetInputMode": _glfwSetInputMode,
+  "glfwSetKeyCallback": _glfwSetKeyCallback,
+  "glfwSetMouseButtonCallback": _glfwSetMouseButtonCallback,
+  "glfwSetScrollCallback": _glfwSetScrollCallback,
+  "glfwSetWindowSizeCallback": _glfwSetWindowSizeCallback,
+  "glfwSwapBuffers": _glfwSwapBuffers,
+  "glfwSwapInterval": _glfwSwapInterval,
+  "glfwTerminate": _glfwTerminate,
+  "glfwWindowHint": _glfwWindowHint,
+  "invoke_vii": invoke_vii,
+  "localtime_r": _localtime_r,
+  "memory": wasmMemory,
+  "mktime": _mktime,
+  "nanosleep": _nanosleep,
+  "pthread_attr_destroy": _pthread_attr_destroy,
+  "pthread_attr_init": _pthread_attr_init,
+  "pthread_create": _pthread_create,
+  "pthread_join": _pthread_join,
+  "setTempRet0": _setTempRet0,
+  "strftime": _strftime,
+  "strftime_l": _strftime_l,
+  "system": _system,
+  "time": _time
+};
 var asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
+
+/** @type {function(...*):?} */
+var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
 
 /** @type {function(...*):?} */
 var _free = Module["_free"] = createExportWrapper("free");
@@ -8328,9 +8465,6 @@ var _realloc = Module["_realloc"] = createExportWrapper("realloc");
 
 /** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
-
-/** @type {function(...*):?} */
-var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
 
 /** @type {function(...*):?} */
 var _ma_device_process_pcm_frames_capture__webaudio = Module["_ma_device_process_pcm_frames_capture__webaudio"] = createExportWrapper("ma_device_process_pcm_frames_capture__webaudio");
@@ -8596,7 +8730,8 @@ if (!Object.getOwnPropertyDescriptor(Module, "lengthBytesUTF32")) Module["length
 if (!Object.getOwnPropertyDescriptor(Module, "allocateUTF8")) Module["allocateUTF8"] = function() { abort("'allocateUTF8' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Object.getOwnPropertyDescriptor(Module, "allocateUTF8OnStack")) Module["allocateUTF8OnStack"] = function() { abort("'allocateUTF8OnStack' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 Module["writeStackCookie"] = writeStackCookie;
-Module["checkStackCookie"] = checkStackCookie;if (!Object.getOwnPropertyDescriptor(Module, "ALLOC_NORMAL")) Object.defineProperty(Module, "ALLOC_NORMAL", { configurable: true, get: function() { abort("'ALLOC_NORMAL' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") } });
+Module["checkStackCookie"] = checkStackCookie;
+if (!Object.getOwnPropertyDescriptor(Module, "ALLOC_NORMAL")) Object.defineProperty(Module, "ALLOC_NORMAL", { configurable: true, get: function() { abort("'ALLOC_NORMAL' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") } });
 if (!Object.getOwnPropertyDescriptor(Module, "ALLOC_STACK")) Object.defineProperty(Module, "ALLOC_STACK", { configurable: true, get: function() { abort("'ALLOC_STACK' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") } });
 
 
@@ -8672,9 +8807,6 @@ function callMain(args) {
   }
 }
 
-
-
-
 /** @type {function(Array=)} */
 function run(args) {
   args = args || arguments_;
@@ -8721,7 +8853,7 @@ function run(args) {
   {
     doRun();
   }
-  if (!ABORT) checkStackCookie();
+  checkStackCookie();
 }
 Module['run'] = run;
 
@@ -8818,8 +8950,6 @@ run();
 
 
 
-
-// {{MODULE_ADDITIONS}}
 
 
 

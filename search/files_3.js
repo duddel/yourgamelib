@@ -7,5 +7,6 @@ var searchData=
   ['glloading_2eh',['glloading.h',['../glloading_8h.html',1,'']]],
   ['glshader_2eh',['glshader.h',['../glshader_8h.html',1,'']]],
   ['glshape_2eh',['glshape.h',['../glshape_8h.html',1,'']]],
-  ['gltexture2d_2eh',['gltexture2d.h',['../gltexture2d_8h.html',1,'']]]
+  ['gltexture2d_2eh',['gltexture2d.h',['../gltexture2d_8h.html',1,'']]],
+  ['gltextureatlas_2eh',['gltextureatlas.h',['../gltextureatlas_8h.html',1,'']]]
 ];

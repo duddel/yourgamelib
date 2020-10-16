@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['getcoords',['getCoords',['../classyourgame_1_1GLTextureAtlas.html#a59134193c542d4610fcd314e6366b2d7',1,'yourgame::GLTextureAtlas']]],
   ['getctx',['getCtx',['../namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9',1,'yourgame']]],
   ['getinputf',['getInputf',['../namespaceyourgame.html#a187baed27e9ea5b0fd008949907a11df',1,'yourgame']]],
   ['getinputi',['getInputi',['../namespaceyourgame.html#ab59c090e067cdce7fbcff583c92b0918',1,'yourgame']]],
@@ -17,5 +18,7 @@ var searchData=
   ['glshape',['GLShape',['../classyourgame_1_1GLShape.html',1,'yourgame::GLShape'],['../classyourgame_1_1GLShape.html#a7464ba57129560c093a15246ef8903e6',1,'yourgame::GLShape::GLShape()']]],
   ['glshape_2eh',['glshape.h',['../glshape_8h.html',1,'']]],
   ['gltexture2d',['GLTexture2D',['../classyourgame_1_1GLTexture2D.html',1,'yourgame::GLTexture2D'],['../classyourgame_1_1GLTexture2D.html#a6fcdc4566f508942001695772798d11e',1,'yourgame::GLTexture2D::GLTexture2D()']]],
-  ['gltexture2d_2eh',['gltexture2d.h',['../gltexture2d_8h.html',1,'']]]
+  ['gltexture2d_2eh',['gltexture2d.h',['../gltexture2d_8h.html',1,'']]],
+  ['gltextureatlas',['GLTextureAtlas',['../classyourgame_1_1GLTextureAtlas.html',1,'yourgame::GLTextureAtlas'],['../classyourgame_1_1GLTextureAtlas.html#ac90373a8c9a94cc5beb30e7cd1e53e69',1,'yourgame::GLTextureAtlas::GLTextureAtlas()'],['../classyourgame_1_1GLTextureAtlas.html#acc9bf409ed29d6498ab77e2a61af171f',1,'yourgame::GLTextureAtlas::GLTextureAtlas(GLTextureAtlas const &amp;)=delete']]],
+  ['gltextureatlas_2eh',['gltextureatlas.h',['../gltextureatlas_8h.html',1,'']]]
 ];

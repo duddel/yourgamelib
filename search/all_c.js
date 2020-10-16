@@ -4,5 +4,7 @@ var searchData=
   ['pmat',['pMat',['../classyourgame_1_1Camera.html#a20cb4c6b70d47328f11180fbe3956a5d',1,'yourgame::Camera']]],
   ['pointer',['pointer',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#aab2fd7f350b28de0a91e5724f63c5cba',1,'yourgame::GLShape::ArrBufferDescr']]],
   ['pointto',['pointTo',['../classyourgame_1_1Trafo.html#a8456ea47403bbad5f40b5c11633bd56e',1,'yourgame::Trafo']]],
-  ['projection',['PROJECTION',['../classyourgame_1_1Camera.html#abd9deece2ac9cf689efde21234a20ee2',1,'yourgame::Camera']]]
+  ['projection',['PROJECTION',['../classyourgame_1_1Camera.html#abd9deece2ac9cf689efde21234a20ee2',1,'yourgame::Camera']]],
+  ['pushcoords',['pushCoords',['../classyourgame_1_1GLTextureAtlas.html#a9221ab669068499351739df6d598471b',1,'yourgame::GLTextureAtlas']]],
+  ['pushtexture',['pushTexture',['../classyourgame_1_1GLTextureAtlas.html#a93fb85ee05cb74076164b1c68cf44313',1,'yourgame::GLTextureAtlas']]]
 ];
