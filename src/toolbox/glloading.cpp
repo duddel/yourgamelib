@@ -125,6 +125,32 @@ namespace yourgame
         return newAtlas;
     }
 
+    GLTextureAtlas *loadTextureAtlasGrid(const char *filename, GLenum unit, int tilesWidth, int tilesHeight)
+    {
+        auto newTex = yourgame::loadTexture(filename, unit);
+        if (!newTex)
+        {
+            return nullptr;
+        }
+
+        GLTextureAtlas *newAtlas = new GLTextureAtlas();
+        newAtlas->pushTexture(newTex);
+
+        for (int h = 0; h < tilesHeight; h++)
+        {
+            for (int w = 0; w < tilesWidth; w++)
+            {
+                newAtlas->pushCoords(std::to_string(h * tilesWidth + w),
+                                     ((float)w) / ((float)tilesWidth),
+                                     ((float)(w + 1)) / ((float)tilesWidth),
+                                     1.0f - (((float)(h + 1)) / ((float)tilesHeight)),
+                                     1.0f - (((float)h) / ((float)tilesHeight)));
+            }
+        }
+
+        return newAtlas;
+    }
+
     GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
                          std::vector<std::pair<GLuint, std::string>> attrLocs,
                          std::vector<std::pair<GLuint, std::string>> fragDataLocs)

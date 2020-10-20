@@ -33,6 +33,8 @@ namespace yourgame
     GLTexture2D *loadTexture(const char *filename, GLenum unit);
 
     GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit);
+    
+    GLTextureAtlas *loadTextureAtlasGrid(const char *filename, GLenum unit, int tilesWidth, int tilesHeight);
 
     GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
                          std::vector<std::pair<GLuint, std::string>> attrLocs,
