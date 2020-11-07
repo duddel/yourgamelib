@@ -39,6 +39,7 @@ namespace
         {
             GLint infoLen;
             glGetShaderiv(*handle, GL_INFO_LOG_LENGTH, &infoLen);
+            // todo: check infoLen before creating infoLog array
             GLchar *infoLog = new GLchar[infoLen + 1];
             glGetShaderInfoLog(*handle, infoLen, NULL, infoLog);
             errorLog += infoLog;
@@ -100,6 +101,7 @@ GLShader *GLShader::make(std::vector<std::pair<GLenum, std::string>> shaderCodes
     {
         GLint infoLen;
         glGetShaderiv(progHandle, GL_INFO_LOG_LENGTH, &infoLen);
+        // todo: check infoLen before creating infoLog array
         GLchar *infoLog = new GLchar[infoLen + 1];
         glGetProgramInfoLog(progHandle, infoLen, NULL, infoLog);
         errorLog += infoLog;
