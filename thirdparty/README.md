@@ -70,8 +70,8 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 
 ## Flecs
 
--   version: **2.2.0**
--   origin: <https://github.com/SanderMertens/flecs/releases/tag/v2.2.0>
+-   version: **76a0221, 2.2.0**
+-   origin: <https://github.com/SanderMertens/flecs/tree/76a02215982dee495494af7b651163eb234a48df>
 -   extracted from origin:
     -   LICENSE, flecs.{h,c}
 -   license: [flecs/LICENSE](flecs/LICENSE)
