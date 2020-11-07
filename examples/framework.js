@@ -15,8 +15,6 @@
 // can continue to use Module afterwards as well.
 var Module = typeof Module !== 'undefined' ? Module : {};
 
-
-
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
 
@@ -189,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"remote_package_size": 748134, "files": [{"end": 8558, "start": 0, "filename": "/assets/LICENSE_web.txt", "audio": 0}, {"end": 8941, "start": 8558, "filename": "/assets/simple.vert", "audio": 0}, {"end": 20758, "start": 8941, "filename": "/assets/jingles_SAX07_mono_11025.ogg", "audio": 1}, {"end": 20950, "start": 20758, "filename": "/assets/normal.frag", "audio": 0}, {"end": 31739, "start": 20950, "filename": "/assets/LICENSE_desktop.txt", "audio": 0}, {"end": 32035, "start": 31739, "filename": "/assets/simple.es.frag", "audio": 0}, {"end": 34545, "start": 32035, "filename": "/assets/gradient1.png", "audio": 0}, {"end": 42615, "start": 34545, "filename": "/assets/LICENSE_android.txt", "audio": 0}, {"end": 73515, "start": 42615, "filename": "/assets/jingles_SAX07.ogg", "audio": 1}, {"end": 88281, "start": 73515, "filename": "/assets/gradient2.jpg", "audio": 0}, {"end": 98663, "start": 88281, "filename": "/assets/jingles_PIZZI00.ogg", "audio": 1}, {"end": 126869, "start": 98663, "filename": "/assets/sphere.obj", "audio": 0}, {"end": 127088, "start": 126869, "filename": "/assets/normal.es.frag", "audio": 0}, {"end": 127658, "start": 127088, "filename": "/assets/ship_dark.mtl", "audio": 0}, {"end": 127841, "start": 127658, "filename": "/assets/sphere.mtl", "audio": 0}, {"end": 747479, "start": 127841, "filename": "/assets/ship_dark.obj", "audio": 0}, {"end": 747748, "start": 747479, "filename": "/assets/simple.frag", "audio": 0}, {"end": 748134, "start": 747748, "filename": "/assets/simple.es.vert", "audio": 0}], "package_uuid": "cad37c66-3e5d-47fd-b45f-c021513d2a89"});
+   loadPackage({"package_uuid": "8341e48c-a151-41cd-a371-4db48af573b2", "files": [{"filename": "/assets/LICENSE_android.txt", "start": 0, "end": 8070, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 8070, "end": 627708, "audio": 0}, {"filename": "/assets/normal.frag", "start": 627708, "end": 627900, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 627900, "end": 636458, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 636458, "end": 647247, "audio": 0}, {"filename": "/assets/normal.es.frag", "start": 647247, "end": 647466, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 647466, "end": 659283, "audio": 1}, {"filename": "/assets/sphere.mtl", "start": 659283, "end": 659466, "audio": 0}, {"filename": "/assets/simple.vert", "start": 659466, "end": 659849, "audio": 0}, {"filename": "/assets/sphere.obj", "start": 659849, "end": 688055, "audio": 0}, {"filename": "/assets/gradient2.jpg", "start": 688055, "end": 702821, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "start": 702821, "end": 703391, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 703391, "end": 734291, "audio": 1}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 734291, "end": 744673, "audio": 1}, {"filename": "/assets/simple.frag", "start": 744673, "end": 744942, "audio": 0}, {"filename": "/assets/simple.es.vert", "start": 744942, "end": 745328, "audio": 0}, {"filename": "/assets/gradient1.png", "start": 745328, "end": 747838, "audio": 0}, {"filename": "/assets/simple.es.frag", "start": 747838, "end": 748134, "audio": 0}], "remote_package_size": 748134});
   
   })();
   
@@ -241,8 +239,6 @@ if (Module['ENVIRONMENT']) {
   throw new Error('Module.ENVIRONMENT has been deprecated. To force the environment, use the ENVIRONMENT compile-time option (for example, -s ENVIRONMENT=web or -s ENVIRONMENT=node)');
 }
 
-
-
 // `/` should be present at the end if `scriptDirectory` is not empty
 var scriptDirectory = '';
 function locateFile(path) {
@@ -268,7 +264,7 @@ if (ENVIRONMENT_IS_NODE) {
     scriptDirectory = __dirname + '/';
   }
 
-
+// include: node_shell_read.js
 
 
 read_ = function shell_read(filename, binary) {
@@ -287,8 +283,7 @@ readBinary = function readBinary(filename) {
   return ret;
 };
 
-
-
+// end include: node_shell_read.js
   if (process['argv'].length > 1) {
     thisProgram = process['argv'][1].replace(/\\/g, '/');
   }
@@ -314,11 +309,8 @@ readBinary = function readBinary(filename) {
 
   Module['inspect'] = function () { return '[Emscripten Module object]'; };
 
-
-
 } else
 if (ENVIRONMENT_IS_SHELL) {
-
 
   if (typeof read != 'undefined') {
     read_ = function shell_read(f) {
@@ -355,7 +347,6 @@ if (ENVIRONMENT_IS_SHELL) {
     console.warn = console.error = /** @type{!function(this:Console, ...*): undefined} */ (typeof printErr !== 'undefined' ? printErr : print);
   }
 
-
 } else
 
 // Note that this includes Node.js workers when relevant (pthreads is enabled).
@@ -364,7 +355,7 @@ if (ENVIRONMENT_IS_SHELL) {
 if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
   if (ENVIRONMENT_IS_WORKER) { // Check worker, not web, since window could be polyfilled
     scriptDirectory = self.location.href;
-  } else if (document.currentScript) { // web
+  } else if (typeof document !== 'undefined' && document.currentScript) { // web
     scriptDirectory = document.currentScript.src;
   }
   // blob urls look like blob:http://site.com/etc/etc and we cannot infer anything from them.
@@ -377,12 +368,11 @@ if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
     scriptDirectory = '';
   }
 
-
   // Differentiate the Web Worker from the Node Worker case, as reading must
   // be done differently.
   {
 
-
+// include: web_or_worker_shell_read.js
 
 
   read_ = function shell_read(url) {
@@ -417,9 +407,7 @@ if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
     xhr.send(null);
   };
 
-
-
-
+// end include: web_or_worker_shell_read.js
   }
 
   setWindowTitle = function(title) { document.title = title };
@@ -427,7 +415,6 @@ if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
 {
   throw new Error('environment detection error');
 }
-
 
 // Set up the out() and err() hooks, which are how we can print to stdout or
 // stderr, respectively.
@@ -475,8 +462,6 @@ var NODEFS = 'NODEFS is no longer included by default; build with -lnodefs.js';
 
 
 
-
-
 var STACK_ALIGN = 16;
 
 function alignMemory(size, factor) {
@@ -514,7 +499,7 @@ function warnOnce(text) {
   }
 }
 
-
+// include: runtime_functions.js
 
 
 // Wraps a JS function as a wasm function with a given signature.
@@ -606,16 +591,31 @@ var freeTableIndexes = [];
 // Weak map of functions in the table to their indexes, created on first use.
 var functionsInTableMap;
 
+function getEmptyTableSlot() {
+  // Reuse a free index if there is one, otherwise grow.
+  if (freeTableIndexes.length) {
+    return freeTableIndexes.pop();
+  }
+  // Grow the table
+  try {
+    wasmTable.grow(1);
+  } catch (err) {
+    if (!(err instanceof RangeError)) {
+      throw err;
+    }
+    throw 'Unable to grow wasm table. Set ALLOW_TABLE_GROWTH.';
+  }
+  return wasmTable.length - 1;
+}
+
 // Add a wasm function to the table.
 function addFunctionWasm(func, sig) {
-  var table = wasmTable;
-
   // Check if the function is already in the table, to ensure each function
   // gets a unique index. First, create the map if this is the first use.
   if (!functionsInTableMap) {
     functionsInTableMap = new WeakMap();
-    for (var i = 0; i < table.length; i++) {
-      var item = table.get(i);
+    for (var i = 0; i < wasmTable.length; i++) {
+      var item = wasmTable.get(i);
       // Ignore null values.
       if (item) {
         functionsInTableMap.set(item, i);
@@ -628,35 +628,19 @@ function addFunctionWasm(func, sig) {
 
   // It's not in the table, add it now.
 
-
-  var ret;
-  // Reuse a free index if there is one, otherwise grow.
-  if (freeTableIndexes.length) {
-    ret = freeTableIndexes.pop();
-  } else {
-    ret = table.length;
-    // Grow the table
-    try {
-      table.grow(1);
-    } catch (err) {
-      if (!(err instanceof RangeError)) {
-        throw err;
-      }
-      throw 'Unable to grow wasm table. Set ALLOW_TABLE_GROWTH.';
-    }
-  }
+  var ret = getEmptyTableSlot();
 
   // Set the new value.
   try {
     // Attempting to call this with JS function will cause of table.set() to fail
-    table.set(ret, func);
+    wasmTable.set(ret, func);
   } catch (err) {
     if (!(err instanceof TypeError)) {
       throw err;
     }
-    assert(typeof sig !== 'undefined', 'Missing signature argument to addFunction');
+    assert(typeof sig !== 'undefined', 'Missing signature argument to addFunction: ' + func);
     var wrapped = convertJsFunctionToWasm(func, sig);
-    table.set(ret, wrapped);
+    wasmTable.set(ret, wrapped);
   }
 
   functionsInTableMap.set(func, ret);
@@ -664,7 +648,7 @@ function addFunctionWasm(func, sig) {
   return ret;
 }
 
-function removeFunctionWasm(index) {
+function removeFunction(index) {
   functionsInTableMap.delete(wasmTable.get(index));
   freeTableIndexes.push(index);
 }
@@ -677,18 +661,11 @@ function addFunction(func, sig) {
   return addFunctionWasm(func, sig);
 }
 
-function removeFunction(index) {
-  removeFunctionWasm(index);
-}
+// end include: runtime_functions.js
+// include: runtime_debug.js
 
 
-
-
-
-
-
-
-
+// end include: runtime_debug.js
 function makeBigInt(low, high, unsigned) {
   return unsigned ? ((+((low>>>0)))+((+((high>>>0)))*4294967296.0)) : ((+((low>>>0)))+((+((high|0)))*4294967296.0));
 }
@@ -709,7 +686,6 @@ function getCompilerSetting(name) {
 
 
 
-
 // === Preamble library stuff ===
 
 // Documentation for the public APIs defined in this file must be updated in:
@@ -720,16 +696,14 @@ function getCompilerSetting(name) {
 // An online HTML version (which may be of a different version of Emscripten)
 //    is up at http://kripken.github.io/emscripten-site/docs/api_reference/preamble.js.html
 
-
 var wasmBinary;if (Module['wasmBinary']) wasmBinary = Module['wasmBinary'];if (!Object.getOwnPropertyDescriptor(Module, 'wasmBinary')) Object.defineProperty(Module, 'wasmBinary', { configurable: true, get: function() { abort('Module.wasmBinary has been replaced with plain wasmBinary (the initial value can be provided on Module, but after startup the value is only looked for on a local variable of that name)') } });
 var noExitRuntime;if (Module['noExitRuntime']) noExitRuntime = Module['noExitRuntime'];if (!Object.getOwnPropertyDescriptor(Module, 'noExitRuntime')) Object.defineProperty(Module, 'noExitRuntime', { configurable: true, get: function() { abort('Module.noExitRuntime has been replaced with plain noExitRuntime (the initial value can be provided on Module, but after startup the value is only looked for on a local variable of that name)') } });
-
 
 if (typeof WebAssembly !== 'object') {
   abort('no native wasm support detected');
 }
 
-
+// include: runtime_safe_heap.js
 
 
 // In MINIMAL_RUNTIME, setValue() and getValue() are only available when building with safe heap enabled, for heap safety checking.
@@ -773,16 +747,10 @@ function getValue(ptr, type, noSafe) {
   return null;
 }
 
-
-
-
-
-
+// end include: runtime_safe_heap.js
 // Wasm globals
 
 var wasmMemory;
-var wasmTable;
-
 
 //========================================
 // Runtime essentials
@@ -906,7 +874,7 @@ function allocate(slab, allocator) {
   return ret;
 }
 
-
+// include: runtime_strings.js
 
 
 // runtime_strings.js: Strings related runtime functions that are part of both MINIMAL_RUNTIME and regular runtime.
@@ -1061,8 +1029,8 @@ function lengthBytesUTF8(str) {
   return len;
 }
 
-
-
+// end include: runtime_strings.js
+// include: runtime_strings_extra.js
 
 
 // runtime_strings_extra.js: Strings related runtime functions that are available only in regular runtime.
@@ -1287,8 +1255,7 @@ function writeAsciiToMemory(str, buffer, dontAddNull) {
   if (!dontAddNull) HEAP8[((buffer)>>0)]=0;
 }
 
-
-
+// end include: runtime_strings_extra.js
 // Memory management
 
 var PAGE_SIZE = 16384;
@@ -1333,13 +1300,11 @@ function updateGlobalBufferAndViews(buf) {
   Module['HEAPF64'] = HEAPF64 = new Float64Array(buf);
 }
 
-var STACK_BASE = 5471632,
+var STACK_BASE = 5471648,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 228752;
+    STACK_MAX = 228768;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
-
-
 
 var TOTAL_STACK = 5242880;
 if (Module['TOTAL_STACK']) assert(TOTAL_STACK === Module['TOTAL_STACK'], 'the stack size can no longer be determined at runtime')
@@ -1352,9 +1317,8 @@ assert(INITIAL_INITIAL_MEMORY >= TOTAL_STACK, 'INITIAL_MEMORY should be larger t
 assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' && Int32Array.prototype.subarray !== undefined && Int32Array.prototype.set !== undefined,
        'JS engine does not provide full typed array support');
 
-
 // In non-standalone/normal mode, we create the memory here.
-
+// include: runtime_init_memory.js
 
 
 // Create the main memory. (Note: this isn't used in STANDALONE_WASM mode since the wasm
@@ -1371,7 +1335,6 @@ assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' 
     });
   }
 
-
 if (wasmMemory) {
   buffer = wasmMemory.buffer;
 }
@@ -1383,13 +1346,16 @@ assert(INITIAL_INITIAL_MEMORY % WASM_PAGE_SIZE === 0);
 assert(65536 % WASM_PAGE_SIZE === 0);
 updateGlobalBufferAndViews(buffer);
 
+// end include: runtime_init_memory.js
 
+// include: runtime_init_table.js
+// In regular non-RELOCATABLE mode the table is exported
+// from the wasm module and this will be assigned once
+// the exports are available.
+var wasmTable;
 
-
-
-
-
-
+// end include: runtime_init_table.js
+// include: runtime_stack_check.js
 
 
 // Initializes the stack cookie. Called at the startup of main and at the startup of each thread in pthreads mode.
@@ -1413,8 +1379,8 @@ function checkStackCookie() {
   if (HEAP32[0] !== 0x63736d65 /* 'emsc' */) abort('Runtime error: The application has corrupted its heap memory area (address zero)!');
 }
 
-
-
+// end include: runtime_stack_check.js
+// include: runtime_assertions.js
 
 
 // Endianness check (note: assumes compiler arch was little-endian)
@@ -1429,8 +1395,7 @@ function abortFnPtrError(ptr, sig) {
 	abort("Invalid function pointer " + ptr + " called with signature '" + sig + "'. Perhaps this is an invalid value (e.g. caused by calling a virtual method on a NULL pointer)? Or calling a function with an incorrect type, which will fail? (it is worth building your source files with -Werror (warnings are errors), as warnings can indicate undefined behavior which can cause this). Build with ASSERTIONS=2 for more info.");
 }
 
-
-
+// end include: runtime_assertions.js
 var __ATPRERUN__  = []; // functions called before the runtime is initialized
 var __ATINIT__    = []; // functions called during startup
 var __ATMAIN__    = []; // functions called when main() is to be run
@@ -1439,7 +1404,6 @@ var __ATPOSTRUN__ = []; // functions called after the main() is called
 
 var runtimeInitialized = false;
 var runtimeExited = false;
-
 
 function preRun() {
 
@@ -1505,7 +1469,7 @@ function addOnPostRun(cb) {
   __ATPOSTRUN__.unshift(cb);
 }
 
-
+// include: runtime_math.js
 
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/imul
@@ -1521,8 +1485,7 @@ assert(Math.fround, 'This browser does not support Math.fround(), build with LEG
 assert(Math.clz32, 'This browser does not support Math.clz32(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
 assert(Math.trunc, 'This browser does not support Math.trunc(), build with LEGACY_VM_SUPPORT or POLYFILL_OLD_MATH_FUNCTIONS to add in a polyfill');
 
-
-
+// end include: runtime_math.js
 // A counter of dependencies for calling run(). If we need to
 // do asynchronous work before running, increment this and
 // decrement it. Incrementing must happen in a place like
@@ -1636,14 +1599,11 @@ function abort(what) {
 
 // {{MEM_INITIALIZER}}
 
+// include: memoryprofiler.js
 
 
-
-
-
-
-
-
+// end include: memoryprofiler.js
+// include: URIUtils.js
 
 
 function hasPrefix(str, prefix) {
@@ -1667,8 +1627,7 @@ function isFileURI(filename) {
   return hasPrefix(filename, fileURIPrefix);
 }
 
-
-
+// end include: URIUtils.js
 function createExportWrapper(name, fixedasm) {
   return function() {
     var displayName = name;
@@ -1684,7 +1643,6 @@ function createExportWrapper(name, fixedasm) {
     return asm[name].apply(null, arguments);
   };
 }
-
 
 var wasmBinaryFile = 'framework.wasm';
 if (!isDataURI(wasmBinaryFile)) {
@@ -1728,8 +1686,6 @@ function getBinaryPromise() {
   return Promise.resolve().then(getBinary);
 }
 
-
-
 // Create the wasm instance.
 // Receives the wasm imports, returns the exports.
 function createWasm() {
@@ -1745,20 +1701,15 @@ function createWasm() {
   function receiveInstance(instance, module) {
     var exports = instance.exports;
 
-
-
-
     Module['asm'] = exports;
 
     wasmTable = Module['asm']['__indirect_function_table'];
     assert(wasmTable, "table not found in wasm exports");
 
-
     removeRunDependency('wasm-instantiate');
   }
   // we can't run yet (except in a pthread, where we have a custom sync instantiator)
   addRunDependency('wasm-instantiate');
-
 
   // Async compilation can be confusing when an error on the page overwrites Module
   // (for example, if the order of elements is wrong, and the one defining Module is
@@ -1774,13 +1725,11 @@ function createWasm() {
     receiveInstance(output['instance']);
   }
 
-
   function instantiateArrayBuffer(receiver) {
     return getBinaryPromise().then(function(binary) {
       return WebAssembly.instantiate(binary, info);
     }).then(receiver, function(reason) {
       err('failed to asynchronously prepare wasm: ' + reason);
-
 
       abort(reason);
     });
@@ -1794,7 +1743,7 @@ function createWasm() {
         // Don't use streaming for file:// delivered objects in a webview, fetch them synchronously.
         !isFileURI(wasmBinaryFile) &&
         typeof fetch === 'function') {
-      fetch(wasmBinaryFile, { credentials: 'same-origin' }).then(function (response) {
+      return fetch(wasmBinaryFile, { credentials: 'same-origin' }).then(function (response) {
         var result = WebAssembly.instantiateStreaming(response, info);
         return result.then(receiveInstantiatedSource, function(reason) {
             // We expect the most common failure cause to be a bad MIME type for the binary,
@@ -1906,7 +1855,7 @@ var ASM_CONSTS = {
       if (sig.indexOf('j') != -1) {
         return dynCallLegacy(sig, ptr, args);
       }
-  
+      assert(wasmTable.get(ptr), 'missing table entry in dynCall: ' + ptr);
       return wasmTable.get(ptr).apply(null, args)
     }
 
@@ -2871,7 +2820,6 @@ var ASM_CONSTS = {
         }
       },hashName:function(parentid, name) {
         var hash = 0;
-  
   
         for (var i = 0; i < name.length; i++) {
           hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
@@ -4826,7 +4774,6 @@ var ASM_CONSTS = {
       // With pthreads, races can happen (another thread might increase the size in between), so return a failure, and let the caller retry.
       assert(requestedSize > oldSize);
   
-  
       // Memory resize rules:
       // 1. When resizing, always produce a resized heap that is at least 16MB (to avoid tiny heap sizes receiving lots of repeated resizes at startup)
       // 2. Always increase heap size to at least the requested size, rounded up to next page multiple.
@@ -4854,7 +4801,6 @@ var ASM_CONSTS = {
         var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
         // but limit overreserving (default to capping at +96MB overgrowth at most)
         overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
-  
   
         var newSize = Math.min(maxHeapSize, alignUp(Math.max(minHeapSize, requestedSize, overGrownHeapSize), 65536));
   
@@ -5056,7 +5002,6 @@ var ASM_CONSTS = {
           }
         };
         Module['preloadPlugins'].push(audioPlugin);
-  
   
         // Canvas event setup
   
@@ -5609,8 +5554,6 @@ var ASM_CONSTS = {
         // Signal GL rendering layer that processing of a new frame is about to start. This helps it optimize
         // VBO double-buffering and reduce GPU stalls.
   
-  
-  
         if (Browser.mainLoop.method === 'timeout' && Module.ctx) {
           warnOnce('Looks like you are rendering without using requestAnimationFrame for the main loop. You should use 0 for the frame rate in emscripten_set_main_loop in order to use requestAnimationFrame, as that can greatly improve your frame rates!');
           Browser.mainLoop.method = ''; // just warn once per call to set main loop
@@ -5843,10 +5786,6 @@ var ASM_CONSTS = {
         return source;
       },createContext:function(canvas, webGLContextAttributes) {
   
-  
-  
-  
-  
         var ctx = 
           (webGLContextAttributes.majorVersion > 1)
           ?
@@ -5856,12 +5795,9 @@ var ASM_CONSTS = {
             // https://caniuse.com/#feat=webgl
             );
   
-  
         if (!ctx) return 0;
   
         var handle = GL.registerContext(ctx, webGLContextAttributes);
-  
-  
   
         return handle;
       },registerContext:function(ctx, webGLContextAttributes) {
@@ -5875,16 +5811,12 @@ var ASM_CONSTS = {
           GLctx: ctx
         };
   
-  
         // Store the created context object so that we can access the context given a canvas without having to pass the parameters again.
         if (ctx.canvas) ctx.canvas.GLctxObject = context;
         GL.contexts[handle] = context;
         if (typeof webGLContextAttributes.enableExtensionsByDefault === 'undefined' || webGLContextAttributes.enableExtensionsByDefault) {
           GL.initExtensions(context);
         }
-  
-  
-  
   
         return handle;
       },makeContextCurrent:function(contextHandle) {
@@ -6548,7 +6480,6 @@ var ASM_CONSTS = {
   function _glShaderSource(shader, count, string, length) {
       var source = GL.getSource(shader, count, string, length);
   
-  
       GLctx.shaderSource(GL.shaders[shader], source);
     }
 
@@ -6650,7 +6581,6 @@ var ASM_CONSTS = {
   var miniTempWebGLFloatBuffers=[];
   function _glUniformMatrix3fv(location, count, transpose, value) {
   
-  
       if (GL.currentContext.version >= 2) { // WebGL 2 provides new garbage-free entry points to call to WebGL. Use those always when possible.
         GLctx.uniformMatrix3fv(GL.uniforms[location], !!transpose, HEAPF32, value>>2, count*9);
         return;
@@ -6678,7 +6608,6 @@ var ASM_CONSTS = {
     }
 
   function _glUniformMatrix4fv(location, count, transpose, value) {
-  
   
       if (GL.currentContext.version >= 2) { // WebGL 2 provides new garbage-free entry points to call to WebGL. Use those always when possible.
         GLctx.uniformMatrix4fv(GL.uniforms[location], !!transpose, HEAPF32, value>>2, count*16);
@@ -6826,7 +6755,6 @@ var ASM_CONSTS = {
           case 0xDD:return 93; // DOM_VK_CLOSE_BRACKET -> GLFW_KEY_RIGHT_BRACKET
           case 0xC0:return 94; // DOM_VK_BACK_QUOTE -> GLFW_KEY_GRAVE_ACCENT
   
-  
           case 0x1B:return 256; // DOM_VK_ESCAPE -> GLFW_KEY_ESCAPE
           case 0x0D:return 257; // DOM_VK_RETURN -> GLFW_KEY_ENTER
           case 0x09:return 258; // DOM_VK_TAB -> GLFW_KEY_TAB
@@ -6915,7 +6843,6 @@ var ASM_CONSTS = {
         var charCode = event.charCode;
         if (charCode == 0 || (charCode >= 0x00 && charCode <= 0x1F)) return;
   
-  
         wasmTable.get(GLFW.active.charFunc)(GLFW.active.id, charCode);
       },onKeyChanged:function(keyCode, status) {
         if (!GLFW.active) return;
@@ -6927,7 +6854,6 @@ var ASM_CONSTS = {
         GLFW.active.keys[key] = status;
         GLFW.active.domKeys[keyCode] = status;
         if (!GLFW.active.keyFunc) return;
-  
   
         if (repeat) status = 2; // GLFW_REPEAT
         wasmTable.get(GLFW.active.keyFunc)(GLFW.active.id, key, keyCode, status, GLFW.getModBits(GLFW.active));
@@ -6960,7 +6886,6 @@ var ASM_CONSTS = {
         Browser.calculateMouseEvent(event);
   
         if (event.target != Module["canvas"] || !GLFW.active.cursorPosFunc) return;
-  
   
         wasmTable.get(GLFW.active.cursorPosFunc)(GLFW.active.id, Browser.mouseX, Browser.mouseY);
       },DOMToGLFWMouseButton:function(event) {
@@ -7007,7 +6932,6 @@ var ASM_CONSTS = {
   
         if (!GLFW.active.mouseButtonFunc) return;
   
-  
         wasmTable.get(GLFW.active.mouseButtonFunc)(GLFW.active.id, eventButton, status, GLFW.getModBits(GLFW.active));
       },onMouseButtonDown:function(event) {
         if (!GLFW.active) return;
@@ -7022,7 +6946,6 @@ var ASM_CONSTS = {
         GLFW.wheelPos += delta;
   
         if (!GLFW.active || !GLFW.active.scrollFunc || event.target != Module['canvas']) return;
-  
   
         var sx = 0;
         var sy = 0;
@@ -7082,7 +7005,6 @@ var ASM_CONSTS = {
         if (!GLFW.active) return;
   
         if (!GLFW.active.windowSizeFunc) return;
-  
   
         wasmTable.get(GLFW.active.windowSizeFunc)(GLFW.active.id, GLFW.active.width, GLFW.active.height);
       },onFramebufferSizeChanged:function() {
@@ -7250,7 +7172,6 @@ var ASM_CONSTS = {
         var prevcbfun = win.windowSizeFunc;
         win.windowSizeFunc = cbfun;
   
-  
         return prevcbfun;
       },setWindowCloseCallback:function(winid, cbfun) {
         var win = GLFW.WindowFromId(winid);
@@ -7382,7 +7303,6 @@ var ASM_CONSTS = {
         }
   
         if (!win.windowSizeFunc) return;
-  
   
         wasmTable.get(win.windowSizeFunc)(win.id, width, height);
       },createWindow:function(width, height, title, monitor, share) {
@@ -7687,7 +7607,6 @@ var ASM_CONSTS = {
       Module["canvas"].removeEventListener('mouseleave', GLFW.onMouseleave, true);
       Module["canvas"].removeEventListener('drop', GLFW.onDrop, true);
       Module["canvas"].removeEventListener('dragover', GLFW.onDragover, true);
-  
   
       Module["canvas"].width = Module["canvas"].height = 1;
       GLFW.windows = null;
@@ -8734,7 +8653,6 @@ Module["checkStackCookie"] = checkStackCookie;
 if (!Object.getOwnPropertyDescriptor(Module, "ALLOC_NORMAL")) Object.defineProperty(Module, "ALLOC_NORMAL", { configurable: true, get: function() { abort("'ALLOC_NORMAL' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") } });
 if (!Object.getOwnPropertyDescriptor(Module, "ALLOC_STACK")) Object.defineProperty(Module, "ALLOC_STACK", { configurable: true, get: function() { abort("'ALLOC_STACK' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") } });
 
-
 var calledRun;
 
 /**
@@ -8749,7 +8667,6 @@ function ExitStatus(status) {
 
 var calledMain = false;
 
-
 dependenciesFulfilled = function runCaller() {
   // If run has never been called, and we should call run (INVOKE_RUN is true, and Module.noInitialRun is not false)
   if (!calledRun) run();
@@ -8761,7 +8678,6 @@ function callMain(args) {
   assert(__ATPRERUN__.length == 0, 'cannot call main when preRun functions remain to be called');
 
   var entryFunction = Module['_main'];
-
 
   args = args || [];
 
@@ -8775,9 +8691,7 @@ function callMain(args) {
 
   try {
 
-
     var ret = entryFunction(argc, argv);
-
 
     // In PROXY_TO_PTHREAD builds, we should never exit the runtime below, as execution is asynchronously handed
     // off to a pthread.
@@ -8941,13 +8855,9 @@ var shouldRunNow = true;
 
 if (Module['noInitialRun']) shouldRunNow = false;
 
-
   noExitRuntime = true;
 
 run();
-
-
-
 
 
 
