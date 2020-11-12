@@ -38,7 +38,6 @@ INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame
 {
-
     class elAndroidDispatcher : public el::LogDispatchCallback
     {
     protected:
@@ -65,6 +64,7 @@ namespace yourgame
 
     namespace
     {
+        el::Logger *logger = nullptr;
         yourgame::context _context;
         std::chrono::steady_clock::time_point lastNowTime;
         bool _initialized = false;
@@ -93,6 +93,11 @@ namespace yourgame
     const yourgame::context &getCtx()
     {
         return _context;
+    }
+
+    el::Logger *getLogr()
+    {
+        return logger;
     }
 
     // do nothing. we do not exit the app manually
@@ -168,7 +173,7 @@ namespace yourgame
         initFileIO(app);
 
         // initialize logging
-        _context.logger = el::Loggers::getLogger("default");
+        logger = el::Loggers::getLogger("default");
         el::Helpers::installLogDispatchCallback<elAndroidDispatcher>("AndroidDispatcher");
         el::Helpers::uninstallLogDispatchCallback<el::base::DefaultLogDispatchCallback>("DefaultLogDispatchCallback");
         elAndroidDispatcher *dispatcher = el::Helpers::logDispatchCallback<elAndroidDispatcher>("AndroidDispatcher");
@@ -332,5 +337,4 @@ namespace yourgame
 
         _initialized = false;
     }
-
 } // namespace yourgame

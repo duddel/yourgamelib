@@ -35,9 +35,9 @@ INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame
 {
-
     namespace
     {
+        el::Logger *logger = nullptr;
         yourgame::context _context;
         std::chrono::steady_clock::time_point lastNowTime;
         bool _pendingShutdown = false;
@@ -55,6 +55,11 @@ namespace yourgame
     const yourgame::context &getCtx()
     {
         return _context;
+    }
+
+    el::Logger *getLogr()
+    {
+        return logger;
     }
 
     void notifyShutdown()
@@ -77,7 +82,7 @@ namespace yourgame
     {
         // initialize logging
         START_EASYLOGGINGPP(argc, argv);
-        _context.logger = el::Loggers::getLogger("default");
+        logger = el::Loggers::getLogger("default");
 
         // initialize timing
         lastNowTime = std::chrono::steady_clock::now();
@@ -197,5 +202,4 @@ namespace yourgame
 
         return 0;
     }
-
 } // namespace yourgame
