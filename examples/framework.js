@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"remote_package_size": 748134, "package_uuid": "dd091dab-99b9-4429-a86b-9c083889997d", "files": [{"audio": 0, "end": 8070, "start": 0, "filename": "/assets/LICENSE_android.txt"}, {"audio": 0, "end": 627708, "start": 8070, "filename": "/assets/ship_dark.obj"}, {"audio": 0, "end": 627900, "start": 627708, "filename": "/assets/normal.frag"}, {"audio": 0, "end": 636458, "start": 627900, "filename": "/assets/LICENSE_web.txt"}, {"audio": 0, "end": 647247, "start": 636458, "filename": "/assets/LICENSE_desktop.txt"}, {"audio": 0, "end": 647466, "start": 647247, "filename": "/assets/normal.es.frag"}, {"audio": 1, "end": 659283, "start": 647466, "filename": "/assets/jingles_SAX07_mono_11025.ogg"}, {"audio": 0, "end": 659466, "start": 659283, "filename": "/assets/sphere.mtl"}, {"audio": 0, "end": 659849, "start": 659466, "filename": "/assets/simple.vert"}, {"audio": 0, "end": 688055, "start": 659849, "filename": "/assets/sphere.obj"}, {"audio": 0, "end": 702821, "start": 688055, "filename": "/assets/gradient2.jpg"}, {"audio": 0, "end": 703391, "start": 702821, "filename": "/assets/ship_dark.mtl"}, {"audio": 1, "end": 734291, "start": 703391, "filename": "/assets/jingles_SAX07.ogg"}, {"audio": 1, "end": 744673, "start": 734291, "filename": "/assets/jingles_PIZZI00.ogg"}, {"audio": 0, "end": 744942, "start": 744673, "filename": "/assets/simple.frag"}, {"audio": 0, "end": 745328, "start": 744942, "filename": "/assets/simple.es.vert"}, {"audio": 0, "end": 747838, "start": 745328, "filename": "/assets/gradient1.png"}, {"audio": 0, "end": 748134, "start": 747838, "filename": "/assets/simple.es.frag"}]});
+   loadPackage({"files": [{"audio": 0, "filename": "/assets/LICENSE_android.txt", "start": 0, "end": 8070}, {"audio": 0, "filename": "/assets/ship_dark.obj", "start": 8070, "end": 627708}, {"audio": 0, "filename": "/assets/normal.frag", "start": 627708, "end": 627900}, {"audio": 0, "filename": "/assets/LICENSE_web.txt", "start": 627900, "end": 636458}, {"audio": 0, "filename": "/assets/LICENSE_desktop.txt", "start": 636458, "end": 647247}, {"audio": 0, "filename": "/assets/normal.es.frag", "start": 647247, "end": 647466}, {"audio": 1, "filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 647466, "end": 659283}, {"audio": 0, "filename": "/assets/sphere.mtl", "start": 659283, "end": 659466}, {"audio": 0, "filename": "/assets/simple.vert", "start": 659466, "end": 659849}, {"audio": 0, "filename": "/assets/sphere.obj", "start": 659849, "end": 688055}, {"audio": 0, "filename": "/assets/gradient2.jpg", "start": 688055, "end": 702821}, {"audio": 0, "filename": "/assets/ship_dark.mtl", "start": 702821, "end": 703391}, {"audio": 1, "filename": "/assets/jingles_SAX07.ogg", "start": 703391, "end": 734291}, {"audio": 1, "filename": "/assets/jingles_PIZZI00.ogg", "start": 734291, "end": 744673}, {"audio": 0, "filename": "/assets/simple.frag", "start": 744673, "end": 744942}, {"audio": 0, "filename": "/assets/simple.es.vert", "start": 744942, "end": 745328}, {"audio": 0, "filename": "/assets/gradient1.png", "start": 745328, "end": 747838}, {"audio": 0, "filename": "/assets/simple.es.frag", "start": 747838, "end": 748134}], "remote_package_size": 748134, "package_uuid": "63f1ac8a-2782-4c4b-8913-3ba19bc7fa6a"});
   
   })();
   
@@ -1300,9 +1300,9 @@ function updateGlobalBufferAndViews(buf) {
   Module['HEAPF64'] = HEAPF64 = new Float64Array(buf);
 }
 
-var STACK_BASE = 5472336,
+var STACK_BASE = 5472352,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 229456;
+    STACK_MAX = 229472;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 

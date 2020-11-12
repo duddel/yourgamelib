@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['logger',['logger',['../structyourgame_1_1context.html#a3983be8673c7ba86f2d59754da348547',1,'yourgame::context']]]
+  ['m_5fheight',['m_height',['../classyourgame_1_1GLTexture2D.html#a9e406e974bd3a3f1045666722de74414',1,'yourgame::GLTexture2D']]],
+  ['m_5fwidth',['m_width',['../classyourgame_1_1GLTexture2D.html#a160cb27bbce3f9523204a8df99b98195',1,'yourgame::GLTexture2D']]]
 ];

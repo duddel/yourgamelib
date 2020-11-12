@@ -4,6 +4,7 @@ var searchData=
   ['getctx',['getCtx',['../namespaceyourgame.html#a90762bc42c1174f33d3313f96b8516d9',1,'yourgame']]],
   ['getinputf',['getInputf',['../namespaceyourgame.html#a187baed27e9ea5b0fd008949907a11df',1,'yourgame']]],
   ['getinputi',['getInputi',['../namespaceyourgame.html#ab59c090e067cdce7fbcff583c92b0918',1,'yourgame']]],
+  ['getlogr',['getLogr',['../namespaceyourgame.html#af6d08a828dd383a68dfa0b53cd858a2c',1,'yourgame']]],
   ['getuniformlocation',['getUniformLocation',['../classyourgame_1_1GLShader.html#aaab851d49c40b0259132da0f076c3f99',1,'yourgame::GLShader']]],
   ['gl_5finclude_2eh',['gl_include.h',['../gl__include_8h.html',1,'']]],
   ['glbuffer',['GLBuffer',['../classyourgame_1_1GLBuffer.html',1,'yourgame::GLBuffer'],['../classyourgame_1_1GLBuffer.html#a4b78ff11bede1772f3d62222a0a2a793',1,'yourgame::GLBuffer::GLBuffer()']]],
