@@ -30,11 +30,39 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    GLTexture2D *loadTexture(const char *filename, GLenum unit);
+    GLTexture2D *loadTexture(const char *filename,
+                             GLenum unit,
+                             GLint minMaxFilter = GL_LINEAR,
+                             bool generateMipmap = false);
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit);
-    
-    GLTextureAtlas *loadTextureAtlasGrid(const char *filename, GLenum unit, int tilesWidth, int tilesHeight);
+    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename,
+                                           GLenum unit,
+                                           GLint minMaxFilter = GL_LINEAR,
+                                           bool generateMipmap = false);
+
+    GLTextureAtlas *loadTextureAtlasGrid(const char *filename,
+                                         int tilesWidth,
+                                         int tilesHeight,
+                                         GLenum unit,
+                                         GLint minMaxFilter = GL_LINEAR,
+                                         bool generateMipmap = false);
+
+    GLTexture2D *loadTexture(const char *filename,
+                             GLenum unit,
+                             std::vector<std::pair<GLenum, GLint>> parameteri,
+                             bool generateMipmap);
+
+    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename,
+                                           GLenum unit,
+                                           std::vector<std::pair<GLenum, GLint>> parameteri,
+                                           bool generateMipmap);
+
+    GLTextureAtlas *loadTextureAtlasGrid(const char *filename,
+                                         int tilesWidth,
+                                         int tilesHeight,
+                                         GLenum unit,
+                                         std::vector<std::pair<GLenum, GLint>> parameteri,
+                                         bool generateMipmap);
 
     GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
                          std::vector<std::pair<GLuint, std::string>> attrLocs,

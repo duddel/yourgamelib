@@ -27,17 +27,29 @@ freely, subject to the following restrictions:
 #include "nlohmann/json.hpp"
 #include "yourgame/yourgame.h"
 #include "yourgame/fileio.h"
+#include "yourgame/glloading.h"
 #include "yourgame/glconventions.h"
-#include "yourgame/gltexture2d.h"
-#include "yourgame/gltextureatlas.h"
-#include "yourgame/glshader.h"
-#include "yourgame/glgeometry.h"
 
 using json = nlohmann::json;
 
 namespace yourgame
 {
-    GLTexture2D *loadTexture(const char *filename, GLenum unit)
+    GLTexture2D *loadTexture(const char *filename, GLenum unit, GLint minMaxFilter, bool generateMipmap)
+    {
+        return loadTexture(filename, unit, {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}}, generateMipmap);
+    }
+
+    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit, GLint minMaxFilter, bool generateMipmap)
+    {
+        return loadTextureAtlasCrunch(filename, unit, {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}}, generateMipmap);
+    }
+
+    GLTextureAtlas *loadTextureAtlasGrid(const char *filename, int tilesWidth, int tilesHeight, GLenum unit, GLint minMaxFilter, bool generateMipmap)
+    {
+        return loadTextureAtlasGrid(filename, tilesWidth, tilesHeight, unit, {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}}, generateMipmap);
+    }
+
+    GLTexture2D *loadTexture(const char *filename, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
     {
         int width;
         int height;
@@ -58,11 +70,8 @@ namespace yourgame
                                                      GL_UNSIGNED_BYTE,
                                                      img,
                                                      unit,
-                                                     {{GL_TEXTURE_WRAP_S, GL_REPEAT},
-                                                      {GL_TEXTURE_WRAP_T, GL_REPEAT},
-                                                      {GL_TEXTURE_MIN_FILTER, GL_LINEAR},
-                                                      {GL_TEXTURE_MAG_FILTER, GL_LINEAR}},
-                                                     false);
+                                                     parameteri,
+                                                     generateMipmap);
             stbi_image_free(img);
             return texture;
         }
@@ -73,7 +82,7 @@ namespace yourgame
         }
     }
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit)
+    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
     {
         std::vector<uint8_t> atlasFile;
         if (yourgame::readAssetFile(filename, atlasFile))
@@ -100,7 +109,7 @@ namespace yourgame
             // todo: always assume .png for crunch atlasses?
             std::string texFileName = jTex["name"].get<std::string>() + ".png";
 
-            auto newTex = yourgame::loadTexture(texFileName.c_str(), unit);
+            auto newTex = yourgame::loadTexture(texFileName.c_str(), unit, parameteri, generateMipmap);
             if (newTex)
             {
                 newAtlas->pushTexture(newTex);
@@ -125,9 +134,14 @@ namespace yourgame
         return newAtlas;
     }
 
-    GLTextureAtlas *loadTextureAtlasGrid(const char *filename, GLenum unit, int tilesWidth, int tilesHeight)
+    GLTextureAtlas *loadTextureAtlasGrid(const char *filename,
+                                         int tilesWidth,
+                                         int tilesHeight,
+                                         GLenum unit,
+                                         std::vector<std::pair<GLenum, GLint>> parameteri,
+                                         bool generateMipmap)
     {
-        auto newTex = yourgame::loadTexture(filename, unit);
+        auto newTex = yourgame::loadTexture(filename, unit, parameteri, generateMipmap);
         if (!newTex)
         {
             return nullptr;
