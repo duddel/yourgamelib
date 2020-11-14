@@ -263,7 +263,7 @@ namespace yourgame
         //imgio.IniFilename = NULL;
 
         ImGui::StyleColorsDark();
-        ImGui_ImplAndroid_Init(app);
+        ImGui_ImplAndroid_Init(app, app->onInputEvent);
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
 #endif
 
