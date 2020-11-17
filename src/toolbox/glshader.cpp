@@ -23,133 +23,131 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
-namespace
-{
-    int compileShader(GLenum type, const GLchar *source, GLuint *handle, std::string &errorLog)
+    namespace
     {
-        const GLchar *glsrc = source;
-        *handle = glCreateShader(type);
-        glShaderSource(*handle, 1, &glsrc, NULL);
-        glCompileShader(*handle);
-
-        GLint status;
-        glGetShaderiv(*handle, GL_COMPILE_STATUS, &status);
-        if (status == GL_FALSE)
+        int compileShader(GLenum type, const GLchar *source, GLuint *handle, std::string &errorLog)
         {
-            GLint infoLen;
-            glGetShaderiv(*handle, GL_INFO_LOG_LENGTH, &infoLen);
-            // todo: check infoLen before creating infoLog array
-            GLchar *infoLog = new GLchar[infoLen + 1];
-            glGetShaderInfoLog(*handle, infoLen, NULL, infoLog);
-            errorLog += infoLog;
-            delete[] infoLog;
-            glDeleteShader(*handle);
-            return -1;
-        }
+            const GLchar *glsrc = source;
+            *handle = glCreateShader(type);
+            glShaderSource(*handle, 1, &glsrc, NULL);
+            glCompileShader(*handle);
 
-        return 0;
-    }
-
-} // namespace
-
-GLShader *GLShader::make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                         std::vector<std::pair<GLuint, std::string>> attrLocs,
-                         std::vector<std::pair<GLuint, std::string>> fragDataLocs,
-                         std::string &errorLog)
-{
-    std::vector<GLuint> shdrHandles;
-
-    for (const auto &shdrDes : shaderCodes)
-    {
-        GLuint handle;
-        if (compileShader(shdrDes.first, shdrDes.second.c_str(), &handle, errorLog) != 0)
-        {
-            for (const auto &shdrHandle : shdrHandles)
+            GLint status;
+            glGetShaderiv(*handle, GL_COMPILE_STATUS, &status);
+            if (status == GL_FALSE)
             {
-                glDeleteShader(shdrHandle);
+                GLint infoLen;
+                glGetShaderiv(*handle, GL_INFO_LOG_LENGTH, &infoLen);
+                // todo: check infoLen before creating infoLog array
+                GLchar *infoLog = new GLchar[infoLen + 1];
+                glGetShaderInfoLog(*handle, infoLen, NULL, infoLog);
+                errorLog += infoLog;
+                delete[] infoLog;
+                glDeleteShader(*handle);
+                return -1;
             }
-            return nullptr;
+
+            return 0;
         }
-        shdrHandles.push_back(handle);
-    }
 
-    GLuint progHandle = glCreateProgram();
+    } // namespace
 
-    for (const auto &shdrHandle : shdrHandles)
+    GLShader *GLShader::make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
+                             std::vector<std::pair<GLuint, std::string>> attrLocs,
+                             std::vector<std::pair<GLuint, std::string>> fragDataLocs,
+                             std::string &errorLog)
     {
-        glAttachShader(progHandle, shdrHandle);
-    }
+        std::vector<GLuint> shdrHandles;
 
-    for (const auto &attr : attrLocs)
-    {
-        glBindAttribLocation(progHandle, attr.first, attr.second.c_str());
-    }
+        for (const auto &shdrDes : shaderCodes)
+        {
+            GLuint handle;
+            if (compileShader(shdrDes.first, shdrDes.second.c_str(), &handle, errorLog) != 0)
+            {
+                for (const auto &shdrHandle : shdrHandles)
+                {
+                    glDeleteShader(shdrHandle);
+                }
+                return nullptr;
+            }
+            shdrHandles.push_back(handle);
+        }
+
+        GLuint progHandle = glCreateProgram();
+
+        for (const auto &shdrHandle : shdrHandles)
+        {
+            glAttachShader(progHandle, shdrHandle);
+        }
+
+        for (const auto &attr : attrLocs)
+        {
+            glBindAttribLocation(progHandle, attr.first, attr.second.c_str());
+        }
 
 #ifndef YOURGAME_GL_API_GLES
-    for (const auto &frag : fragDataLocs)
-    {
-        glBindFragDataLocation(progHandle, frag.first, frag.second.c_str());
-    }
+        for (const auto &frag : fragDataLocs)
+        {
+            glBindFragDataLocation(progHandle, frag.first, frag.second.c_str());
+        }
 #endif
 
-    glLinkProgram(progHandle);
+        glLinkProgram(progHandle);
 
-    GLint linkStatus;
-    glGetProgramiv(progHandle, GL_LINK_STATUS, &linkStatus);
-    if (linkStatus == GL_FALSE)
-    {
-        GLint infoLen;
-        glGetShaderiv(progHandle, GL_INFO_LOG_LENGTH, &infoLen);
-        // todo: check infoLen before creating infoLog array
-        GLchar *infoLog = new GLchar[infoLen + 1];
-        glGetProgramInfoLog(progHandle, infoLen, NULL, infoLog);
-        errorLog += infoLog;
-        delete[] infoLog;
+        GLint linkStatus;
+        glGetProgramiv(progHandle, GL_LINK_STATUS, &linkStatus);
+        if (linkStatus == GL_FALSE)
+        {
+            GLint infoLen;
+            glGetShaderiv(progHandle, GL_INFO_LOG_LENGTH, &infoLen);
+            // todo: check infoLen before creating infoLog array
+            GLchar *infoLog = new GLchar[infoLen + 1];
+            glGetProgramInfoLog(progHandle, infoLen, NULL, infoLog);
+            errorLog += infoLog;
+            delete[] infoLog;
+        }
+
+        for (const auto &shdrHandle : shdrHandles)
+        {
+            glDetachShader(progHandle, shdrHandle);
+            glDeleteShader(shdrHandle);
+        }
+
+        if (linkStatus == GL_FALSE)
+        {
+            glDeleteProgram(progHandle);
+            return nullptr;
+        }
+
+        GLShader *newShader = new GLShader();
+        newShader->m_programHandle = progHandle;
+        return newShader;
     }
 
-    for (const auto &shdrHandle : shdrHandles)
+    GLShader::~GLShader()
     {
-        glDetachShader(progHandle, shdrHandle);
-        glDeleteShader(shdrHandle);
+        glDeleteProgram(m_programHandle);
     }
 
-    if (linkStatus == GL_FALSE)
+    void GLShader::useProgram()
     {
-        glDeleteProgram(progHandle);
-        return nullptr;
+        glUseProgram(m_programHandle);
     }
 
-    GLShader *newShader = new GLShader();
-    newShader->m_programHandle = progHandle;
-    return newShader;
-}
-
-GLShader::~GLShader()
-{
-    glDeleteProgram(m_programHandle);
-}
-
-void GLShader::useProgram()
-{
-    glUseProgram(m_programHandle);
-}
-
-GLint GLShader::getUniformLocation(const GLchar *name)
-{
-    std::string unifName(name);
-
-    auto unifFound = m_uniformLocations.find(unifName);
-    if (unifFound != m_uniformLocations.end())
+    GLint GLShader::getUniformLocation(const GLchar *name)
     {
-        return unifFound->second;
-    }
-    else
-    {
-        GLint unifLoc = glGetUniformLocation(m_programHandle, name);
-        m_uniformLocations[unifName] = unifLoc;
-        return unifLoc;
-    }
-}
+        std::string unifName(name);
 
-}
+        auto unifFound = m_uniformLocations.find(unifName);
+        if (unifFound != m_uniformLocations.end())
+        {
+            return unifFound->second;
+        }
+        else
+        {
+            GLint unifLoc = glGetUniformLocation(m_programHandle, name);
+            m_uniformLocations[unifName] = unifLoc;
+            return unifLoc;
+        }
+    }
+} // namespace yourgame

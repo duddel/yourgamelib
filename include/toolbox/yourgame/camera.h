@@ -27,51 +27,49 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
-class Camera
-{
-public:
-    enum class PROJECTION
+    class Camera
     {
-        PERSPECTIVE,
-        ORTHOGRAPHIC
+    public:
+        enum class PROJECTION
+        {
+            PERSPECTIVE,
+            ORTHOGRAPHIC
+        };
+
+        Trafo *trafo();
+        glm::mat4 vMat();
+        glm::mat4 pMat();
+        void setProjection(PROJECTION proj);
+        void setPerspective(float fovy, float aspect, float zNear, float zFar);
+        void setOrthographic(float height, float aspect, float zNear, float zFar);
+        void setFovy(float fovy);
+        void setHeight(float height);
+        void setAspect(float aspect);
+        void setZNear(float zNear);
+        void setZFar(float zFar);
+
+    private:
+        Trafo m_trafo;
+        PROJECTION m_proj = PROJECTION::PERSPECTIVE;
+        float m_fovy = 90.0f;
+        float m_height = 1.0f;
+        float m_aspect = 1.0f;
+        float m_zNear = 0.1f;
+        float m_zFar = 10.0f;
+        glm::mat4 m_vMat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
+                                     0.0f, 1.0f, 0.0f, 0.0f,
+                                     0.0f, 0.0f, 1.0f, 0.0f,
+                                     0.0f, 0.0f, 0.0f, 1.0f);
+        bool m_vMatInvalidated = false;
+        void updateVMatIfInvalidated();
+
+        glm::mat4 m_pMat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
+                                     0.0f, 1.0f, 0.0f, 0.0f,
+                                     0.0f, 0.0f, 1.0f, 0.0f,
+                                     0.0f, 0.0f, 0.0f, 1.0f);
+        bool m_pMatInvalidated = false;
+        void updatePMatIfInvalidated();
     };
-
-    Trafo *trafo();
-    glm::mat4 vMat();
-    glm::mat4 pMat();
-    void setProjection(PROJECTION proj);
-    void setPerspective(float fovy, float aspect, float zNear, float zFar);
-    void setOrthographic(float height, float aspect, float zNear, float zFar);
-    void setFovy(float fovy);
-    void setHeight(float height);
-    void setAspect(float aspect);
-    void setZNear(float zNear);
-    void setZFar(float zFar);
-
-private:
-    Trafo m_trafo;
-    PROJECTION m_proj = PROJECTION::PERSPECTIVE;
-    float m_fovy = 90.0f;
-    float m_height = 1.0f;
-    float m_aspect = 1.0f;
-    float m_zNear = 0.1f;
-    float m_zFar = 10.0f;
-    glm::mat4 m_vMat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
-                                 0.0f, 1.0f, 0.0f, 0.0f,
-                                 0.0f, 0.0f, 1.0f, 0.0f,
-                                 0.0f, 0.0f, 0.0f, 1.0f);
-    bool m_vMatInvalidated = false;
-    void updateVMatIfInvalidated();
-
-    glm::mat4 m_pMat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
-                                 0.0f, 1.0f, 0.0f, 0.0f,
-                                 0.0f, 0.0f, 1.0f, 0.0f,
-                                 0.0f, 0.0f, 0.0f, 1.0f);
-    bool m_pMatInvalidated = false;
-    void updatePMatIfInvalidated();
-};
-
-}
+} // namespace yourgame
 
 #endif

@@ -22,44 +22,53 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
-GLBuffer *GLBuffer::make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
-{
-    GLuint handle;
-    glGenBuffers(1, &handle);
-    glBindBuffer(target, handle);
-    glBufferData(target, size, data, usage);
-
-    GLint checkSize = -1;
-    glGetBufferParameteriv(target, GL_BUFFER_SIZE, &checkSize);
-    if (size != checkSize)
+    GLBuffer *GLBuffer::make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
     {
-        glBindBuffer(target, 0);
-        glDeleteBuffers(1, &handle);
-        return nullptr;
+        GLuint handle;
+        glGenBuffers(1, &handle);
+        glBindBuffer(target, handle);
+        glBufferData(target, size, data, usage);
+
+        GLint checkSize = -1;
+        glGetBufferParameteriv(target, GL_BUFFER_SIZE, &checkSize);
+        if (size != checkSize)
+        {
+            glBindBuffer(target, 0);
+            glDeleteBuffers(1, &handle);
+            return nullptr;
+        }
+        else
+        {
+            GLBuffer *newBuf = new GLBuffer();
+            newBuf->m_target = target;
+            newBuf->m_handle = handle;
+            newBuf->m_usage = usage;
+            return newBuf;
+        }
     }
-    else
+
+    GLBuffer::~GLBuffer()
     {
-        GLBuffer *newBuf = new GLBuffer();
-        newBuf->m_target = target;
-        newBuf->m_handle = handle;
-        return newBuf;
+        glDeleteBuffers(1, &m_handle);
     }
-}
 
-GLBuffer::~GLBuffer()
-{
-    glDeleteBuffers(1, &m_handle);
-}
+    void GLBuffer::bind()
+    {
+        glBindBuffer(m_target, m_handle);
+    }
 
-void GLBuffer::bind()
-{
-    glBindBuffer(m_target, m_handle);
-}
+    void GLBuffer::unbindTarget()
+    {
+        glBindBuffer(m_target, 0);
+    }
 
-void GLBuffer::unbindTarget()
-{
-    glBindBuffer(m_target, 0);
-}
+    bool GLBuffer::bufferData(GLsizeiptr size, const GLvoid *data)
+    {
+        glBindBuffer(m_target, m_handle);
+        glBufferData(m_target, size, data, m_usage);
 
-}
+        GLint checkSize = -1;
+        glGetBufferParameteriv(m_target, GL_BUFFER_SIZE, &checkSize);
+        return (size == checkSize);
+    }
+} // namespace yourgame

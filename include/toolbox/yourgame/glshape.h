@@ -26,45 +26,43 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
-class GLShape
-{
-public:
-    struct ArrBufferDescr
+    class GLShape
     {
-        GLuint index;
-        GLint size;
-        GLenum type;
-        GLboolean normalized;
-        GLsizei stride;
-        const GLvoid *pointer;
-    };
+    public:
+        struct ArrBufferDescr
+        {
+            GLuint index;
+            GLint size;
+            GLenum type;
+            GLboolean normalized;
+            GLsizei stride;
+            const GLvoid *pointer;
+        };
 
-    struct ElemArrBufferDescr
-    {
-        GLenum type;
-        GLenum drawMode;
-        GLsizei numElements;
-    };
+        struct ElemArrBufferDescr
+        {
+            GLenum type;
+            GLenum drawMode;
+            GLsizei numElements;
+        };
 
-    static GLShape *make(std::vector<ArrBufferDescr> arDescrs,
-                         std::vector<GLBuffer *> arBuffers,
-                         ElemArrBufferDescr elArDescr,
-                         GLBuffer *elArBuffer);
-    ~GLShape();
-    void draw();
+        static GLShape *make(std::vector<ArrBufferDescr> arDescrs,
+                             std::vector<GLBuffer *> arBuffers,
+                             ElemArrBufferDescr elArDescr,
+                             GLBuffer *elArBuffer);
+        ~GLShape();
+        void draw();
 
-    /* deleting the copy constructor and the copy assignment operator
+        /* deleting the copy constructor and the copy assignment operator
     prevents copying (and moving) of the object. */
-    GLShape(GLShape const &) = delete;
-    GLShape &operator=(GLShape const &) = delete;
+        GLShape(GLShape const &) = delete;
+        GLShape &operator=(GLShape const &) = delete;
 
-private:
-    GLShape() {}
-    ElemArrBufferDescr m_elArDescr;
-    GLuint m_vaoHandle;
-};
-
-}
+    private:
+        GLShape() {}
+        ElemArrBufferDescr m_elArDescr;
+        GLuint m_vaoHandle;
+    };
+} // namespace yourgame
 
 #endif

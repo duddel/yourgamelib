@@ -21,76 +21,84 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
-GLGeometry *GLGeometry::make()
-{
-    return new GLGeometry();
-}
-
-GLGeometry::~GLGeometry()
-{
-    for (const auto &b : m_buffers)
+    GLGeometry *GLGeometry::make()
     {
-        delete b.second;
+        return new GLGeometry();
     }
 
-    for (const auto &s : m_shapes)
+    GLGeometry::~GLGeometry()
     {
-        delete s.second;
-    }
-}
-
-bool GLGeometry::addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
-{
-    if (!m_buffers.count(name))
-    {
-        GLBuffer *newBuffer = GLBuffer::make(target, size, data, usage);
-        if (newBuffer)
+        for (const auto &b : m_buffers)
         {
-            m_buffers.insert(std::pair<std::string, GLBuffer *>(name, newBuffer));
-            return true;
+            delete b.second;
+        }
+
+        for (const auto &s : m_shapes)
+        {
+            delete s.second;
+        }
+    }
+
+    bool GLGeometry::addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
+    {
+        if (!m_buffers.count(name))
+        {
+            GLBuffer *newBuffer = GLBuffer::make(target, size, data, usage);
+            if (newBuffer)
+            {
+                m_buffers.insert(std::pair<std::string, GLBuffer *>(name, newBuffer));
+                return true;
+            }
+            return false;
         }
         return false;
     }
-    return false;
-}
 
-bool GLGeometry::addShape(std::string name,
-                          std::vector<GLShape::ArrBufferDescr> arDescrs,
-                          std::vector<std::string> arBufferNames,
-                          GLShape::ElemArrBufferDescr elArDescr,
-                          std::string elArBufferName)
-{
-    if (arDescrs.size() != arBufferNames.size())
+    bool GLGeometry::bufferData(std::string name, GLsizeiptr size, const GLvoid *data)
     {
-        return false;
-    }
-
-    if (!m_shapes.count(name))
-    {
-        std::vector<GLBuffer *> arBuffers;
-        for (const auto &arBufName : arBufferNames)
+        auto it = m_buffers.find(name);
+        if (it != m_buffers.end())
         {
-            arBuffers.push_back(m_buffers[arBufName]);
-        }
-
-        GLShape *newShape = GLShape::make(arDescrs, arBuffers, elArDescr, m_buffers[elArBufferName]);
-        if (newShape)
-        {
-            m_shapes.insert(std::pair<std::string, GLShape *>(name, newShape));
-            return true;
+            return it->second->bufferData(size, data);
         }
         return false;
     }
-    return false;
-}
 
-void GLGeometry::drawAll()
-{
-    for (const auto &s : m_shapes)
+    bool GLGeometry::addShape(std::string name,
+                              std::vector<GLShape::ArrBufferDescr> arDescrs,
+                              std::vector<std::string> arBufferNames,
+                              GLShape::ElemArrBufferDescr elArDescr,
+                              std::string elArBufferName)
     {
-        s.second->draw();
-    }
-}
+        if (arDescrs.size() != arBufferNames.size())
+        {
+            return false;
+        }
 
-}
+        if (!m_shapes.count(name))
+        {
+            std::vector<GLBuffer *> arBuffers;
+            for (const auto &arBufName : arBufferNames)
+            {
+                arBuffers.push_back(m_buffers[arBufName]);
+            }
+
+            GLShape *newShape = GLShape::make(arDescrs, arBuffers, elArDescr, m_buffers[elArBufferName]);
+            if (newShape)
+            {
+                m_shapes.insert(std::pair<std::string, GLShape *>(name, newShape));
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    void GLGeometry::drawAll()
+    {
+        for (const auto &s : m_shapes)
+        {
+            s.second->draw();
+        }
+    }
+} // namespace yourgame

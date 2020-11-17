@@ -27,29 +27,27 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
+    class GLShader
+    {
+    public:
+        static GLShader *make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
+                              std::vector<std::pair<GLuint, std::string>> attrLocs,
+                              std::vector<std::pair<GLuint, std::string>> fragDataLocs,
+                              std::string &errorLog);
+        ~GLShader();
+        void useProgram();
+        GLint getUniformLocation(const GLchar *name);
 
-class GLShader
-{
-public:
-    static GLShader *make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                          std::vector<std::pair<GLuint, std::string>> attrLocs,
-                          std::vector<std::pair<GLuint, std::string>> fragDataLocs,
-                          std::string &errorLog);
-    ~GLShader();
-    void useProgram();
-    GLint getUniformLocation(const GLchar *name);
-
-    /* deleting the copy constructor and the copy assignment operator
+        /* deleting the copy constructor and the copy assignment operator
     prevents copying (and moving) of the object. */
-    GLShader(GLShader const &) = delete;
-    GLShader &operator=(GLShader const &) = delete;
+        GLShader(GLShader const &) = delete;
+        GLShader &operator=(GLShader const &) = delete;
 
-private:
-    GLShader() {}
-    GLuint m_programHandle;
-    std::map<std::string, GLint> m_uniformLocations;
-};
-
-}
+    private:
+        GLShader() {}
+        GLuint m_programHandle;
+        std::map<std::string, GLint> m_uniformLocations;
+    };
+} // namespace yourgame
 
 #endif

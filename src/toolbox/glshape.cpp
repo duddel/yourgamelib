@@ -21,54 +21,52 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
-GLShape *GLShape::make(std::vector<ArrBufferDescr> arDescrs,
-                       std::vector<GLBuffer *> arBuffers,
-                       ElemArrBufferDescr elArDescr,
-                       GLBuffer *elArBuffer)
-{
-    if (arDescrs.size() != arBuffers.size())
+    GLShape *GLShape::make(std::vector<ArrBufferDescr> arDescrs,
+                           std::vector<GLBuffer *> arBuffers,
+                           ElemArrBufferDescr elArDescr,
+                           GLBuffer *elArBuffer)
     {
-        return nullptr;
+        if (arDescrs.size() != arBuffers.size())
+        {
+            return nullptr;
+        }
+
+        GLShape *newShape = new GLShape();
+        newShape->m_elArDescr = elArDescr;
+
+        glGenVertexArrays(1, &newShape->m_vaoHandle);
+        glBindVertexArray(newShape->m_vaoHandle);
+
+        for (auto i = 0; i < arDescrs.size(); i++)
+        {
+            arBuffers[i]->bind();
+            glEnableVertexAttribArray(arDescrs[i].index);
+            glVertexAttribPointer(arDescrs[i].index,
+                                  arDescrs[i].size,
+                                  arDescrs[i].type,
+                                  arDescrs[i].normalized,
+                                  arDescrs[i].stride,
+                                  arDescrs[i].pointer);
+        }
+
+        elArBuffer->bind();
+        glBindVertexArray(0);
+
+        // todo: what about unbinding the buffers (ARRAY, ELEMENT_ARRAY)
+        // after creating the VAO?
+
+        return newShape;
     }
 
-    GLShape *newShape = new GLShape();
-    newShape->m_elArDescr = elArDescr;
-
-    glGenVertexArrays(1, &newShape->m_vaoHandle);
-    glBindVertexArray(newShape->m_vaoHandle);
-
-    for (auto i = 0; i < arDescrs.size(); i++)
+    GLShape::~GLShape()
     {
-        arBuffers[i]->bind();
-        glEnableVertexAttribArray(arDescrs[i].index);
-        glVertexAttribPointer(arDescrs[i].index,
-                              arDescrs[i].size,
-                              arDescrs[i].type,
-                              arDescrs[i].normalized,
-                              arDescrs[i].stride,
-                              arDescrs[i].pointer);
+        glDeleteVertexArrays(1, &m_vaoHandle);
     }
 
-    elArBuffer->bind();
-    glBindVertexArray(0);
-
-    // todo: what about unbinding the buffers (ARRAY, ELEMENT_ARRAY)
-    // after creating the VAO?
-
-    return newShape;
-}
-
-GLShape::~GLShape()
-{
-    glDeleteVertexArrays(1, &m_vaoHandle);
-}
-
-void GLShape::draw()
-{
-    glBindVertexArray(m_vaoHandle);
-    glDrawElements(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0);
-    glBindVertexArray(0);
-}
-
-}
+    void GLShape::draw()
+    {
+        glBindVertexArray(m_vaoHandle);
+        glDrawElements(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0);
+        glBindVertexArray(0);
+    }
+} // namespace yourgame

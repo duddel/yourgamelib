@@ -29,31 +29,33 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
+    class GLGeometry
+    {
+    public:
+        static GLGeometry *make();
+        ~GLGeometry();
+        bool addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
+        bool bufferData(std::string name, GLsizeiptr size, const GLvoid *data);
+        // todo: there should be a way to change the shape (at least elArDescr.numElements)
+        // to take new index buffer data (GL_ELEMENT_ARRAY_BUFFER) into account, after it
+        // has been modified via bufferData()
+        bool addShape(std::string name,
+                      std::vector<GLShape::ArrBufferDescr> arDescrs,
+                      std::vector<std::string> arBufferNames,
+                      GLShape::ElemArrBufferDescr elArDescr,
+                      std::string elArBufferName);
+        void drawAll();
 
-class GLGeometry
-{
-public:
-    static GLGeometry *make();
-    ~GLGeometry();
-    bool addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
-    bool addShape(std::string name,
-                  std::vector<GLShape::ArrBufferDescr> arDescrs,
-                  std::vector<std::string> arBufferNames,
-                  GLShape::ElemArrBufferDescr elArDescr,
-                  std::string elArBufferName);
-    void drawAll();
+        /* deleting the copy constructor and the copy assignment operator
+        prevents copying (and moving) of the object. */
+        GLGeometry(GLGeometry const &) = delete;
+        GLGeometry &operator=(GLGeometry const &) = delete;
 
-    /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
-    GLGeometry(GLGeometry const &) = delete;
-    GLGeometry &operator=(GLGeometry const &) = delete;
-
-private:
-    GLGeometry() {}
-    std::map<std::string, GLBuffer *> m_buffers;
-    std::map<std::string, GLShape *> m_shapes;
-};
-
-}
+    private:
+        GLGeometry() {}
+        std::map<std::string, GLBuffer *> m_buffers;
+        std::map<std::string, GLShape *> m_shapes;
+    };
+} // namespace yourgame
 
 #endif

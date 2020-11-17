@@ -60,7 +60,6 @@ namespace yourgame
         glm::vec3 getAxisLocal(AXIS ax);
         glm::vec3 getAxisGlobal(AXIS ax);
     };
-
 } // namespace yourgame
 
 #endif

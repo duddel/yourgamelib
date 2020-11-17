@@ -24,26 +24,26 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
+    class GLBuffer
+    {
+    public:
+        static GLBuffer *make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
+        ~GLBuffer();
+        void bind();
+        void unbindTarget();
+        bool bufferData(GLsizeiptr size, const GLvoid *data);
 
-class GLBuffer
-{
-public:
-    static GLBuffer *make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
-    ~GLBuffer();
-    void bind();
-    void unbindTarget();
+        /* deleting the copy constructor and the copy assignment operator
+        prevents copying (and moving) of the object. */
+        GLBuffer(GLBuffer const &) = delete;
+        GLBuffer &operator=(GLBuffer const &) = delete;
 
-    /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
-    GLBuffer(GLBuffer const &) = delete;
-    GLBuffer &operator=(GLBuffer const &) = delete;
-
-private:
-    GLBuffer() {}
-    GLenum m_target;
-    GLuint m_handle;
-};
-
-}
+    private:
+        GLBuffer() {}
+        GLenum m_target;
+        GLuint m_handle;
+        GLenum m_usage;
+    };
+} // namespace yourgame
 
 #endif

@@ -54,5 +54,4 @@ namespace yourgame
             return true;
         }
     }
-
 } // namespace yourgame
