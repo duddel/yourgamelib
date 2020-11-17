@@ -26,40 +26,41 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
+    class GLTexture2D
+    {
+    public:
+        static GLTexture2D *make(GLint level,
+                                 GLint internalformat,
+                                 GLsizei width,
+                                 GLsizei height,
+                                 GLint border,
+                                 GLenum format,
+                                 GLenum type,
+                                 const void *data,
+                                 GLenum unit,
+                                 std::vector<std::pair<GLenum, GLint>> parameteri,
+                                 bool generateMipmap);
 
-class GLTexture2D
-{
-public:
-    static GLTexture2D *make(GLint level,
-                             GLint internalformat,
-                             GLsizei width,
-                             GLsizei height,
-                             GLint border,
-                             GLenum format,
-                             GLenum type,
-                             const void *data,
-                             GLenum unit,
-                             std::vector<std::pair<GLenum, GLint>> parameteri,
-                             bool generateMipmap);
-
-    /* deleting the copy constructor and the copy assignment operator
+        /* deleting the copy constructor and the copy assignment operator
     prevents copying (and moving) of the object. */
-    GLTexture2D(GLTexture2D const &) = delete;
-    GLTexture2D &operator=(GLTexture2D const &) = delete;
+        GLTexture2D(GLTexture2D const &) = delete;
+        GLTexture2D &operator=(GLTexture2D const &) = delete;
 
-    ~GLTexture2D();
-    void bind();
-    void unbindTarget();
+        ~GLTexture2D();
+        void bind();
+        void unbindTarget();
 
-    GLsizei m_width;
-    GLsizei m_height;
+        GLsizei width() { return m_width; }
+        GLsizei height() { return m_height; }
+        GLuint handle() { return m_handle; }
 
-private:
-    GLTexture2D() {}
-    GLuint m_handle;
-    GLenum m_unit;
-};
-
-}
+    private:
+        GLTexture2D() {}
+        GLuint m_handle;
+        GLenum m_unit;
+        GLsizei m_width;
+        GLsizei m_height;
+    };
+} // namespace yourgame
 
 #endif

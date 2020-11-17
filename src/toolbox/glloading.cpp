@@ -117,10 +117,10 @@ namespace yourgame
                 for (auto &jImg : jTex["images"])
                 {
                     newAtlas->pushCoords(jImg["n"].get<std::string>(),
-                                         (float)(jImg["x"].get<double>() / (double)newTex->m_width),
-                                         (float)((jImg["x"].get<double>() + jImg["w"].get<double>()) / (double)newTex->m_width),
-                                         (float)(1.0 - ((jImg["y"].get<double>() + jImg["h"].get<double>()) / (double)newTex->m_height)),
-                                         (float)(1.0 - (jImg["y"].get<double>() / (double)newTex->m_height)));
+                                         (float)(jImg["x"].get<double>() / (double)newTex->width()),
+                                         (float)((jImg["x"].get<double>() + jImg["w"].get<double>()) / (double)newTex->width()),
+                                         (float)(1.0 - ((jImg["y"].get<double>() + jImg["h"].get<double>()) / (double)newTex->height())),
+                                         (float)(1.0 - (jImg["y"].get<double>() / (double)newTex->height())));
                 }
             }
             else
