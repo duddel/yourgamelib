@@ -1,11 +1,17 @@
 var searchData=
 [
-  ['tex',['tex',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#ae1e678694495a967f3cfb0bd86c997bd',1,'yourgame::GLTextureAtlas::Coords']]],
-  ['tick',['tick',['../namespacemygame.html#a1aaa890544711fd0e39e6253ac77051a',1,'mygame']]],
-  ['toolbox_2eh',['toolbox.h',['../toolbox_8h.html',1,'']]],
-  ['trafo',['Trafo',['../classyourgame_1_1Trafo.html',1,'yourgame::Trafo'],['../classyourgame_1_1Camera.html#a8d058cd1d79673ad7f59eac5e91c62f4',1,'yourgame::Camera::trafo()']]],
-  ['trafo_2eh',['trafo.h',['../trafo_8h.html',1,'']]],
-  ['translateglobal',['translateGlobal',['../classyourgame_1_1Trafo.html#add9fb720dace2e6e78e7c00f61fe0ace',1,'yourgame::Trafo']]],
-  ['translatelocal',['translateLocal',['../classyourgame_1_1Trafo.html#ab17af7c31c44d0fc41b5382e41c4ed01',1,'yourgame::Trafo']]],
-  ['type',['type',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a681d679dd29a73ec736190cd2954a29d',1,'yourgame::GLShape::ArrBufferDescr::type()'],['../structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html#aa0614dd636066df5880667da8f38d531',1,'yourgame::GLShape::ElemArrBufferDescr::type()']]]
+  ['savefilepath',['saveFilePath',['../namespaceyourgame.html#a46668c9b4590aa5e40a58ed515c2105e',1,'yourgame']]],
+  ['sendcmdtoenv',['sendCmdToEnv',['../namespaceyourgame.html#a098e420d09d0f1967aaf84845223ccbf',1,'yourgame']]],
+  ['setaspect',['setAspect',['../classyourgame_1_1Camera.html#ac0a7e5c3d6ee691d70df58bdde7322da',1,'yourgame::Camera']]],
+  ['setfovy',['setFovy',['../classyourgame_1_1Camera.html#a2d869991d79fe1af181883eda7a7f0b9',1,'yourgame::Camera']]],
+  ['setheight',['setHeight',['../classyourgame_1_1Camera.html#ae20209e7339ea92914a0ee2d9f16e52d',1,'yourgame::Camera']]],
+  ['setorthographic',['setOrthographic',['../classyourgame_1_1Camera.html#a9a2dd12b39061b91810a313e3f888afb',1,'yourgame::Camera']]],
+  ['setperspective',['setPerspective',['../classyourgame_1_1Camera.html#af349ddcc517e926c54bf761d33711a75',1,'yourgame::Camera']]],
+  ['setprojection',['setProjection',['../classyourgame_1_1Camera.html#a42f35c62c23d6fffb0169874bc2978ac',1,'yourgame::Camera']]],
+  ['setscalelocal',['setScaleLocal',['../classyourgame_1_1Trafo.html#ab8c0e17e1b50f1e6243d889629926853',1,'yourgame::Trafo::setScaleLocal(glm::vec3 const &amp;scale)'],['../classyourgame_1_1Trafo.html#aba330ad28b274ff07190e5163a5c55d5',1,'yourgame::Trafo::setScaleLocal(float scale)']]],
+  ['setzfar',['setZFar',['../classyourgame_1_1Camera.html#ad34934c4f341e8e8f349c4e6beed5c96',1,'yourgame::Camera']]],
+  ['setznear',['setZNear',['../classyourgame_1_1Camera.html#a4882cf276b5f0350d4ab1a96d51d96ee',1,'yourgame::Camera']]],
+  ['shutdown',['shutdown',['../namespacemygame.html#aea006c10610f03c7b22357367224109a',1,'mygame']]],
+  ['size',['size',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6ad7ce4efc47f00b28665e5a82aabbd3',1,'yourgame::GLShape::ArrBufferDescr']]],
+  ['stride',['stride',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6af383d1956c20ed1a3e19c706d52f4f',1,'yourgame::GLShape::ArrBufferDescr']]]
 ];

@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['normalized',['normalized',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a1ac5e1808c0c816dd2b275820bf4034d',1,'yourgame::GLShape::ArrBufferDescr']]],
-  ['notifyshutdown',['notifyShutdown',['../namespaceyourgame.html#a3ed5dcb225aff2adeb27dfd1505f65c6',1,'yourgame']]],
-  ['numelements',['numElements',['../structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html#aa4f030a9dd56f665c801cffca7483653',1,'yourgame::GLShape::ElemArrBufferDescr']]]
+  ['mainpage_2edox',['mainpage.dox',['../mainpage_8dox.html',1,'']]],
+  ['make',['make',['../classyourgame_1_1GLBuffer.html#aa236338917dc88db3e3f26a1cab2144c',1,'yourgame::GLBuffer::make()'],['../classyourgame_1_1GLGeometry.html#ab9a59a7c6251a70395997e92c8c6db35',1,'yourgame::GLGeometry::make()'],['../classyourgame_1_1GLShader.html#a80a9c0adfbdcfb94eb51303f15131af3',1,'yourgame::GLShader::make()'],['../classyourgame_1_1GLShape.html#a9a1ea2a4fc03da32a69c85b38aab3cc1',1,'yourgame::GLShape::make()'],['../classyourgame_1_1GLTexture2D.html#a32a7164ba8861662e80b373dcfec3b2b',1,'yourgame::GLTexture2D::make()']]],
+  ['mat',['mat',['../classyourgame_1_1Trafo.html#ac437d840999a49d713f5c35022ef1273',1,'yourgame::Trafo']]],
+  ['mygame',['mygame',['../namespacemygame.html',1,'']]],
+  ['mygame_5fexternal_2eh',['mygame_external.h',['../mygame__external_8h.html',1,'']]]
 ];

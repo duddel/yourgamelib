@@ -66,7 +66,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classyourgame_1_1GLTexture2D-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">yourgame::GLTexture2D Class Reference</div>  </div>
@@ -87,18 +86,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aaa26a7a9eebb6c3153bb821db536553d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90ae972c269f6f3c8e8b16cb10d9dd5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a90ae972c269f6f3c8e8b16cb10d9dd5c">unbindTarget</a> ()</td></tr>
 <tr class="separator:a90ae972c269f6f3c8e8b16cb10d9dd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c45565af82d75bc9fbf38bff00e2ea9"><td class="memItemLeft" align="right" valign="top">GLsizei&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a0c45565af82d75bc9fbf38bff00e2ea9">width</a> ()</td></tr>
+<tr class="separator:a0c45565af82d75bc9fbf38bff00e2ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ce7b131bad5c57dbb730ecc66f6e005"><td class="memItemLeft" align="right" valign="top">GLsizei&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a5ce7b131bad5c57dbb730ecc66f6e005">height</a> ()</td></tr>
+<tr class="separator:a5ce7b131bad5c57dbb730ecc66f6e005"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef96f781bafc83ca3cc90c95cdbdcf99"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#aef96f781bafc83ca3cc90c95cdbdcf99">handle</a> ()</td></tr>
+<tr class="separator:aef96f781bafc83ca3cc90c95cdbdcf99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a32a7164ba8861662e80b373dcfec3b2b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a32a7164ba8861662e80b373dcfec3b2b">make</a> (GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *data, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)</td></tr>
+<tr class="memitem:a32a7164ba8861662e80b373dcfec3b2b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a32a7164ba8861662e80b373dcfec3b2b">make</a> (GLint level, GLint internalformat, GLsizei <a class="el" href="classyourgame_1_1GLTexture2D.html#a0c45565af82d75bc9fbf38bff00e2ea9">width</a>, GLsizei <a class="el" href="classyourgame_1_1GLTexture2D.html#a5ce7b131bad5c57dbb730ecc66f6e005">height</a>, GLint border, GLenum format, GLenum type, const void *data, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)</td></tr>
 <tr class="separator:a32a7164ba8861662e80b373dcfec3b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a160cb27bbce3f9523204a8df99b98195"><td class="memItemLeft" align="right" valign="top">GLsizei&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a160cb27bbce3f9523204a8df99b98195">m_width</a></td></tr>
-<tr class="separator:a160cb27bbce3f9523204a8df99b98195"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e406e974bd3a3f1045666722de74414"><td class="memItemLeft" align="right" valign="top">GLsizei&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTexture2D.html#a9e406e974bd3a3f1045666722de74414">m_height</a></td></tr>
-<tr class="separator:a9e406e974bd3a3f1045666722de74414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6fcdc4566f508942001695772798d11e"></a>
@@ -158,6 +156,56 @@ Public Attributes</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aef96f781bafc83ca3cc90c95cdbdcf99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef96f781bafc83ca3cc90c95cdbdcf99">&#9670;&nbsp;</a></span>handle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLuint yourgame::GLTexture2D::handle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5ce7b131bad5c57dbb730ecc66f6e005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ce7b131bad5c57dbb730ecc66f6e005">&#9670;&nbsp;</a></span>height()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLsizei yourgame::GLTexture2D::height </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -295,31 +343,27 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a9e406e974bd3a3f1045666722de74414"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e406e974bd3a3f1045666722de74414">&#9670;&nbsp;</a></span>m_height</h2>
+<a id="a0c45565af82d75bc9fbf38bff00e2ea9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c45565af82d75bc9fbf38bff00e2ea9">&#9670;&nbsp;</a></span>width()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">GLsizei yourgame::GLTexture2D::m_height</td>
+          <td class="memname">GLsizei yourgame::GLTexture2D::width </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a160cb27bbce3f9523204a8df99b98195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a160cb27bbce3f9523204a8df99b98195">&#9670;&nbsp;</a></span>m_width</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">GLsizei yourgame::GLTexture2D::m_width</td>
-        </tr>
-      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

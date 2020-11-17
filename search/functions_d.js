@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['unbindtarget',['unbindTarget',['../classyourgame_1_1GLBuffer.html#a07fe6fc610b44e1411303c99fab3ca08',1,'yourgame::GLBuffer::unbindTarget()'],['../classyourgame_1_1GLTexture2D.html#a90ae972c269f6f3c8e8b16cb10d9dd5c',1,'yourgame::GLTexture2D::unbindTarget()']]],
-  ['useprogram',['useProgram',['../classyourgame_1_1GLShader.html#a92e78ead9edaf73f5f9912269331c42c',1,'yourgame::GLShader']]]
+  ['tick',['tick',['../namespacemygame.html#a1aaa890544711fd0e39e6253ac77051a',1,'mygame']]],
+  ['trafo',['trafo',['../classyourgame_1_1Camera.html#a8d058cd1d79673ad7f59eac5e91c62f4',1,'yourgame::Camera']]],
+  ['translateglobal',['translateGlobal',['../classyourgame_1_1Trafo.html#add9fb720dace2e6e78e7c00f61fe0ace',1,'yourgame::Trafo']]],
+  ['translatelocal',['translateLocal',['../classyourgame_1_1Trafo.html#ab17af7c31c44d0fc41b5382e41c4ed01',1,'yourgame::Trafo']]]
 ];

@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['umax',['uMax',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#a8bd960f5eb7cbbf3c9f5b8e8337dfdbb',1,'yourgame::GLTextureAtlas::Coords']]],
-  ['umin',['uMin',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#ae38923891f6b03bd86d5d9f49ae54e76',1,'yourgame::GLTextureAtlas::Coords']]],
-  ['unbindtarget',['unbindTarget',['../classyourgame_1_1GLBuffer.html#a07fe6fc610b44e1411303c99fab3ca08',1,'yourgame::GLBuffer::unbindTarget()'],['../classyourgame_1_1GLTexture2D.html#a90ae972c269f6f3c8e8b16cb10d9dd5c',1,'yourgame::GLTexture2D::unbindTarget()']]],
-  ['unifnamemodelmatrix',['unifNameModelMatrix',['../namespaceyourgame.html#a279c209c0420169510bae3a3e56fc0b7',1,'yourgame']]],
-  ['unifnamemvpmatrix',['unifNameMvpMatrix',['../namespaceyourgame.html#a9d277cc2294828592d34e13fde329983',1,'yourgame']]],
-  ['unifnamenormalmatrix',['unifNameNormalMatrix',['../namespaceyourgame.html#a3bf2c1e650e39fe4c2ffb6016fbb063e',1,'yourgame']]],
-  ['unifnametexture0',['unifNameTexture0',['../namespaceyourgame.html#a7d982a726003a683030a94604d8cd6cd',1,'yourgame']]],
-  ['unifnametexture1',['unifNameTexture1',['../namespaceyourgame.html#a4f5259eb494f3a9f426dad74fb3b33bf',1,'yourgame']]],
-  ['useprogram',['useProgram',['../classyourgame_1_1GLShader.html#a92e78ead9edaf73f5f9912269331c42c',1,'yourgame::GLShader']]]
+  ['tex',['tex',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#ae1e678694495a967f3cfb0bd86c997bd',1,'yourgame::GLTextureAtlas::Coords']]],
+  ['tick',['tick',['../namespacemygame.html#a1aaa890544711fd0e39e6253ac77051a',1,'mygame']]],
+  ['toolbox_2eh',['toolbox.h',['../toolbox_8h.html',1,'']]],
+  ['trafo',['Trafo',['../classyourgame_1_1Trafo.html',1,'yourgame::Trafo'],['../classyourgame_1_1Camera.html#a8d058cd1d79673ad7f59eac5e91c62f4',1,'yourgame::Camera::trafo()']]],
+  ['trafo_2eh',['trafo.h',['../trafo_8h.html',1,'']]],
+  ['translateglobal',['translateGlobal',['../classyourgame_1_1Trafo.html#add9fb720dace2e6e78e7c00f61fe0ace',1,'yourgame::Trafo']]],
+  ['translatelocal',['translateLocal',['../classyourgame_1_1Trafo.html#ab17af7c31c44d0fc41b5382e41c4ed01',1,'yourgame::Trafo']]],
+  ['type',['type',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a681d679dd29a73ec736190cd2954a29d',1,'yourgame::GLShape::ArrBufferDescr::type()'],['../structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html#aa0614dd636066df5880667da8f38d531',1,'yourgame::GLShape::ElemArrBufferDescr::type()']]]
 ];
