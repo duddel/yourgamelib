@@ -54,4 +54,16 @@ namespace yourgame
             return true;
         }
     }
+
+    yourgame::GLTexture2D *GLTextureAtlas::texture(int idx)
+    {
+        try
+        {
+            return m_textures.at(idx);
+        }
+        catch (...)
+        {
+            return nullptr;
+        }
+    }
 } // namespace yourgame
