@@ -36,14 +36,13 @@ namespace yourgame
         ~GLGeometry();
         bool addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
         bool bufferData(std::string name, GLsizeiptr size, const GLvoid *data);
-        // todo: there should be a way to change the shape (at least elArDescr.numElements)
-        // to take new index buffer data (GL_ELEMENT_ARRAY_BUFFER) into account, after it
-        // has been modified via bufferData()
         bool addShape(std::string name,
                       std::vector<GLShape::ArrBufferDescr> arDescrs,
                       std::vector<std::string> arBufferNames,
                       GLShape::ElemArrBufferDescr elArDescr,
                       std::string elArBufferName);
+        bool setShapeElArDescr(std::string name,
+                               GLShape::ElemArrBufferDescr elArDescr);
         void drawAll();
 
         /* deleting the copy constructor and the copy assignment operator

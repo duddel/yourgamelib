@@ -73,13 +73,13 @@ namespace yourgame
         glDeleteTextures(1, &m_handle);
     }
 
-    void GLTexture2D::bind()
+    void GLTexture2D::bind() const
     {
         glActiveTexture(m_unit);
         glBindTexture(GL_TEXTURE_2D, m_handle);
     }
 
-    void GLTexture2D::unbindTarget()
+    void GLTexture2D::unbindTarget() const
     {
         glActiveTexture(m_unit);
         glBindTexture(GL_TEXTURE_2D, 0);

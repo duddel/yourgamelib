@@ -42,17 +42,17 @@ namespace yourgame
                                  bool generateMipmap);
 
         /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
+        prevents copying (and moving) of the object. */
         GLTexture2D(GLTexture2D const &) = delete;
         GLTexture2D &operator=(GLTexture2D const &) = delete;
 
         ~GLTexture2D();
-        void bind();
-        void unbindTarget();
+        void bind() const;
+        void unbindTarget() const;
 
-        GLsizei width() { return m_width; }
-        GLsizei height() { return m_height; }
-        GLuint handle() { return m_handle; }
+        GLsizei width() const { return m_width; }
+        GLsizei height() const { return m_height; }
+        GLuint handle() const { return m_handle; }
 
     private:
         GLTexture2D() {}

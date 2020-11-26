@@ -29,6 +29,7 @@ freely, subject to the following restrictions:
 #include "yourgame/glloading.h"
 #include "yourgame/glshader.h"
 #include "yourgame/glshape.h"
+#include "yourgame/glspritegrid.h"
 #include "yourgame/gltexture2d.h"
 #include "yourgame/gltextureatlas.h"
 #include "yourgame/trafo.h"

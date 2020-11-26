@@ -50,8 +50,8 @@ namespace yourgame
 
         void pushTexture(yourgame::GLTexture2D *newTex);
         void pushCoords(std::string name, float uMin, float uMax, float vMin, float vMax);
-        bool getCoords(std::string name, Coords &dst);
-        yourgame::GLTexture2D *texture(int idx);
+        bool getCoords(std::string name, Coords &dst) const;
+        yourgame::GLTexture2D *texture(int idx) const;
 
     private:
         std::vector<yourgame::GLTexture2D *> m_textures;

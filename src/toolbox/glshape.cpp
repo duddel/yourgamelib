@@ -58,6 +58,12 @@ namespace yourgame
         return newShape;
     }
 
+    bool GLShape::setElArDescr(GLShape::ElemArrBufferDescr elArDescr)
+    {
+        m_elArDescr = elArDescr;
+        return true;
+    }
+
     GLShape::~GLShape()
     {
         glDeleteVertexArrays(1, &m_vaoHandle);

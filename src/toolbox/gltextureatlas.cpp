@@ -41,7 +41,7 @@ namespace yourgame
         m_coords[name] = Coords{uMin, uMax, vMin, vMax, m_textures.back()};
     }
 
-    bool GLTextureAtlas::getCoords(std::string name, Coords &dst)
+    bool GLTextureAtlas::getCoords(std::string name, Coords &dst) const
     {
         auto it = m_coords.find(name);
         if (it == m_coords.end())
@@ -55,7 +55,7 @@ namespace yourgame
         }
     }
 
-    yourgame::GLTexture2D *GLTextureAtlas::texture(int idx)
+    yourgame::GLTexture2D *GLTextureAtlas::texture(int idx) const
     {
         try
         {

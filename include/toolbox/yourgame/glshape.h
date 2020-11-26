@@ -50,11 +50,12 @@ namespace yourgame
                              std::vector<GLBuffer *> arBuffers,
                              ElemArrBufferDescr elArDescr,
                              GLBuffer *elArBuffer);
+        bool setElArDescr(GLShape::ElemArrBufferDescr elArDescr);
         ~GLShape();
         void draw();
 
         /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
+        prevents copying (and moving) of the object. */
         GLShape(GLShape const &) = delete;
         GLShape &operator=(GLShape const &) = delete;
 

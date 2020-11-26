@@ -94,6 +94,17 @@ namespace yourgame
         return false;
     }
 
+    bool GLGeometry::setShapeElArDescr(std::string name,
+                                       GLShape::ElemArrBufferDescr elArDescr)
+    {
+        auto it = m_shapes.find(name);
+        if (it != m_shapes.end())
+        {
+            return it->second->setElArDescr(elArDescr);
+        }
+        return false;
+    }
+
     void GLGeometry::drawAll()
     {
         for (const auto &s : m_shapes)
