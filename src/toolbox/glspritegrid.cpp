@@ -58,7 +58,8 @@ namespace yourgame
         float tileAspect = (tileAspectNum > 1.0e-6f && tileAspectDen > 1.0e-6f) ? (tileAspectNum / tileAspectDen) : 1.0f;
         float tileWidth = 1.0f;
         float tileHeight = 1.0f;
-        auto tilesWide = width > 0 ? width : numTiles;
+        // determine the actual number of tiles, the grid is wide:
+        auto tilesWide = (width == 0) ? numTiles : (width > numTiles ? numTiles : width);
 
         if (gridWidth > 0.0f)
         {
@@ -96,7 +97,7 @@ namespace yourgame
                 return -3;
             }
 
-            // positions: 4 vertices, ccw, lower left to upper left
+            // positions: 4 vertices, cw, upper left to lower left
             objPosData[pWrite++] = orgX;
             objPosData[pWrite++] = orgY;
             objPosData[pWrite++] = orgZ;
@@ -104,10 +105,10 @@ namespace yourgame
             objPosData[pWrite++] = orgY;
             objPosData[pWrite++] = orgZ;
             objPosData[pWrite++] = orgX + (GLfloat)tileWidth;
-            objPosData[pWrite++] = orgY + (GLfloat)tileHeight;
+            objPosData[pWrite++] = orgY - (GLfloat)tileHeight;
             objPosData[pWrite++] = orgZ;
             objPosData[pWrite++] = orgX;
-            objPosData[pWrite++] = orgY + (GLfloat)tileHeight;
+            objPosData[pWrite++] = orgY - (GLfloat)tileHeight;
             objPosData[pWrite++] = orgZ;
 
             // texture coordinates
@@ -140,11 +141,11 @@ namespace yourgame
 
             // vertex indexes
             objIdxData[iWrite++] = (vCount + 0U); // define 2 ccw triangles
-            objIdxData[iWrite++] = (vCount + 1U);
             objIdxData[iWrite++] = (vCount + 3U);
             objIdxData[iWrite++] = (vCount + 1U);
+            objIdxData[iWrite++] = (vCount + 1U);
+            objIdxData[iWrite++] = (vCount + 3U);
             objIdxData[iWrite++] = (vCount + 2U);
-            objIdxData[iWrite++] = (vCount + 3U);
             vCount += 4U;
 
             // set origins for next tile
