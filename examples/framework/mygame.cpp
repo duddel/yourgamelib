@@ -27,7 +27,6 @@ freely, subject to the following restrictions:
 #include "box2d/box2d.h"
 #include "flecs.h"
 #include "choreograph/Choreograph.h"
-#include "fsm.hpp"
 extern "C"
 {
 #include "lua.h"
@@ -63,10 +62,7 @@ namespace mygame
         yourgame::Trafo g_modelTrafo;
         yourgame::Camera g_camera;
         yourgame::GLGeometry *g_geo = nullptr;
-        yourgame::GLShader *g_shaderTexture = nullptr;
         yourgame::GLShader *g_shaderNormal = nullptr;
-        int g_shaderToUse = 1; // 0: texture, 1: normal
-        std::map<std::string, yourgame::GLTexture2D *> g_textures;
     } // namespace
 
     void init(const yourgame::context &ctx)
@@ -102,42 +98,28 @@ namespace mygame
             yourgame::notifyShutdown();
         }
 
+        glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         updateImgui(ctx);
 
         g_camera.setAspect(ctx.winAspectRatio);
         glViewport(0, 0, ctx.winWidth, ctx.winHeight);
 
         float sineFade = (float)((sin(g_fade) * 0.5) + 0.5);
-        glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
         auto modelMat = g_modelTrafo.mat();
         auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-        if (g_shaderToUse == 1)
+
+        if (g_shaderNormal)
         {
-            if (g_shaderNormal)
-            {
-                g_shaderNormal->useProgram();
-                glUniform1f(g_shaderNormal->getUniformLocation("fade"), sineFade);
-                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_shaderNormal->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-            }
-        }
-        else if (g_shaderToUse == 0)
-        {
-            if (g_shaderTexture)
-            {
-                g_shaderTexture->useProgram();
-                glUniform1f(g_shaderTexture->getUniformLocation("fade"), sineFade);
-                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_shaderTexture->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-            }
-            g_textures.at("gradient1.png")->bind();
-            g_textures.at("gradient2.jpg")->bind();
+            g_shaderNormal->useProgram();
+            glUniform1f(g_shaderNormal->getUniformLocation("fade"), sineFade);
+            glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+            glUniformMatrix3fv(g_shaderNormal->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
         }
 
         // the actual draw call
@@ -157,34 +139,13 @@ namespace mygame
         void initGlScene()
         {
             glEnable(GL_DEPTH_TEST);
-
-            g_geo = yourgame::loadGeometry("ship_dark.obj", "ship_dark.mtl");
-            g_textures.emplace("gradient1.png", yourgame::loadTexture("gradient1.png", GL_TEXTURE0));
-            g_textures.emplace("gradient2.jpg", yourgame::loadTexture("gradient2.jpg", GL_TEXTURE1));
-
-            // Texture shader
-            g_shaderTexture = yourgame::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                {{GL_VERTEX_SHADER, "simple.es.vert"},
-                 {GL_FRAGMENT_SHADER, "simple.es.frag"}},
-#else
-                {{GL_VERTEX_SHADER, "simple.vert"},
-                 {GL_FRAGMENT_SHADER, "simple.frag"}},
-#endif
-                {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-                 {yourgame::attrLocNormal, yourgame::attrNameNormal},
-                 {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
-                {{0, "color"}});
-
-            g_shaderTexture->useProgram();
-            glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture0), 0);
-            glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture1), 1);
+            g_geo = yourgame::loadGeometry("ship_dark.obj", nullptr);
 
             // Normal shader
             g_shaderNormal = yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
-                {{GL_VERTEX_SHADER, "simple.es.vert"},
-                 {GL_FRAGMENT_SHADER, "normal.es.frag"}},
+                {{GL_VERTEX_SHADER, "simple.vert.es"},
+                 {GL_FRAGMENT_SHADER, "normal.frag.es"}},
 #else
                 {{GL_VERTEX_SHADER, "simple.vert"},
                  {GL_FRAGMENT_SHADER, "normal.frag"}},
@@ -206,7 +167,7 @@ namespace mygame
             static bool showFlecs = false;
             static bool showLua = false;
             static bool showChoreograph = false;
-            static bool showFsm = false;
+            static bool showSpriteGrid = false;
 
             // Main Menu Bar
             if (ImGui::BeginMainMenuBar())
@@ -253,9 +214,9 @@ namespace mygame
                     {
                         showChoreograph = true;
                     }
-                    if (ImGui::MenuItem("fsm", "", &showFsm))
+                    if (ImGui::MenuItem("SpriteGrid", "", &showSpriteGrid))
                     {
-                        showFsm = true;
+                        showSpriteGrid = true;
                     }
                     ImGui::EndMenu();
                 }
@@ -289,11 +250,6 @@ namespace mygame
 
                 // model scale
                 ImGui::InputFloat("model scale", &g_modelScale, 0.001f, 100.0f, "%.3f");
-
-                // shader selector
-                ImGui::RadioButton("texture shader", &g_shaderToUse, 0);
-                ImGui::SameLine();
-                ImGui::RadioButton("normal shader", &g_shaderToUse, 1);
 
                 // camera manipulation
                 static int projMode = 0;
@@ -593,22 +549,101 @@ namespace mygame
                 choreographInitialized = false;
             }
 
-            // fsm demo window
-            // todo: no example yet
-            static bool fsmInitialized = false;
-            if (showFsm)
+            // SpriteGrid demo window
+            static bool spriteGridInitialized = false;
+            static yourgame::GLTextureAtlas *spriteGridAtlas;
+            static yourgame::GLSpriteGrid *spriteGrid;
+            static yourgame::GLShader *spriteGridSimpleTexShader;
+            static yourgame::Trafo *spriteGridTrafo;
+            if (showSpriteGrid)
             {
-                if (!fsmInitialized)
+                static const int tilesWide = 48; // match kenney_1bitpack_colored_packed.png
+                static const int tilesHigh = 22; // match kenney_1bitpack_colored_packed.png
+                static const int maxNumTiles = tilesWide * tilesHigh;
+                if (!spriteGridInitialized)
                 {
-                    fsmInitialized = true;
+                    spriteGridAtlas = yourgame::loadTextureAtlasGrid("kenney_1bitpack_colored_packed.png",
+                                                                     tilesWide,
+                                                                     tilesHigh,
+                                                                     GL_TEXTURE0,
+                                                                     GL_NEAREST,
+                                                                     false);
+                    spriteGrid = new yourgame::GLSpriteGrid();
+                    spriteGridTrafo = new yourgame::Trafo();
+                    spriteGridSimpleTexShader = yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+                        {{GL_VERTEX_SHADER, "simpletex.vert.es"},
+                         {GL_FRAGMENT_SHADER, "simpletex.frag.es"}},
+#else
+                        {{GL_VERTEX_SHADER, "simpletex.vert"},
+                         {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+#endif
+                        {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                         {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
+                        {{0, "color"}});
+                    spriteGridSimpleTexShader->useProgram();
+                    glUniform1i(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameTexture0), 0);
+                    spriteGridInitialized = true;
                 }
 
-                ImGui::Begin("fsm", &showFsm, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                static int startTile = 0;
+                static int numTiles = maxNumTiles;
+                static float xOffset = 0.0f;
+                static float yOffset = 0.0f;
+                static int texFilterLast = 0;
+                static int texFilter = 0;
+                static bool moveGrid = false;
+                ImGui::Begin("SpriteGrid", &showSpriteGrid, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                ImGui::SliderInt("start tile", &startTile, 0, maxNumTiles - 1);
+                numTiles = (numTiles > maxNumTiles - startTile) ? (maxNumTiles - startTile) : numTiles;
+                ImGui::SliderInt("num tiles", &numTiles, 1, maxNumTiles - startTile);
+                ImGui::InputFloat("x offset 0.1", &xOffset, 0.1f, 0.5f, 3);
+                ImGui::InputFloat("y offset 0.1", &yOffset, 0.1f, 0.5f, 3);
+                ImGui::InputFloat("x offset 1.0", &xOffset, 1.0f, 1.0f, 3);
+                ImGui::InputFloat("y offset 1.0", &yOffset, 1.0f, 1.0f, 3);
+                ImGui::RadioButton("GL_NEAREST", &texFilter, 0);
+                ImGui::SameLine();
+                ImGui::RadioButton("GL_LINEAR", &texFilter, 1);
+                ImGui::Checkbox("move", &moveGrid);
+                if (moveGrid)
+                {
+                    xOffset += 2.0f;
+                    yOffset -= 1.0f;
+                }
                 ImGui::End();
+
+                // reconstruct the grid
+                std::vector<std::string> tiles;
+                for (int i = startTile; i < (startTile + numTiles); i++)
+                {
+                    tiles.push_back(std::to_string(i));
+                }
+                spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
+
+                // gl drawing
+                spriteGridTrafo->pointTo({0.0f + xOffset, (float)ctx.winHeight + yOffset, 0.0f},
+                                         {0.0f + xOffset, (float)ctx.winHeight + yOffset, 1.0f},
+                                         {0.0f, 1.0f, 0.0f});
+                auto pMat = glm::ortho(0.0f, (float)ctx.winWidth, 0.0f, (float)ctx.winHeight, 1.0f, -1.0f);
+                auto mvp = pMat * spriteGridTrafo->mat();
+                spriteGridSimpleTexShader->useProgram();
+                glUniformMatrix4fv(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                spriteGridAtlas->texture(0)->bind();
+                if (texFilter != texFilterLast) // change texture mode filter if requested
+                {
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
+                    texFilterLast = texFilter;
+                }
+                spriteGrid->geo()->drawAll();
             }
-            else if (fsmInitialized)
+            else if (spriteGridInitialized)
             {
-                fsmInitialized = false;
+                delete spriteGridAtlas;
+                delete spriteGrid;
+                delete spriteGridSimpleTexShader;
+                delete spriteGridTrafo;
+                spriteGridInitialized = false;
             }
 
             // license window
