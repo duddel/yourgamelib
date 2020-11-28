@@ -113,13 +113,13 @@ namespace yourgame
 
             // texture coordinates
             objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
-            objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
+            objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
             objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
             objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
+            objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
+            objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
             objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
+            objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
 
             // normals
             objNormalData[nWrite++] = 0.0f;
