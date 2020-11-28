@@ -43,7 +43,7 @@ namespace yourgame
         bool _pendingShutdown = false;
 
         GLFWwindow *_window = NULL;
-        void windowSizeCallback(GLFWwindow *window, int width, int height)
+        void framebufferSizeCallback(GLFWwindow *window, int width, int height)
         {
             _context.winWidth = width;
             _context.winHeight = height;
@@ -119,12 +119,11 @@ namespace yourgame
 
         glfwMakeContextCurrent(_window);
 
-        // set window size callback
-        glfwSetWindowSizeCallback(_window, windowSizeCallback);
+        glfwSetFramebufferSizeCallback(_window, framebufferSizeCallback);
         // call it manually to set initial size
         int width, height;
-        glfwGetWindowSize(_window, &width, &height);
-        windowSizeCallback(_window, width, height);
+        glfwGetFramebufferSize(_window, &width, &height);
+        framebufferSizeCallback(_window, width, height);
 
 #if defined(YOURGAME_GL_EXT_LOADER_GLAD)
         yourgame::logi("gladLoadGL()...");
