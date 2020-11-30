@@ -21,11 +21,10 @@ freely, subject to the following restrictions:
 #define YOURGAME_YOURGAME_H
 
 #include <cstdint> // uint64_t
-#include <string>
-#include "easylogging++.h"
 // the following includes are part of the yourgame (base) API
 #include "yourgame/fileio.h"
 #include "yourgame/input.h"
+#include "yourgame/logging.h"
 
 namespace yourgame
 {
@@ -41,87 +40,12 @@ namespace yourgame
     /** \brief returns the current context */
     const yourgame::context &getCtx();
 
-    /** \brief returns the default logger instance */
-    el::Logger *getLogr();
-
     /** \brief triggers the application to exit after the cycle this function was called in
     \attention no effect on platforms other than `desktop` */
     void notifyShutdown();
 
     /** \brief sends a (user-defined) command to the application host environment */
     int sendCmdToEnv(int cmdId, int data0, int data1, int data2);
-
-    /** \brief log debug */
-    template <typename T, typename... Args>
-    inline void logd(const char *s, const T &value, const Args &... args)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->debug(s, value, args...);
-    }
-    /** \brief log debug */
-    template <typename T>
-    inline void logd(const T &value)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->debug(value);
-    }
-
-    /** \brief log info */
-    template <typename T, typename... Args>
-    inline void logi(const char *s, const T &value, const Args &... args)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->info(s, value, args...);
-    }
-
-    /** \brief log info */
-    template <typename T>
-    inline void logi(const T &value)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->info(value);
-    }
-
-    /** \brief log warning */
-    template <typename T, typename... Args>
-    inline void logw(const char *s, const T &value, const Args &... args)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->warn(s, value, args...);
-    }
-
-    /** \brief log warning */
-    template <typename T>
-    inline void logw(const T &value)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->warn(value);
-    }
-
-    /** \brief log error */
-    template <typename T, typename... Args>
-    inline void loge(const char *s, const T &value, const Args &... args)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->error(s, value, args...);
-    }
-
-    /** \brief log error */
-    template <typename T>
-    inline void loge(const T &value)
-    {
-        el::Logger *logr = yourgame::getLogr();
-        if (logr != NULL)
-            logr->error(value);
-    }
-
 } // namespace yourgame
 
 #endif
