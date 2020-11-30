@@ -21,6 +21,7 @@ freely, subject to the following restrictions:
 #define YOURGAME_FILEIO_H
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace yourgame
