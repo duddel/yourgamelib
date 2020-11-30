@@ -13,7 +13,6 @@ var searchData=
   ['setshapeelardescr',['setShapeElArDescr',['../classyourgame_1_1GLGeometry.html#ae3afb46bebc716438e9f15187c361be5',1,'yourgame::GLGeometry']]],
   ['setzfar',['setZFar',['../classyourgame_1_1Camera.html#ad34934c4f341e8e8f349c4e6beed5c96',1,'yourgame::Camera']]],
   ['setznear',['setZNear',['../classyourgame_1_1Camera.html#a4882cf276b5f0350d4ab1a96d51d96ee',1,'yourgame::Camera']]],
-  ['shutdown',['shutdown',['../namespacemygame.html#aea006c10610f03c7b22357367224109a',1,'mygame']]],
   ['size',['size',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6ad7ce4efc47f00b28665e5a82aabbd3',1,'yourgame::GLShape::ArrBufferDescr']]],
   ['stride',['stride',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6af383d1956c20ed1a3e19c706d52f4f',1,'yourgame::GLShape::ArrBufferDescr']]]
 ];

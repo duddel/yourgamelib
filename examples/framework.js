@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/simple.vert.es", "start": 0, "end": 386, "audio": 0}, {"filename": "/assets/normal.frag", "start": 386, "end": 578, "audio": 0}, {"filename": "/assets/simpletex.vert.es", "start": 578, "end": 800, "audio": 0}, {"filename": "/assets/normal.frag.es", "start": 800, "end": 1019, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 1019, "end": 620657, "audio": 0}, {"filename": "/assets/simple.vert", "start": 620657, "end": 621040, "audio": 0}, {"filename": "/assets/quad.obj", "start": 621040, "end": 621244, "audio": 0}, {"filename": "/assets/simpletex.frag.es", "start": 621244, "end": 621406, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 621406, "end": 652306, "audio": 1}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 652306, "end": 662688, "audio": 1}, {"filename": "/assets/LICENSE_android.txt", "start": 662688, "end": 670758, "audio": 0}, {"filename": "/assets/simpletex.vert", "start": 670758, "end": 670977, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 670977, "end": 681766, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 681766, "end": 693583, "audio": 1}, {"filename": "/assets/LICENSE_web.txt", "start": 693583, "end": 702141, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 702141, "end": 725217, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 725217, "end": 725352, "audio": 0}], "remote_package_size": 725352, "package_uuid": "27b94edb-2b5a-4bcc-bb50-3c78db40a2b7"});
+   loadPackage({"files": [{"filename": "/assets/simple.vert.es", "start": 0, "end": 386, "audio": 0}, {"filename": "/assets/normal.frag", "start": 386, "end": 578, "audio": 0}, {"filename": "/assets/simpletex.vert.es", "start": 578, "end": 800, "audio": 0}, {"filename": "/assets/normal.frag.es", "start": 800, "end": 1019, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 1019, "end": 620657, "audio": 0}, {"filename": "/assets/simple.vert", "start": 620657, "end": 621040, "audio": 0}, {"filename": "/assets/quad.obj", "start": 621040, "end": 621244, "audio": 0}, {"filename": "/assets/simpletex.frag.es", "start": 621244, "end": 621406, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 621406, "end": 652306, "audio": 1}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 652306, "end": 662688, "audio": 1}, {"filename": "/assets/LICENSE_android.txt", "start": 662688, "end": 670758, "audio": 0}, {"filename": "/assets/simpletex.vert", "start": 670758, "end": 670977, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 670977, "end": 681766, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 681766, "end": 693583, "audio": 1}, {"filename": "/assets/LICENSE_web.txt", "start": 693583, "end": 702141, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 702141, "end": 725217, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 725217, "end": 725352, "audio": 0}], "remote_package_size": 725352, "package_uuid": "3b13b75a-7962-4385-9128-3b3b95a6fd8e"});
   
   })();
   
@@ -5950,10 +5950,6 @@ var ASM_CONSTS = {
       GLctx.bindBuffer(target, GL.buffers[buffer]);
     }
 
-  function _glBindSampler(unit, sampler) {
-      GLctx['bindSampler'](unit, GL.samplers[sampler]);
-    }
-
   function _glBindTexture(target, texture) {
       GLctx.bindTexture(target, GL.textures[texture]);
     }
@@ -8270,7 +8266,6 @@ var asmLibraryArg = {
   "glAttachShader": _glAttachShader,
   "glBindAttribLocation": _glBindAttribLocation,
   "glBindBuffer": _glBindBuffer,
-  "glBindSampler": _glBindSampler,
   "glBindTexture": _glBindTexture,
   "glBindVertexArray": _glBindVertexArray,
   "glBlendEquation": _glBlendEquation,
