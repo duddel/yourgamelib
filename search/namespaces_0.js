@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yourgame',['yourgame',['../namespaceyourgame.html',1,'']]]
+  ['mygame',['mygame',['../namespacemygame.html',1,'']]]
 ];

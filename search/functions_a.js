@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['readassetfile',['readAssetFile',['../namespaceyourgame.html#a518749543a4fcd52c07408afe441ed44',1,'yourgame']]],
-  ['readsavefile',['readSaveFile',['../namespaceyourgame.html#a8b807929b43e7c0cece837f8fea75a55',1,'yourgame']]],
-  ['rotateglobal',['rotateGlobal',['../classyourgame_1_1Trafo.html#aef7ae9accf026ae7a60a6faf55141a76',1,'yourgame::Trafo']]],
-  ['rotatelocal',['rotateLocal',['../classyourgame_1_1Trafo.html#ab1632ba6c3c55d2fb7fa62ed80822701',1,'yourgame::Trafo']]]
+  ['pmat',['pMat',['../classyourgame_1_1Camera.html#a20cb4c6b70d47328f11180fbe3956a5d',1,'yourgame::Camera']]],
+  ['pointto',['pointTo',['../classyourgame_1_1Trafo.html#a8456ea47403bbad5f40b5c11633bd56e',1,'yourgame::Trafo']]],
+  ['pushcoords',['pushCoords',['../classyourgame_1_1GLTextureAtlas.html#a9221ab669068499351739df6d598471b',1,'yourgame::GLTextureAtlas']]],
+  ['pushtexture',['pushTexture',['../classyourgame_1_1GLTextureAtlas.html#a93fb85ee05cb74076164b1c68cf44313',1,'yourgame::GLTextureAtlas']]]
 ];

@@ -1,14 +1,4 @@
 var searchData=
 [
-  ['lerp',['lerp',['../classyourgame_1_1Trafo.html#a229afdcb62a19d89f96bbe5e885de5c3',1,'yourgame::Trafo']]],
-  ['loadgeometry',['loadGeometry',['../namespaceyourgame.html#a58a756e657826628f01337561e1bea58',1,'yourgame']]],
-  ['loadshader',['loadShader',['../namespaceyourgame.html#a877e73e778766f590b76466a46e0fc7e',1,'yourgame']]],
-  ['loadtexture',['loadTexture',['../namespaceyourgame.html#a1570db4889aa249750583f456cdfafd9',1,'yourgame::loadTexture(const char *filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#a8b2957e4f133c1eb76ec769dc47d7b03',1,'yourgame::loadTexture(const char *filename, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)']]],
-  ['loadtextureatlascrunch',['loadTextureAtlasCrunch',['../namespaceyourgame.html#af86f5d68d90c84cb233ebff1edea1145',1,'yourgame::loadTextureAtlasCrunch(const char *filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#a9ef76f5a56faa092bed27dfdef528c1b',1,'yourgame::loadTextureAtlasCrunch(const char *filename, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)']]],
-  ['loadtextureatlasgrid',['loadTextureAtlasGrid',['../namespaceyourgame.html#a1251d9b471be4b32449e7668af4d219d',1,'yourgame::loadTextureAtlasGrid(const char *filename, int tilesWidth, int tilesHeight, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#af93ad92bbf54e1bb71cce95383885fca',1,'yourgame::loadTextureAtlasGrid(const char *filename, int tilesWidth, int tilesHeight, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)']]],
-  ['logd',['logd',['../namespaceyourgame.html#aa018299735de2685349d3bfdbc86645b',1,'yourgame::logd(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a5e70120e1d5ceb992552dbcaaff069cd',1,'yourgame::logd(const T &amp;value)']]],
-  ['loge',['loge',['../namespaceyourgame.html#a389e47f66fb1ab81f132fd48c0fa73cb',1,'yourgame::loge(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a1249e887a2994cd7aaf6ad968f5ccd49',1,'yourgame::loge(const T &amp;value)']]],
-  ['logi',['logi',['../namespaceyourgame.html#a0f67421bf076411d33636b98d6a6a84a',1,'yourgame::logi(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a3acfaf5bf5d8db218fdf3ec6138c449c',1,'yourgame::logi(const T &amp;value)']]],
-  ['logw',['logw',['../namespaceyourgame.html#acbaf01185bb8023afd3920fa615a5fb5',1,'yourgame::logw(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#ab1428256b7d8aa6c99ad601f780f9f08',1,'yourgame::logw(const T &amp;value)']]],
-  ['lookat',['lookAt',['../classyourgame_1_1Trafo.html#ac75cc92de811ebe7e6987c1a80ec3792',1,'yourgame::Trafo']]]
+  ['init',['init',['../namespacemygame.html#a528fdb6e9f36c4835180483e0a9b32ec',1,'mygame']]]
 ];
