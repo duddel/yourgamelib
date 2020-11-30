@@ -4,7 +4,7 @@
 // Implemented features:
 //  [x] Basic mouse input via touch
 //  [x] Open soft keyboard if io.WantTextInput and perform proper keyboard input
-//  [ ] Handle Unicode characters
+//  [x] Handle Unicode characters
 //  [ ] Handle physical mouse input
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
@@ -13,8 +13,9 @@
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
-//  2020-03-02: basic draft, touch input
+//  2020-09-13: Support for Unicode characters
 //  2020-08-31: On-screen and physical keyboard input (ASCII characters only)
+//  2020-03-02: basic draft, touch input
 
 #include "imgui.h"
 #include "imgui_impl_android.h"
@@ -23,92 +24,18 @@
 #include <queue>
 
 // Android
-#include <android_native_app_glue.h>
+#include <android/native_window.h>
 #include <android/input.h>
 #include <android/keycodes.h>
 #include <android/log.h>
 
 static double                                   g_Time = 0.0;
-static struct android_app*                      g_App;
+static ANativeWindow*                           g_Window;
 static char                                     g_logTag[] = "ImguiExample";
 static std::map<int32_t, std::queue<int32_t>>   g_keyEventQueues;
-static int32_t (*g_UserOnInputEvent)(struct android_app *app, AInputEvent *event) = NULL;
 
-// Unfortunately, there is no way to show the on-screen input from native code.
-// Therefore, we call showSoftInput() of the main activity implemented in MainActivity.kt via JNI.
-int ImGui_ImplAndroid_showSoftInput()
+int32_t ImGui_ImplAndroid_handleInputEvent(AInputEvent *inputEvent)
 {
-    JavaVM *jVM = g_App->activity->vm;
-    JNIEnv *jEnv = NULL;
-
-    jint jniRet = jVM->GetEnv((void **)&jEnv, JNI_VERSION_1_6);
-    if (jniRet == JNI_ERR)
-        return -1;
-
-    jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
-    if (jniRet != JNI_OK)
-        return -2;
-
-    jclass natActClazz = jEnv->GetObjectClass(g_App->activity->clazz);
-    if (natActClazz == NULL)
-        return -3;
-
-    jmethodID methodID = jEnv->GetMethodID(natActClazz, "showSoftInput", "()V");
-    if (methodID == NULL)
-        return -4;
-
-    jEnv->CallVoidMethod(g_App->activity->clazz, methodID);
-
-    jniRet = jVM->DetachCurrentThread();
-    if (jniRet != JNI_OK)
-        return -5;
-
-    return 0;
-}
-
-// Unfortunately, the native KeyEvent implementation has no getUnicodeChar() function.
-// Therefore, we construct a non-native KeyEvent instance and call getUnicodeChar() here via JNI.
-// todo: This whole procedure is done on every key press and deserves optimization
-int ImGui_ImplAndroid_getCharacter(int event_type, int key_code, int meta_state)
-{
-    JavaVM *jVM = g_App->activity->vm;
-    JNIEnv *jEnv = NULL;
-
-    jint jniRet = jVM->GetEnv((void **)&jEnv, JNI_VERSION_1_6);
-    if (jniRet == JNI_ERR)
-        return -1;
-
-    jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
-    if (jniRet != JNI_OK)
-        return -2;
-
-    jclass keyEventCls = jEnv->FindClass("android/view/KeyEvent");
-    if (keyEventCls == NULL)
-        return -3;
-
-    jmethodID keyEventCtor = jEnv->GetMethodID(keyEventCls, "<init>", "(II)V");
-    if (keyEventCtor == NULL)
-        return -4;
-
-    jmethodID keyEventGetUnicodeChar = jEnv->GetMethodID(keyEventCls, "getUnicodeChar", "(I)I");
-    if (keyEventGetUnicodeChar == NULL)
-        return -5;
-
-    jobject jKeyEvent = jEnv->NewObject(keyEventCls, keyEventCtor, event_type, key_code);
-    jint keyEventChar = jEnv->CallIntMethod(jKeyEvent, keyEventGetUnicodeChar, meta_state);
-
-    jVM->DetachCurrentThread();
-    if (jniRet != JNI_OK)
-        return -6;
-
-    return keyEventChar;
-}
-
-int32_t ImGui_ImplAndroid_handleInputEvent(struct android_app *app, AInputEvent *inputEvent)
-{
-    if (g_UserOnInputEvent != NULL)
-        g_UserOnInputEvent(app, inputEvent);
-
     ImGuiIO &io = ImGui::GetIO();
     int32_t evType = AInputEvent_getType(inputEvent);
     switch (evType)
@@ -130,21 +57,8 @@ int32_t ImGui_ImplAndroid_handleInputEvent(struct android_app *app, AInputEvent 
         // and process one event per key per ImGui frame in ImGui_ImplAndroid_NewFrame().
         // ...or consider ImGui IO queue, if suitable: https://github.com/ocornut/imgui/issues/2787
         case AKEY_EVENT_ACTION_DOWN:
-        {
-            // todo: The procedure in ImGui_ImplAndroid_getCharacter() returns ASCII characters
-            // only. To get unicode characters, we may have to consider AKEY_EVENT_ACTION_MULTIPLE
-            // and feed the result into ImGui via io.AddInputCharactersUTF8()
-            int character = ImGui_ImplAndroid_getCharacter(evAction, evKeyCode, evMetaState);
-            // make sure the character really is ASCII only
-            if (character > 127)
-                character = 63; // questionmark
-            io.AddInputCharacter(character);
-        }
-        // intended fallthrough...
         case AKEY_EVENT_ACTION_UP:
             g_keyEventQueues[evKeyCode].push(evAction);
-            break;
-        case AKEY_EVENT_ACTION_MULTIPLE:
             break;
         default:
             break;
@@ -180,12 +94,10 @@ int32_t ImGui_ImplAndroid_handleInputEvent(struct android_app *app, AInputEvent 
     return 0;
 }
 
-bool ImGui_ImplAndroid_Init(struct android_app *app, int32_t (*userOnInputEvent)(struct android_app *app, AInputEvent *event))
+bool ImGui_ImplAndroid_Init(ANativeWindow *window)
 {
-    g_App = app;
-    g_UserOnInputEvent = userOnInputEvent;
+    g_Window = window;
     g_Time = 0.0;
-    g_App->onInputEvent = ImGui_ImplAndroid_handleInputEvent;
 
     // Setup back-end capabilities flags
     ImGuiIO &io = ImGui::GetIO();
@@ -219,10 +131,7 @@ bool ImGui_ImplAndroid_Init(struct android_app *app, int32_t (*userOnInputEvent)
     return true;
 }
 
-void ImGui_ImplAndroid_Shutdown()
-{
-    g_UserOnInputEvent = NULL;
-}
+void ImGui_ImplAndroid_Shutdown() {}
 
 void ImGui_ImplAndroid_NewFrame()
 {
@@ -238,15 +147,9 @@ void ImGui_ImplAndroid_NewFrame()
         keyQueue.second.pop();
     }
 
-    static bool WantTextInputLast = false;
-    if (io.WantTextInput && !WantTextInputLast)
-        ImGui_ImplAndroid_showSoftInput();
-    WantTextInputLast = io.WantTextInput;
-
     // Setup display size (every frame to accommodate for window resizing)
-    // todo: utilize the actual framebuffer size
-    int32_t w = ANativeWindow_getWidth(g_App->window);
-    int32_t h = ANativeWindow_getHeight(g_App->window);
+    int32_t w = ANativeWindow_getWidth(g_Window);
+    int32_t h = ANativeWindow_getHeight(g_Window);
     int display_w = w;
     int display_h = h;
 

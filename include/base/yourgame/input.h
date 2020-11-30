@@ -22,7 +22,6 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-
     /** \brief identifies the source of an input */
     enum class InputSource
     {
@@ -193,7 +192,6 @@ namespace yourgame
 
     /** \brief returns the current value of the input source \p source as int */
     int getInputi(InputSource source);
-
 } // namespace yourgame
 
 #endif

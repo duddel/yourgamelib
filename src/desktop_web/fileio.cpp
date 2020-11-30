@@ -25,7 +25,7 @@ freely, subject to the following restrictions:
 #endif
 #include "yourgame_internal/file.h"
 
-namespace yourgame
+namespace yourgame_internal_desktop
 {
     namespace
     {
@@ -52,25 +52,27 @@ namespace yourgame
         saveFilesPath = "/home/web_user/";
 #endif
     }
+} // namespace yourgame_internal_desktop
 
+namespace yourgame
+{
     int readAssetFile(const char *filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile((assetPath + filename).c_str(), dst);
+        return yourgame_internal::readFile((yourgame_internal_desktop::assetPath + filename).c_str(), dst);
     }
 
     int readSaveFile(const char *filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile((saveFilesPath + filename).c_str(), dst);
+        return yourgame_internal::readFile((yourgame_internal_desktop::saveFilesPath + filename).c_str(), dst);
     }
 
     int writeSaveFile(const char *filename, const void *data, size_t numBytes)
     {
-        return yourgame_internal::writeFile((saveFilesPath + filename).c_str(), data, numBytes);
+        return yourgame_internal::writeFile((yourgame_internal_desktop::saveFilesPath + filename).c_str(), data, numBytes);
     }
 
     void saveFilePath(const char *filename, std::string &dst)
     {
-        dst = (saveFilesPath + filename);
+        dst = (yourgame_internal_desktop::saveFilesPath + filename);
     }
-
 } // namespace yourgame

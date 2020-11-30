@@ -25,7 +25,7 @@ freely, subject to the following restrictions:
 #include <EGL/egl.h>
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
-#include "yourgame_internal/yourgame_port.h"
+#include "yourgame_internal/yourgame_internal_android.h"
 #include "yourgame_internal/mygame_external.h"
 
 #ifdef YOURGAME_EXTPROJ_imgui
@@ -36,34 +36,34 @@ freely, subject to the following restrictions:
 
 INITIALIZE_EASYLOGGINGPP
 
-namespace yourgame
+namespace yourgame_internal_android
 {
-    class elAndroidDispatcher : public el::LogDispatchCallback
-    {
-    protected:
-        void handle(const el::LogDispatchData *data) noexcept override
-        {
-            auto logMsg = data->logMessage();
-            switch (logMsg->level())
-            {
-            case el::Level::Debug:
-                __android_log_print(ANDROID_LOG_DEBUG, "yourgame_app", "%s", logMsg->message().c_str());
-                break;
-            case el::Level::Info:
-                __android_log_print(ANDROID_LOG_INFO, "yourgame_app", "%s", logMsg->message().c_str());
-                break;
-            case el::Level::Warning:
-                __android_log_print(ANDROID_LOG_WARN, "yourgame_app", "%s", logMsg->message().c_str());
-                break;
-            case el::Level::Error:
-                __android_log_print(ANDROID_LOG_ERROR, "yourgame_app", "%s", logMsg->message().c_str());
-                break;
-            }
-        }
-    };
-
     namespace
     {
+        class elAndroidDispatcher : public el::LogDispatchCallback
+        {
+        protected:
+            void handle(const el::LogDispatchData *data) noexcept override
+            {
+                auto logMsg = data->logMessage();
+                switch (logMsg->level())
+                {
+                case el::Level::Debug:
+                    __android_log_print(ANDROID_LOG_DEBUG, "yourgame_app", "%s", logMsg->message().c_str());
+                    break;
+                case el::Level::Info:
+                    __android_log_print(ANDROID_LOG_INFO, "yourgame_app", "%s", logMsg->message().c_str());
+                    break;
+                case el::Level::Warning:
+                    __android_log_print(ANDROID_LOG_WARN, "yourgame_app", "%s", logMsg->message().c_str());
+                    break;
+                case el::Level::Error:
+                    __android_log_print(ANDROID_LOG_ERROR, "yourgame_app", "%s", logMsg->message().c_str());
+                    break;
+                }
+            }
+        };
+
         el::Logger *logger = nullptr;
         yourgame::context _context;
         std::chrono::steady_clock::time_point lastNowTime;
@@ -89,74 +89,18 @@ namespace yourgame
         }
     } // namespace
 
-    // API
-    const yourgame::context &getCtx()
-    {
-        return _context;
-    }
-
-    el::Logger *getLogr()
-    {
-        return logger;
-    }
-
-    // do nothing. we do not exit the app manually
-    void notifyShutdown() {}
-
-    int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
-    {
-        // the whole procedure (get environment, etc.) is done every time to
-        // not risk inconsistencies with global references to JNI objects.
-
-        JavaVM *jVM = _app->activity->vm;
-        JNIEnv *jEnv = NULL;
-
-        // todo: clearify JNI version to request
-        jint jniRet = jVM->GetEnv((void **)&jEnv, JNI_VERSION_1_6);
-        if (jniRet == JNI_ERR)
-        {
-            return -1;
-        }
-
-        jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
-        if (jniRet != JNI_OK)
-        {
-            return -2;
-        }
-
-        jclass natActClazz = jEnv->GetObjectClass(_app->activity->clazz);
-        if (natActClazz == NULL)
-        {
-            return -3;
-        }
-
-        // get the "method ID"
-        jmethodID methodID = jEnv->GetMethodID(natActClazz, "receiveCmd", "(IIII)I");
-        if (methodID == NULL)
-        {
-            return -4;
-        }
-
-        // call the actual method
-        jint methodRet = jEnv->CallIntMethod(_app->activity->clazz, methodID, cmdId, data0, data1, data2);
-        if (methodRet != 0)
-        {
-            return -10;
-        }
-
-        jniRet = jVM->DetachCurrentThread();
-        if (jniRet != JNI_OK)
-        {
-            return -5;
-        }
-
-        return 0;
-    }
-
-    // INTERNAL API
     bool isInitialized()
     {
         return _initialized;
+    }
+
+    static int32_t onInputEvent(struct android_app *app, AInputEvent *inputEvent)
+    {
+        yourgame_internal_android::handleInputEvent(inputEvent);
+#ifdef YOURGAME_EXTPROJ_imgui
+        ImGui_ImplAndroid_handleInputEvent(inputEvent);
+#endif
+        return 1;
     }
 
     void init(struct android_app *app)
@@ -169,8 +113,8 @@ namespace yourgame
         _win = app->window;
         _app = app;
 
-        initInput(app);
-        initFileIO(app);
+        _app->onInputEvent = onInputEvent;
+        yourgame_internal_android::initFileIO(_app);
 
         // initialize logging
         logger = el::Loggers::getLogger("default");
@@ -263,7 +207,7 @@ namespace yourgame
         //imgio.IniFilename = NULL;
 
         ImGui::StyleColorsDark();
-        ImGui_ImplAndroid_Init(app, app->onInputEvent);
+        ImGui_ImplAndroid_Init(_win);
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
 #endif
 
@@ -336,5 +280,71 @@ namespace yourgame
         mygame::shutdown(_context);
 
         _initialized = false;
+    }
+} // namespace yourgame_internal_android
+
+namespace yourgame
+{
+    const yourgame::context &getCtx()
+    {
+        return yourgame_internal_android::_context;
+    }
+
+    el::Logger *getLogr()
+    {
+        return yourgame_internal_android::logger;
+    }
+
+    // do nothing. we do not exit the app manually
+    void notifyShutdown() {}
+
+    int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
+    {
+        // the whole procedure (get environment, etc.) is done every time to
+        // not risk inconsistencies with global references to JNI objects.
+
+        JavaVM *jVM = yourgame_internal_android::_app->activity->vm;
+        JNIEnv *jEnv = NULL;
+
+        // todo: clearify JNI version to request
+        jint jniRet = jVM->GetEnv((void **)&jEnv, JNI_VERSION_1_6);
+        if (jniRet == JNI_ERR)
+        {
+            return -1;
+        }
+
+        jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
+        if (jniRet != JNI_OK)
+        {
+            return -2;
+        }
+
+        jclass natActClazz = jEnv->GetObjectClass(yourgame_internal_android::_app->activity->clazz);
+        if (natActClazz == NULL)
+        {
+            return -3;
+        }
+
+        // get the "method ID"
+        jmethodID methodID = jEnv->GetMethodID(natActClazz, "receiveCmd", "(IIII)I");
+        if (methodID == NULL)
+        {
+            return -4;
+        }
+
+        // call the actual method
+        jint methodRet = jEnv->CallIntMethod(yourgame_internal_android::_app->activity->clazz, methodID, cmdId, data0, data1, data2);
+        if (methodRet != 0)
+        {
+            return -10;
+        }
+
+        jniRet = jVM->DetachCurrentThread();
+        if (jniRet != JNI_OK)
+        {
+            return -5;
+        }
+
+        return 0;
     }
 } // namespace yourgame

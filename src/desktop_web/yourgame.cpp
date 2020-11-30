@@ -22,7 +22,7 @@ freely, subject to the following restrictions:
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include "yourgame/yourgame.h"
-#include "yourgame_internal/yourgame_port.h"
+#include "yourgame_internal/yourgame_internal_desktop.h"
 #include "yourgame_internal/mygame_external.h"
 
 #ifdef YOURGAME_EXTPROJ_imgui
@@ -33,7 +33,7 @@ freely, subject to the following restrictions:
 
 INITIALIZE_EASYLOGGINGPP
 
-namespace yourgame
+namespace yourgame_internal_desktop
 {
     namespace
     {
@@ -51,28 +51,6 @@ namespace yourgame
         }
     } // namespace
 
-    // API
-    const yourgame::context &getCtx()
-    {
-        return _context;
-    }
-
-    el::Logger *getLogr()
-    {
-        return logger;
-    }
-
-    void notifyShutdown()
-    {
-        _pendingShutdown = true;
-    }
-
-    int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
-    {
-        return -1;
-    }
-
-    // INTERNAL API
     bool pendingShutdown()
     {
         return _pendingShutdown;
@@ -91,7 +69,7 @@ namespace yourgame
         yourgame::logi("steady_clock precision: %vs (%vns)", clockPeriod, clockPeriod * 1.0e+9);
 
         // initialize asset loading
-        initFileIO();
+        yourgame_internal_desktop::initFileIO();
 
         // initialize glfw, gl
         yourgame::logi("glfwInit()...");
@@ -139,7 +117,7 @@ namespace yourgame
         yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
         glfwSwapInterval(1);
-        yourgame::initInput(_window);
+        yourgame_internal_desktop::initInput(_window);
 
 #ifdef YOURGAME_EXTPROJ_imgui
         IMGUI_CHECKVERSION();
@@ -200,5 +178,28 @@ namespace yourgame
         mygame::shutdown(_context);
 
         return 0;
+    }
+} // namespace yourgame_internal_desktop
+
+namespace yourgame
+{
+    const yourgame::context &getCtx()
+    {
+        return yourgame_internal_desktop::_context;
+    }
+
+    el::Logger *getLogr()
+    {
+        return yourgame_internal_desktop::logger;
+    }
+
+    void notifyShutdown()
+    {
+        yourgame_internal_desktop::_pendingShutdown = true;
+    }
+
+    int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
+    {
+        return -1;
     }
 } // namespace yourgame

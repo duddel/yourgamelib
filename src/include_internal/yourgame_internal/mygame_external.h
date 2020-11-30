@@ -17,22 +17,19 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_PORT_H
-#define YOURGAME_PORT_H
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
+/*
+these functions must be defined in the user code. they get called from
+within the yourgame library
+*/
+#ifndef MYGAME_EXTERNAL_H
+#define MYGAME_EXTERNAL_H
 
-namespace yourgame
+namespace mygame
 {
-
-int init(int argc, char *argv[]);
-void tick();
-int shutdown();
-bool pendingShutdown();
-void initInput(GLFWwindow *window);
-void initFileIO();
-
-} // namespace yourgame
+    extern void init(const yourgame::context &ctx);
+    extern void tick(const yourgame::context &ctx);
+    extern void shutdown(const yourgame::context &ctx);
+} // namespace mygame
 
 #endif

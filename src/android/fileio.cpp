@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 #include <android/asset_manager.h>
 #include "yourgame_internal/file.h"
 
-namespace yourgame
+namespace yourgame_internal_android
 {
     namespace
     {
@@ -36,10 +36,13 @@ namespace yourgame
         assMan = app->activity->assetManager;
         saveFilesPath = std::string(app->activity->internalDataPath);
     }
+} // namespace yourgame_internal_android
 
+namespace yourgame
+{
     int readAssetFile(const char *filename, std::vector<uint8_t> &dst)
     {
-        AAsset *assDesc = AAssetManager_open(assMan,
+        AAsset *assDesc = AAssetManager_open(yourgame_internal_android::assMan,
                                              filename,
                                              AASSET_MODE_BUFFER);
         if (assDesc)
@@ -56,17 +59,16 @@ namespace yourgame
 
     int readSaveFile(const char *filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile((saveFilesPath + filename).c_str(), dst);
+        return yourgame_internal::readFile((yourgame_internal_android::saveFilesPath + filename).c_str(), dst);
     }
 
     int writeSaveFile(const char *filename, const void *data, size_t numBytes)
     {
-        return yourgame_internal::writeFile((saveFilesPath + filename).c_str(), data, numBytes);
+        return yourgame_internal::writeFile((yourgame_internal_android::saveFilesPath + filename).c_str(), data, numBytes);
     }
 
     void saveFilePath(const char *filename, std::string &dst)
     {
-        dst = (saveFilesPath + filename);
+        dst = (yourgame_internal_android::saveFilesPath + filename);
     }
-
 } // namespace yourgame

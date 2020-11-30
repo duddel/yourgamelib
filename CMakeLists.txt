@@ -59,17 +59,8 @@ list(APPEND YOURGAME_INC_DIRS
 )
 # inc dirs (internal)
 list(APPEND YOURGAME_INC_DIRS_PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal/common
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal
 )
-if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "web")
-  list(APPEND YOURGAME_INC_DIRS_PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal/desktop_web
-  )
-elseif(YOURGAME_PLATFORM STREQUAL "android")
-  list(APPEND YOURGAME_INC_DIRS_PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal/android
-  )
-endif()
 
 # preprocessor definition to describe the platform
 string(TOUPPER ${YOURGAME_PLATFORM} platform_upper)

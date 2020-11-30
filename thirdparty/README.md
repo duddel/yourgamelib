@@ -111,8 +111,8 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 
 ## Dear ImGui
 
--   version: **1.78**
--   origin: <https://github.com/ocornut/imgui/releases/tag/v1.78>
+-   version: **1.79**
+-   origin: <https://github.com/ocornut/imgui/releases/tag/v1.79>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   examples/imgui_impl_glfw.{h,cpp}
@@ -130,11 +130,11 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 
 ### Dear ImGui Android back-end
 
--   version: **fcef730 (android_native)**
--   origin: <https://github.com/duddel/imgui/tree/fcef730fc095874d2231d95e6fdde4e3bdc7b767>
+-   version: **1297dda (android_native)**
+-   origin: <https://github.com/duddel/imgui/tree/1297dda1e1ac016dd07ca4cbb521776169900aff>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
-    -   examples/imgui_impl_android.{h,cpp}
+    -   backends/imgui_impl_android.{h,cpp}
 
 ## JSON for Modern C++
 

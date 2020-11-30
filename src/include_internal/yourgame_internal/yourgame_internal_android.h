@@ -17,19 +17,19 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#ifndef YOURGAME_INTERNAL_ANDROID_H
+#define YOURGAME_INTERNAL_ANDROID_H
 
-/*
-these functions must be defined in the user code. they get called from
-within the yourgame library
-*/
-#ifndef MYGAME_EXTERNAL_H
-#define MYGAME_EXTERNAL_H
+#include <android_native_app_glue.h>
 
-namespace mygame
+namespace yourgame_internal_android
 {
-extern void init(const yourgame::context &ctx);
-extern void tick(const yourgame::context &ctx);
-extern void shutdown(const yourgame::context &ctx);
-} // namespace mygame
+    bool isInitialized();
+    int32_t handleInputEvent(AInputEvent *inputEvent);
+    void init(struct android_app *app);
+    void tick();
+    void shutdown();
+    void initFileIO(struct android_app *app);
+} // namespace yourgame
 
 #endif

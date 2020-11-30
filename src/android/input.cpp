@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 #include <android/keycodes.h>
 #include "yourgame/input.h"
 
-namespace yourgame
+namespace yourgame_internal_android
 {
     namespace
     {
@@ -37,69 +37,70 @@ namespace yourgame
             };
         };
 
-        std::map<InputSource, InputValue> _inputStates;
+        std::map<yourgame::InputSource, InputValue> _inputStates;
 
-        void set(InputSource source, float value)
+        void set(yourgame::InputSource source, float value)
         {
             InputValue newval{1};
             newval.valf = value;
             _inputStates[source] = newval;
         }
 
-        void set(InputSource source, int value)
+        void set(yourgame::InputSource source, int value)
         {
             InputValue newval{0};
             newval.vali = value;
             _inputStates[source] = newval;
         }
+    } // namespace
 
-        int32_t handleInputEvent(struct android_app *app, AInputEvent *inputEvent)
+    int32_t handleInputEvent(AInputEvent *inputEvent)
+    {
+        static const yourgame::InputSource srcsTouchDown[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_1_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_2_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_3_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_4_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_5_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_6_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_7_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_8_DOWN,
+                                                                yourgame::InputSource::YOURGAME_TOUCH_9_DOWN};
+
+        static const yourgame::InputSource srcsTouchX[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_1_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_2_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_3_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_4_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_5_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_6_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_7_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_8_X,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_9_X};
+
+        static const yourgame::InputSource srcsTouchY[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_1_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_2_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_3_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_4_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_5_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_6_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_7_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_8_Y,
+                                                             yourgame::InputSource::YOURGAME_TOUCH_9_Y};
+
+        int32_t evType = AInputEvent_getType(inputEvent);
+        switch (evType)
         {
-            static const yourgame::InputSource srcsTouchDown[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_1_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_2_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_3_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_4_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_5_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_6_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_7_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_8_DOWN,
-                                                                    yourgame::InputSource::YOURGAME_TOUCH_9_DOWN};
-
-            static const yourgame::InputSource srcsTouchX[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_1_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_2_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_3_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_4_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_5_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_6_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_7_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_8_X,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_9_X};
-
-            static const yourgame::InputSource srcsTouchY[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_1_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_2_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_3_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_4_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_5_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_6_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_7_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_8_Y,
-                                                                 yourgame::InputSource::YOURGAME_TOUCH_9_Y};
-
-            int32_t evType = AInputEvent_getType(inputEvent);
-            switch (evType)
+        case AINPUT_EVENT_TYPE_MOTION:
+        {
+            int32_t evAction = AMotionEvent_getAction(inputEvent);
+            int32_t evPointerIndex = (evAction & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
+            int32_t evPointerId = AMotionEvent_getPointerId(inputEvent, evPointerIndex);
+            evAction &= AMOTION_EVENT_ACTION_MASK;
+            switch (evAction)
             {
-            case AINPUT_EVENT_TYPE_MOTION:
-            {
-                int32_t evAction = AMotionEvent_getAction(inputEvent);
-                int32_t evPointerIndex = (evAction & AMOTION_EVENT_ACTION_POINTER_INDEX_MASK) >> AMOTION_EVENT_ACTION_POINTER_INDEX_SHIFT;
-                int32_t evPointerId = AMotionEvent_getPointerId(inputEvent, evPointerIndex);
-                evAction &= AMOTION_EVENT_ACTION_MASK;
-                switch (evAction)
-                {
-                /* assumption: the primary (first) touch pointer of a gesture triggers
+            /* assumption: the primary (first) touch pointer of a gesture triggers
                                  AMOTION_EVENT_ACTION_DOWN and AMOTION_EVENT_ACTION_UP.
                                additional non-primary pointers during this gesture trigger
                                  AMOTION_EVENT_ACTION_POINTER_DOWN and AMOTION_EVENT_ACTION_POINTER_UP.
@@ -107,72 +108,66 @@ namespace yourgame
                    assumption: the pointer id of the primary pointer is always 0, but here it is
                                retrieved via AMotionEvent_getPointerId() (see above), which should
                                return 0 for primary pointers. */
-                case AMOTION_EVENT_ACTION_DOWN:
-                    // intended fallthrough...
-                case AMOTION_EVENT_ACTION_UP:
-                    // intended fallthrough...
-                case AMOTION_EVENT_ACTION_POINTER_DOWN:
-                    // intended fallthrough...
-                case AMOTION_EVENT_ACTION_POINTER_UP:
+            case AMOTION_EVENT_ACTION_DOWN:
+                // intended fallthrough...
+            case AMOTION_EVENT_ACTION_UP:
+                // intended fallthrough...
+            case AMOTION_EVENT_ACTION_POINTER_DOWN:
+                // intended fallthrough...
+            case AMOTION_EVENT_ACTION_POINTER_UP:
+            {
+                if (evPointerId >= 0 && evPointerId < sizeof(srcsTouchDown) / sizeof(srcsTouchDown[0]))
                 {
-                    if (evPointerId >= 0 && evPointerId < sizeof(srcsTouchDown) / sizeof(srcsTouchDown[0]))
-                    {
-                        set(srcsTouchDown[evPointerId], ((evAction == AMOTION_EVENT_ACTION_DOWN ||
-                                                          evAction == AMOTION_EVENT_ACTION_POINTER_DOWN)
-                                                             ? 1
-                                                             : 0));
-                        // set initial location
-                        set(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
-                        set(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
-                    }
-                }
-                break;
-                case AMOTION_EVENT_ACTION_MOVE:
-                {
-                    auto evNumPtr = AMotionEvent_getPointerCount(inputEvent);
-                    for (auto i = 0; i < evNumPtr; i++)
-                    {
-                        int32_t pointerId = AMotionEvent_getPointerId(inputEvent, i);
-                        set(srcsTouchX[pointerId], (float)AMotionEvent_getX(inputEvent, i));
-                        set(srcsTouchY[pointerId], (float)AMotionEvent_getY(inputEvent, i));
-                    }
-                }
-                break;
-                default:
-                    break;
+                    set(srcsTouchDown[evPointerId], ((evAction == AMOTION_EVENT_ACTION_DOWN ||
+                                                      evAction == AMOTION_EVENT_ACTION_POINTER_DOWN)
+                                                         ? 1
+                                                         : 0));
+                    // set initial location
+                    set(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
+                    set(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
                 }
             }
-                return 1;
-            case AINPUT_EVENT_TYPE_KEY:
-                break;
+            break;
+            case AMOTION_EVENT_ACTION_MOVE:
+            {
+                auto evNumPtr = AMotionEvent_getPointerCount(inputEvent);
+                for (auto i = 0; i < evNumPtr; i++)
+                {
+                    int32_t pointerId = AMotionEvent_getPointerId(inputEvent, i);
+                    set(srcsTouchX[pointerId], (float)AMotionEvent_getX(inputEvent, i));
+                    set(srcsTouchY[pointerId], (float)AMotionEvent_getY(inputEvent, i));
+                }
+            }
+            break;
             default:
                 break;
             }
-
-            return 0;
         }
-
-    } // namespace
-
-    void initInput(struct android_app *app)
-    {
-        app->onInputEvent = handleInputEvent;
+            return 1;
+        case AINPUT_EVENT_TYPE_KEY:
+            break;
+        default:
+            break;
+        }
+        return 0;
     }
+} // namespace yourgame_internal_android
 
+namespace yourgame
+{
     float getInputf(InputSource source)
     {
-        auto i = _inputStates.find(source);
-        return (i == _inputStates.end()) ? 0.0f
-                                         : (i->second.isfloat) ? (i->second).valf
-                                                               : (float)((i->second).vali);
+        auto i = yourgame_internal_android::_inputStates.find(source);
+        return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f
+                                                                    : (i->second.isfloat) ? (i->second).valf
+                                                                                          : (float)((i->second).vali);
     }
 
     int getInputi(InputSource source)
     {
-        auto i = _inputStates.find(source);
-        return (i == _inputStates.end()) ? 0
-                                         : (i->second.isfloat) ? (int)((i->second).valf)
-                                                               : (i->second).vali;
+        auto i = yourgame_internal_android::_inputStates.find(source);
+        return (i == yourgame_internal_android::_inputStates.end()) ? 0
+                                                                    : (i->second.isfloat) ? (int)((i->second).valf)
+                                                                                          : (i->second).vali;
     }
-
 } // namespace yourgame
