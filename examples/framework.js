@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/simple.vert.es", "start": 0, "end": 386, "audio": 0}, {"filename": "/assets/normal.frag", "start": 386, "end": 578, "audio": 0}, {"filename": "/assets/simpletex.vert.es", "start": 578, "end": 800, "audio": 0}, {"filename": "/assets/normal.frag.es", "start": 800, "end": 1019, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 1019, "end": 620657, "audio": 0}, {"filename": "/assets/simple.vert", "start": 620657, "end": 621040, "audio": 0}, {"filename": "/assets/quad.obj", "start": 621040, "end": 621244, "audio": 0}, {"filename": "/assets/simpletex.frag.es", "start": 621244, "end": 621406, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 621406, "end": 652306, "audio": 1}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 652306, "end": 662688, "audio": 1}, {"filename": "/assets/LICENSE_android.txt", "start": 662688, "end": 670758, "audio": 0}, {"filename": "/assets/simpletex.vert", "start": 670758, "end": 670977, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 670977, "end": 681766, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 681766, "end": 693583, "audio": 1}, {"filename": "/assets/LICENSE_web.txt", "start": 693583, "end": 702141, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 702141, "end": 725217, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 725217, "end": 725352, "audio": 0}], "remote_package_size": 725352, "package_uuid": "4870d9ba-63c9-4086-8019-c05a5ac43e82"});
+   loadPackage({"files": [{"filename": "/assets/jingles_PIZZI00.ogg", "start": 0, "end": 10382, "audio": 1}, {"filename": "/assets/simpletex.frag", "start": 10382, "end": 10517, "audio": 0}, {"filename": "/assets/simpletex.vert", "start": 10517, "end": 10736, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 10736, "end": 19294, "audio": 0}, {"filename": "/assets/quad.obj", "start": 19294, "end": 19498, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 19498, "end": 42574, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 42574, "end": 662212, "audio": 0}, {"filename": "/assets/simpletex.vert.es", "start": 662212, "end": 662434, "audio": 0}, {"filename": "/assets/LICENSE_android.txt", "start": 662434, "end": 670504, "audio": 0}, {"filename": "/assets/simple.vert", "start": 670504, "end": 670887, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 670887, "end": 681676, "audio": 0}, {"filename": "/assets/normal.frag", "start": 681676, "end": 681868, "audio": 0}, {"filename": "/assets/simpletex.frag.es", "start": 681868, "end": 682030, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 682030, "end": 712930, "audio": 1}, {"filename": "/assets/normal.frag.es", "start": 712930, "end": 713149, "audio": 0}, {"filename": "/assets/simple.vert.es", "start": 713149, "end": 713535, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 713535, "end": 725352, "audio": 1}], "remote_package_size": 725352, "package_uuid": "0ac0df39-b67f-412e-a60b-480aa1c6993d"});
   
   })();
   
@@ -763,7 +763,7 @@ var ABORT = false;
 // set by exit() and abort().  Passed to 'onExit' handler.
 // NOTE: This is also used as the process return code code in shell environments
 // but only when noExitRuntime is false.
-var EXITSTATUS = 0;
+var EXITSTATUS;
 
 /** @type {function(*, string=)} */
 function assert(condition, text) {
@@ -1310,35 +1310,9 @@ assert(INITIAL_MEMORY >= TOTAL_STACK, 'INITIAL_MEMORY should be larger than TOTA
 assert(typeof Int32Array !== 'undefined' && typeof Float64Array !== 'undefined' && Int32Array.prototype.subarray !== undefined && Int32Array.prototype.set !== undefined,
        'JS engine does not provide full typed array support');
 
-// In non-standalone/normal mode, we create the memory here.
-// include: runtime_init_memory.js
-
-
-// Create the main memory. (Note: this isn't used in STANDALONE_WASM mode since the wasm
-// memory is created in the wasm, not in JS.)
-
-  if (Module['wasmMemory']) {
-    wasmMemory = Module['wasmMemory'];
-  } else
-  {
-    wasmMemory = new WebAssembly.Memory({
-      'initial': INITIAL_MEMORY / 65536
-      ,
-      'maximum': 2147483648 / 65536
-    });
-  }
-
-if (wasmMemory) {
-  buffer = wasmMemory.buffer;
-}
-
-// If the user provides an incorrect length, just use that length instead rather than providing the user to
-// specifically provide the memory length with Module['INITIAL_MEMORY'].
-INITIAL_MEMORY = buffer.byteLength;
-assert(INITIAL_MEMORY % 65536 === 0);
-updateGlobalBufferAndViews(buffer);
-
-// end include: runtime_init_memory.js
+// If memory is defined in wasm, the user can't provide it.
+assert(!Module['wasmMemory'], 'Use of `wasmMemory` detected.  Use -s IMPORTED_MEMORY to define wasmMemory externally');
+assert(INITIAL_MEMORY == 16777216, 'Detected runtime INITIAL_MEMORY setting.  Use -s IMPORTED_MEMORY to define wasmMemory dynamically');
 
 // include: runtime_init_table.js
 // In regular non-RELOCATABLE mode the table is exported
@@ -1697,6 +1671,14 @@ function createWasm() {
 
     Module['asm'] = exports;
 
+    wasmMemory = Module['asm']['memory'];
+    assert(wasmMemory, "memory not found in wasm exports");
+    // This assertion doesn't hold when emscripten is run in --post-link
+    // mode.
+    // TODO(sbc): Read INITIAL_MEMORY out of the wasm file in post-link mode.
+    //assert(wasmMemory.buffer.byteLength === 16777216);
+    updateGlobalBufferAndViews(wasmMemory.buffer);
+
     wasmTable = Module['asm']['__indirect_function_table'];
     assert(wasmTable, "table not found in wasm exports");
 
@@ -1827,30 +1809,6 @@ var ASM_CONSTS = {
           var y = demangle(x);
           return x === y ? x : (y + ' [' + x + ']');
         });
-    }
-
-  function dynCallLegacy(sig, ptr, args) {
-      assert(('dynCall_' + sig) in Module, 'bad function pointer type - no table for sig \'' + sig + '\'');
-      if (args && args.length) {
-        // j (64-bit integer) must be passed in as two numbers [low 32, high 32].
-        assert(args.length === sig.substring(1).replace(/j/g, '--').length);
-      } else {
-        assert(sig.length == 1);
-      }
-      if (args && args.length) {
-        return Module['dynCall_' + sig].apply(null, [ptr].concat(args));
-      }
-      return Module['dynCall_' + sig].call(null, ptr);
-    }
-  function dynCall(sig, ptr, args) {
-      // Without WASM_BIGINT support we cannot directly call function with i64 as
-      // part of thier signature, so we rely the dynCall functions generated by
-      // wasm-emscripten-finalize
-      if (sig.indexOf('j') != -1) {
-        return dynCallLegacy(sig, ptr, args);
-      }
-      assert(wasmTable.get(ptr), 'missing table entry in dynCall: ' + ptr);
-      return wasmTable.get(ptr).apply(null, args)
     }
 
   function jsStackTrace() {
@@ -3783,7 +3741,7 @@ var ASM_CONSTS = {
         });
         FS.mkdev('/dev/null', FS.makedev(1, 3));
         // setup /dev/tty and /dev/tty1
-        // stderr needs to print output using Module['printErr']
+        // stderr needs to print output using err() rather than out()
         // so we register a second tty just for it.
         TTY.register(FS.makedev(5, 0), TTY.default_tty_ops);
         TTY.register(FS.makedev(6, 0), TTY.default_tty1_ops);
@@ -5565,8 +5523,15 @@ var ASM_CONSTS = {
     }
   /** @param {number|boolean=} noSetTiming */
   function _emscripten_set_main_loop(func, fps, simulateInfiniteLoop, arg, noSetTiming) {
-      var browserIterationFunc = function() { wasmTable.get(func)(); };
+      var browserIterationFunc = wasmTable.get(func);
       setMainLoop(browserIterationFunc, fps, simulateInfiniteLoop, arg, noSetTiming);
+    }
+
+  function _emscripten_thread_sleep(msecs) {
+      var start = _emscripten_get_now();
+      while (_emscripten_get_now() - start < msecs) {
+        // Do nothing.
+      }
     }
 
   var ENV={};
@@ -5840,41 +5805,13 @@ var ASM_CONSTS = {
         GLctx.disjointTimerQueryExt = GLctx.getExtension("EXT_disjoint_timer_query");
         __webgl_enable_WEBGL_multi_draw(GLctx);
   
-        // These are the 'safe' feature-enabling extensions that don't add any performance impact related to e.g. debugging, and
-        // should be enabled by default so that client GLES2/GL code will not need to go through extra hoops to get its stuff working.
-        // As new extensions are ratified at http://www.khronos.org/registry/webgl/extensions/ , feel free to add your new extensions
-        // here, as long as they don't produce a performance impact for users that might not be using those extensions.
-        // E.g. debugging-related extensions should probably be off by default.
-        var automaticallyEnabledExtensions = [ // Khronos ratified WebGL extensions ordered by number (no debug extensions):
-                                               "OES_texture_float", "OES_texture_half_float", "OES_standard_derivatives",
-                                               "OES_vertex_array_object", "WEBGL_compressed_texture_s3tc", "WEBGL_depth_texture",
-                                               "OES_element_index_uint", "EXT_texture_filter_anisotropic", "EXT_frag_depth",
-                                               "WEBGL_draw_buffers", "ANGLE_instanced_arrays", "OES_texture_float_linear",
-                                               "OES_texture_half_float_linear", "EXT_blend_minmax", "EXT_shader_texture_lod",
-                                               "EXT_texture_norm16",
-                                               // Community approved WebGL extensions ordered by number:
-                                               "WEBGL_compressed_texture_pvrtc", "EXT_color_buffer_half_float", "WEBGL_color_buffer_float",
-                                               "EXT_sRGB", "WEBGL_compressed_texture_etc1", "EXT_disjoint_timer_query",
-                                               "WEBGL_compressed_texture_etc", "WEBGL_compressed_texture_astc", "EXT_color_buffer_float",
-                                               "WEBGL_compressed_texture_s3tc_srgb", "EXT_disjoint_timer_query_webgl2",
-                                               // Old style prefixed forms of extensions (but still currently used on e.g. iPhone Xs as
-                                               // tested on iOS 12.4.1):
-                                               "WEBKIT_WEBGL_compressed_texture_pvrtc"];
-  
-        function shouldEnableAutomatically(extension) {
-          var ret = false;
-          automaticallyEnabledExtensions.forEach(function(include) {
-            if (extension.indexOf(include) != -1) {
-              ret = true;
-            }
-          });
-          return ret;
-        }
-  
-        var exts = GLctx.getSupportedExtensions() || []; // .getSupportedExtensions() can return null if context is lost, so coerce to empty array.
+        // .getSupportedExtensions() can return null if context is lost, so coerce to empty array.
+        var exts = GLctx.getSupportedExtensions() || [];
         exts.forEach(function(ext) {
-          if (automaticallyEnabledExtensions.indexOf(ext) != -1) {
-            GLctx.getExtension(ext); // Calling .getExtension enables that extension permanently, no need to store the return value to be enabled.
+          // WEBGL_lose_context, WEBGL_debug_renderer_info and WEBGL_debug_shaders are not enabled by default.
+          if (ext.indexOf('lose_context') < 0 && ext.indexOf('debug') < 0) {
+            // Call .getExtension() to enable that extension permanently.
+            GLctx.getExtension(ext);
           }
         });
       },populateUniformTable:function(program) {
@@ -7647,51 +7584,13 @@ var ASM_CONSTS = {
       return (date.getTime() / 1000)|0;
     }
 
-  function _usleep(useconds) {
-      // int usleep(useconds_t useconds);
-      // http://pubs.opengroup.org/onlinepubs/000095399/functions/usleep.html
-      // We're single-threaded, so use a busy loop. Super-ugly.
-      var start = _emscripten_get_now();
-      while (_emscripten_get_now() - start < useconds / 1000) {
-        // Do nothing.
-      }
-    }
-  function _nanosleep(rqtp, rmtp) {
-      // int nanosleep(const struct timespec  *rqtp, struct timespec *rmtp);
-      if (rqtp === 0) {
-        setErrNo(28);
-        return -1;
-      }
-      var seconds = HEAP32[((rqtp)>>2)];
-      var nanoseconds = HEAP32[(((rqtp)+(4))>>2)];
-      if (nanoseconds < 0 || nanoseconds > 999999999 || seconds < 0) {
-        setErrNo(28);
-        return -1;
-      }
-      if (rmtp !== 0) {
-        HEAP32[((rmtp)>>2)]=0;
-        HEAP32[(((rmtp)+(4))>>2)]=0;
-      }
-      return _usleep((seconds * 1e6) + (nanoseconds / 1000));
-    }
-
-  function _pthread_attr_destroy(attr) {
-      /* int pthread_attr_destroy(pthread_attr_t *attr); */
-      //FIXME: should destroy the pthread_attr_t struct
-      return 0;
-    }
-
-  function _pthread_attr_init(attr) {
-      /* int pthread_attr_init(pthread_attr_t *attr); */
-      //FIXME: should allocate a pthread_attr_t
-      return 0;
-    }
-
   function _pthread_create() {
       return 6;
     }
 
-  function _pthread_join() {}
+  function _pthread_join() {
+      return 28;
+    }
 
   function _setTempRet0($i) {
       setTempRet0(($i) | 0);
@@ -8253,6 +8152,7 @@ var asmLibraryArg = {
   "emscripten_memcpy_big": _emscripten_memcpy_big,
   "emscripten_resize_heap": _emscripten_resize_heap,
   "emscripten_set_main_loop": _emscripten_set_main_loop,
+  "emscripten_thread_sleep": _emscripten_thread_sleep,
   "environ_get": _environ_get,
   "environ_sizes_get": _environ_sizes_get,
   "exit": _exit,
@@ -8348,11 +8248,7 @@ var asmLibraryArg = {
   "glfwWindowHint": _glfwWindowHint,
   "invoke_vii": invoke_vii,
   "localtime_r": _localtime_r,
-  "memory": wasmMemory,
   "mktime": _mktime,
-  "nanosleep": _nanosleep,
-  "pthread_attr_destroy": _pthread_attr_destroy,
-  "pthread_attr_init": _pthread_attr_init,
   "pthread_create": _pthread_create,
   "pthread_join": _pthread_join,
   "setTempRet0": _setTempRet0,
@@ -8405,6 +8301,14 @@ var __get_daylight = Module["__get_daylight"] = createExportWrapper("_get_daylig
 var __get_timezone = Module["__get_timezone"] = createExportWrapper("_get_timezone");
 
 /** @type {function(...*):?} */
+var _emscripten_main_thread_process_queued_calls = Module["_emscripten_main_thread_process_queued_calls"] = createExportWrapper("emscripten_main_thread_process_queued_calls");
+
+/** @type {function(...*):?} */
+var _emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = function() {
+  return (_emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = Module["asm"]["emscripten_stack_get_end"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
 var stackSave = Module["stackSave"] = createExportWrapper("stackSave");
 
 /** @type {function(...*):?} */
@@ -8424,15 +8328,7 @@ var _emscripten_stack_get_free = Module["_emscripten_stack_get_free"] = function
 };
 
 /** @type {function(...*):?} */
-var _emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = function() {
-  return (_emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = Module["asm"]["emscripten_stack_get_end"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var _setThrew = Module["_setThrew"] = createExportWrapper("setThrew");
-
-/** @type {function(...*):?} */
-var _emscripten_main_thread_process_queued_calls = Module["_emscripten_main_thread_process_queued_calls"] = createExportWrapper("emscripten_main_thread_process_queued_calls");
 
 /** @type {function(...*):?} */
 var dynCall_vijiiiii = Module["dynCall_vijiiiii"] = createExportWrapper("dynCall_vijiiiii");
@@ -8797,8 +8693,8 @@ function checkUnflushedContent() {
   // How we flush the streams depends on whether we are in SYSCALLS_REQUIRE_FILESYSTEM=0
   // mode (which has its own special function for this; otherwise, all
   // the code is inside libc)
-  var print = out;
-  var printErr = err;
+  var oldOut = out;
+  var oldErr = err;
   var has = false;
   out = err = function(x) {
     has = true;
@@ -8818,8 +8714,8 @@ function checkUnflushedContent() {
       }
     });
   } catch(e) {}
-  out = print;
-  err = printErr;
+  out = oldOut;
+  err = oldErr;
   if (has) {
     warnOnce('stdio streams had content in them that was not flushed. you should set EXIT_RUNTIME to 1 (see the FAQ), or make sure to emit a newline when you printf etc.');
   }
@@ -8869,7 +8765,7 @@ var shouldRunNow = true;
 
 if (Module['noInitialRun']) shouldRunNow = false;
 
-  noExitRuntime = true;
+noExitRuntime = true;
 
 run();
 
