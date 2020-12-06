@@ -295,8 +295,10 @@ namespace yourgame
         return yourgame_internal_android::logger;
     }
 
-    // do nothing. we do not exit the app manually
-    void notifyShutdown() {}
+    void notifyShutdown()
+    {
+        ANativeActivity_finish(yourgame_internal_android::_app->activity);
+    }
 
     int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
     {

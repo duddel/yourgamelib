@@ -237,6 +237,7 @@ namespace yourgame
 
         auto shapes = objRdr.GetShapes();
         auto attribs = objRdr.GetAttrib();
+        auto materials = objRdr.GetMaterials();
 
         std::vector<GLuint> objIdxData;
         std::vector<GLfloat> objPosData;
@@ -254,7 +255,8 @@ namespace yourgame
             // move over shape indices and make vertices unique
             // assuming: positions and colors are always available
             // todo: check if assumptions below are valid (number of attrib values per vertex)
-            // todo: improve performance
+            // todo: split loadGeometry() into variants with/without using materials
+            GLuint shapeMeshReadIdx = 0U;
             for (auto const &idx : shape.mesh.indices)
             {
                 auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
@@ -266,9 +268,24 @@ namespace yourgame
                         objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3));
                         objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 1));
                         objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 2));
-                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3));
-                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 1));
-                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 2));
+                        // assuming all faces are triangles (objRdrCfg.triangulate is set above),
+                        // get the material id for that face.
+                        // if no valid material is assigned, the material id is -1
+                        auto materialId = shape.mesh.material_ids.at(shapeMeshReadIdx / 3);
+                        // set material diffuse color as vertex color, if available...
+                        if (materialId > -1 && materialId < materials.size())
+                        {
+                            objColordData.push_back((GLfloat)materials.at(materialId).diffuse[0]);
+                            objColordData.push_back((GLfloat)materials.at(materialId).diffuse[1]);
+                            objColordData.push_back((GLfloat)materials.at(materialId).diffuse[2]);
+                        }
+                        else
+                        {
+                            //... otherwise, use parsed vertex color
+                            objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3));
+                            objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 1));
+                            objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 2));
+                        }
                         if (attribs.normals.size() > 0)
                         {
                             objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3));
@@ -293,6 +310,7 @@ namespace yourgame
                 {
                     objIdxData.push_back((GLuint)(mapRet.first->second));
                 }
+                shapeMeshReadIdx++;
             }
         }
 
