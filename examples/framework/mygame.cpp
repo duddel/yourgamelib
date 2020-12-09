@@ -18,6 +18,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <cmath>
+#include <string>
 #include <vector>
 #include <map>
 #include "yourgame/gl_include.h"
@@ -47,23 +48,21 @@ namespace mygame
         float v;
     };
 
-    namespace
-    {
-        void loadObj();
-        void initGlScene();
-        void updateImgui(const yourgame::context &ctx);
+    // forward declarations
+    void updateImgui(const yourgame::context &ctx);
 
-        // GL scene
-        double g_fade = 0.0;
-        float g_modelScale = 0.025f;
-        float g_rotation = 0.01f;
-        bool g_rotationOn = true;
-        ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
-        yourgame::Trafo g_modelTrafo;
-        yourgame::Camera g_camera;
-        yourgame::GLGeometry *g_geo = nullptr;
-        yourgame::GLShader *g_shaderNormal = nullptr;
-    } // namespace
+    // GL scene
+    float g_modelScale = 0.025f;
+    float g_rotation = 0.01f;
+    bool g_rotationOn = true;
+    ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
+    yourgame::Trafo g_modelTrafo;
+    yourgame::Camera g_camera;
+    std::map<std::string, yourgame::GLGeometry *> g_geos;
+    std::string g_geoName = "ship_dark";
+    yourgame::GLShader *g_shaderNormal = nullptr;
+    yourgame::GLShader *g_shaderColor = nullptr;
+    int g_shaderToUse = 0; // 0: color shader, 1: normal shader
 
     void init(const yourgame::context &ctx)
     {
@@ -72,7 +71,33 @@ namespace mygame
                                  glm::vec3(0.0f, 1.0f, 0.0f));
         g_camera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 10.0f);
 
-        initGlScene();
+        glEnable(GL_DEPTH_TEST);
+
+        // Normal shader
+        g_shaderNormal = yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+            {{GL_VERTEX_SHADER, "simple.es.vert"},
+             {GL_FRAGMENT_SHADER, "simplenormal.es.frag"}},
+#else
+            {{GL_VERTEX_SHADER, "simple.vert"},
+             {GL_FRAGMENT_SHADER, "simplenormal.frag"}},
+#endif
+            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+             {yourgame::attrLocNormal, yourgame::attrNameNormal}},
+            {{0, "color"}});
+
+        // Color shader
+        g_shaderColor = yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+            {{GL_VERTEX_SHADER, "simple.es.vert"},
+             {GL_FRAGMENT_SHADER, "simplecolor.es.frag"}},
+#else
+            {{GL_VERTEX_SHADER, "simple.vert"},
+             {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
+#endif
+            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+             {yourgame::attrLocColor, yourgame::attrNameColor}},
+            {{0, "color"}});
 
         // arbitrary test command
         yourgame::sendCmdToEnv(1, 10, 1024, -15);
@@ -91,7 +116,6 @@ namespace mygame
         {
             g_modelTrafo.rotateLocal(g_rotation, yourgame::Trafo::AXIS::Y);
         }
-        g_fade += (3.0 * ctx.deltaTimeS);
 
         if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
         {
@@ -101,29 +125,45 @@ namespace mygame
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        updateImgui(ctx);
-
         g_camera.setAspect(ctx.winAspectRatio);
         glViewport(0, 0, ctx.winWidth, ctx.winHeight);
-
-        float sineFade = (float)((sin(g_fade) * 0.5) + 0.5);
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
         auto modelMat = g_modelTrafo.mat();
         auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
 
-        if (g_shaderNormal)
+        if (g_shaderToUse == 0)
         {
-            g_shaderNormal->useProgram();
-            glUniform1f(g_shaderNormal->getUniformLocation("fade"), sineFade);
-            glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-            glUniformMatrix3fv(g_shaderNormal->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+            if (g_shaderColor)
+            {
+                g_shaderColor->useProgram();
+                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_shaderColor->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+            }
+        }
+        else
+        {
+            if (g_shaderNormal)
+            {
+                g_shaderNormal->useProgram();
+                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_shaderNormal->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+            }
+        }
+
+        // load geometry on demand
+        if (g_geos.find(g_geoName) == g_geos.end())
+        {
+            g_geos[g_geoName] = yourgame::loadGeometry(std::string(g_geoName + ".obj").c_str(), std::string(g_geoName + ".mtl").c_str());
         }
 
         // the actual draw call
-        g_geo->drawAll();
+        g_geos[g_geoName]->drawAll();
+
+        updateImgui(ctx);
     }
 
     void shutdown(const yourgame::context &ctx)
@@ -134,544 +174,547 @@ namespace mygame
         }
     }
 
-    namespace
+    void updateImgui(const yourgame::context &ctx)
     {
-        void initGlScene()
-        {
-            glEnable(GL_DEPTH_TEST);
-            g_geo = yourgame::loadGeometry("ship_dark.obj", nullptr);
+        static bool showDemoAudio = false;
+        static bool showDemoGl = true;
+        static bool showLicense = false;
+        static bool showImguiDemo = false;
+        static bool showSaveFile = false;
+        static bool showBox2d = false;
+        static bool showFlecs = false;
+        static bool showLua = false;
+        static bool showChoreograph = false;
+        static bool showSpriteGrid = false;
 
-            // Normal shader
-            g_shaderNormal = yourgame::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                {{GL_VERTEX_SHADER, "simple.vert.es"},
-                 {GL_FRAGMENT_SHADER, "normal.frag.es"}},
-#else
-                {{GL_VERTEX_SHADER, "simple.vert"},
-                 {GL_FRAGMENT_SHADER, "normal.frag"}},
-#endif
-                {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-                 {yourgame::attrLocNormal, yourgame::attrNameNormal},
-                 {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
-                {{0, "color"}});
+        // Main Menu Bar
+        if (ImGui::BeginMainMenuBar())
+        {
+            if (ImGui::BeginMenu("File"))
+            {
+                if (ImGui::MenuItem("Exit"))
+                {
+                    yourgame::notifyShutdown();
+                }
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Demo"))
+            {
+                if (ImGui::MenuItem("GL", "", &showDemoGl))
+                {
+                    showDemoGl = true;
+                }
+                if (ImGui::MenuItem("Audio", "", &showDemoAudio))
+                {
+                    showDemoAudio = true;
+                }
+                if (ImGui::MenuItem("Imgui", "", &showImguiDemo))
+                {
+                    showImguiDemo = true;
+                }
+                if (ImGui::MenuItem("Save file", "", &showSaveFile))
+                {
+                    showSaveFile = true;
+                }
+                if (ImGui::MenuItem("Box2D", "", &showBox2d))
+                {
+                    showBox2d = true;
+                }
+                if (ImGui::MenuItem("Flecs", "", &showFlecs))
+                {
+                    showFlecs = true;
+                }
+                if (ImGui::MenuItem("Lua", "", &showLua))
+                {
+                    showLua = true;
+                }
+                if (ImGui::MenuItem("Choreograph", "", &showChoreograph))
+                {
+                    showChoreograph = true;
+                }
+                if (ImGui::MenuItem("SpriteGrid", "", &showSpriteGrid))
+                {
+                    showSpriteGrid = true;
+                }
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("License"))
+                {
+                    showLicense = true;
+                }
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
         }
 
-        void updateImgui(const yourgame::context &ctx)
+        // Imgui demo window
+        if (showImguiDemo)
         {
-            static bool showDemoAudio = false;
-            static bool showDemoGl = true;
-            static bool showLicense = false;
-            static bool showImguiDemo = false;
-            static bool showSaveFile = false;
-            static bool showBox2d = false;
-            static bool showFlecs = false;
-            static bool showLua = false;
-            static bool showChoreograph = false;
-            static bool showSpriteGrid = false;
+            ImGui::ShowDemoWindow(&showImguiDemo);
+        }
 
-            // Main Menu Bar
-            if (ImGui::BeginMainMenuBar())
+        // GL demo window
+        if (showDemoGl)
+        {
+            ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
+
+            // geometry
+            const char *geoNames[] = {"pirate_officer",
+                                      "ship_dark",
+                                      "tower",
+                                      "presentGreen",
+                                      "snowmanFancy",
+                                      "treePineSnow"};
+
+            static int geoId = 1;
+            int numGeos = sizeof(geoNames) / sizeof(geoNames[0]);
+            ImGui::ListBox("geometry", &geoId, geoNames, numGeos, numGeos);
+            g_geoName = geoNames[geoId];
+
+            // manually adjust model scale
+            static int geoIdLast = -1;
+            if (geoId != geoIdLast)
             {
-                if (ImGui::BeginMenu("File"))
-                {
-                    if (ImGui::MenuItem("Exit"))
-                    {
-                        yourgame::notifyShutdown();
-                    }
-                    ImGui::EndMenu();
-                }
-                if (ImGui::BeginMenu("Demo"))
-                {
-                    if (ImGui::MenuItem("GL", "", &showDemoGl))
-                    {
-                        showDemoGl = true;
-                    }
-                    if (ImGui::MenuItem("Audio", "", &showDemoAudio))
-                    {
-                        showDemoAudio = true;
-                    }
-                    if (ImGui::MenuItem("Imgui", "", &showImguiDemo))
-                    {
-                        showImguiDemo = true;
-                    }
-                    if (ImGui::MenuItem("Save file", "", &showSaveFile))
-                    {
-                        showSaveFile = true;
-                    }
-                    if (ImGui::MenuItem("Box2D", "", &showBox2d))
-                    {
-                        showBox2d = true;
-                    }
-                    if (ImGui::MenuItem("Flecs", "", &showFlecs))
-                    {
-                        showFlecs = true;
-                    }
-                    if (ImGui::MenuItem("Lua", "", &showLua))
-                    {
-                        showLua = true;
-                    }
-                    if (ImGui::MenuItem("Choreograph", "", &showChoreograph))
-                    {
-                        showChoreograph = true;
-                    }
-                    if (ImGui::MenuItem("SpriteGrid", "", &showSpriteGrid))
-                    {
-                        showSpriteGrid = true;
-                    }
-                    ImGui::EndMenu();
-                }
-                if (ImGui::BeginMenu("Help"))
-                {
-                    if (ImGui::MenuItem("License"))
-                    {
-                        showLicense = true;
-                    }
-                    ImGui::EndMenu();
-                }
-                ImGui::EndMainMenuBar();
+                g_modelScale = geoId > 2 ? 1.0f : 0.035f;
+                geoIdLast = geoId;
             }
 
-            // Imgui demo window
-            if (showImguiDemo)
+            // model scale
+            ImGui::InputFloat("model scale", &g_modelScale, 0.001f, 100.0f, "%.3f");
+
+            // rotation
+            ImGui::Checkbox("", &g_rotationOn);
+            ImGui::SameLine();
+            ImGui::SliderFloat("rotation", &g_rotation, -0.1f, 0.1f);
+
+            // shader
+            ImGui::RadioButton("color shader", &g_shaderToUse, 0);
+            ImGui::SameLine();
+            ImGui::RadioButton("normal shader", &g_shaderToUse, 1);
+
+            // camera manipulation
+            static int projMode = 0;
+            ImGui::RadioButton("perspective", &projMode, 0);
+            ImGui::SameLine();
+            ImGui::RadioButton("orthographic", &projMode, 1);
+
+            if (projMode == 0)
             {
-                ImGui::ShowDemoWindow(&showImguiDemo);
+                static float f1 = 75.0f;
+                static float f2 = 0.1f;
+                static float f3 = 10.0f;
+                ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
+                ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
+                g_camera.setPerspective(f1, ctx.winAspectRatio, f2, f3);
+            }
+            else
+            {
+                static float f1 = 5.0f;
+                static float f2 = 0.0f;
+                static float f3 = 10.0f;
+                ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
+                ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
+                g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
             }
 
-            // GL demo window
-            if (showDemoGl)
+            ImGui::End();
+
+            // Audio demo window
+            if (showDemoAudio)
             {
-                ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-                ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
+                const int numAudioSources = 5;
 
-                // rotation
-                ImGui::Checkbox("", &g_rotationOn);
-                ImGui::SameLine();
-                ImGui::SliderFloat("rotation", &g_rotation, -0.1f, 0.1f);
-
-                // model scale
-                ImGui::InputFloat("model scale", &g_modelScale, 0.001f, 100.0f, "%.3f");
-
-                // camera manipulation
-                static int projMode = 0;
-                ImGui::RadioButton("perspective", &projMode, 0);
-                ImGui::SameLine();
-                ImGui::RadioButton("orthographic", &projMode, 1);
-
-                if (projMode == 0)
+                if (!yourgame::audioIsInitialized())
                 {
-                    static float f1 = 75.0f;
-                    static float f2 = 0.1f;
-                    static float f3 = 10.0f;
-                    ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
-                    ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
-                    g_camera.setPerspective(f1, ctx.winAspectRatio, f2, f3);
-                }
-                else
-                {
-                    static float f1 = 5.0f;
-                    static float f2 = 0.0f;
-                    static float f3 = 10.0f;
-                    ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
-                    ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
-                    g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
+                    yourgame::audioInit(2, 44100, numAudioSources);
+                    yourgame::audioStoreFile("jingles_SAX07_mono_11025.ogg");
+                    yourgame::audioStoreFile("jingles_PIZZI00.ogg");
                 }
 
-                ImGui::End();
-
-                // Audio demo window
-                if (showDemoAudio)
+                ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+                if (ImGui::Button("Play"))
                 {
-                    const int numAudioSources = 5;
+                    yourgame::audioPlay("jingles_PIZZI00.ogg");
+                }
+                ImGui::SameLine();
 
-                    if (!yourgame::audioIsInitialized())
-                    {
-                        yourgame::audioInit(2, 44100, numAudioSources);
-                        yourgame::audioStoreFile("jingles_SAX07_mono_11025.ogg");
-                        yourgame::audioStoreFile("jingles_PIZZI00.ogg");
-                    }
+                if (ImGui::Button("Play Loop"))
+                {
+                    yourgame::audioPlay("jingles_SAX07_mono_11025.ogg", true);
+                }
 
-                    ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-                    if (ImGui::Button("Play"))
-                    {
-                        yourgame::audioPlay("jingles_PIZZI00.ogg");
-                    }
+                static float audioBalance[numAudioSources] = {0.0f};
+                static bool audioPause[numAudioSources] = {false};
+                // manipulate source
+                for (int i = 0; i < numAudioSources; i++)
+                {
+                    // gain slider
+                    ImGui::SliderFloat(("balance " + std::to_string(i)).c_str(), &audioBalance[i], -1.0f, 1.0f);
+                    yourgame::audioSetChannelGains(i,
+                                                   {std::fmin(1.0f - audioBalance[i], 1.0f),
+                                                    std::fmin(1.0f + audioBalance[i], 1.0f)});
                     ImGui::SameLine();
 
-                    if (ImGui::Button("Play Loop"))
+                    // pause/unpause
+                    ImGui::Checkbox(("pause " + std::to_string(i)).c_str(), &audioPause[i]);
+                    yourgame::audioPause(i, audioPause[i]);
+                    ImGui::SameLine();
+
+                    // stop
+                    if (ImGui::Button(("stop " + std::to_string(i)).c_str()))
                     {
-                        yourgame::audioPlay("jingles_SAX07_mono_11025.ogg", true);
-                    }
-
-                    static float audioBalance[numAudioSources] = {0.0f};
-                    static bool audioPause[numAudioSources] = {false};
-                    // manipulate source
-                    for (int i = 0; i < numAudioSources; i++)
-                    {
-                        // gain slider
-                        ImGui::SliderFloat(("balance " + std::to_string(i)).c_str(), &audioBalance[i], -1.0f, 1.0f);
-                        yourgame::audioSetChannelGains(i,
-                                                       {std::fmin(1.0f - audioBalance[i], 1.0f),
-                                                        std::fmin(1.0f + audioBalance[i], 1.0f)});
-                        ImGui::SameLine();
-
-                        // pause/unpause
-                        ImGui::Checkbox(("pause " + std::to_string(i)).c_str(), &audioPause[i]);
-                        yourgame::audioPause(i, audioPause[i]);
-                        ImGui::SameLine();
-
-                        // stop
-                        if (ImGui::Button(("stop " + std::to_string(i)).c_str()))
-                        {
-                            yourgame::audioStop(i);
-                        }
-                    }
-
-                    ImGui::End();
-                }
-                else if (yourgame::audioIsInitialized())
-                {
-                    yourgame::audioShutdown();
-                }
-            }
-
-            // save file demo window
-            if (showSaveFile)
-            {
-                static int testValue = 0;
-
-                ImGui::Begin("Save file", &showSaveFile, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-                if (ImGui::Button("load"))
-                {
-                    std::vector<uint8_t> fileData;
-                    // try to read save file
-                    if (!yourgame::readSaveFile("testValue.bin", fileData))
-                    {
-                        testValue = *((int *)fileData.data());
+                        yourgame::audioStop(i);
                     }
                 }
-                ImGui::SameLine();
-
-                if (ImGui::Button("save"))
-                {
-                    yourgame::writeSaveFile("testValue.bin", &testValue, sizeof(testValue));
-                }
-
-                ImGui::SliderInt("persistent integer", &testValue, -100, 100);
-                ImGui::End();
-            }
-
-            // Box2D demo window
-            static bool box2dInitialized = false;
-            static b2World *box2dWorld;
-            if (showBox2d)
-            {
-                static b2Body *box2dDynBody;
-
-                if (!box2dInitialized)
-                {
-                    box2dWorld = new b2World(b2Vec2(0.0f, -10.0f));
-
-                    // ground body
-                    b2BodyDef box2dGroundBodyDef;
-                    box2dGroundBodyDef.position.Set(0.0f, -10.0f);
-                    b2Body *box2dGroundBody = box2dWorld->CreateBody(&box2dGroundBodyDef);
-                    b2PolygonShape box2dGroundBodyShape;
-                    box2dGroundBodyShape.SetAsBox(50.0f, 9.0f);
-                    box2dGroundBody->CreateFixture(&box2dGroundBodyShape, 0.0f);
-
-                    // dynamic box
-                    b2BodyDef box2dDynBodyDef;
-                    box2dDynBodyDef.type = b2_dynamicBody;
-                    box2dDynBodyDef.position.Set(0.0f, 8.0f);
-                    box2dDynBody = box2dWorld->CreateBody(&box2dDynBodyDef);
-                    b2PolygonShape box2dDynBodyShape;
-                    box2dDynBodyShape.SetAsBox(1.0f, 1.0f);
-                    b2FixtureDef box2dDynBodyFixtureDef;
-                    box2dDynBodyFixtureDef.shape = &box2dDynBodyShape;
-                    box2dDynBodyFixtureDef.density = 1.0f;
-                    box2dDynBodyFixtureDef.restitution = 0.75f;
-                    box2dDynBody->CreateFixture(&box2dDynBodyFixtureDef);
-
-                    box2dInitialized = true;
-                }
-
-                // simulate Box2D world
-                box2dWorld->Step(ctx.deltaTimeS, 6, 2);
-
-                // the vertical slider gets updated with box2dTestHeight every frame,
-                // indicating the height of the dropping Box2D body
-                float box2dTestHeight = (float)box2dDynBody->GetPosition().y;
-                ImGui::Begin("Box2D", &showBox2d, (ImGuiWindowFlags_NoCollapse));
-                ImGui::VSliderFloat("", ImVec2(50, 150), &box2dTestHeight, 0.0f, 10.0f);
-                ImGui::End();
-            }
-            else if (box2dInitialized)
-            {
-                delete box2dWorld;
-                box2dInitialized = false;
-            }
-
-            // Flecs demo window
-            static bool flecsInitialized = false;
-            static flecs::world *flecsWorld;
-            if (showFlecs)
-            {
-                ImGui::Begin("Flecs", &showFlecs, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-
-                if (!flecsInitialized)
-                {
-                    flecsWorld = new flecs::world();
-
-                    // register components
-                    flecsWorld->component<flecsDistance>();
-                    flecsWorld->component<flecsVelocity>();
-
-                    // add movement system
-                    flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel) {
-                        float newS = dist.s + vel.v * e.delta_time();
-                        dist.s = newS > 10.0f ? newS - 10.0f : newS;
-                    });
-
-                    // add drawing system
-                    flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist) {
-                        // indicate entity components via sliders
-                        float entityVal = dist.s;
-                        ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f);
-                    });
-
-                    // add some entities
-                    for (int i = 1; i < 11; i++)
-                    {
-                        flecsWorld->entity().set<flecsDistance>({5.0}).set<flecsVelocity>({(float)i});
-                    }
-
-                    flecsInitialized = true;
-                }
-
-                flecsWorld->progress();
 
                 ImGui::End();
             }
-            else if (flecsInitialized)
+            else if (yourgame::audioIsInitialized())
             {
-                delete flecsWorld;
-                flecsInitialized = false;
-            }
-
-            // Lua demo window
-            static bool luaInitialized = false;
-            static lua_State *luaState;
-            if (showLua)
-            {
-                static char luaSource[1024] =
-                    "function f(x)\n"
-                    "    return math.cos(x*2)\n"
-                    "end\n";
-
-                if (!luaInitialized)
-                {
-                    // create a Lua state and open standard libraries
-                    luaState = luaL_newstate();
-                    luaL_openlibs(luaState);
-                    luaL_dostring(luaState, luaSource);
-                    luaInitialized = true;
-                }
-
-                // input/output of Lua function f() that is called below
-                static float outVal = 0.0f;
-                static float inVal = 0.0f;
-                inVal = inVal > 6.28318530718f ? 0.0f : inVal + 0.02f;
-
-                // call Lua function f() and get result
-                lua_getglobal(luaState, "f");
-                lua_pushnumber(luaState, inVal);
-                lua_call(luaState, 1, 1);
-                outVal = lua_tonumber(luaState, 1);
-                lua_pop(luaState, 1);
-
-                // indicate input and output of Lua function f() with sliders
-                ImGui::Begin("Lua", &showLua, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-                ImGui::SliderFloat("x", &inVal, 0.0f, 6.28318530718f);
-                ImGui::InputTextMultiline("Lua", luaSource, IM_ARRAYSIZE(luaSource));
-                ImGui::SliderFloat("f(x)", &outVal, -1.0f, 1.0f);
-                if (ImGui::Button("Compile"))
-                {
-                    luaL_dostring(luaState, luaSource);
-                }
-                ImGui::SameLine();
-                ImGui::Text("Beware! No errors get catched!");
-                ImGui::End();
-            }
-            else if (luaInitialized)
-            {
-                lua_close(luaState);
-                luaInitialized = false;
-            }
-
-            // Choreograph demo window
-            static bool choreographInitialized = false;
-            static choreograph::Timeline *choreoTimeline;
-            static choreograph::Output<float> *choreoTarget1;
-            static choreograph::Output<float> *choreoTarget2;
-            static choreograph::Output<float> *choreoTarget3;
-            if (showChoreograph)
-            {
-                if (!choreographInitialized)
-                {
-                    choreoTimeline = new choreograph::Timeline();
-                    choreoTarget1 = new choreograph::Output<float>();
-                    choreoTarget2 = new choreograph::Output<float>();
-                    choreoTarget3 = new choreograph::Output<float>();
-                    choreograph::PhraseRef<float> choreoPhrase1 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseNone());
-                    choreograph::PhraseRef<float> choreoPhrase2 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutQuad());
-                    choreograph::PhraseRef<float> choreoPhrase3 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutExpo());
-                    choreoTimeline->apply(choreoTarget1).then(choreograph::makePingPong(choreoPhrase1, 10.0f));
-                    choreoTimeline->apply(choreoTarget2).then(choreograph::makePingPong(choreoPhrase2, 10.0f));
-                    choreoTimeline->apply(choreoTarget3).then(choreograph::makePingPong(choreoPhrase3, 10.0f));
-
-                    choreographInitialized = true;
-                }
-
-                choreoTimeline->step(ctx.deltaTimeS);
-
-                ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-                ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);
-                ImGui::SliderFloat("quad", choreoTarget2->valuePtr(), -5.0f, 10.0f);
-                ImGui::SliderFloat("expo", choreoTarget3->valuePtr(), -5.0f, 10.0f);
-                ImGui::End();
-            }
-            else if (choreographInitialized)
-            {
-                delete choreoTimeline;
-                delete choreoTarget1;
-                delete choreoTarget2;
-                delete choreoTarget3;
-                choreographInitialized = false;
-            }
-
-            // SpriteGrid demo window
-            static bool spriteGridInitialized = false;
-            static yourgame::GLTextureAtlas *spriteGridAtlas;
-            static yourgame::GLSpriteGrid *spriteGrid;
-            static yourgame::GLShader *spriteGridSimpleTexShader;
-            static yourgame::Trafo *spriteGridTrafo;
-            if (showSpriteGrid)
-            {
-                static const int tilesWide = 48; // match kenney_1bitpack_colored_packed.png
-                static const int tilesHigh = 22; // match kenney_1bitpack_colored_packed.png
-                static const int maxNumTiles = tilesWide * tilesHigh;
-                if (!spriteGridInitialized)
-                {
-                    spriteGridAtlas = yourgame::loadTextureAtlasGrid("kenney_1bitpack_colored_packed.png",
-                                                                     tilesWide,
-                                                                     tilesHigh,
-                                                                     GL_TEXTURE0,
-                                                                     GL_NEAREST,
-                                                                     false);
-                    spriteGrid = new yourgame::GLSpriteGrid();
-                    spriteGridTrafo = new yourgame::Trafo();
-                    spriteGridSimpleTexShader = yourgame::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                        {{GL_VERTEX_SHADER, "simpletex.vert.es"},
-                         {GL_FRAGMENT_SHADER, "simpletex.frag.es"}},
-#else
-                        {{GL_VERTEX_SHADER, "simpletex.vert"},
-                         {GL_FRAGMENT_SHADER, "simpletex.frag"}},
-#endif
-                        {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-                         {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
-                        {{0, "color"}});
-                    spriteGridSimpleTexShader->useProgram();
-                    glUniform1i(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameTexture0), 0);
-                    spriteGridInitialized = true;
-                }
-
-                static int startTile = 0;
-                static int numTiles = maxNumTiles;
-                static float xOffset = 0.0f;
-                static float yOffset = 0.0f;
-                static int texFilterLast = 0;
-                static int texFilter = 0;
-                static bool moveGrid = false;
-                ImGui::Begin("SpriteGrid", &showSpriteGrid, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-                ImGui::SliderInt("start tile", &startTile, 0, maxNumTiles - 1);
-                numTiles = (numTiles > maxNumTiles - startTile) ? (maxNumTiles - startTile) : numTiles;
-                ImGui::SliderInt("num tiles", &numTiles, 1, maxNumTiles - startTile);
-                ImGui::InputFloat("x offset 0.1", &xOffset, 0.1f, 0.5f, 3);
-                ImGui::InputFloat("y offset 0.1", &yOffset, 0.1f, 0.5f, 3);
-                ImGui::InputFloat("x offset 1.0", &xOffset, 1.0f, 1.0f, 3);
-                ImGui::InputFloat("y offset 1.0", &yOffset, 1.0f, 1.0f, 3);
-                ImGui::RadioButton("GL_NEAREST", &texFilter, 0);
-                ImGui::SameLine();
-                ImGui::RadioButton("GL_LINEAR", &texFilter, 1);
-                ImGui::Checkbox("move", &moveGrid);
-                if (moveGrid)
-                {
-                    xOffset += 2.0f;
-                    yOffset -= 1.0f;
-                }
-                ImGui::End();
-
-                // reconstruct the grid
-                std::vector<std::string> tiles;
-                for (int i = startTile; i < (startTile + numTiles); i++)
-                {
-                    tiles.push_back(std::to_string(i));
-                }
-                spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
-
-                // gl drawing
-                spriteGridTrafo->pointTo({0.0f + xOffset, (float)ctx.winHeight + yOffset, 0.0f},
-                                         {0.0f + xOffset, (float)ctx.winHeight + yOffset, 1.0f},
-                                         {0.0f, 1.0f, 0.0f});
-                auto pMat = glm::ortho(0.0f, (float)ctx.winWidth, 0.0f, (float)ctx.winHeight, 1.0f, -1.0f);
-                auto mvp = pMat * spriteGridTrafo->mat();
-                spriteGridSimpleTexShader->useProgram();
-                glUniformMatrix4fv(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                spriteGridAtlas->texture(0)->bind();
-                if (texFilter != texFilterLast) // change texture mode filter if requested
-                {
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
-                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
-                    texFilterLast = texFilter;
-                }
-                spriteGrid->geo()->drawAll();
-            }
-            else if (spriteGridInitialized)
-            {
-                delete spriteGridAtlas;
-                delete spriteGrid;
-                delete spriteGridSimpleTexShader;
-                delete spriteGridTrafo;
-                spriteGridInitialized = false;
-            }
-
-            // license window
-            if (showLicense)
-            {
-#if defined(YOURGAME_PLATFORM_DESKTOP)
-                static const char licFilename[] = "LICENSE_desktop.txt";
-#elif defined(YOURGAME_PLATFORM_ANDROID)
-                static const char licFilename[] = "LICENSE_android.txt";
-#elif defined(YOURGAME_PLATFORM_WEB)
-                static const char licFilename[] = "LICENSE_web.txt";
-#endif
-
-                std::vector<uint8_t> licFileData;
-                yourgame::readAssetFile(licFilename, licFileData);
-                std::string licStr(licFileData.begin(), licFileData.end());
-                ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
-                                                           (float)(ctx.winHeight) * 0.5f),
-                                                    ImVec2((float)(ctx.winWidth),
-                                                           (float)(ctx.winHeight)));
-                ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
-                /* The following procedure allows displaying long wrapped text,
-                whereas ImGui::TextWrapped() has a size limit and cuts the content. */
-                ImGui::PushTextWrapPos(0.0f);
-                ImGui::TextUnformatted(licStr.c_str());
-                ImGui::PopTextWrapPos();
-                ImGui::End();
+                yourgame::audioShutdown();
             }
         }
-    } // namespace
+
+        // save file demo window
+        if (showSaveFile)
+        {
+            static int testValue = 0;
+
+            ImGui::Begin("Save file", &showSaveFile, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            if (ImGui::Button("load"))
+            {
+                std::vector<uint8_t> fileData;
+                // try to read save file
+                if (!yourgame::readSaveFile("testValue.bin", fileData))
+                {
+                    testValue = *((int *)fileData.data());
+                }
+            }
+            ImGui::SameLine();
+
+            if (ImGui::Button("save"))
+            {
+                yourgame::writeSaveFile("testValue.bin", &testValue, sizeof(testValue));
+            }
+
+            ImGui::SliderInt("persistent integer", &testValue, -100, 100);
+            ImGui::End();
+        }
+
+        // Box2D demo window
+        static bool box2dInitialized = false;
+        static b2World *box2dWorld;
+        if (showBox2d)
+        {
+            static b2Body *box2dDynBody;
+
+            if (!box2dInitialized)
+            {
+                box2dWorld = new b2World(b2Vec2(0.0f, -10.0f));
+
+                // ground body
+                b2BodyDef box2dGroundBodyDef;
+                box2dGroundBodyDef.position.Set(0.0f, -10.0f);
+                b2Body *box2dGroundBody = box2dWorld->CreateBody(&box2dGroundBodyDef);
+                b2PolygonShape box2dGroundBodyShape;
+                box2dGroundBodyShape.SetAsBox(50.0f, 9.0f);
+                box2dGroundBody->CreateFixture(&box2dGroundBodyShape, 0.0f);
+
+                // dynamic box
+                b2BodyDef box2dDynBodyDef;
+                box2dDynBodyDef.type = b2_dynamicBody;
+                box2dDynBodyDef.position.Set(0.0f, 8.0f);
+                box2dDynBody = box2dWorld->CreateBody(&box2dDynBodyDef);
+                b2PolygonShape box2dDynBodyShape;
+                box2dDynBodyShape.SetAsBox(1.0f, 1.0f);
+                b2FixtureDef box2dDynBodyFixtureDef;
+                box2dDynBodyFixtureDef.shape = &box2dDynBodyShape;
+                box2dDynBodyFixtureDef.density = 1.0f;
+                box2dDynBodyFixtureDef.restitution = 0.75f;
+                box2dDynBody->CreateFixture(&box2dDynBodyFixtureDef);
+
+                box2dInitialized = true;
+            }
+
+            // simulate Box2D world
+            box2dWorld->Step(ctx.deltaTimeS, 6, 2);
+
+            // the vertical slider gets updated with box2dTestHeight every frame,
+            // indicating the height of the dropping Box2D body
+            float box2dTestHeight = (float)box2dDynBody->GetPosition().y;
+            ImGui::Begin("Box2D", &showBox2d, (ImGuiWindowFlags_NoCollapse));
+            ImGui::VSliderFloat("", ImVec2(50, 150), &box2dTestHeight, 0.0f, 10.0f);
+            ImGui::End();
+        }
+        else if (box2dInitialized)
+        {
+            delete box2dWorld;
+            box2dInitialized = false;
+        }
+
+        // Flecs demo window
+        static bool flecsInitialized = false;
+        static flecs::world *flecsWorld;
+        if (showFlecs)
+        {
+            ImGui::Begin("Flecs", &showFlecs, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+
+            if (!flecsInitialized)
+            {
+                flecsWorld = new flecs::world();
+
+                // register components
+                flecsWorld->component<flecsDistance>();
+                flecsWorld->component<flecsVelocity>();
+
+                // add movement system
+                flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel) {
+                    float newS = dist.s + vel.v * e.delta_time();
+                    dist.s = newS > 10.0f ? newS - 10.0f : newS;
+                });
+
+                // add drawing system
+                flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist) {
+                    // indicate entity components via sliders
+                    float entityVal = dist.s;
+                    ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f);
+                });
+
+                // add some entities
+                for (int i = 1; i < 11; i++)
+                {
+                    flecsWorld->entity().set<flecsDistance>({5.0}).set<flecsVelocity>({(float)i});
+                }
+
+                flecsInitialized = true;
+            }
+
+            flecsWorld->progress();
+
+            ImGui::End();
+        }
+        else if (flecsInitialized)
+        {
+            delete flecsWorld;
+            flecsInitialized = false;
+        }
+
+        // Lua demo window
+        static bool luaInitialized = false;
+        static lua_State *luaState;
+        if (showLua)
+        {
+            static char luaSource[1024] =
+                "function f(x)\n"
+                "    return math.cos(x*2)\n"
+                "end\n";
+
+            if (!luaInitialized)
+            {
+                // create a Lua state and open standard libraries
+                luaState = luaL_newstate();
+                luaL_openlibs(luaState);
+                luaL_dostring(luaState, luaSource);
+                luaInitialized = true;
+            }
+
+            // input/output of Lua function f() that is called below
+            static float outVal = 0.0f;
+            static float inVal = 0.0f;
+            inVal = inVal > 6.28318530718f ? 0.0f : inVal + 0.02f;
+
+            // call Lua function f() and get result
+            lua_getglobal(luaState, "f");
+            lua_pushnumber(luaState, inVal);
+            lua_call(luaState, 1, 1);
+            outVal = lua_tonumber(luaState, 1);
+            lua_pop(luaState, 1);
+
+            // indicate input and output of Lua function f() with sliders
+            ImGui::Begin("Lua", &showLua, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            ImGui::SliderFloat("x", &inVal, 0.0f, 6.28318530718f);
+            ImGui::InputTextMultiline("Lua", luaSource, IM_ARRAYSIZE(luaSource));
+            ImGui::SliderFloat("f(x)", &outVal, -1.0f, 1.0f);
+            if (ImGui::Button("Compile"))
+            {
+                luaL_dostring(luaState, luaSource);
+            }
+            ImGui::SameLine();
+            ImGui::Text("Beware! No errors get catched!");
+            ImGui::End();
+        }
+        else if (luaInitialized)
+        {
+            lua_close(luaState);
+            luaInitialized = false;
+        }
+
+        // Choreograph demo window
+        static bool choreographInitialized = false;
+        static choreograph::Timeline *choreoTimeline;
+        static choreograph::Output<float> *choreoTarget1;
+        static choreograph::Output<float> *choreoTarget2;
+        static choreograph::Output<float> *choreoTarget3;
+        if (showChoreograph)
+        {
+            if (!choreographInitialized)
+            {
+                choreoTimeline = new choreograph::Timeline();
+                choreoTarget1 = new choreograph::Output<float>();
+                choreoTarget2 = new choreograph::Output<float>();
+                choreoTarget3 = new choreograph::Output<float>();
+                choreograph::PhraseRef<float> choreoPhrase1 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseNone());
+                choreograph::PhraseRef<float> choreoPhrase2 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutQuad());
+                choreograph::PhraseRef<float> choreoPhrase3 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutExpo());
+                choreoTimeline->apply(choreoTarget1).then(choreograph::makePingPong(choreoPhrase1, 10.0f));
+                choreoTimeline->apply(choreoTarget2).then(choreograph::makePingPong(choreoPhrase2, 10.0f));
+                choreoTimeline->apply(choreoTarget3).then(choreograph::makePingPong(choreoPhrase3, 10.0f));
+
+                choreographInitialized = true;
+            }
+
+            choreoTimeline->step(ctx.deltaTimeS);
+
+            ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);
+            ImGui::SliderFloat("quad", choreoTarget2->valuePtr(), -5.0f, 10.0f);
+            ImGui::SliderFloat("expo", choreoTarget3->valuePtr(), -5.0f, 10.0f);
+            ImGui::End();
+        }
+        else if (choreographInitialized)
+        {
+            delete choreoTimeline;
+            delete choreoTarget1;
+            delete choreoTarget2;
+            delete choreoTarget3;
+            choreographInitialized = false;
+        }
+
+        // SpriteGrid demo window
+        static bool spriteGridInitialized = false;
+        static yourgame::GLTextureAtlas *spriteGridAtlas;
+        static yourgame::GLSpriteGrid *spriteGrid;
+        static yourgame::GLShader *spriteGridSimpleTexShader;
+        static yourgame::Trafo *spriteGridTrafo;
+        if (showSpriteGrid)
+        {
+            static const int tilesWide = 48; // match kenney_1bitpack_colored_packed.png
+            static const int tilesHigh = 22; // match kenney_1bitpack_colored_packed.png
+            static const int maxNumTiles = tilesWide * tilesHigh;
+            if (!spriteGridInitialized)
+            {
+                spriteGridAtlas = yourgame::loadTextureAtlasGrid("kenney_1bitpack_colored_packed.png",
+                                                                 tilesWide,
+                                                                 tilesHigh,
+                                                                 GL_TEXTURE0,
+                                                                 GL_NEAREST,
+                                                                 false);
+                spriteGrid = new yourgame::GLSpriteGrid();
+                spriteGridTrafo = new yourgame::Trafo();
+                spriteGridSimpleTexShader = yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+                    {{GL_VERTEX_SHADER, "simple.es.vert"},
+                     {GL_FRAGMENT_SHADER, "simpletex.es.frag"}},
+#else
+                    {{GL_VERTEX_SHADER, "simple.vert"},
+                     {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+#endif
+                    {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                     {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
+                    {{0, "color"}});
+                spriteGridSimpleTexShader->useProgram();
+                glUniform1i(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameTexture0), 0);
+                spriteGridInitialized = true;
+            }
+
+            static int startTile = 0;
+            static int numTiles = maxNumTiles;
+            static float xOffset = 0.0f;
+            static float yOffset = 0.0f;
+            static int texFilterLast = 0;
+            static int texFilter = 0;
+            static bool moveGrid = false;
+            ImGui::Begin("SpriteGrid", &showSpriteGrid, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            ImGui::SliderInt("start tile", &startTile, 0, maxNumTiles - 1);
+            numTiles = (numTiles > maxNumTiles - startTile) ? (maxNumTiles - startTile) : numTiles;
+            ImGui::SliderInt("num tiles", &numTiles, 1, maxNumTiles - startTile);
+            ImGui::InputFloat("x offset 0.1", &xOffset, 0.1f, 0.5f, 3);
+            ImGui::InputFloat("y offset 0.1", &yOffset, 0.1f, 0.5f, 3);
+            ImGui::InputFloat("x offset 1.0", &xOffset, 1.0f, 1.0f, 3);
+            ImGui::InputFloat("y offset 1.0", &yOffset, 1.0f, 1.0f, 3);
+            ImGui::RadioButton("GL_NEAREST", &texFilter, 0);
+            ImGui::SameLine();
+            ImGui::RadioButton("GL_LINEAR", &texFilter, 1);
+            ImGui::Checkbox("move", &moveGrid);
+            if (moveGrid)
+            {
+                xOffset += 2.0f;
+                yOffset -= 1.0f;
+            }
+            ImGui::End();
+
+            // reconstruct the grid
+            std::vector<std::string> tiles;
+            for (int i = startTile; i < (startTile + numTiles); i++)
+            {
+                tiles.push_back(std::to_string(i));
+            }
+            spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
+
+            // gl drawing
+            spriteGridTrafo->pointTo({0.0f + xOffset, (float)ctx.winHeight + yOffset, 0.0f},
+                                     {0.0f + xOffset, (float)ctx.winHeight + yOffset, 1.0f},
+                                     {0.0f, 1.0f, 0.0f});
+            auto pMat = glm::ortho(0.0f, (float)ctx.winWidth, 0.0f, (float)ctx.winHeight, 1.0f, -1.0f);
+            auto mvp = pMat * spriteGridTrafo->mat();
+            spriteGridSimpleTexShader->useProgram();
+            glUniformMatrix4fv(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            spriteGridAtlas->texture(0)->bind();
+            if (texFilter != texFilterLast) // change texture mode filter if requested
+            {
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
+                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
+                texFilterLast = texFilter;
+            }
+            spriteGrid->geo()->drawAll();
+        }
+        else if (spriteGridInitialized)
+        {
+            delete spriteGridAtlas;
+            delete spriteGrid;
+            delete spriteGridSimpleTexShader;
+            delete spriteGridTrafo;
+            spriteGridInitialized = false;
+        }
+
+        // license window
+        if (showLicense)
+        {
+#if defined(YOURGAME_PLATFORM_DESKTOP)
+            static const char licFilename[] = "LICENSE_desktop.txt";
+#elif defined(YOURGAME_PLATFORM_ANDROID)
+            static const char licFilename[] = "LICENSE_android.txt";
+#elif defined(YOURGAME_PLATFORM_WEB)
+            static const char licFilename[] = "LICENSE_web.txt";
+#endif
+
+            std::vector<uint8_t> licFileData;
+            yourgame::readAssetFile(licFilename, licFileData);
+            std::string licStr(licFileData.begin(), licFileData.end());
+            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
+                                                       (float)(ctx.winHeight) * 0.5f),
+                                                ImVec2((float)(ctx.winWidth),
+                                                       (float)(ctx.winHeight)));
+            ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
+            /* The following procedure allows displaying long wrapped text,
+                whereas ImGui::TextWrapped() has a size limit and cuts the content. */
+            ImGui::PushTextWrapPos(0.0f);
+            ImGui::TextUnformatted(licStr.c_str());
+            ImGui::PopTextWrapPos();
+            ImGui::End();
+        }
+    }
 } // namespace mygame

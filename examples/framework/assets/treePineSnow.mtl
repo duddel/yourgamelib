@@ -1,0 +1,11 @@
+# Created by Kenney (www.kenney.nl)
+
+newmtl snow
+Kd 0.8078431 0.9921569 0.9921569
+
+newmtl leaves
+Kd 0.1607843 0.6705883 0.6196079
+
+newmtl wood
+Kd 0.8313726 0.4901961 0.282353
+

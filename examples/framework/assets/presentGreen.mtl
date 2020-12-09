@@ -1,0 +1,8 @@
+# Created by Kenney (www.kenney.nl)
+
+newmtl leaves
+Kd 0.1607843 0.6705883 0.6196079
+
+newmtl ribbon
+Kd 1 0.3254902 0.2039216
+

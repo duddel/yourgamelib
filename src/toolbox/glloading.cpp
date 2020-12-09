@@ -191,40 +191,28 @@ namespace yourgame
 
     GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename)
     {
-        // load obj and mtl files from assets...
-        std::vector<uint8_t> objData;
-        std::vector<uint8_t> mtlData;
+        yourgame::logd("loading geometry %v...", objFilename);
 
+        std::vector<uint8_t> objData;
         if (yourgame::readAssetFile(objFilename, objData))
         {
             yourgame::loge("loadGeometry(): failed to load obj file %v", objFilename);
             return nullptr;
         }
+        std::string objStr(objData.begin(), objData.end());
 
+        std::string mtlStr = "";
         if (mtlFilename)
         {
+            std::vector<uint8_t> mtlData;
             if (yourgame::readAssetFile(mtlFilename, mtlData))
             {
                 yourgame::loge("loadGeometry(): failed to load mtl file %v", mtlFilename);
                 return nullptr;
             }
-        }
-
-        std::string objStr(objData.begin(), objData.end());
-        std::string mtlStr;
-        if (mtlFilename)
-        {
             mtlStr = std::string(mtlData.begin(), mtlData.end());
         }
-        else
-        {
-            mtlStr = "";
-        }
 
-        // parse obj file...
-        // triangulate faces and load vertex colors.
-        // colors (or default colors) are always written,
-        // even if no or not all colors are defined in obj
         tinyobj::ObjReader objRdr;
         tinyobj::ObjReaderConfig objRdrCfg;
         objRdrCfg.triangulate = true;
@@ -239,27 +227,38 @@ namespace yourgame
         auto attribs = objRdr.GetAttrib();
         auto materials = objRdr.GetMaterials();
 
+        yourgame::logd("%v shape(s)", shapes.size());
+        yourgame::logd("%v material(s)", materials.size());
+
         std::vector<GLuint> objIdxData;
         std::vector<GLfloat> objPosData;
         std::vector<GLfloat> objNormalData;
         std::vector<GLfloat> objTexCoordData;
         std::vector<GLfloat> objColordData;
 
-        std::map<std::array<int, 3>, int> uniqueIdxMap;
+        // each mesh index (here: 3 of them form a triangle (face)), references:
+        //   (1) vertex position (and color),
+        //   (2) normal,
+        //   (3) texture coordinates and
+        //   (4) meterial index (of the face),
+        // that are parsed separately.
+        // uniqueIdxMap is used to track unique combinations of (1-4)
+        std::map<std::array<int, 4>, int> uniqueIdxMap;
         GLuint uniqueVertCount = 0U;
-        // all shapes of obj are merged into one. alternatively, create
-        // objIdxData for each shape and add multiple shapes to
-        // GLGeometry *newGeo below.
+
+        // we merge all obj shapes into one GLGeometry shape
         for (auto const &shape : shapes)
         {
-            // move over shape indices and make vertices unique
-            // assuming: positions and colors are always available
-            // todo: check if assumptions below are valid (number of attrib values per vertex)
-            // todo: split loadGeometry() into variants with/without using materials
+            yourgame::logd("shape: %v", shape.name);
+
             GLuint shapeMeshReadIdx = 0U;
             for (auto const &idx : shape.mesh.indices)
             {
-                auto mapRet = uniqueIdxMap.emplace(std::array<int, 3>{idx.vertex_index, idx.normal_index, idx.texcoord_index}, uniqueVertCount);
+                // assuming all faces are triangles (objRdrCfg.triangulate is set above),
+                // get the material id for that face (-1, if no material is assigned)
+                int materialId = (shape.mesh.material_ids.at(shapeMeshReadIdx / 3U));
+                auto mapRet = uniqueIdxMap.emplace(
+                    std::array<int, 4>{idx.vertex_index, idx.normal_index, idx.texcoord_index, materialId}, uniqueVertCount);
                 if (mapRet.second) // new unique vertex
                 {
                     try
@@ -268,30 +267,33 @@ namespace yourgame
                         objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3));
                         objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 1));
                         objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 2));
-                        // assuming all faces are triangles (objRdrCfg.triangulate is set above),
-                        // get the material id for that face.
-                        // if no valid material is assigned, the material id is -1
-                        auto materialId = shape.mesh.material_ids.at(shapeMeshReadIdx / 3);
-                        // set material diffuse color as vertex color, if available...
+
+                        // if material available, use diffuse color as vertex color. if not, use the
+                        // (always available, but maybe default) parsed vertex color
                         if (materialId > -1 && materialId < materials.size())
                         {
                             objColordData.push_back((GLfloat)materials.at(materialId).diffuse[0]);
                             objColordData.push_back((GLfloat)materials.at(materialId).diffuse[1]);
                             objColordData.push_back((GLfloat)materials.at(materialId).diffuse[2]);
+                            // todo: optionally, make geometry buffers for other material components:
+                            // ambient, specular, emissive colors, specular exponent ... ?
                         }
                         else
                         {
-                            //... otherwise, use parsed vertex color
                             objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3));
                             objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 1));
                             objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 2));
                         }
+
+                        // if normals available, use them
                         if (attribs.normals.size() > 0)
                         {
                             objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3));
                             objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3 + 1));
                             objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3 + 2));
                         }
+
+                        // if texture coordinates available, use them
                         if (attribs.texcoords.size() > 0)
                         {
                             objTexCoordData.push_back((GLfloat)attribs.texcoords.at(idx.texcoord_index * 2));
@@ -303,10 +305,9 @@ namespace yourgame
                         yourgame::loge("loadGeometry(): %v has faulty obj vertex data", objFilename);
                         return nullptr;
                     }
-
                     uniqueVertCount++;
                 }
-                else
+                else // reuse unique vertex index
                 {
                     objIdxData.push_back((GLuint)(mapRet.first->second));
                 }
