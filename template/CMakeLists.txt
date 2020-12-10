@@ -74,6 +74,8 @@ if(YOURGAME_PLATFORM STREQUAL "android")
     "${CMAKE_SHARED_LINKER_FLAGS} -u ANativeActivity_onCreate"
   )
   # make sure assets/ gets copied into the android app
+  # todo: convincing the Android Studio project to use ${CMAKE_CURRENT_SOURCE_DIR}/assets
+  #       as the assets directory for the app is preferred, but unsolved.
   add_custom_command(
     TARGET ${CMAKE_PROJECT_NAME}
     POST_BUILD
@@ -89,17 +91,7 @@ if(YOURGAME_PLATFORM STREQUAL "web" OR YOURGAME_PLATFORM STREQUAL "desktop")
   )
 endif()
 
-# todo: allow projects without assets (do not copy assets/)
 if(YOURGAME_PLATFORM STREQUAL "desktop")
-  # make sure assets/ gets copied beside the executable
-  add_custom_command(
-    TARGET ${CMAKE_PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-    "$<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/assets"
-  )
-
   # create savefiles/ beside the executable
   add_custom_command(
     TARGET ${CMAKE_PROJECT_NAME}
@@ -110,7 +102,7 @@ if(YOURGAME_PLATFORM STREQUAL "desktop")
 
   if(CPACK_GENERATOR)
     install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION .)
-    install(DIRECTORY assets DESTINATION .)
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION .) # copy assets/
     install(DIRECTORY DESTINATION ./savefiles) # create empty savefiles/
     set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
     include(CPack)
