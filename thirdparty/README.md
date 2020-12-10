@@ -15,6 +15,7 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 | [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [lua](#lua)                     | Lua                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [miniaudio](#miniaudio)         | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [qu3e](#qu3e)                   | qu3e                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
@@ -159,6 +160,16 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 -   extracted from origin:
     -   miniaudio.h, LICENSE
 -   license: [miniaudio/LICENSE](miniaudio/LICENSE)
+
+## qu3e
+
+-   version: **1.01, ad3feda (master)**
+-   origin: <https://github.com/RandyGaul/qu3e/tree/ad3feda2958f023f4989a69e5127265281cdf603>
+-   extracted from origin
+    -   src/\*
+    -   CMakeLists.txt
+    -   LICENSE.txt
+-   license: [qu3e/LICENSE.txt](qu3e/LICENSE.txt)
 
 ## stb
 

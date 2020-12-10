@@ -28,6 +28,7 @@ freely, subject to the following restrictions:
 #include "box2d/box2d.h"
 #include "flecs.h"
 #include "choreograph/Choreograph.h"
+#include "q3.h"
 extern "C"
 {
 #include "lua.h"
@@ -186,6 +187,7 @@ namespace mygame
         static bool showLua = false;
         static bool showChoreograph = false;
         static bool showSpriteGrid = false;
+        static bool showQu3e = false;
 
         // Main Menu Bar
         if (ImGui::BeginMainMenuBar())
@@ -235,6 +237,10 @@ namespace mygame
                 if (ImGui::MenuItem("SpriteGrid", "", &showSpriteGrid))
                 {
                     showSpriteGrid = true;
+                }
+                if (ImGui::MenuItem("qu3e", "", &showQu3e))
+                {
+                    showQu3e = true;
                 }
                 ImGui::EndMenu();
             }
@@ -688,6 +694,30 @@ namespace mygame
             delete spriteGridSimpleTexShader;
             delete spriteGridTrafo;
             spriteGridInitialized = false;
+        }
+
+        // qu3e demo window
+        static bool qu3eInitialized = false;
+        static q3Scene *qu3eScene;
+        if (showQu3e)
+        {
+            if (!qu3eInitialized)
+            {
+                qu3eScene = new q3Scene(1.0 / 60.0);
+                qu3eInitialized = true;
+            }
+
+            // step qu3e scene
+            qu3eScene->Step();
+
+            ImGui::Begin("qu3e", &showQu3e, (ImGuiWindowFlags_NoCollapse));
+            ImGui::Text("no qu3e demo yet");
+            ImGui::End();
+        }
+        else if (qu3eInitialized)
+        {
+            delete qu3eScene;
+            qu3eInitialized = false;
         }
 
         // license window
