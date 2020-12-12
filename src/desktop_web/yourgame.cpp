@@ -138,6 +138,7 @@ namespace yourgame_internal_desktop
     void tick()
     {
         glfwPollEvents();
+        yourgame_internal_desktop::tickInput();
 
         // timing
         auto now = std::chrono::steady_clock::now();

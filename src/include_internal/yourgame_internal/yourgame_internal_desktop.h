@@ -30,6 +30,7 @@ namespace yourgame_internal_desktop
     int shutdown();
     bool pendingShutdown();
     void initInput(GLFWwindow *window);
+    void tickInput();
     void initFileIO();
 } // namespace yourgame_internal_desktop
 
