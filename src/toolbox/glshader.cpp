@@ -36,20 +36,15 @@ namespace yourgame
             glGetShaderiv(*handle, GL_COMPILE_STATUS, &status);
             if (status == GL_FALSE)
             {
-                GLint infoLen;
-                glGetShaderiv(*handle, GL_INFO_LOG_LENGTH, &infoLen);
-                // todo: check infoLen before creating infoLog array
-                GLchar *infoLog = new GLchar[infoLen + 1];
-                glGetShaderInfoLog(*handle, infoLen, NULL, infoLog);
+                GLchar infoLog[1024];
+                glGetShaderInfoLog(*handle, 1024, NULL, infoLog);
                 errorLog += infoLog;
-                delete[] infoLog;
                 glDeleteShader(*handle);
                 return -1;
             }
 
             return 0;
         }
-
     } // namespace
 
     GLShader *GLShader::make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
@@ -98,13 +93,9 @@ namespace yourgame
         glGetProgramiv(progHandle, GL_LINK_STATUS, &linkStatus);
         if (linkStatus == GL_FALSE)
         {
-            GLint infoLen;
-            glGetShaderiv(progHandle, GL_INFO_LOG_LENGTH, &infoLen);
-            // todo: check infoLen before creating infoLog array
-            GLchar *infoLog = new GLchar[infoLen + 1];
-            glGetProgramInfoLog(progHandle, infoLen, NULL, infoLog);
+            GLchar infoLog[1024];
+            glGetProgramInfoLog(progHandle, 1024, NULL, infoLog);
             errorLog += infoLog;
-            delete[] infoLog;
         }
 
         for (const auto &shdrHandle : shdrHandles)
