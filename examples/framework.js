@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/presentGreen.obj", "start": 0, "end": 46565, "audio": 0}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 46565, "end": 56947, "audio": 1}, {"filename": "/assets/tower.mtl", "start": 56947, "end": 57737, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 57737, "end": 57872, "audio": 0}, {"filename": "/assets/simpletex.es.frag", "start": 57872, "end": 58034, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 58034, "end": 58350, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 58350, "end": 66908, "audio": 0}, {"filename": "/assets/presentGreen.mtl", "start": 66908, "end": 67033, "audio": 0}, {"filename": "/assets/simplenormal.frag", "start": 67033, "end": 67158, "audio": 0}, {"filename": "/assets/tower.obj", "start": 67158, "end": 143672, "audio": 0}, {"filename": "/assets/simple.es.vert", "start": 143672, "end": 144145, "audio": 0}, {"filename": "/assets/quad.obj", "start": 144145, "end": 144349, "audio": 0}, {"filename": "/assets/snowmanFancy.obj", "start": 144349, "end": 163214, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 163214, "end": 186290, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 186290, "end": 805928, "audio": 0}, {"filename": "/assets/pirate_officer.obj", "start": 805928, "end": 841770, "audio": 0}, {"filename": "/assets/pirate_officer.mtl", "start": 841770, "end": 842361, "audio": 0}, {"filename": "/assets/LICENSE_android.txt", "start": 842361, "end": 850431, "audio": 0}, {"filename": "/assets/simple.vert", "start": 850431, "end": 850901, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 850901, "end": 861690, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "start": 861690, "end": 862260, "audio": 0}, {"filename": "/assets/treePineSnow.obj", "start": 862260, "end": 876431, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 876431, "end": 907331, "audio": 1}, {"filename": "/assets/simplecolor.es.frag", "start": 907331, "end": 907674, "audio": 0}, {"filename": "/assets/snowmanFancy.mtl", "start": 907674, "end": 907941, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 907941, "end": 919758, "audio": 1}, {"filename": "/assets/simplenormal.es.frag", "start": 919758, "end": 919910, "audio": 0}, {"filename": "/assets/treePineSnow.mtl", "start": 919910, "end": 920086, "audio": 0}], "remote_package_size": 920086, "package_uuid": "412e0d81-8cc8-4533-adea-5b36e1892907"});
+   loadPackage({"files": [{"filename": "/assets/LICENSE_android.txt", "start": 0, "end": 8070, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 8070, "end": 38970, "audio": 1}, {"filename": "/assets/simpletex.es.frag", "start": 38970, "end": 39132, "audio": 0}, {"filename": "/assets/tower.mtl", "start": 39132, "end": 39922, "audio": 0}, {"filename": "/assets/simple.vert", "start": 39922, "end": 40363, "audio": 0}, {"filename": "/assets/simple.es.vert", "start": 40363, "end": 40807, "audio": 0}, {"filename": "/assets/pirate_officer.mtl", "start": 40807, "end": 41398, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 41398, "end": 41714, "audio": 0}, {"filename": "/assets/presentGreen.mtl", "start": 41714, "end": 41839, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 41839, "end": 64915, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 64915, "end": 75704, "audio": 0}, {"filename": "/assets/treePineSnow.obj", "start": 75704, "end": 89875, "audio": 0}, {"filename": "/assets/quad.obj", "start": 89875, "end": 90079, "audio": 0}, {"filename": "/assets/simplecolor.es.frag", "start": 90079, "end": 90422, "audio": 0}, {"filename": "/assets/tower.obj", "start": 90422, "end": 166936, "audio": 0}, {"filename": "/assets/simplenormal.frag", "start": 166936, "end": 167061, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "start": 167061, "end": 167631, "audio": 0}, {"filename": "/assets/treePineSnow.mtl", "start": 167631, "end": 167807, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 167807, "end": 167942, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 167942, "end": 176500, "audio": 0}, {"filename": "/assets/snowmanFancy.mtl", "start": 176500, "end": 176767, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 176767, "end": 796405, "audio": 0}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 796405, "end": 806787, "audio": 1}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 806787, "end": 818604, "audio": 1}, {"filename": "/assets/pirate_officer.obj", "start": 818604, "end": 854446, "audio": 0}, {"filename": "/assets/simplenormal.es.frag", "start": 854446, "end": 854598, "audio": 0}, {"filename": "/assets/snowmanFancy.obj", "start": 854598, "end": 873463, "audio": 0}, {"filename": "/assets/presentGreen.obj", "start": 873463, "end": 920028, "audio": 0}], "remote_package_size": 920028, "package_uuid": "a6fbf24f-c831-492b-88f0-29a3bb7750d3"});
   
   })();
   
@@ -1617,14 +1617,13 @@ if (!isDataURI(wasmBinaryFile)) {
   wasmBinaryFile = locateFile(wasmBinaryFile);
 }
 
-function getBinary() {
+function getBinary(file) {
   try {
-    if (wasmBinary) {
+    if (file == wasmBinaryFile && wasmBinary) {
       return new Uint8Array(wasmBinary);
     }
-
     if (readBinary) {
-      return readBinary(wasmBinaryFile);
+      return readBinary(file);
     } else {
       throw "both async and sync fetching of the wasm failed";
     }
@@ -1647,11 +1646,11 @@ function getBinaryPromise() {
       }
       return response['arrayBuffer']();
     }).catch(function () {
-      return getBinary();
+      return getBinary(wasmBinaryFile);
     });
   }
   // Otherwise, getBinary should be able to get it synchronously
-  return Promise.resolve().then(getBinary);
+  return Promise.resolve().then(function() { return getBinary(wasmBinaryFile); });
 }
 
 // Create the wasm instance.
@@ -1733,6 +1732,7 @@ function createWasm() {
       return instantiateArrayBuffer(receiveInstantiatedSource);
     }
   }
+
   // User shell pages can write their own Module.instantiateWasm = function(imports, successCallback) callback
   // to manually instantiate the Wasm module themselves. This allows pages to run the instantiation parallel
   // to any other async startup actions they are performing.
@@ -4602,7 +4602,7 @@ var ASM_CONSTS = {
   try {
   
       var pathname = SYSCALLS.getStr(path);
-      var mode = SYSCALLS.get();
+      var mode = varargs ? SYSCALLS.get() : 0;
       var stream = FS.open(pathname, flags, mode);
       return stream.fd;
     } catch (e) {
@@ -6959,7 +6959,7 @@ var ASM_CONSTS = {
                   buttonsCount: gamepad.buttons.length,
                   axesCount: gamepad.axes.length,
                   buttons: allocate(new Array(gamepad.buttons.length), ALLOC_NORMAL),
-                  axes: allocate(new Array(gamepad.axes.length*4), 'float', ALLOC_NORMAL)
+                  axes: allocate(new Array(gamepad.axes.length*4), ALLOC_NORMAL)
                 };
   
                 if (GLFW.joystickFunc) {
@@ -7244,18 +7244,23 @@ var ASM_CONSTS = {
         for (i = 0; i < GLFW.windows.length && GLFW.windows[i] == null; i++) {
           // no-op
         }
+        var useWebGL = GLFW.hints[0x00022001] > 0; // Use WebGL when we are told to based on GLFW_CLIENT_API
         if (i == GLFW.windows.length) {
-          var contextAttributes = {
-            antialias: (GLFW.hints[0x0002100D] > 1), // GLFW_SAMPLES
-            depth: (GLFW.hints[0x00021005] > 0),     // GLFW_DEPTH_BITS
-            stencil: (GLFW.hints[0x00021006] > 0),   // GLFW_STENCIL_BITS
-            alpha: (GLFW.hints[0x00021004] > 0)      // GLFW_ALPHA_BITS
+          if (useWebGL) {
+            var contextAttributes = {
+              antialias: (GLFW.hints[0x0002100D] > 1), // GLFW_SAMPLES
+              depth: (GLFW.hints[0x00021005] > 0),     // GLFW_DEPTH_BITS
+              stencil: (GLFW.hints[0x00021006] > 0),   // GLFW_STENCIL_BITS
+              alpha: (GLFW.hints[0x00021004] > 0)      // GLFW_ALPHA_BITS
+            }
+            Module.ctx = Browser.createContext(Module['canvas'], true, true, contextAttributes);
+          } else {
+            Browser.init();
           }
-          Module.ctx = Browser.createContext(Module['canvas'], true, true, contextAttributes);
         }
   
         // If context creation failed, do not return a valid window
-        if (!Module.ctx) return 0;
+        if (!Module.ctx && useWebGL) return 0;
   
         // Get non alive id
         var win = new GLFW_Window(id, width, height, title, monitor, share);
@@ -8598,9 +8603,9 @@ function callMain(args) {
 
     var ret = entryFunction(argc, argv);
 
-    // In PROXY_TO_PTHREAD builds, we should never exit the runtime below, as execution is asynchronously handed
-    // off to a pthread.
-    // if we're not running an evented main loop, it's time to exit
+    // In PROXY_TO_PTHREAD builds, we should never exit the runtime below, as
+    // execution is asynchronously handed off to a pthread.
+      // if we're not running an evented main loop, it's time to exit
       exit(ret, /* implicit = */ true);
   }
   catch(e) {
