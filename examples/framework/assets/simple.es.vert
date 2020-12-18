@@ -18,7 +18,7 @@ void main()
 {
     vOutPos = (modelMat * vec4(inPosition, 1.0)).xyz;
     vOutNorm = normalMat * inNormal;
-    vOutTex = vec2(inTexcoords.s, 1.0 - inTexcoords.t);
+    vOutTex = inTexcoords;
     vOutCol = inColor;
     gl_Position = mvpMat * vec4(inPosition, 1.0);
 }

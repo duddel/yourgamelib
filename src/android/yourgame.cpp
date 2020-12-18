@@ -23,16 +23,18 @@ freely, subject to the following restrictions:
 #include <android/log.h>
 #include <jni.h>
 #include <EGL/egl.h>
-#include "yourgame/yourgame.h"
-#include "yourgame/gl_include.h"
-#include "yourgame_internal/yourgame_internal_android.h"
-#include "yourgame_internal/mygame_external.h"
-
 #ifdef YOURGAME_EXTPROJ_imgui
 #include "imgui.h"
 #include "imgui_impl_android.h"
 #include "imgui_impl_opengl3.h"
 #endif
+#ifdef YOURGAME_EXTPROJ_stb
+#include "stb_image.h"
+#endif
+#include "yourgame/yourgame.h"
+#include "yourgame/gl_include.h"
+#include "yourgame_internal/yourgame_internal_android.h"
+#include "yourgame_internal/mygame_external.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -209,6 +211,10 @@ namespace yourgame_internal_android
         ImGui::StyleColorsDark();
         ImGui_ImplAndroid_Init(_win);
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
+#endif
+
+#ifdef YOURGAME_EXTPROJ_stb
+        stbi_set_flip_vertically_on_load(true);
 #endif
 
         mygame::init(_context);

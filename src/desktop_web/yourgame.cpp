@@ -21,15 +21,17 @@ freely, subject to the following restrictions:
 #include "yourgame/gl_include.h"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include "yourgame/yourgame.h"
-#include "yourgame_internal/yourgame_internal_desktop.h"
-#include "yourgame_internal/mygame_external.h"
-
 #ifdef YOURGAME_EXTPROJ_imgui
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #endif
+#ifdef YOURGAME_EXTPROJ_stb
+#include "stb_image.h"
+#endif
+#include "yourgame/yourgame.h"
+#include "yourgame_internal/yourgame_internal_desktop.h"
+#include "yourgame_internal/mygame_external.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -129,6 +131,10 @@ namespace yourgame_internal_desktop
         ImGui::StyleColorsDark();
         ImGui_ImplGlfw_InitForOpenGL(_window, true);
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
+#endif
+
+#ifdef YOURGAME_EXTPROJ_stb
+        stbi_set_flip_vertically_on_load(true);
 #endif
 
         mygame::init(_context);
