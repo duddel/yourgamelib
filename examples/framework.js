@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/LICENSE_android.txt", "start": 0, "end": 8070, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 8070, "end": 38970, "audio": 1}, {"filename": "/assets/simpletex.es.frag", "start": 38970, "end": 39132, "audio": 0}, {"filename": "/assets/tower.mtl", "start": 39132, "end": 39922, "audio": 0}, {"filename": "/assets/simple.vert", "start": 39922, "end": 40363, "audio": 0}, {"filename": "/assets/simple.es.vert", "start": 40363, "end": 40807, "audio": 0}, {"filename": "/assets/pirate_officer.mtl", "start": 40807, "end": 41398, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 41398, "end": 41714, "audio": 0}, {"filename": "/assets/presentGreen.mtl", "start": 41714, "end": 41839, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 41839, "end": 64915, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 64915, "end": 75704, "audio": 0}, {"filename": "/assets/treePineSnow.obj", "start": 75704, "end": 89875, "audio": 0}, {"filename": "/assets/quad.obj", "start": 89875, "end": 90079, "audio": 0}, {"filename": "/assets/simplecolor.es.frag", "start": 90079, "end": 90422, "audio": 0}, {"filename": "/assets/tower.obj", "start": 90422, "end": 166936, "audio": 0}, {"filename": "/assets/simplenormal.frag", "start": 166936, "end": 167061, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "start": 167061, "end": 167631, "audio": 0}, {"filename": "/assets/treePineSnow.mtl", "start": 167631, "end": 167807, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 167807, "end": 167942, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 167942, "end": 176500, "audio": 0}, {"filename": "/assets/snowmanFancy.mtl", "start": 176500, "end": 176767, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 176767, "end": 796405, "audio": 0}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 796405, "end": 806787, "audio": 1}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 806787, "end": 818604, "audio": 1}, {"filename": "/assets/pirate_officer.obj", "start": 818604, "end": 854446, "audio": 0}, {"filename": "/assets/simplenormal.es.frag", "start": 854446, "end": 854598, "audio": 0}, {"filename": "/assets/snowmanFancy.obj", "start": 854598, "end": 873463, "audio": 0}, {"filename": "/assets/presentGreen.obj", "start": 873463, "end": 920028, "audio": 0}], "remote_package_size": 920028, "package_uuid": "a6fbf24f-c831-492b-88f0-29a3bb7750d3"});
+   loadPackage({"files": [{"filename": "/assets/simpletexdepth.es.frag", "start": 0, "end": 242, "audio": 0}, {"filename": "/assets/simpletexdepth.frag", "start": 242, "end": 457, "audio": 0}, {"filename": "/assets/LICENSE_android.txt", "start": 457, "end": 8527, "audio": 0}, {"filename": "/assets/jingles_SAX07.ogg", "start": 8527, "end": 39427, "audio": 1}, {"filename": "/assets/simpletex.es.frag", "start": 39427, "end": 39589, "audio": 0}, {"filename": "/assets/tower.mtl", "start": 39589, "end": 40379, "audio": 0}, {"filename": "/assets/simple.vert", "start": 40379, "end": 40820, "audio": 0}, {"filename": "/assets/simple.es.vert", "start": 40820, "end": 41264, "audio": 0}, {"filename": "/assets/pirate_officer.mtl", "start": 41264, "end": 41855, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 41855, "end": 42171, "audio": 0}, {"filename": "/assets/presentGreen.mtl", "start": 42171, "end": 42296, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 42296, "end": 65372, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 65372, "end": 76161, "audio": 0}, {"filename": "/assets/treePineSnow.obj", "start": 76161, "end": 90332, "audio": 0}, {"filename": "/assets/quad.obj", "start": 90332, "end": 90536, "audio": 0}, {"filename": "/assets/simplecolor.es.frag", "start": 90536, "end": 90879, "audio": 0}, {"filename": "/assets/tower.obj", "start": 90879, "end": 167393, "audio": 0}, {"filename": "/assets/simplenormal.frag", "start": 167393, "end": 167518, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "start": 167518, "end": 168088, "audio": 0}, {"filename": "/assets/treePineSnow.mtl", "start": 168088, "end": 168264, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 168264, "end": 168399, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 168399, "end": 176957, "audio": 0}, {"filename": "/assets/snowmanFancy.mtl", "start": 176957, "end": 177224, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 177224, "end": 796862, "audio": 0}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 796862, "end": 807244, "audio": 1}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 807244, "end": 819061, "audio": 1}, {"filename": "/assets/pirate_officer.obj", "start": 819061, "end": 854903, "audio": 0}, {"filename": "/assets/simplenormal.es.frag", "start": 854903, "end": 855055, "audio": 0}, {"filename": "/assets/snowmanFancy.obj", "start": 855055, "end": 873920, "audio": 0}, {"filename": "/assets/presentGreen.obj", "start": 873920, "end": 920485, "audio": 0}], "remote_package_size": 920485, "package_uuid": "3037e16f-9871-4ce1-803d-783e4944985e"});
   
   })();
   
@@ -1757,14 +1757,14 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  16105: function() {if ((window.AudioContext || window.webkitAudioContext) === undefined) { return 0; } if (typeof(miniaudio) === 'undefined') { miniaudio = {}; miniaudio.devices = []; miniaudio.track_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == null) { miniaudio.devices[iDevice] = device; return iDevice; } } miniaudio.devices.push(device); return miniaudio.devices.length - 1; }; miniaudio.untrack_device_by_index = function(deviceIndex) { miniaudio.devices[deviceIndex] = null; while (miniaudio.devices.length > 0) { if (miniaudio.devices[miniaudio.devices.length-1] == null) { miniaudio.devices.pop(); } else { break; } } }; miniaudio.untrack_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == device) { return miniaudio.untrack_device_by_index(iDevice); } } }; miniaudio.get_device_by_index = function(deviceIndex) { return miniaudio.devices[deviceIndex]; }; } return 1;},  
- 17323: function() {return (navigator.mediaDevices !== undefined && navigator.mediaDevices.getUserMedia !== undefined);},  
- 17464: function() {try { var temp = new (window.AudioContext || window.webkitAudioContext)(); var sampleRate = temp.sampleRate; temp.close(); return sampleRate; } catch(e) { return 0; }},  
- 17718: function($0, $1, $2, $3, $4) {var channels = $0; var sampleRate = $1; var bufferSize = $2; var isCapture = $3; var pDevice = $4; if (typeof(miniaudio) === 'undefined') { return -1; } var device = {}; device.webaudio = new (window.AudioContext || window.webkitAudioContext)({sampleRate:sampleRate}); device.webaudio.suspend(); device.intermediaryBufferSizeInBytes = channels * bufferSize * 4; device.intermediaryBuffer = Module._malloc(device.intermediaryBufferSizeInBytes); device.intermediaryBufferView = new Float32Array(Module.HEAPF32.buffer, device.intermediaryBuffer, device.intermediaryBufferSizeInBytes); device.scriptNode = device.webaudio.createScriptProcessor(bufferSize, channels, channels); if (isCapture) { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } var sendSilence = false; if (device.streamNode === undefined) { sendSilence = true; } if (e.inputBuffer.numberOfChannels != channels) { console.log("Capture: Channel count mismatch. " + e.inputBufer.numberOfChannels + " != " + channels + ". Sending silence."); sendSilence = true; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.inputBuffer.length) { var framesRemaining = e.inputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } if (sendSilence) { device.intermediaryBufferView.fill(0.0); } else { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { for (var iChannel = 0; iChannel < e.inputBuffer.numberOfChannels; ++iChannel) { device.intermediaryBufferView[iFrame*channels + iChannel] = e.inputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame]; } } } ccall("ma_device_process_pcm_frames_capture__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); totalFramesProcessed += framesToProcess; } }; navigator.mediaDevices.getUserMedia({audio:true, video:false}) .then(function(stream) { device.streamNode = device.webaudio.createMediaStreamSource(stream); device.streamNode.connect(device.scriptNode); device.scriptNode.connect(device.webaudio.destination); }) .catch(function(error) { device.scriptNode.connect(device.webaudio.destination); }); } else { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } var outputSilence = false; if (e.outputBuffer.numberOfChannels != channels) { console.log("Playback: Channel count mismatch. " + e.outputBufer.numberOfChannels + " != " + channels + ". Outputting silence."); outputSilence = true; return; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.outputBuffer.length) { var framesRemaining = e.outputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } ccall("ma_device_process_pcm_frames_playback__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); if (outputSilence) { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } } else { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { e.outputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame] = device.intermediaryBufferView[iFrame*channels + iChannel]; } } } totalFramesProcessed += framesToProcess; } }; device.scriptNode.connect(device.webaudio.destination); } return miniaudio.track_device(device);},  
- 21608: function($0) {return miniaudio.get_device_by_index($0).webaudio.sampleRate;},  
- 21710: function($0) {var device = miniaudio.get_device_by_index($0); if (device.scriptNode !== undefined) { device.scriptNode.onaudioprocess = function(e) {}; device.scriptNode.disconnect(); device.scriptNode = undefined; } if (device.streamNode !== undefined) { device.streamNode.disconnect(); device.streamNode = undefined; } device.webaudio.close(); device.webaudio = undefined; if (device.intermediaryBuffer !== undefined) { Module._free(device.intermediaryBuffer); device.intermediaryBuffer = undefined; device.intermediaryBufferView = undefined; device.intermediaryBufferSizeInBytes = undefined; } miniaudio.untrack_device_by_index($0);},  
- 22392: function($0) {miniaudio.get_device_by_index($0).webaudio.resume();},  
- 22474: function($0) {miniaudio.get_device_by_index($0).webaudio.suspend();}
+  16457: function() {if ((window.AudioContext || window.webkitAudioContext) === undefined) { return 0; } if (typeof(miniaudio) === 'undefined') { miniaudio = {}; miniaudio.devices = []; miniaudio.track_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == null) { miniaudio.devices[iDevice] = device; return iDevice; } } miniaudio.devices.push(device); return miniaudio.devices.length - 1; }; miniaudio.untrack_device_by_index = function(deviceIndex) { miniaudio.devices[deviceIndex] = null; while (miniaudio.devices.length > 0) { if (miniaudio.devices[miniaudio.devices.length-1] == null) { miniaudio.devices.pop(); } else { break; } } }; miniaudio.untrack_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == device) { return miniaudio.untrack_device_by_index(iDevice); } } }; miniaudio.get_device_by_index = function(deviceIndex) { return miniaudio.devices[deviceIndex]; }; } return 1;},  
+ 17675: function() {return (navigator.mediaDevices !== undefined && navigator.mediaDevices.getUserMedia !== undefined);},  
+ 17816: function() {try { var temp = new (window.AudioContext || window.webkitAudioContext)(); var sampleRate = temp.sampleRate; temp.close(); return sampleRate; } catch(e) { return 0; }},  
+ 18070: function($0, $1, $2, $3, $4) {var channels = $0; var sampleRate = $1; var bufferSize = $2; var isCapture = $3; var pDevice = $4; if (typeof(miniaudio) === 'undefined') { return -1; } var device = {}; device.webaudio = new (window.AudioContext || window.webkitAudioContext)({sampleRate:sampleRate}); device.webaudio.suspend(); device.intermediaryBufferSizeInBytes = channels * bufferSize * 4; device.intermediaryBuffer = Module._malloc(device.intermediaryBufferSizeInBytes); device.intermediaryBufferView = new Float32Array(Module.HEAPF32.buffer, device.intermediaryBuffer, device.intermediaryBufferSizeInBytes); device.scriptNode = device.webaudio.createScriptProcessor(bufferSize, channels, channels); if (isCapture) { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } var sendSilence = false; if (device.streamNode === undefined) { sendSilence = true; } if (e.inputBuffer.numberOfChannels != channels) { console.log("Capture: Channel count mismatch. " + e.inputBufer.numberOfChannels + " != " + channels + ". Sending silence."); sendSilence = true; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.inputBuffer.length) { var framesRemaining = e.inputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } if (sendSilence) { device.intermediaryBufferView.fill(0.0); } else { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { for (var iChannel = 0; iChannel < e.inputBuffer.numberOfChannels; ++iChannel) { device.intermediaryBufferView[iFrame*channels + iChannel] = e.inputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame]; } } } ccall("ma_device_process_pcm_frames_capture__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); totalFramesProcessed += framesToProcess; } }; navigator.mediaDevices.getUserMedia({audio:true, video:false}) .then(function(stream) { device.streamNode = device.webaudio.createMediaStreamSource(stream); device.streamNode.connect(device.scriptNode); device.scriptNode.connect(device.webaudio.destination); }) .catch(function(error) { device.scriptNode.connect(device.webaudio.destination); }); } else { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } var outputSilence = false; if (e.outputBuffer.numberOfChannels != channels) { console.log("Playback: Channel count mismatch. " + e.outputBufer.numberOfChannels + " != " + channels + ". Outputting silence."); outputSilence = true; return; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.outputBuffer.length) { var framesRemaining = e.outputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } ccall("ma_device_process_pcm_frames_playback__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); if (outputSilence) { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } } else { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { e.outputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame] = device.intermediaryBufferView[iFrame*channels + iChannel]; } } } totalFramesProcessed += framesToProcess; } }; device.scriptNode.connect(device.webaudio.destination); } return miniaudio.track_device(device);},  
+ 21960: function($0) {return miniaudio.get_device_by_index($0).webaudio.sampleRate;},  
+ 22062: function($0) {var device = miniaudio.get_device_by_index($0); if (device.scriptNode !== undefined) { device.scriptNode.onaudioprocess = function(e) {}; device.scriptNode.disconnect(); device.scriptNode = undefined; } if (device.streamNode !== undefined) { device.streamNode.disconnect(); device.streamNode = undefined; } device.webaudio.close(); device.webaudio = undefined; if (device.intermediaryBuffer !== undefined) { Module._free(device.intermediaryBuffer); device.intermediaryBuffer = undefined; device.intermediaryBufferView = undefined; device.intermediaryBufferSizeInBytes = undefined; } miniaudio.untrack_device_by_index($0);},  
+ 22744: function($0) {miniaudio.get_device_by_index($0).webaudio.resume();},  
+ 22826: function($0) {miniaudio.get_device_by_index($0).webaudio.suspend();}
 };
 
 
@@ -5887,6 +5887,12 @@ var ASM_CONSTS = {
       GLctx.bindBuffer(target, GL.buffers[buffer]);
     }
 
+  function _glBindFramebuffer(target, framebuffer) {
+  
+      GLctx.bindFramebuffer(target, GL.framebuffers[framebuffer]);
+  
+    }
+
   function _glBindTexture(target, texture) {
       GLctx.bindTexture(target, GL.textures[texture]);
     }
@@ -5917,6 +5923,8 @@ var ASM_CONSTS = {
         GLctx.bufferData(target, data ? HEAPU8.subarray(data, data+size) : size, usage);
       }
     }
+
+  function _glCheckFramebufferStatus(x0) { return GLctx['checkFramebufferStatus'](x0) }
 
   function _glClear(x0) { GLctx['clear'](x0) }
 
@@ -5955,6 +5963,17 @@ var ASM_CONSTS = {
   
         if (id == GLctx.currentPixelPackBufferBinding) GLctx.currentPixelPackBufferBinding = 0;
         if (id == GLctx.currentPixelUnpackBufferBinding) GLctx.currentPixelUnpackBufferBinding = 0;
+      }
+    }
+
+  function _glDeleteFramebuffers(n, framebuffers) {
+      for (var i = 0; i < n; ++i) {
+        var id = HEAP32[(((framebuffers)+(i*4))>>2)];
+        var framebuffer = GL.framebuffers[id];
+        if (!framebuffer) continue; // GL spec: "glDeleteFramebuffers silently ignores 0s and names that do not correspond to existing framebuffer objects".
+        GLctx.deleteFramebuffer(framebuffer);
+        framebuffer.name = 0;
+        GL.framebuffers[id] = null;
       }
     }
 
@@ -6020,6 +6039,11 @@ var ASM_CONSTS = {
       GLctx.enableVertexAttribArray(index);
     }
 
+  function _glFramebufferTexture2D(target, attachment, textarget, texture, level) {
+      GLctx.framebufferTexture2D(target, attachment, textarget,
+                                      GL.textures[texture], level);
+    }
+
   function __glGenObject(n, buffers, createFunction, objectTable
       ) {
       for (var i = 0; i < n; i++) {
@@ -6036,6 +6060,11 @@ var ASM_CONSTS = {
     }
   function _glGenBuffers(n, buffers) {
       __glGenObject(n, buffers, 'createBuffer', GL.buffers
+        );
+    }
+
+  function _glGenFramebuffers(n, ids) {
+      __glGenObject(n, ids, 'createFramebuffer', GL.framebuffers
         );
     }
 
@@ -7506,6 +7535,10 @@ var ASM_CONSTS = {
       return GLFW.setScrollCallback(winid, cbfun);
     }
 
+  function _glfwSetWindowPos(winid, x, y) {
+      GLFW.setWindowPos(winid, x, y);
+    }
+
   function _glfwSwapBuffers(winid) {
       GLFW.swapBuffers(winid);
     }
@@ -8171,6 +8204,7 @@ var asmLibraryArg = {
   "glAttachShader": _glAttachShader,
   "glBindAttribLocation": _glBindAttribLocation,
   "glBindBuffer": _glBindBuffer,
+  "glBindFramebuffer": _glBindFramebuffer,
   "glBindTexture": _glBindTexture,
   "glBindVertexArray": _glBindVertexArray,
   "glBlendEquation": _glBlendEquation,
@@ -8178,12 +8212,14 @@ var asmLibraryArg = {
   "glBlendFunc": _glBlendFunc,
   "glBlendFuncSeparate": _glBlendFuncSeparate,
   "glBufferData": _glBufferData,
+  "glCheckFramebufferStatus": _glCheckFramebufferStatus,
   "glClear": _glClear,
   "glClearColor": _glClearColor,
   "glCompileShader": _glCompileShader,
   "glCreateProgram": _glCreateProgram,
   "glCreateShader": _glCreateShader,
   "glDeleteBuffers": _glDeleteBuffers,
+  "glDeleteFramebuffers": _glDeleteFramebuffers,
   "glDeleteProgram": _glDeleteProgram,
   "glDeleteShader": _glDeleteShader,
   "glDeleteTextures": _glDeleteTextures,
@@ -8193,7 +8229,9 @@ var asmLibraryArg = {
   "glDrawElements": _glDrawElements,
   "glEnable": _glEnable,
   "glEnableVertexAttribArray": _glEnableVertexAttribArray,
+  "glFramebufferTexture2D": _glFramebufferTexture2D,
   "glGenBuffers": _glGenBuffers,
+  "glGenFramebuffers": _glGenFramebuffers,
   "glGenTextures": _glGenTextures,
   "glGenVertexArrays": _glGenVertexArrays,
   "glGenerateMipmap": _glGenerateMipmap,
@@ -8247,6 +8285,7 @@ var asmLibraryArg = {
   "glfwSetKeyCallback": _glfwSetKeyCallback,
   "glfwSetMouseButtonCallback": _glfwSetMouseButtonCallback,
   "glfwSetScrollCallback": _glfwSetScrollCallback,
+  "glfwSetWindowPos": _glfwSetWindowPos,
   "glfwSwapBuffers": _glfwSwapBuffers,
   "glfwSwapInterval": _glfwSwapInterval,
   "glfwTerminate": _glfwTerminate,
