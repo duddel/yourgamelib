@@ -84,4 +84,31 @@ namespace yourgame
         glActiveTexture(m_unit);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
+
+    void GLTexture2D::updateData(GLint level,
+                                 GLint internalformat,
+                                 GLsizei width,
+                                 GLsizei height,
+                                 GLint border,
+                                 GLenum format,
+                                 GLenum type,
+                                 const void *data)
+    {
+        glActiveTexture(m_unit);
+        glBindTexture(GL_TEXTURE_2D, m_handle);
+
+        glTexImage2D(GL_TEXTURE_2D,
+                     level,
+                     internalformat,
+                     width,
+                     height,
+                     border,
+                     format,
+                     type,
+                     data);
+
+        // todo: regenerate mipmap?
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
 } // namespace yourgame

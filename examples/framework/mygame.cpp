@@ -61,18 +61,21 @@ namespace mygame
     yourgame::Camera g_camera;
     std::map<std::string, yourgame::GLGeometry *> g_geos;
     std::string g_geoName = "ship_dark";
+    yourgame::GLGeometry *g_quadGeo;
     yourgame::GLShader *g_shaderNormal = nullptr;
     yourgame::GLShader *g_shaderColor = nullptr;
+    yourgame::GLShader *g_shaderTexture = nullptr;
+    yourgame::GLShader *g_shaderTextureDepth = nullptr;
     int g_shaderToUse = 0; // 0: color shader, 1: normal shader
+    yourgame::GLFramebuffer *g_framebuf = nullptr;
+    int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
 
     void init(const yourgame::context &ctx)
     {
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-        g_camera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 10.0f);
-
-        glEnable(GL_DEPTH_TEST);
+        g_camera.setPerspective(75.0f, ctx.winAspectRatio, 1.0f, 10.0f);
 
         // Normal shader
         g_shaderNormal = yourgame::loadShader(
@@ -100,6 +103,62 @@ namespace mygame
              {yourgame::attrLocColor, yourgame::attrNameColor}},
             {{0, "color"}});
 
+        // Texture shader
+        g_shaderTexture = yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+            {{GL_VERTEX_SHADER, "simple.es.vert"},
+             {GL_FRAGMENT_SHADER, "simpletex.es.frag"}},
+#else
+            {{GL_VERTEX_SHADER, "simple.vert"},
+             {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+#endif
+            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+             {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
+            {{0, "color"}});
+        g_shaderTexture->useProgram();
+        glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture0), 0);
+
+        // Depth Texture shader
+        g_shaderTextureDepth = yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+            {{GL_VERTEX_SHADER, "simple.es.vert"},
+             {GL_FRAGMENT_SHADER, "simpletexdepth.es.frag"}},
+#else
+            {{GL_VERTEX_SHADER, "simple.vert"},
+             {GL_FRAGMENT_SHADER, "simpletexdepth.frag"}},
+#endif
+            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+             {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
+            {{0, "color"}});
+        g_shaderTexture->useProgram();
+        glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture0), 0);
+
+        // quad geometry
+        g_quadGeo = yourgame::loadGeometry("quad.obj", nullptr);
+
+        // framebuffer
+        // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
+        // texture parameters (GL_NEAREST, GL_CLAMP_TO_EDGE) may be required to do so
+        g_framebuf = yourgame::GLFramebuffer::make(ctx.winWidth, ctx.winHeight,
+                                                   {{GL_RGBA8,
+                                                     GL_RGBA,
+                                                     GL_UNSIGNED_BYTE,
+                                                     GL_TEXTURE0,
+                                                     {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
+                                                      {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
+                                                      {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                                      {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
+                                                     GL_COLOR_ATTACHMENT0},
+                                                    {GL_DEPTH_COMPONENT16,
+                                                     GL_DEPTH_COMPONENT,
+                                                     GL_UNSIGNED_SHORT,
+                                                     GL_TEXTURE0,
+                                                     {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
+                                                      {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
+                                                      {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                                      {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
+                                                     GL_DEPTH_ATTACHMENT}});
+
         // arbitrary test command
         yourgame::sendCmdToEnv(1, 10, 1024, -15);
 
@@ -123,11 +182,7 @@ namespace mygame
             yourgame::notifyShutdown();
         }
 
-        glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         g_camera.setAspect(ctx.winAspectRatio);
-        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
@@ -161,8 +216,55 @@ namespace mygame
             g_geos[g_geoName] = yourgame::loadGeometry(std::string(g_geoName + ".obj").c_str(), std::string(g_geoName + ".mtl").c_str());
         }
 
-        // the actual draw call
+        // drawing
+        glEnable(GL_DEPTH_TEST);
+
+        // prepare and bind framebuffer, if requested
+        if (g_framebuf && (g_framebufDisplay != 0))
+        {
+            static uint32_t lastWinWidth = 0;
+            static uint32_t lastWinHeight = 0;
+            if (lastWinWidth != ctx.winWidth || lastWinHeight != ctx.winHeight)
+            {
+                g_framebuf->resize(ctx.winWidth, ctx.winHeight);
+                yourgame::logi("framebuffer resized to %v,%v", ctx.winWidth, ctx.winHeight);
+                lastWinWidth = ctx.winWidth;
+                lastWinHeight = ctx.winHeight;
+            }
+            g_framebuf->bind();
+        }
+
+        // the actual drawing
+        glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
         g_geos[g_geoName]->drawAll();
+
+        // unbind framebuffer and draw framebuffer color or depth texture attachment, if requested
+        if (g_framebuf && (g_framebufDisplay != 0))
+        {
+            g_framebuf->unbindTarget();
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+
+            // simple orthographic projection that matches the quad geometry (g_quadGeo)
+            auto pMat = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, 1.0f, -1.0f);
+
+            // render color- or depth texture attachment of the framebuffer to a quad
+            if (g_framebufDisplay == 1) // color
+            {
+                g_shaderTexture->useProgram();
+                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_framebuf->textureAttachment(0)->bind();
+            }
+            else if (g_framebufDisplay == 2) // depth
+            {
+                g_shaderTextureDepth->useProgram();
+                glUniformMatrix4fv(g_shaderTextureDepth->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_framebuf->textureAttachment(1)->bind();
+            }
+            g_quadGeo->drawAll();
+        }
 
         updateImgui(ctx);
     }
@@ -270,6 +372,7 @@ namespace mygame
         if (showDemoGl)
         {
             ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            ImGui::BeginGroup();
             ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
 
             // geometry
@@ -293,6 +396,11 @@ namespace mygame
                 geoIdLast = geoId;
             }
 
+            ImGui::EndGroup();
+            ImGui::SameLine();
+            ImGui::BeginGroup();
+
+            ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.8f, 1.0f), "transform and projection");
             // model scale
             ImGui::InputFloat("model scale", &g_modelScale, 0.001f, 100.0f, "%.3f");
 
@@ -300,11 +408,6 @@ namespace mygame
             ImGui::Checkbox("", &g_rotationOn);
             ImGui::SameLine();
             ImGui::SliderFloat("rotation", &g_rotation, -0.1f, 0.1f);
-
-            // shader
-            ImGui::RadioButton("color shader", &g_shaderToUse, 0);
-            ImGui::SameLine();
-            ImGui::RadioButton("normal shader", &g_shaderToUse, 1);
 
             // camera manipulation
             static int projMode = 0;
@@ -315,7 +418,7 @@ namespace mygame
             if (projMode == 0)
             {
                 static float f1 = 75.0f;
-                static float f2 = 0.1f;
+                static float f2 = 1.0f;
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
                 ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
@@ -331,6 +434,20 @@ namespace mygame
                 g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
             }
 
+            // shader
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.8f, 1.0f), "shader");
+            ImGui::RadioButton("color shader", &g_shaderToUse, 0);
+            ImGui::RadioButton("normal shader", &g_shaderToUse, 1);
+
+            // framebuffer
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.8f, 1.0f), "framebuffer");
+            ImGui::RadioButton("default color buffer", &g_framebufDisplay, 0);
+            ImGui::RadioButton("framebuffer color 0", &g_framebufDisplay, 1);
+            ImGui::RadioButton("framebuffer depth", &g_framebufDisplay, 2);
+
+            ImGui::EndGroup();
             ImGui::End();
 
             // Audio demo window
@@ -608,7 +725,6 @@ namespace mygame
         static bool spriteGridInitialized = false;
         static yourgame::GLTextureAtlas *spriteGridAtlas;
         static yourgame::GLSpriteGrid *spriteGrid;
-        static yourgame::GLShader *spriteGridSimpleTexShader;
         static yourgame::Trafo *spriteGridTrafo;
         if (showSpriteGrid)
         {
@@ -625,19 +741,6 @@ namespace mygame
                                                                  false);
                 spriteGrid = new yourgame::GLSpriteGrid();
                 spriteGridTrafo = new yourgame::Trafo();
-                spriteGridSimpleTexShader = yourgame::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                    {{GL_VERTEX_SHADER, "simple.es.vert"},
-                     {GL_FRAGMENT_SHADER, "simpletex.es.frag"}},
-#else
-                    {{GL_VERTEX_SHADER, "simple.vert"},
-                     {GL_FRAGMENT_SHADER, "simpletex.frag"}},
-#endif
-                    {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-                     {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
-                    {{0, "color"}});
-                spriteGridSimpleTexShader->useProgram();
-                glUniform1i(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameTexture0), 0);
                 spriteGridInitialized = true;
             }
 
@@ -681,8 +784,8 @@ namespace mygame
                                      {0.0f, 1.0f, 0.0f});
             auto pMat = glm::ortho(0.0f, (float)ctx.winWidth, 0.0f, (float)ctx.winHeight, 1.0f, -1.0f);
             auto mvp = pMat * spriteGridTrafo->mat();
-            spriteGridSimpleTexShader->useProgram();
-            glUniformMatrix4fv(spriteGridSimpleTexShader->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            g_shaderTexture->useProgram();
+            glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
             spriteGridAtlas->texture(0)->bind();
             if (texFilter != texFilterLast) // change texture mode filter if requested
             {
@@ -696,7 +799,6 @@ namespace mygame
         {
             delete spriteGridAtlas;
             delete spriteGrid;
-            delete spriteGridSimpleTexShader;
             delete spriteGridTrafo;
             spriteGridInitialized = false;
         }

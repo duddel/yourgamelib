@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 #include "yourgame/camera.h"
 #include "yourgame/glbuffer.h"
 #include "yourgame/glconventions.h"
+#include "yourgame/glframebuffer.h"
 #include "yourgame/glgeometry.h"
 #include "yourgame/glloading.h"
 #include "yourgame/glshader.h"

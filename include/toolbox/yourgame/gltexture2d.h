@@ -50,6 +50,15 @@ namespace yourgame
         void bind() const;
         void unbindTarget() const;
 
+        void updateData(GLint level,
+                        GLint internalformat,
+                        GLsizei width,
+                        GLsizei height,
+                        GLint border,
+                        GLenum format,
+                        GLenum type,
+                        const void *data);
+
         GLsizei width() const { return m_width; }
         GLsizei height() const { return m_height; }
         GLuint handle() const { return m_handle; }

@@ -89,13 +89,15 @@ namespace yourgame_internal_desktop
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, YOURGAME_GL_MAJOR);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, YOURGAME_GL_MINOR);
 
-        _window = glfwCreateWindow(800, 512, "", NULL, NULL);
+        // todo: determine reasonable initial window size and position
+        _window = glfwCreateWindow(1536, 864, "", NULL, NULL);
         if (_window == NULL)
         {
             yourgame::loge("glfwCreateWindow() failed");
             glfwTerminate();
             return -1;
         }
+        glfwSetWindowPos(_window, 100, 100);
 
         glfwMakeContextCurrent(_window);
 
