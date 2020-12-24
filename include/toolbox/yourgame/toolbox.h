@@ -21,6 +21,7 @@ freely, subject to the following restrictions:
 #define YOURGAME_TOOLBOX_H
 
 // the following includes are part of the yourgame (toolbox) API
+#include "yourgame/assetmanager.h"
 #include "yourgame/audioplayer.h"
 #include "yourgame/camera.h"
 #include "yourgame/glbuffer.h"
