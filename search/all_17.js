@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['_7eassetmanager',['~AssetManager',['../classyourgame_1_1AssetManager.html#a176e758a37dadc14ed4a380bfb3f0127',1,'yourgame::AssetManager']]],
   ['_7eglbuffer',['~GLBuffer',['../classyourgame_1_1GLBuffer.html#aa47dfce84a38baff1046ed1ad489017e',1,'yourgame::GLBuffer']]],
   ['_7eglframebuffer',['~GLFramebuffer',['../classyourgame_1_1GLFramebuffer.html#ac0ffb64290f1d25de13c8ee255bb3966',1,'yourgame::GLFramebuffer']]],
   ['_7eglgeometry',['~GLGeometry',['../classyourgame_1_1GLGeometry.html#a8a7fe18832db495fc4607bfc687d746e',1,'yourgame::GLGeometry']]],
