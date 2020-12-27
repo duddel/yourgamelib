@@ -71,26 +71,58 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
+<p>utility to store and request pointers, and to delete dynamically allocated objects, by name  
+ <a href="classyourgame_1_1AssetManager.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="assetmanager_8h_source.html">assetmanager.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a176e758a37dadc14ed4a380bfb3f0127"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a176e758a37dadc14ed4a380bfb3f0127">~AssetManager</a> ()</td></tr>
 <tr class="separator:a176e758a37dadc14ed4a380bfb3f0127"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52c27c72a55d0d65aac666422788dca4"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a52c27c72a55d0d65aac666422788dca4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a52c27c72a55d0d65aac666422788dca4">put</a> (std::string name, T *obj)</td></tr>
-<tr class="separator:a52c27c72a55d0d65aac666422788dca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a616c7c471a478e7eaf73ff282aefcb72"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a616c7c471a478e7eaf73ff282aefcb72"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a616c7c471a478e7eaf73ff282aefcb72">put</a> (std::string name, T obj)</td></tr>
-<tr class="separator:a616c7c471a478e7eaf73ff282aefcb72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5724d5661dfce3ed27ab4f8f89d0f1b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ac5724d5661dfce3ed27ab4f8f89d0f1b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#ac5724d5661dfce3ed27ab4f8f89d0f1b">insert</a> (std::string name, T *obj)</td></tr>
+<tr class="memdesc:ac5724d5661dfce3ed27ab4f8f89d0f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer is replaced. rejects nullptrs.  <a href="#ac5724d5661dfce3ed27ab4f8f89d0f1b">More...</a><br /></td></tr>
+<tr class="separator:ac5724d5661dfce3ed27ab4f8f89d0f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a911aa2f53927e208e942056bb34e2167"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a911aa2f53927e208e942056bb34e2167"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a911aa2f53927e208e942056bb34e2167">insert</a> (std::string name, T obj)</td></tr>
+<tr class="memdesc:a911aa2f53927e208e942056bb34e2167"><td class="mdescLeft">&#160;</td><td class="mdescRight">dummy for compile-time check (static_assert) of non-pointer type  <a href="#a911aa2f53927e208e942056bb34e2167">More...</a><br /></td></tr>
+<tr class="separator:a911aa2f53927e208e942056bb34e2167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49b1c868abffbba8df8678dee6f6efaf"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a49b1c868abffbba8df8678dee6f6efaf"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a49b1c868abffbba8df8678dee6f6efaf">get</a> (std::string name)</td></tr>
+<tr class="memdesc:a49b1c868abffbba8df8678dee6f6efaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">request pointer by name  <a href="#a49b1c868abffbba8df8678dee6f6efaf">More...</a><br /></td></tr>
 <tr class="separator:a49b1c868abffbba8df8678dee6f6efaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21ee079eeebcbb78ea7dd337e60f32db"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a21ee079eeebcbb78ea7dd337e60f32db"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a21ee079eeebcbb78ea7dd337e60f32db">del</a> (std::string name)</td></tr>
-<tr class="separator:a21ee079eeebcbb78ea7dd337e60f32db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00178f62c44bae270ba6492bf1ec6da3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a00178f62c44bae270ba6492bf1ec6da3"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a00178f62c44bae270ba6492bf1ec6da3">numOf</a> ()</td></tr>
+<tr class="memdesc:a00178f62c44bae270ba6492bf1ec6da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of stored pointers of type T*  <a href="#a00178f62c44bae270ba6492bf1ec6da3">More...</a><br /></td></tr>
+<tr class="separator:a00178f62c44bae270ba6492bf1ec6da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af93e6b1eda81646b607c052d1422fd16"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:af93e6b1eda81646b607c052d1422fd16"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#af93e6b1eda81646b607c052d1422fd16">destroy</a> (std::string name)</td></tr>
+<tr class="memdesc:af93e6b1eda81646b607c052d1422fd16"><td class="mdescLeft">&#160;</td><td class="mdescRight">destroy (delete) object, remove pointer  <a href="#af93e6b1eda81646b607c052d1422fd16">More...</a><br /></td></tr>
+<tr class="separator:af93e6b1eda81646b607c052d1422fd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b79cb5457c9811fae31ca6a8b2d268"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a57b79cb5457c9811fae31ca6a8b2d268"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a57b79cb5457c9811fae31ca6a8b2d268">destroy</a> ()</td></tr>
+<tr class="memdesc:a57b79cb5457c9811fae31ca6a8b2d268"><td class="mdescLeft">&#160;</td><td class="mdescRight">destroy (delete) all objects of type T, remove all pointers of type T*  <a href="#a57b79cb5457c9811fae31ca6a8b2d268">More...</a><br /></td></tr>
+<tr class="separator:a57b79cb5457c9811fae31ca6a8b2d268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a108c5c49f3d14bf4a29cf86f8dccbcfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1AssetManager.html#a108c5c49f3d14bf4a29cf86f8dccbcfe">clear</a> ()</td></tr>
+<tr class="memdesc:a108c5c49f3d14bf4a29cf86f8dccbcfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">clear content. delete all objects, remove all pointers  <a href="#a108c5c49f3d14bf4a29cf86f8dccbcfe">More...</a><br /></td></tr>
+<tr class="separator:a108c5c49f3d14bf4a29cf86f8dccbcfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>utility to store and request pointers, and to delete dynamically allocated objects, by name </p>
+<p>use like so:</p><ul>
+<li>create an object with <code>new</code></li>
+<li>use <a class="el" href="classyourgame_1_1AssetManager.html#ac5724d5661dfce3ed27ab4f8f89d0f1b" title="insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer ...">insert()</a> to store the pointer by name<ul>
+<li>if it exists, previous object is deleted and the pointer is replaced</li>
+</ul>
+</li>
+<li>use <a class="el" href="classyourgame_1_1AssetManager.html#a49b1c868abffbba8df8678dee6f6efaf" title="request pointer by name ">get()</a> to request the pointer by name</li>
+<li>use <a class="el" href="classyourgame_1_1AssetManager.html#a57b79cb5457c9811fae31ca6a8b2d268" title="destroy (delete) all objects of type T, remove all pointers of type T* ">destroy()</a> to delete the object and remove the pointer by name</li>
+</ul>
+<dl class="section attention"><dt>Attention</dt><dd>type T is always the base type, not the pointer type (T*) </dd>
+<dd>
+never delete objects manually with <code>delete</code> if they have been stored with <a class="el" href="classyourgame_1_1AssetManager.html#ac5724d5661dfce3ed27ab4f8f89d0f1b" title="insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer ...">insert()</a> </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a176e758a37dadc14ed4a380bfb3f0127"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a176e758a37dadc14ed4a380bfb3f0127">&#9670;&nbsp;</a></span>~AssetManager()</h2>
 
@@ -117,8 +149,35 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a21ee079eeebcbb78ea7dd337e60f32db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21ee079eeebcbb78ea7dd337e60f32db">&#9670;&nbsp;</a></span>del()</h2>
+<a id="a108c5c49f3d14bf4a29cf86f8dccbcfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a108c5c49f3d14bf4a29cf86f8dccbcfe">&#9670;&nbsp;</a></span>clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::AssetManager::clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>clear content. delete all objects, remove all pointers </p>
+
+</div>
+</div>
+<a id="af93e6b1eda81646b607c052d1422fd16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af93e6b1eda81646b607c052d1422fd16">&#9670;&nbsp;</a></span>destroy() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -129,7 +188,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void yourgame::AssetManager::del </td>
+          <td class="memname">void yourgame::AssetManager::destroy </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
@@ -142,6 +201,55 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>destroy (delete) object, remove pointer </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>object type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>name </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a57b79cb5457c9811fae31ca6a8b2d268"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57b79cb5457c9811fae31ca6a8b2d268">&#9670;&nbsp;</a></span>destroy() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::AssetManager::destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>destroy (delete) all objects of type T, remove all pointers of type T* </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>object type </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -171,10 +279,25 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>request pointer by name </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>object type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>pointer. nullptr, if no pointer of type T* and name exists </dd></dl>
+
 </div>
 </div>
-<a id="a52c27c72a55d0d65aac666422788dca4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52c27c72a55d0d65aac666422788dca4">&#9670;&nbsp;</a></span>put() <span class="overload">[1/2]</span></h2>
+<a id="ac5724d5661dfce3ed27ab4f8f89d0f1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5724d5661dfce3ed27ab4f8f89d0f1b">&#9670;&nbsp;</a></span>insert() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,7 +308,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void yourgame::AssetManager::put </td>
+          <td class="memname">void yourgame::AssetManager::insert </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -209,10 +332,28 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer is replaced. rejects nullptrs. </p>
+<dl class="section attention"><dt>Attention</dt><dd>obj must be a pointer type </dd>
+<dd>
+only insert pointer to object, that has been created with <code>new</code></dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>object type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>name </td></tr>
+    <tr><td class="paramname">obj</td><td>pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
-<a id="a616c7c471a478e7eaf73ff282aefcb72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a616c7c471a478e7eaf73ff282aefcb72">&#9670;&nbsp;</a></span>put() <span class="overload">[2/2]</span></h2>
+<a id="a911aa2f53927e208e942056bb34e2167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a911aa2f53927e208e942056bb34e2167">&#9670;&nbsp;</a></span>insert() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +364,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void yourgame::AssetManager::put </td>
+          <td class="memname">void yourgame::AssetManager::insert </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -246,6 +387,57 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>dummy for compile-time check (static_assert) of non-pointer type </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>object type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>name </td></tr>
+    <tr><td class="paramname">obj</td><td>pointer </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a00178f62c44bae270ba6492bf1ec6da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00178f62c44bae270ba6492bf1ec6da3">&#9670;&nbsp;</a></span>numOf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t yourgame::AssetManager::numOf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>returns number of stored pointers of type T* </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>object type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>number of stored pointers of type T* </dd></dl>
 
 </div>
 </div>
