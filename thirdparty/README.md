@@ -167,7 +167,6 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 -   origin: <https://github.com/RandyGaul/qu3e/tree/ad3feda2958f023f4989a69e5127265281cdf603>
 -   extracted from origin
     -   src/\*
-    -   CMakeLists.txt
     -   LICENSE.txt
 -   license: [qu3e/LICENSE.txt](qu3e/LICENSE.txt)
 
