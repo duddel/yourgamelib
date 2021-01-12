@@ -66,12 +66,7 @@ namespace mygame
     yourgame::Camera g_skyboxCamera;
     std::map<std::string, yourgame::GLGeometry *> g_geos;
     std::string g_geoName = "ship_dark";
-    yourgame::GLGeometry *g_quadGeo;
-    yourgame::GLShader *g_shaderColor = nullptr;
-    yourgame::GLShader *g_shaderTexture = nullptr;
-    yourgame::GLShader *g_shaderTextureDepth = nullptr;
-    int g_shaderToUse = 0; // 0: color shader, 1: normal shader
-    yourgame::GLFramebuffer *g_framebuf = nullptr;
+    int g_shaderToUse = 0;     // 0: color shader, 1: normal shader
     int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
     yourgame::AssetManager g_assets;
 
@@ -128,73 +123,77 @@ namespace mygame
                             {{0, "color"}}));
 
         // Color shader
-        g_shaderColor = yourgame::loadShader(
+        g_assets.insert("shaderColor",
+                        yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
-            {{GL_VERTEX_SHADER, "simple.es.vert"},
-             {GL_FRAGMENT_SHADER, "simplecolor.es.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.es.vert"},
+                             {GL_FRAGMENT_SHADER, "simplecolor.es.frag"}},
 #else
-            {{GL_VERTEX_SHADER, "simple.vert"},
-             {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.vert"},
+                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
 #endif
-            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-             {yourgame::attrLocColor, yourgame::attrNameColor}},
-            {{0, "color"}});
+                            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                             {yourgame::attrLocColor, yourgame::attrNameColor}},
+                            {{0, "color"}}));
 
         // Texture shader
-        g_shaderTexture = yourgame::loadShader(
+        g_assets.insert("shaderTexture",
+                        yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
-            {{GL_VERTEX_SHADER, "simple.es.vert"},
-             {GL_FRAGMENT_SHADER, "simpletex.es.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.es.vert"},
+                             {GL_FRAGMENT_SHADER, "simpletex.es.frag"}},
 #else
-            {{GL_VERTEX_SHADER, "simple.vert"},
-             {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.vert"},
+                             {GL_FRAGMENT_SHADER, "simpletex.frag"}},
 #endif
-            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-             {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
-            {{0, "color"}});
-        g_shaderTexture->useProgram();
-        glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture0), 0);
+                            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                             {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
+                            {{0, "color"}}));
+        g_assets.get<yourgame::GLShader>("shaderTexture")->useProgram();
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderTexture")->getUniformLocation(yourgame::unifNameTexture0), 0);
 
         // Depth Texture shader
-        g_shaderTextureDepth = yourgame::loadShader(
+        g_assets.insert("shaderTextureDepth",
+                        yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
-            {{GL_VERTEX_SHADER, "simple.es.vert"},
-             {GL_FRAGMENT_SHADER, "simpletexdepth.es.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.es.vert"},
+                             {GL_FRAGMENT_SHADER, "simpletexdepth.es.frag"}},
 #else
-            {{GL_VERTEX_SHADER, "simple.vert"},
-             {GL_FRAGMENT_SHADER, "simpletexdepth.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.vert"},
+                             {GL_FRAGMENT_SHADER, "simpletexdepth.frag"}},
 #endif
-            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-             {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
-            {{0, "color"}});
-        g_shaderTexture->useProgram();
-        glUniform1i(g_shaderTexture->getUniformLocation(yourgame::unifNameTexture0), 0);
+                            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                             {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
+                            {{0, "color"}}));
+        g_assets.get<yourgame::GLShader>("shaderTextureDepth")->useProgram();
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderTextureDepth")->getUniformLocation(yourgame::unifNameTexture0), 0);
 
         // quad geometry
-        g_quadGeo = yourgame::loadGeometry("quad.obj", nullptr);
+        g_assets.insert("quadGeo", yourgame::loadGeometry("quad.obj", nullptr));
 
         // framebuffer
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
         // texture parameters (GL_NEAREST, GL_CLAMP_TO_EDGE) may be required to do so
-        g_framebuf = yourgame::GLFramebuffer::make(ctx.winWidth, ctx.winHeight,
-                                                   {{GL_RGBA8,
-                                                     GL_RGBA,
-                                                     GL_UNSIGNED_BYTE,
-                                                     GL_TEXTURE0,
-                                                     {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
-                                                      {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
-                                                      {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
-                                                      {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
-                                                     GL_COLOR_ATTACHMENT0},
-                                                    {GL_DEPTH_COMPONENT16,
-                                                     GL_DEPTH_COMPONENT,
-                                                     GL_UNSIGNED_SHORT,
-                                                     GL_TEXTURE0,
-                                                     {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
-                                                      {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
-                                                      {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
-                                                      {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
-                                                     GL_DEPTH_ATTACHMENT}});
+        g_assets.insert("framebuf",
+                        yourgame::GLFramebuffer::make(ctx.winWidth, ctx.winHeight,
+                                                      {{GL_RGBA8,
+                                                        GL_RGBA,
+                                                        GL_UNSIGNED_BYTE,
+                                                        GL_TEXTURE0,
+                                                        {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
+                                                         {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
+                                                         {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                                         {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
+                                                        GL_COLOR_ATTACHMENT0},
+                                                       {GL_DEPTH_COMPONENT16,
+                                                        GL_DEPTH_COMPONENT,
+                                                        GL_UNSIGNED_SHORT,
+                                                        GL_TEXTURE0,
+                                                        {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
+                                                         {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
+                                                         {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                                         {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
+                                                        GL_DEPTH_ATTACHMENT}}));
 
         // arbitrary test command
         yourgame::sendCmdToEnv(1, 10, 1024, -15);
@@ -242,18 +241,18 @@ namespace mygame
         glEnable(GL_DEPTH_TEST);
 
         // prepare and bind framebuffer, if requested
-        if (g_framebuf && (g_framebufDisplay != 0))
+        if (g_assets.get<yourgame::GLFramebuffer>("framebuf") && (g_framebufDisplay != 0))
         {
             static uint32_t lastWinWidth = 0;
             static uint32_t lastWinHeight = 0;
             if (lastWinWidth != ctx.winWidth || lastWinHeight != ctx.winHeight)
             {
-                g_framebuf->resize(ctx.winWidth, ctx.winHeight);
+                g_assets.get<yourgame::GLFramebuffer>("framebuf")->resize(ctx.winWidth, ctx.winHeight);
                 yourgame::logi("framebuffer resized to %v,%v", ctx.winWidth, ctx.winHeight);
                 lastWinWidth = ctx.winWidth;
                 lastWinHeight = ctx.winHeight;
             }
-            g_framebuf->bind();
+            g_assets.get<yourgame::GLFramebuffer>("framebuf")->bind();
         }
 
         // the actual drawing
@@ -278,12 +277,12 @@ namespace mygame
         // set selected shader
         if (g_shaderToUse == 0)
         {
-            if (g_shaderColor)
+            if (g_assets.get<yourgame::GLShader>("shaderColor"))
             {
-                g_shaderColor->useProgram();
-                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_shaderColor->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+                g_assets.get<yourgame::GLShader>("shaderColor")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
             }
         }
         else
@@ -301,29 +300,29 @@ namespace mygame
         g_geos[g_geoName]->drawAll();
 
         // unbind framebuffer and draw framebuffer color or depth texture attachment, if requested
-        if (g_framebuf && (g_framebufDisplay != 0))
+        if (g_assets.get<yourgame::GLFramebuffer>("framebuf") && (g_framebufDisplay != 0))
         {
-            g_framebuf->unbindTarget();
+            g_assets.get<yourgame::GLFramebuffer>("framebuf")->unbindTarget();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glViewport(0, 0, ctx.winWidth, ctx.winHeight);
 
-            // simple orthographic projection that matches the quad geometry (g_quadGeo)
+            // simple orthographic projection that matches the quad geometry
             auto pMat = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, 1.0f, -1.0f);
 
             // render color- or depth texture attachment of the framebuffer to a quad
             if (g_framebufDisplay == 1) // color
             {
-                g_shaderTexture->useProgram();
-                glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
-                g_framebuf->textureAttachment(0)->bind();
+                g_assets.get<yourgame::GLShader>("shaderTexture")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderTexture")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_assets.get<yourgame::GLFramebuffer>("framebuf")->textureAttachment(0)->bind();
             }
             else if (g_framebufDisplay == 2) // depth
             {
-                g_shaderTextureDepth->useProgram();
-                glUniformMatrix4fv(g_shaderTextureDepth->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
-                g_framebuf->textureAttachment(1)->bind();
+                g_assets.get<yourgame::GLShader>("shaderTextureDepth")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderTextureDepth")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_assets.get<yourgame::GLFramebuffer>("framebuf")->textureAttachment(1)->bind();
             }
-            g_quadGeo->drawAll();
+            g_assets.get<yourgame::GLGeometry>("quadGeo")->drawAll();
         }
 
         updateImgui(ctx);
@@ -850,8 +849,8 @@ namespace mygame
                                      {0.0f, 1.0f, 0.0f});
             auto pMat = glm::ortho(0.0f, (float)ctx.winWidth, 0.0f, (float)ctx.winHeight, 1.0f, -1.0f);
             auto mvp = pMat * spriteGridTrafo->mat();
-            g_shaderTexture->useProgram();
-            glUniformMatrix4fv(g_shaderTexture->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            g_assets.get<yourgame::GLShader>("shaderTexture")->useProgram();
+            glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderTexture")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
             spriteGridAtlas->texture(0)->bind();
             if (texFilter != texFilterLast) // change texture mode filter if requested
             {
