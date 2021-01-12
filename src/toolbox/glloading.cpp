@@ -61,17 +61,17 @@ namespace yourgame
         if (img)
         {
             yourgame::logd("loaded %v: %vx%vx%v", filename, width, height, numChannels);
-            GLTexture2D *texture = GLTexture2D::make(0,
-                                                     GL_RGBA8,
-                                                     width,
-                                                     height,
-                                                     0,
-                                                     GL_RGBA,
-                                                     GL_UNSIGNED_BYTE,
-                                                     img,
-                                                     unit,
-                                                     parameteri,
-                                                     generateMipmap);
+            GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_2D, unit, parameteri);
+            texture->updateData(GL_TEXTURE_2D,
+                                0,
+                                GL_RGBA8,
+                                width,
+                                height,
+                                0,
+                                GL_RGBA,
+                                GL_UNSIGNED_BYTE,
+                                img,
+                                generateMipmap);
             stbi_image_free(img);
             return texture;
         }
@@ -80,6 +80,52 @@ namespace yourgame
             yourgame::logw("image %v failed to load", filename);
             return nullptr;
         }
+    }
+
+    GLTexture2D *loadCubemap(std::vector<std::string> filenames, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
+    {
+        GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_CUBE_MAP, unit, parameteri);
+
+        for (int i = 0; i < filenames.size(); i++)
+        {
+            auto f = filenames[i];
+            int width;
+            int height;
+            int numChannels;
+            std::vector<uint8_t> imgData;
+            yourgame::readAssetFile(f.c_str(), imgData);
+            // assuming "flip vertically on load" is true, disable it here because
+            // opengl expects cubemap textures "unflipped"...
+            stbi_set_flip_vertically_on_load(false);
+            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
+            // todo: we should check the state of "flip vertically on load" before and
+            // restore it afterwards
+            stbi_set_flip_vertically_on_load(true);
+
+            if (img)
+            {
+                yourgame::logd("loaded %v: %vx%vx%v", f.c_str(), width, height, numChannels);
+                texture->updateData(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                                    0,
+                                    GL_RGBA8,
+                                    width,
+                                    height,
+                                    0,
+                                    GL_RGBA,
+                                    GL_UNSIGNED_BYTE,
+                                    img,
+                                    generateMipmap);
+                stbi_image_free(img);
+            }
+            else
+            {
+                yourgame::logw("image %v failed to load", f.c_str());
+                delete texture;
+                return nullptr;
+            }
+        }
+
+        return texture;
     }
 
     GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)

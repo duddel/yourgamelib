@@ -52,6 +52,16 @@ namespace yourgame
                              std::vector<std::pair<GLenum, GLint>> parameteri,
                              bool generateMipmap);
 
+    /**
+    \brief loads images and generates cubemap texture
+
+    \param filenames this order: POSITIVE_X, NEGATIVE_X, POSITIVE_Y, NEGATIVE_Y, POSITIVE_Z, NEGATIVE_Z
+    */
+    GLTexture2D *loadCubemap(std::vector<std::string> filenames,
+                             GLenum unit,
+                             std::vector<std::pair<GLenum, GLint>> parameteri,
+                             bool generateMipmap);
+
     GLTextureAtlas *loadTextureAtlasCrunch(const char *filename,
                                            GLenum unit,
                                            std::vector<std::pair<GLenum, GLint>> parameteri,

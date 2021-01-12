@@ -29,17 +29,9 @@ namespace yourgame
     class GLTexture2D
     {
     public:
-        static GLTexture2D *make(GLint level,
-                                 GLint internalformat,
-                                 GLsizei width,
-                                 GLsizei height,
-                                 GLint border,
-                                 GLenum format,
-                                 GLenum type,
-                                 const void *data,
+        static GLTexture2D *make(GLenum target,
                                  GLenum unit,
-                                 std::vector<std::pair<GLenum, GLint>> parameteri,
-                                 bool generateMipmap);
+                                 std::vector<std::pair<GLenum, GLint>> parameteri);
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */
@@ -50,14 +42,16 @@ namespace yourgame
         void bind() const;
         void unbindTarget() const;
 
-        void updateData(GLint level,
+        void updateData(GLenum target,
+                        GLint level,
                         GLint internalformat,
                         GLsizei width,
                         GLsizei height,
                         GLint border,
                         GLenum format,
                         GLenum type,
-                        const void *data);
+                        const void *data,
+                        bool generateMipmap);
 
         GLsizei width() const { return m_width; }
         GLsizei height() const { return m_height; }
@@ -66,6 +60,7 @@ namespace yourgame
     private:
         GLTexture2D() {}
         GLuint m_handle;
+        GLenum m_target;
         GLenum m_unit;
         GLsizei m_width;
         GLsizei m_height;

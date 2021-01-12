@@ -57,18 +57,23 @@ namespace mygame
     float g_rotation = 0.01f;
     bool g_rotationOn = true;
     ImVec4 g_clearColor = ImVec4(0.4f, 0.6f, 0.8f, 1.00f);
+    bool g_drawSkybox = true;
+    float g_skyboxRotation = 0.001f;
+    bool g_skyboxRotationOn = true;
     yourgame::Trafo g_modelTrafo;
+    yourgame::Trafo g_skyboxTrafo;
     yourgame::Camera g_camera;
+    yourgame::Camera g_skyboxCamera;
     std::map<std::string, yourgame::GLGeometry *> g_geos;
     std::string g_geoName = "ship_dark";
     yourgame::GLGeometry *g_quadGeo;
-    yourgame::GLShader *g_shaderNormal = nullptr;
     yourgame::GLShader *g_shaderColor = nullptr;
     yourgame::GLShader *g_shaderTexture = nullptr;
     yourgame::GLShader *g_shaderTextureDepth = nullptr;
     int g_shaderToUse = 0; // 0: color shader, 1: normal shader
     yourgame::GLFramebuffer *g_framebuf = nullptr;
     int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
+    yourgame::AssetManager g_assets;
 
     void init(const yourgame::context &ctx)
     {
@@ -76,19 +81,51 @@ namespace mygame
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
         g_camera.setPerspective(75.0f, ctx.winAspectRatio, 1.0f, 10.0f);
+        g_skyboxCamera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 2.0f);
+
+        // Skybox
+        g_assets.insert("skybox",
+                        yourgame::loadCubemap(
+                            {"sky_right.png", "sky_left.png", "sky_top.png", "sky_bottom.png", "sky_front.png", "sky_back.png"},
+                            GL_TEXTURE0,
+                            {{GL_TEXTURE_MIN_FILTER, GL_LINEAR},
+                             {GL_TEXTURE_MAG_FILTER, GL_LINEAR},
+                             {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                             {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE},
+                             {GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE}},
+                            false));
+
+        g_assets.insert("cube",
+                        yourgame::loadGeometry("cube.obj", nullptr));
+
+        // Skybox shader
+        g_assets.insert("shaderSkybox",
+                        yourgame::loadShader(
+#ifdef YOURGAME_GL_API_GLES
+                            {{GL_VERTEX_SHADER, "cubemap.es.vert"},
+                             {GL_FRAGMENT_SHADER, "cubemap.es.frag"}},
+#else
+                            {{GL_VERTEX_SHADER, "cubemap.vert"},
+                             {GL_FRAGMENT_SHADER, "cubemap.frag"}},
+#endif
+                            {{yourgame::attrLocPosition, yourgame::attrNamePosition}},
+                            {{0, "color"}}));
+        g_assets.get<yourgame::GLShader>("shaderSkybox")->useProgram();
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderSkybox")->getUniformLocation(yourgame::unifNameTexture0), 0);
 
         // Normal shader
-        g_shaderNormal = yourgame::loadShader(
+        g_assets.insert("shaderNormal",
+                        yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
-            {{GL_VERTEX_SHADER, "simple.es.vert"},
-             {GL_FRAGMENT_SHADER, "simplenormal.es.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.es.vert"},
+                             {GL_FRAGMENT_SHADER, "simplenormal.es.frag"}},
 #else
-            {{GL_VERTEX_SHADER, "simple.vert"},
-             {GL_FRAGMENT_SHADER, "simplenormal.frag"}},
+                            {{GL_VERTEX_SHADER, "simple.vert"},
+                             {GL_FRAGMENT_SHADER, "simplenormal.frag"}},
 #endif
-            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
-             {yourgame::attrLocNormal, yourgame::attrNameNormal}},
-            {{0, "color"}});
+                            {{yourgame::attrLocPosition, yourgame::attrNamePosition},
+                             {yourgame::attrLocNormal, yourgame::attrNameNormal}},
+                            {{0, "color"}}));
 
         // Color shader
         g_shaderColor = yourgame::loadShader(
@@ -177,38 +214,23 @@ namespace mygame
             g_modelTrafo.rotateLocal(g_rotation, yourgame::Trafo::AXIS::Y);
         }
 
+        if (g_skyboxRotationOn)
+        {
+            g_skyboxTrafo.rotateLocal(g_skyboxRotation, yourgame::Trafo::AXIS::Y);
+        }
+
         if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
         {
             yourgame::notifyShutdown();
         }
 
         g_camera.setAspect(ctx.winAspectRatio);
+        g_skyboxCamera.setAspect(ctx.winAspectRatio);
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
         auto modelMat = g_modelTrafo.mat();
         auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-
-        if (g_shaderToUse == 0)
-        {
-            if (g_shaderColor)
-            {
-                g_shaderColor->useProgram();
-                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_shaderColor->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-            }
-        }
-        else
-        {
-            if (g_shaderNormal)
-            {
-                g_shaderNormal->useProgram();
-                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_shaderNormal->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_shaderNormal->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-            }
-        }
 
         // load geometry on demand
         if (g_geos.find(g_geoName) == g_geos.end())
@@ -238,6 +260,44 @@ namespace mygame
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+
+        // draw skybox
+        if (g_drawSkybox)
+        {
+            g_assets.get<yourgame::GLShader>("shaderSkybox")->useProgram();
+            auto mvpSky = g_skyboxCamera.pMat() *                    // skybox camera projection
+                          glm::mat4(glm::mat3(g_camera.vMat())) *    // rotation part of main camera view matrix
+                          glm::mat4(glm::mat3(g_skyboxTrafo.mat())); // rotation part of skybox transformation
+            glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderSkybox")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvpSky));
+            g_assets.get<yourgame::GLTexture2D>("skybox")->bind();
+            glDepthMask(GL_FALSE);
+            g_assets.get<yourgame::GLGeometry>("cube")->drawAll();
+            glDepthMask(GL_TRUE);
+        }
+
+        // set selected shader
+        if (g_shaderToUse == 0)
+        {
+            if (g_shaderColor)
+            {
+                g_shaderColor->useProgram();
+                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_shaderColor->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_shaderColor->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+            }
+        }
+        else
+        {
+            if (g_assets.get<yourgame::GLShader>("shaderNormal"))
+            {
+                g_assets.get<yourgame::GLShader>("shaderNormal")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderNormal")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderNormal")->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderNormal")->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+            }
+        }
+
+        // draw object
         g_geos[g_geoName]->drawAll();
 
         // unbind framebuffer and draw framebuffer color or depth texture attachment, if requested
@@ -373,6 +433,11 @@ namespace mygame
         {
             ImGui::Begin("GL", &showDemoGl, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
             ImGui::BeginGroup();
+            ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.8f, 1.0f), "skybox");
+            ImGui::Checkbox("draw skybox", &g_drawSkybox);
+            ImGui::SameLine();
+            ImGui::Checkbox("skybox rotation on", &g_skyboxRotationOn);
+            ImGui::SliderFloat("skybox rotation", &g_skyboxRotation, -0.1f, 0.1f);
             ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
 
             // geometry
@@ -405,9 +470,8 @@ namespace mygame
             ImGui::InputFloat("model scale", &g_modelScale, 0.001f, 100.0f, "%.3f");
 
             // rotation
-            ImGui::Checkbox("", &g_rotationOn);
-            ImGui::SameLine();
-            ImGui::SliderFloat("rotation", &g_rotation, -0.1f, 0.1f);
+            ImGui::Checkbox("geometry rotation on", &g_rotationOn);
+            ImGui::SliderFloat("geometry rotation", &g_rotation, -0.1f, 0.1f);
 
             // camera manipulation
             static int projMode = 0;
@@ -423,6 +487,7 @@ namespace mygame
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
                 ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
                 g_camera.setPerspective(f1, ctx.winAspectRatio, f2, f3);
+                g_skyboxCamera.setPerspective(f1, ctx.winAspectRatio, 0.1f, 2.0f);
             }
             else
             {
@@ -432,6 +497,7 @@ namespace mygame
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
                 ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
                 g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
+                // skybox camera always perspective (see above)
             }
 
             // shader

@@ -1,6 +1,9 @@
 This project uses open source software, the licenses are given below.
 Platform: android
 
+Assets: most assets by kenney.nl
+Skybox: generated with space-3d: https://wwwtyro.github.io/space-3d/#nebulae=true&pointStars=true&resolution=1024&seed=3zrq8efridc0&stars=true&sun=true
+
 ===========================================================
 License of The Android Open Source Project
 ===========================================================

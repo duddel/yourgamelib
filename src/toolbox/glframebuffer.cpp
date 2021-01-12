@@ -32,17 +32,17 @@ namespace yourgame
 
         for (const auto &ta : texAttachDescrs)
         {
-            GLTexture2D *newTex = GLTexture2D::make(0,
-                                                    ta.internalformat,
-                                                    width,
-                                                    height,
-                                                    0,
-                                                    ta.format,
-                                                    ta.type,
-                                                    nullptr,
-                                                    ta.unit,
-                                                    ta.parameteri,
-                                                    false);
+            GLTexture2D *newTex = GLTexture2D::make(GL_TEXTURE_2D, ta.unit, ta.parameteri);
+            newTex->updateData(GL_TEXTURE_2D,
+                               0,
+                               ta.internalformat,
+                               width,
+                               height,
+                               0,
+                               ta.format,
+                               ta.type,
+                               nullptr,
+                               false);
 
             newTex->unbindTarget();
 
@@ -85,14 +85,16 @@ namespace yourgame
     {
         for (auto i = 0; i < m_textureAttachments.size(); i++)
         {
-            m_textureAttachments[i]->updateData(0,
+            m_textureAttachments[i]->updateData(GL_TEXTURE_2D,
+                                                0,
                                                 m_texAttachDescrs[i].internalformat,
                                                 width,
                                                 height,
                                                 0,
                                                 m_texAttachDescrs[i].format,
                                                 m_texAttachDescrs[i].type,
-                                                nullptr);
+                                                nullptr,
+                                                false);
         }
     }
 

@@ -22,48 +22,24 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    GLTexture2D *GLTexture2D::make(GLint level,
-                                   GLint internalformat,
-                                   GLsizei width,
-                                   GLsizei height,
-                                   GLint border,
-                                   GLenum format,
-                                   GLenum type,
-                                   const void *data,
+    GLTexture2D *GLTexture2D::make(GLenum target,
                                    GLenum unit,
-                                   std::vector<std::pair<GLenum, GLint>> parameteri,
-                                   bool generateMipmap)
+                                   std::vector<std::pair<GLenum, GLint>> parameteri)
     {
         GLuint handle;
 
         glGenTextures(1, &handle);
-        glBindTexture(GL_TEXTURE_2D, handle);
+        glBindTexture(target, handle);
 
         for (const auto &par : parameteri)
         {
-            glTexParameteri(GL_TEXTURE_2D, par.first, par.second);
-        }
-
-        glTexImage2D(GL_TEXTURE_2D,
-                     level,
-                     internalformat,
-                     width,
-                     height,
-                     border,
-                     format,
-                     type,
-                     data);
-
-        if (generateMipmap)
-        {
-            glGenerateMipmap(GL_TEXTURE_2D);
+            glTexParameteri(target, par.first, par.second);
         }
 
         GLTexture2D *newTexture = new GLTexture2D();
         newTexture->m_unit = unit;
+        newTexture->m_target = target;
         newTexture->m_handle = handle;
-        newTexture->m_width = width;
-        newTexture->m_height = height;
 
         return newTexture;
     }
@@ -76,28 +52,30 @@ namespace yourgame
     void GLTexture2D::bind() const
     {
         glActiveTexture(m_unit);
-        glBindTexture(GL_TEXTURE_2D, m_handle);
+        glBindTexture(m_target, m_handle);
     }
 
     void GLTexture2D::unbindTarget() const
     {
         glActiveTexture(m_unit);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindTexture(m_target, 0);
     }
 
-    void GLTexture2D::updateData(GLint level,
+    void GLTexture2D::updateData(GLenum target,
+                                 GLint level,
                                  GLint internalformat,
                                  GLsizei width,
                                  GLsizei height,
                                  GLint border,
                                  GLenum format,
                                  GLenum type,
-                                 const void *data)
+                                 const void *data,
+                                 bool generateMipmap)
     {
         glActiveTexture(m_unit);
-        glBindTexture(GL_TEXTURE_2D, m_handle);
+        glBindTexture(m_target, m_handle);
 
-        glTexImage2D(GL_TEXTURE_2D,
+        glTexImage2D(target, // target can be != m_target (cubemaps...)
                      level,
                      internalformat,
                      width,
@@ -107,8 +85,15 @@ namespace yourgame
                      type,
                      data);
 
-        // todo: regenerate mipmap?
-        
-        glBindTexture(GL_TEXTURE_2D, 0);
+        // todo: does this make sense _here_ for cubemaps?
+        if (generateMipmap)
+        {
+            glGenerateMipmap(m_target);
+        }
+
+        glBindTexture(m_target, 0);
+
+        m_width = width;
+        m_height = height;
     }
 } // namespace yourgame
