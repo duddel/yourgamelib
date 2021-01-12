@@ -1,6 +1,7 @@
 var searchData=
 [
   ['lerp',['lerp',['../classyourgame_1_1Trafo.html#a229afdcb62a19d89f96bbe5e885de5c3',1,'yourgame::Trafo']]],
+  ['loadcubemap',['loadCubemap',['../namespaceyourgame.html#a9cf1baabc25e24c647343aac9cc0a873',1,'yourgame']]],
   ['loadgeometry',['loadGeometry',['../namespaceyourgame.html#a58a756e657826628f01337561e1bea58',1,'yourgame']]],
   ['loadshader',['loadShader',['../namespaceyourgame.html#a877e73e778766f590b76466a46e0fc7e',1,'yourgame']]],
   ['loadtexture',['loadTexture',['../namespaceyourgame.html#a1570db4889aa249750583f456cdfafd9',1,'yourgame::loadTexture(const char *filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#a8b2957e4f133c1eb76ec769dc47d7b03',1,'yourgame::loadTexture(const char *filename, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)']]],

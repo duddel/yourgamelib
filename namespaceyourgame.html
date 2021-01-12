@@ -502,6 +502,9 @@ Functions</h2></td></tr>
 <tr class="separator:a1251d9b471be4b32449e7668af4d219d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b2957e4f133c1eb76ec769dc47d7b03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a8b2957e4f133c1eb76ec769dc47d7b03">loadTexture</a> (const char *filename, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)</td></tr>
 <tr class="separator:a8b2957e4f133c1eb76ec769dc47d7b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cf1baabc25e24c647343aac9cc0a873"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a9cf1baabc25e24c647343aac9cc0a873">loadCubemap</a> (std::vector&lt; std::string &gt; filenames, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)</td></tr>
+<tr class="memdesc:a9cf1baabc25e24c647343aac9cc0a873"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads images and generates cubemap texture  <a href="#a9cf1baabc25e24c647343aac9cc0a873">More...</a><br /></td></tr>
+<tr class="separator:a9cf1baabc25e24c647343aac9cc0a873"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ef76f5a56faa092bed27dfdef528c1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTextureAtlas.html">GLTextureAtlas</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a9ef76f5a56faa092bed27dfdef528c1b">loadTextureAtlasCrunch</a> (const char *filename, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)</td></tr>
 <tr class="separator:a9ef76f5a56faa092bed27dfdef528c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af93ad92bbf54e1bb71cce95383885fca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTextureAtlas.html">GLTextureAtlas</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#af93ad92bbf54e1bb71cce95383885fca">loadTextureAtlasGrid</a> (const char *filename, int tilesWidth, int tilesHeight, GLenum unit, std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; parameteri, bool generateMipmap)</td></tr>
@@ -1079,6 +1082,54 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>returns the default logger instance </p>
+
+</div>
+</div>
+<a id="a9cf1baabc25e24c647343aac9cc0a873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cf1baabc25e24c647343aac9cc0a873">&#9670;&nbsp;</a></span>loadCubemap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a>* yourgame::loadCubemap </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; std::string &gt;&#160;</td>
+          <td class="paramname"><em>filenames</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">GLenum&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt;&#160;</td>
+          <td class="paramname"><em>parameteri</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>generateMipmap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>loads images and generates cubemap texture </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filenames</td><td>this order: POSITIVE_X, NEGATIVE_X, POSITIVE_Y, NEGATIVE_Y, POSITIVE_Z, NEGATIVE_Z </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -9,6 +9,6 @@ var searchData=
   ['unifnametexture0',['unifNameTexture0',['../namespaceyourgame.html#a7d982a726003a683030a94604d8cd6cd',1,'yourgame']]],
   ['unifnametexture1',['unifNameTexture1',['../namespaceyourgame.html#a4f5259eb494f3a9f426dad74fb3b33bf',1,'yourgame']]],
   ['unit',['unit',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html#a0633133bea9d02eb35dde6e7e3dab81d',1,'yourgame::GLFramebuffer::TextureAttachDescr']]],
-  ['updatedata',['updateData',['../classyourgame_1_1GLTexture2D.html#ad6ad3eacec94a3013e9bc685cc9567c8',1,'yourgame::GLTexture2D']]],
+  ['updatedata',['updateData',['../classyourgame_1_1GLTexture2D.html#a055183ecf247c0c02f16fe47c3c5558e',1,'yourgame::GLTexture2D']]],
   ['useprogram',['useProgram',['../classyourgame_1_1GLShader.html#a92e78ead9edaf73f5f9912269331c42c',1,'yourgame::GLShader']]]
 ];
