@@ -19,8 +19,7 @@ freely, subject to the following restrictions:
 */
 #include <string>
 #include "yourgame/gl_include.h"
-
-#include "yourgame/glconventions.h" // ToDo: why is this include required?
+#include "yourgame/glconventions.h"
 
 namespace yourgame
 {
@@ -35,6 +34,11 @@ namespace yourgame
     const GLchar *unifNameMvpMatrix = "mvpMat";
     const GLchar *unifNameModelMatrix = "modelMat";
     const GLchar *unifNameNormalMatrix = "normalMat";
-    const GLchar *unifNameTexture0 = "texture0";
-    const GLchar *unifNameTexture1 = "texture1";
-}
+    const GLchar *unifNameTextureDiffuse = "textureDiffuse";
+    const GLchar *unifNameTextureSky = "textureSky";
+    const GLint unifValueTextureDiffuse = 0;
+    const GLint unifValueTextureSky = 4;
+    const GLenum textureUnitDiffuse = GL_TEXTURE0;
+    const GLenum textureUnitSky = GL_TEXTURE4;
+
+} // namespace yourgame

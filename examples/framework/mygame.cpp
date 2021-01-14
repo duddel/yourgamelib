@@ -82,7 +82,7 @@ namespace mygame
         g_assets.insert("skybox",
                         yourgame::loadCubemap(
                             {"sky_right.png", "sky_left.png", "sky_top.png", "sky_bottom.png", "sky_front.png", "sky_back.png"},
-                            GL_TEXTURE0,
+                            yourgame::textureUnitSky,
                             {{GL_TEXTURE_MIN_FILTER, GL_LINEAR},
                              {GL_TEXTURE_MAG_FILTER, GL_LINEAR},
                              {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
@@ -97,16 +97,17 @@ namespace mygame
         g_assets.insert("shaderSkybox",
                         yourgame::loadShader(
 #ifdef YOURGAME_GL_API_GLES
-                            {{GL_VERTEX_SHADER, "cubemap.es.vert"},
-                             {GL_FRAGMENT_SHADER, "cubemap.es.frag"}},
+                            {{GL_VERTEX_SHADER, "skybox.es.vert"},
+                             {GL_FRAGMENT_SHADER, "skybox.es.frag"}},
 #else
-                            {{GL_VERTEX_SHADER, "cubemap.vert"},
-                             {GL_FRAGMENT_SHADER, "cubemap.frag"}},
+                            {{GL_VERTEX_SHADER, "skybox.vert"},
+                             {GL_FRAGMENT_SHADER, "skybox.frag"}},
 #endif
                             {{yourgame::attrLocPosition, yourgame::attrNamePosition}},
                             {{0, "color"}}));
         g_assets.get<yourgame::GLShader>("shaderSkybox")->useProgram();
-        glUniform1i(g_assets.get<yourgame::GLShader>("shaderSkybox")->getUniformLocation(yourgame::unifNameTexture0), 0);
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderSkybox")->getUniformLocation(yourgame::unifNameTextureSky),
+                    yourgame::unifValueTextureSky);
 
         // Normal shader
         g_assets.insert("shaderNormal",
@@ -150,7 +151,8 @@ namespace mygame
                              {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
                             {{0, "color"}}));
         g_assets.get<yourgame::GLShader>("shaderTexture")->useProgram();
-        glUniform1i(g_assets.get<yourgame::GLShader>("shaderTexture")->getUniformLocation(yourgame::unifNameTexture0), 0);
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderTexture")->getUniformLocation(yourgame::unifNameTextureDiffuse),
+                    yourgame::unifValueTextureDiffuse);
 
         // Depth Texture shader
         g_assets.insert("shaderTextureDepth",
@@ -166,7 +168,8 @@ namespace mygame
                              {yourgame::attrLocTexcoords, yourgame::attrNameTexcoords}},
                             {{0, "color"}}));
         g_assets.get<yourgame::GLShader>("shaderTextureDepth")->useProgram();
-        glUniform1i(g_assets.get<yourgame::GLShader>("shaderTextureDepth")->getUniformLocation(yourgame::unifNameTexture0), 0);
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderTextureDepth")->getUniformLocation(yourgame::unifNameTextureDiffuse),
+                    yourgame::unifValueTextureDiffuse);
 
         // quad geometry
         g_assets.insert("quadGeo", yourgame::loadGeometry("quad.obj", nullptr));
@@ -179,7 +182,7 @@ namespace mygame
                                                       {{GL_RGBA8,
                                                         GL_RGBA,
                                                         GL_UNSIGNED_BYTE,
-                                                        GL_TEXTURE0,
+                                                        yourgame::textureUnitDiffuse,
                                                         {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
                                                          {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
                                                          {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
@@ -188,7 +191,7 @@ namespace mygame
                                                        {GL_DEPTH_COMPONENT16,
                                                         GL_DEPTH_COMPONENT,
                                                         GL_UNSIGNED_SHORT,
-                                                        GL_TEXTURE0,
+                                                        yourgame::textureUnitDiffuse,
                                                         {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
                                                          {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
                                                          {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
@@ -801,7 +804,7 @@ namespace mygame
                 spriteGridAtlas = yourgame::loadTextureAtlasGrid("kenney_1bitpack_colored_packed.png",
                                                                  tilesWide,
                                                                  tilesHigh,
-                                                                 GL_TEXTURE0,
+                                                                 yourgame::textureUnitDiffuse,
                                                                  GL_NEAREST,
                                                                  false);
                 spriteGrid = new yourgame::GLSpriteGrid();
@@ -1054,6 +1057,7 @@ namespace mygame
             static const char licFilename[] = "LICENSE_web.txt";
 #endif
 
+            // todo: do not load license on every frame!
             std::vector<uint8_t> licFileData;
             yourgame::readAssetFile(licFilename, licFileData);
             std::string licStr(licFileData.begin(), licFileData.end());

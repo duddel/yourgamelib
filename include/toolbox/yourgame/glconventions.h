@@ -36,8 +36,12 @@ namespace yourgame
     extern const GLchar *unifNameMvpMatrix;
     extern const GLchar *unifNameModelMatrix;
     extern const GLchar *unifNameNormalMatrix;
-    extern const GLchar *unifNameTexture0;
-    extern const GLchar *unifNameTexture1;
-}
+    extern const GLchar *unifNameTextureDiffuse;
+    extern const GLchar *unifNameTextureSky;
+    extern const GLint unifValueTextureDiffuse;
+    extern const GLint unifValueTextureSky;
+    extern const GLenum textureUnitDiffuse;
+    extern const GLenum textureUnitSky;
+} // namespace yourgame
 
 #endif
