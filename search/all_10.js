@@ -4,6 +4,8 @@ var searchData=
   ['texture',['texture',['../classyourgame_1_1GLTextureAtlas.html#a0dc37ce23bb1881e7fee4eb41e8adfea',1,'yourgame::GLTextureAtlas']]],
   ['textureattachdescr',['TextureAttachDescr',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html',1,'yourgame::GLFramebuffer']]],
   ['textureattachment',['textureAttachment',['../classyourgame_1_1GLFramebuffer.html#a95315cd4ffa594f6c446443cccb850f0',1,'yourgame::GLFramebuffer']]],
+  ['textureunitdiffuse',['textureUnitDiffuse',['../namespaceyourgame.html#af9c1a4c6c56649d6bc198103e0c0520f',1,'yourgame']]],
+  ['textureunitsky',['textureUnitSky',['../namespaceyourgame.html#a5ce0ebf34ae7c3c0cab18bcb3d996642',1,'yourgame']]],
   ['tick',['tick',['../namespacemygame.html#a1aaa890544711fd0e39e6253ac77051a',1,'mygame']]],
   ['toolbox_2eh',['toolbox.h',['../toolbox_8h.html',1,'']]],
   ['trafo',['Trafo',['../classyourgame_1_1Trafo.html',1,'yourgame::Trafo'],['../classyourgame_1_1Camera.html#a8d058cd1d79673ad7f59eac5e91c62f4',1,'yourgame::Camera::trafo()']]],
