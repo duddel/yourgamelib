@@ -34,6 +34,8 @@ namespace yourgame
     const GLchar *unifNameMvpMatrix = "mvpMat";
     const GLchar *unifNameModelMatrix = "modelMat";
     const GLchar *unifNameNormalMatrix = "normalMat";
+    const GLchar *unifNameCameraPosition = "camPos";
+    const GLchar *unifNameSkyRotationInv = "skyRotInv";
     const GLchar *unifNameTextureDiffuse = "textureDiffuse";
     const GLchar *unifNameTextureSky = "textureSky";
     const GLint unifValueTextureDiffuse = 0;

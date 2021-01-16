@@ -136,6 +136,9 @@ namespace mygame
                             {{yourgame::attrLocPosition, yourgame::attrNamePosition},
                              {yourgame::attrLocColor, yourgame::attrNameColor}},
                             {{0, "color"}}));
+        g_assets.get<yourgame::GLShader>("shaderColor")->useProgram();
+        glUniform1i(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameTextureSky),
+                    yourgame::unifValueTextureSky);
 
         // Texture shader
         g_assets.insert("shaderTexture",
@@ -286,6 +289,10 @@ namespace mygame
                 glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
                 glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
                 glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+                glm::vec3 camEye = glm::vec3(g_camera.trafo()->mat()[3]);
+                glUniform3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameCameraPosition), 1, glm::value_ptr(camEye));
+                auto skyRotInv = glm::transpose((glm::mat3(g_skyboxTrafo.mat())));
+                glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameSkyRotationInv), 1, GL_FALSE, glm::value_ptr(skyRotInv));
             }
         }
         else
@@ -298,6 +305,9 @@ namespace mygame
                 glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderNormal")->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
             }
         }
+
+        // bind skybox texture
+        g_assets.get<yourgame::GLTexture2D>("skybox")->bind();
 
         // draw object
         g_geos[g_geoName]->drawAll();
