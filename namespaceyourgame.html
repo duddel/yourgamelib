@@ -478,6 +478,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a098e420d09d0f1967aaf84845223ccbf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a098e420d09d0f1967aaf84845223ccbf">sendCmdToEnv</a> (int cmdId, int data0, int data1, int data2)</td></tr>
 <tr class="memdesc:a098e420d09d0f1967aaf84845223ccbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">sends a (user-defined) command to the application host environment  <a href="#a098e420d09d0f1967aaf84845223ccbf">More...</a><br /></td></tr>
 <tr class="separator:a098e420d09d0f1967aaf84845223ccbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7f319142a806ef6b5c1ca2e0e5664e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ae7f319142a806ef6b5c1ca2e0e5664e7">enableFullscreen</a> (bool enable)</td></tr>
+<tr class="memdesc:ae7f319142a806ef6b5c1ca2e0e5664e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">request fullscreen  <a href="#ae7f319142a806ef6b5c1ca2e0e5664e7">More...</a><br /></td></tr>
+<tr class="separator:ae7f319142a806ef6b5c1ca2e0e5664e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12b6f52b24138133b59aac878d339fc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a12b6f52b24138133b59aac878d339fc8">enableVSync</a> (bool enable)</td></tr>
+<tr class="memdesc:a12b6f52b24138133b59aac878d339fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">request vertical sync  <a href="#a12b6f52b24138133b59aac878d339fc8">More...</a><br /></td></tr>
+<tr class="separator:a12b6f52b24138133b59aac878d339fc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae48236e308602407c18ea8e5a9279c0f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ae48236e308602407c18ea8e5a9279c0f">audioInit</a> (ma_uint32 numChannels, ma_uint32 sampleRate, int numSources)</td></tr>
 <tr class="separator:ae48236e308602407c18ea8e5a9279c0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46e25c60b78cf9deef8cd43e1c7438b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a46e25c60b78cf9deef8cd43e1c7438b3">audioShutdown</a> ()</td></tr>
@@ -1016,6 +1022,47 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae7f319142a806ef6b5c1ca2e0e5664e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7f319142a806ef6b5c1ca2e0e5664e7">&#9670;&nbsp;</a></span>enableFullscreen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::enableFullscreen </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>request fullscreen </p>
+
+</div>
+</div>
+<a id="a12b6f52b24138133b59aac878d339fc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12b6f52b24138133b59aac878d339fc8">&#9670;&nbsp;</a></span>enableVSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::enableVSync </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>request vertical sync </p>
+<dl class="section attention"><dt>Attention</dt><dd>if this works reliable depends on gpu/driver </dd></dl>
 
 </div>
 </div>
@@ -1791,7 +1838,6 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>triggers the application to exit after the cycle this function was called in </p>
-<dl class="section attention"><dt>Attention</dt><dd>no effect on platforms other than <code>desktop</code> </dd></dl>
 
 </div>
 </div>
