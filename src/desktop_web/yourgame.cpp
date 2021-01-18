@@ -89,15 +89,37 @@ namespace yourgame_internal_desktop
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, YOURGAME_GL_MAJOR);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, YOURGAME_GL_MINOR);
 
-        // todo: determine reasonable initial window size and position
+        // create window with the current primary monitor mode ("desktop")
+#ifdef __EMSCRIPTEN__
         _window = glfwCreateWindow(1536, 864, "", NULL, NULL);
-        if (_window == NULL)
+#else
+        const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+        if (_context.winIsFullscreen)
+        {
+            // create fullscreen window
+            _window = glfwCreateWindow(mode->width, mode->height, "", glfwGetPrimaryMonitor(), NULL);
+        }
+        else
+        {
+            // create windowed window, roughly centered, 0.8 times desktop resolution
+            _window = glfwCreateWindow((mode->width * 8) / 10, (mode->height * 8) / 10, "", NULL, NULL);
+            if (_window)
+            {
+                glfwSetWindowPos(_window, mode->width / 10, mode->height / 10);
+            }
+        }
+#endif
+
+        if (!_window)
         {
             yourgame::loge("glfwCreateWindow() failed");
             glfwTerminate();
             return -1;
         }
-        glfwSetWindowPos(_window, 100, 100);
 
         glfwMakeContextCurrent(_window);
 
@@ -120,7 +142,8 @@ namespace yourgame_internal_desktop
         yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
         yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-        glfwSwapInterval(1);
+        glfwSwapInterval(_context.vsyncEnabled ? 1 : 0);
+
         yourgame_internal_desktop::initInput(_window);
 
 #ifdef YOURGAME_EXTPROJ_imgui
@@ -210,5 +233,35 @@ namespace yourgame
     int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
     {
         return -1;
+    }
+
+    void enableFullscreen(bool enable)
+    {
+#ifdef __EMSCRIPTEN__
+        // todo
+#else
+        auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        if (enable)
+        {
+            // set fullscreen
+            glfwSetWindowMonitor(yourgame_internal_desktop::_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+        }
+        else
+        {
+            // set windowed, roughly centered, 0.8 times desktop resolution
+            glfwSetWindowMonitor(yourgame_internal_desktop::_window, NULL, 0, 0, (mode->width * 8) / 10, (mode->height * 8) / 10, mode->refreshRate);
+            glfwSetWindowPos(yourgame_internal_desktop::_window, mode->width / 10, mode->height / 10);
+        }
+        yourgame_internal_desktop::_context.winIsFullscreen = enable;
+        // todo: glfwSwapInterval() is required to be called again after
+        // window mode changed: https://github.com/glfw/glfw/issues/1072
+        glfwSwapInterval(yourgame_internal_desktop::_context.vsyncEnabled ? 1 : 0);
+#endif
+    }
+
+    void enableVSync(bool enable)
+    {
+        glfwSwapInterval(enable ? 1 : 0);
+        yourgame_internal_desktop::_context.vsyncEnabled = enable;
     }
 } // namespace yourgame

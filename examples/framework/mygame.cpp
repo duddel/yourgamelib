@@ -427,6 +427,18 @@ namespace mygame
                 }
                 ImGui::EndMenu();
             }
+            if (ImGui::BeginMenu("Options"))
+            {
+                if (ImGui::MenuItem("Fullscreen", "", yourgame::getCtx().winIsFullscreen))
+                {
+                    yourgame::enableFullscreen(!yourgame::getCtx().winIsFullscreen);
+                }
+                if (ImGui::MenuItem("VSync", "", yourgame::getCtx().vsyncEnabled))
+                {
+                    yourgame::enableVSync(!yourgame::getCtx().vsyncEnabled);
+                }
+                ImGui::EndMenu();
+            }
             if (ImGui::BeginMenu("Help"))
             {
                 if (ImGui::MenuItem("License"))
@@ -435,6 +447,7 @@ namespace mygame
                 }
                 ImGui::EndMenu();
             }
+            ImGui::Text("| fps: %f", (float)(1.0 / yourgame::getCtx().deltaTimeS));
             ImGui::EndMainMenuBar();
         }
 

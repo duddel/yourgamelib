@@ -355,4 +355,9 @@ namespace yourgame
 
         return 0;
     }
+
+    void enableFullscreen(bool enable) {}
+
+    void enableVSync(bool enable) {}
+
 } // namespace yourgame

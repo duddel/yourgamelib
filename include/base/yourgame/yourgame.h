@@ -35,17 +35,25 @@ namespace yourgame
         uint32_t winWidth = 0U;
         uint32_t winHeight = 0U;
         float winAspectRatio = 1.0f;
+        bool winIsFullscreen = false;
+        bool vsyncEnabled = true;
     };
 
     /** \brief returns the current context */
     const yourgame::context &getCtx();
 
-    /** \brief triggers the application to exit after the cycle this function was called in
-    \attention no effect on platforms other than `desktop` */
+    /** \brief triggers the application to exit after the cycle this function was called in */
     void notifyShutdown();
 
     /** \brief sends a (user-defined) command to the application host environment */
     int sendCmdToEnv(int cmdId, int data0, int data1, int data2);
+
+    /** \brief request fullscreen */
+    void enableFullscreen(bool enable);
+
+    /** \brief request vertical sync
+    \attention if this works reliable depends on gpu/driver */
+    void enableVSync(bool enable);
 } // namespace yourgame
 
 #endif
