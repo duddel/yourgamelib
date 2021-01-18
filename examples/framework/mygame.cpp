@@ -66,6 +66,7 @@ namespace mygame
     yourgame::Camera g_skyboxCamera;
     std::map<std::string, yourgame::GLGeometry *> g_geos;
     std::string g_geoName = "ship_dark";
+    float g_shaderColorMix = 0.5f;
     int g_shaderToUse = 0;     // 0: color shader, 1: normal shader
     int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
     yourgame::AssetManager g_assets;
@@ -83,12 +84,12 @@ namespace mygame
                         yourgame::loadCubemap(
                             {"sky_right.png", "sky_left.png", "sky_top.png", "sky_bottom.png", "sky_front.png", "sky_back.png"},
                             yourgame::textureUnitSky,
-                            {{GL_TEXTURE_MIN_FILTER, GL_LINEAR},
-                             {GL_TEXTURE_MAG_FILTER, GL_LINEAR},
+                            {{GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR},
+                             {GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR},
                              {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
                              {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE},
                              {GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE}},
-                            false));
+                            true));
 
         g_assets.insert("cube",
                         yourgame::loadGeometry("cube.obj", nullptr));
@@ -283,16 +284,19 @@ namespace mygame
         // set selected shader
         if (g_shaderToUse == 0)
         {
-            if (g_assets.get<yourgame::GLShader>("shaderColor"))
+            auto shaderColor = g_assets.get<yourgame::GLShader>("shaderColor");
+            if (shaderColor)
             {
-                g_assets.get<yourgame::GLShader>("shaderColor")->useProgram();
-                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+                shaderColor->useProgram();
+                glUniformMatrix4fv(shaderColor->getUniformLocation(yourgame::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(shaderColor->getUniformLocation(yourgame::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(shaderColor->getUniformLocation(yourgame::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
                 glm::vec3 camEye = glm::vec3(g_camera.trafo()->mat()[3]);
-                glUniform3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameCameraPosition), 1, glm::value_ptr(camEye));
+                glUniform3fv(shaderColor->getUniformLocation(yourgame::unifNameCameraPosition), 1, glm::value_ptr(camEye));
                 auto skyRotInv = glm::transpose((glm::mat3(g_skyboxTrafo.mat())));
-                glUniformMatrix3fv(g_assets.get<yourgame::GLShader>("shaderColor")->getUniformLocation(yourgame::unifNameSkyRotationInv), 1, GL_FALSE, glm::value_ptr(skyRotInv));
+                glUniformMatrix3fv(shaderColor->getUniformLocation(yourgame::unifNameSkyRotationInv), 1, GL_FALSE, glm::value_ptr(skyRotInv));
+                glUniform3fv(shaderColor->getUniformLocation(yourgame::unifNameCameraPosition), 1, glm::value_ptr(camEye));
+                glUniform1f(shaderColor->getUniformLocation("colorMix"), g_shaderColorMix);
             }
         }
         else
@@ -453,25 +457,11 @@ namespace mygame
             ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
 
             // geometry
-            const char *geoNames[] = {"pirate_officer",
-                                      "ship_dark",
-                                      "tower",
-                                      "presentGreen",
-                                      "snowmanFancy",
-                                      "treePineSnow"};
-
-            static int geoId = 1;
+            const char *geoNames[] = {"ship_dark", "tower", "sphere"};
+            static int geoId = 0;
             int numGeos = sizeof(geoNames) / sizeof(geoNames[0]);
             ImGui::ListBox("geometry", &geoId, geoNames, numGeos, numGeos);
             g_geoName = geoNames[geoId];
-
-            // manually adjust model scale
-            static int geoIdLast = -1;
-            if (geoId != geoIdLast)
-            {
-                g_modelScale = geoId > 2 ? 1.0f : 0.035f;
-                geoIdLast = geoId;
-            }
 
             ImGui::EndGroup();
             ImGui::SameLine();
@@ -515,6 +505,7 @@ namespace mygame
             // shader
             ImGui::Separator();
             ImGui::TextColored(ImVec4(0.4f, 0.6f, 0.8f, 1.0f), "shader");
+            ImGui::SliderFloat("color shader mix", &g_shaderColorMix, 0.0f, 1.0f);
             ImGui::RadioButton("color shader", &g_shaderToUse, 0);
             ImGui::RadioButton("normal shader", &g_shaderToUse, 1);
 
