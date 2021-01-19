@@ -36,7 +36,8 @@ namespace yourgame
         uint32_t winHeight = 0U;
         float winAspectRatio = 1.0f;
         bool winIsFullscreen = false;
-        bool vsyncEnabled = true;
+        bool vsyncEnabled = false;
+        bool mouseCatched = false;
     };
 
     /** \brief returns the current context */
@@ -54,6 +55,9 @@ namespace yourgame
     /** \brief request vertical sync
     \attention if this works reliable depends on gpu/driver */
     void enableVSync(bool enable);
+
+    /** \brief disable mouse cursor, infinite movement */
+    void catchMouse(bool enable);
 } // namespace yourgame
 
 #endif

@@ -29,28 +29,16 @@ namespace yourgame_internal_android
     {
         struct InputValue
         {
-            int isfloat; // 1=float, 0=int
-            union
-            {
-                int vali;
-                float valf;
-            };
+            InputValue() : val(0.0f), valLast(0.0f) {}
+            float val;
+            float valLast;
         };
 
         std::map<yourgame::InputSource, InputValue> _inputStates;
 
         void set(yourgame::InputSource source, float value)
         {
-            InputValue newval{1};
-            newval.valf = value;
-            _inputStates[source] = newval;
-        }
-
-        void set(yourgame::InputSource source, int value)
-        {
-            InputValue newval{0};
-            newval.vali = value;
-            _inputStates[source] = newval;
+            _inputStates[source].val = value;
         }
     } // namespace
 
@@ -120,8 +108,8 @@ namespace yourgame_internal_android
                 {
                     set(srcsTouchDown[evPointerId], ((evAction == AMOTION_EVENT_ACTION_DOWN ||
                                                       evAction == AMOTION_EVENT_ACTION_POINTER_DOWN)
-                                                         ? 1
-                                                         : 0));
+                                                         ? 1.0f
+                                                         : 0.0f));
                     // set initial location
                     set(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
                     set(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
@@ -151,23 +139,28 @@ namespace yourgame_internal_android
         }
         return 0;
     }
+
+    void tickInput()
+    {
+        // prepare for new input: shift all "current" values to "last" values
+        for (auto &i : _inputStates)
+        {
+            i.second.valLast = i.second.val;
+        }
+    }
 } // namespace yourgame_internal_android
 
 namespace yourgame
 {
-    float getInputf(InputSource source)
+    float getInput(yourgame::InputSource source)
     {
         auto i = yourgame_internal_android::_inputStates.find(source);
-        return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f
-                                                                    : (i->second.isfloat) ? (i->second).valf
-                                                                                          : (float)((i->second).vali);
+        return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f : (i->second).val;
     }
 
-    int getInputi(InputSource source)
+    float getInputDelta(yourgame::InputSource source)
     {
         auto i = yourgame_internal_android::_inputStates.find(source);
-        return (i == yourgame_internal_android::_inputStates.end()) ? 0
-                                                                    : (i->second.isfloat) ? (int)((i->second).valf)
-                                                                                          : (i->second).vali;
+        return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;
     }
 } // namespace yourgame

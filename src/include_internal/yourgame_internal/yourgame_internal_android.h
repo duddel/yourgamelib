@@ -29,7 +29,8 @@ namespace yourgame_internal_android
     void init(struct android_app *app);
     void tick();
     void shutdown();
+    void tickInput();
     void initFileIO(struct android_app *app);
-} // namespace yourgame
+} // namespace yourgame_internal_android
 
 #endif

@@ -247,6 +247,8 @@ namespace yourgame_internal_android
 #endif
             eglSwapBuffers(_display, _surface);
         }
+
+        yourgame_internal_android::tickInput();
     }
 
     void shutdown()
@@ -357,7 +359,7 @@ namespace yourgame
     }
 
     void enableFullscreen(bool enable) {}
-
     void enableVSync(bool enable) {}
+    void catchMouse(bool enable) {}
 
 } // namespace yourgame

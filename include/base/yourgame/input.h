@@ -275,11 +275,12 @@ namespace yourgame
         YOURGAME_GAMEPAD_3_AXIS_RIGHT_TRIGGER
     };
 
-    /** \brief returns the current value of the input source \p source as float */
-    float getInputf(InputSource source);
+    /** \brief returns the current value of the input source \p source */
+    float getInput(InputSource source);
 
-    /** \brief returns the current value of the input source \p source as int */
-    int getInputi(InputSource source);
+    /** \brief returns the value delta (current minus last frame value) of the input source \p source */
+    float getInputDelta(yourgame::InputSource source);
+
 } // namespace yourgame
 
 #endif

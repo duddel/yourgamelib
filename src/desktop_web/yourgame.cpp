@@ -144,6 +144,12 @@ namespace yourgame_internal_desktop
 
         glfwSwapInterval(_context.vsyncEnabled ? 1 : 0);
 
+        // enable raw mouse input if supported. affects catched mouse mode, see catchMouse()
+        if (glfwRawMouseMotionSupported())
+        {
+            glfwSetInputMode(_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+        }
+
         yourgame_internal_desktop::initInput(_window);
 
 #ifdef YOURGAME_EXTPROJ_imgui
@@ -168,8 +174,8 @@ namespace yourgame_internal_desktop
 
     void tick()
     {
-        glfwPollEvents();
         yourgame_internal_desktop::tickInput();
+        glfwPollEvents();
 
         // timing
         auto now = std::chrono::steady_clock::now();
@@ -263,5 +269,11 @@ namespace yourgame
     {
         glfwSwapInterval(enable ? 1 : 0);
         yourgame_internal_desktop::_context.vsyncEnabled = enable;
+    }
+
+    void catchMouse(bool enable)
+    {
+        glfwSetInputMode(yourgame_internal_desktop::_window, GLFW_CURSOR, enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+        yourgame_internal_desktop::_context.mouseCatched = enable;
     }
 } // namespace yourgame

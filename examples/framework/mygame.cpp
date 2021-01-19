@@ -225,9 +225,9 @@ namespace mygame
             g_skyboxTrafo.rotateLocal(g_skyboxRotation, yourgame::Trafo::AXIS::Y);
         }
 
-        if (yourgame::getInputi(yourgame::InputSource::YOURGAME_KEY_ESCAPE))
+        if (yourgame::getInputDelta(yourgame::InputSource::YOURGAME_KEY_ESCAPE) > 0.0f)
         {
-            yourgame::notifyShutdown();
+            yourgame::catchMouse(!yourgame::getCtx().mouseCatched);
         }
 
         g_camera.setAspect(ctx.winAspectRatio);
@@ -447,7 +447,10 @@ namespace mygame
                 }
                 ImGui::EndMenu();
             }
-            ImGui::Text("| fps: %f", (float)(1.0 / yourgame::getCtx().deltaTimeS));
+            ImGui::Text("| fps: %f, mouse delta: %f,%f",
+                        (float)(1.0 / yourgame::getCtx().deltaTimeS),
+                        yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_X),
+                        yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_Y));
             ImGui::EndMainMenuBar();
         }
 
@@ -961,100 +964,100 @@ namespace mygame
             ImGui::BeginGroup();
             ImGui::Text("GAMEPAD_0");
             {
-                bool connected = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_CONNECTED);
-                bool button0 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_A);
-                bool button1 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_B);
-                bool button2 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_X);
-                bool button3 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_Y);
-                bool button4 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_LEFT_BUMPER);
-                bool button5 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_RIGHT_BUMPER);
-                bool button6 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_BACK);
-                bool button7 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_START);
-                bool button8 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_GUIDE);
-                bool button9 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_LEFT_THUMB);
-                bool button10 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_RIGHT_THUMB);
-                bool button11 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_UP);
-                bool button12 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_RIGHT);
-                bool button13 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_DOWN);
-                bool button14 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_LEFT);
-                float axis0 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_X);
-                float axis1 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_Y);
-                float axis2 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_X);
-                float axis3 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_Y);
-                float axis4 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_TRIGGER);
-                float axis5 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_TRIGGER);
-                ImGui::Checkbox("CONNECTED", &connected);
-                ImGui::Checkbox("A", &button0);
-                ImGui::Checkbox("B", &button1);
-                ImGui::Checkbox("X", &button2);
-                ImGui::Checkbox("Y", &button3);
-                ImGui::Checkbox("LEFT_BUMPER", &button4);
-                ImGui::Checkbox("RIGHT_BUMPER", &button5);
-                ImGui::Checkbox("BACK", &button6);
-                ImGui::Checkbox("START", &button7);
-                ImGui::Checkbox("GUIDE", &button8);
-                ImGui::Checkbox("LEFT_THUMB", &button9);
-                ImGui::Checkbox("RIGHT_THUMB", &button10);
-                ImGui::Checkbox("DPAD_UP", &button11);
-                ImGui::Checkbox("DPAD_RIGHT", &button12);
-                ImGui::Checkbox("DPAD_DOWN", &button13);
-                ImGui::Checkbox("DPAD_LEFT", &button14);
-                ImGui::SliderFloat("LEFT_X", &axis0, -1.0f, 1.0f);
-                ImGui::SliderFloat("LEFT_Y", &axis1, -1.0f, 1.0f);
-                ImGui::SliderFloat("RIGHT_X", &axis2, -1.0f, 1.0f);
-                ImGui::SliderFloat("RIGHT_Y", &axis3, -1.0f, 1.0f);
-                ImGui::SliderFloat("LEFT_TRIGGER", &axis4, -1.0f, 1.0f);
-                ImGui::SliderFloat("RIGHT_TRIGGER", &axis5, -1.0f, 1.0f);
+                bool connected = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_CONNECTED);
+                bool button0 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_A);
+                bool button1 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_B);
+                bool button2 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_X);
+                bool button3 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_Y);
+                bool button4 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_LEFT_BUMPER);
+                bool button5 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_RIGHT_BUMPER);
+                bool button6 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_BACK);
+                bool button7 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_START);
+                bool button8 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_GUIDE);
+                bool button9 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_LEFT_THUMB);
+                bool button10 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_RIGHT_THUMB);
+                bool button11 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_UP);
+                bool button12 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_RIGHT);
+                bool button13 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_DOWN);
+                bool button14 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_LEFT);
+                float axis0 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_X);
+                float axis1 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_Y);
+                float axis2 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_X);
+                float axis3 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_Y);
+                float axis4 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_TRIGGER);
+                float axis5 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_TRIGGER);
+                ImGui::Checkbox("CONNECTED_0", &connected);
+                ImGui::Checkbox("A_0", &button0);
+                ImGui::Checkbox("B_0", &button1);
+                ImGui::Checkbox("X_0", &button2);
+                ImGui::Checkbox("Y_0", &button3);
+                ImGui::Checkbox("LEFT_BUMPER_0", &button4);
+                ImGui::Checkbox("RIGHT_BUMPER_0", &button5);
+                ImGui::Checkbox("BACK_0", &button6);
+                ImGui::Checkbox("START_0", &button7);
+                ImGui::Checkbox("GUIDE_0", &button8);
+                ImGui::Checkbox("LEFT_THUMB_0", &button9);
+                ImGui::Checkbox("RIGHT_THUMB_0", &button10);
+                ImGui::Checkbox("DPAD_UP_0", &button11);
+                ImGui::Checkbox("DPAD_RIGHT_0", &button12);
+                ImGui::Checkbox("DPAD_DOWN_0", &button13);
+                ImGui::Checkbox("DPAD_LEFT_0", &button14);
+                ImGui::SliderFloat("LEFT_X_0", &axis0, -1.0f, 1.0f);
+                ImGui::SliderFloat("LEFT_Y_0", &axis1, -1.0f, 1.0f);
+                ImGui::SliderFloat("RIGHT_X_0", &axis2, -1.0f, 1.0f);
+                ImGui::SliderFloat("RIGHT_Y_0", &axis3, -1.0f, 1.0f);
+                ImGui::SliderFloat("LEFT_TRIGGER_0", &axis4, -1.0f, 1.0f);
+                ImGui::SliderFloat("RIGHT_TRIGGER_0", &axis5, -1.0f, 1.0f);
             }
             ImGui::EndGroup();
             ImGui::SameLine();
             ImGui::BeginGroup();
             ImGui::Text("GAMEPAD_1");
             {
-                bool connected = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_CONNECTED);
-                bool button0 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_A);
-                bool button1 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_B);
-                bool button2 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_X);
-                bool button3 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_Y);
-                bool button4 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_LEFT_BUMPER);
-                bool button5 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_RIGHT_BUMPER);
-                bool button6 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_BACK);
-                bool button7 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_START);
-                bool button8 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_GUIDE);
-                bool button9 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_LEFT_THUMB);
-                bool button10 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_RIGHT_THUMB);
-                bool button11 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_UP);
-                bool button12 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_RIGHT);
-                bool button13 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_DOWN);
-                bool button14 = yourgame::getInputi(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_LEFT);
-                float axis0 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_X);
-                float axis1 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_Y);
-                float axis2 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_X);
-                float axis3 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_Y);
-                float axis4 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_TRIGGER);
-                float axis5 = yourgame::getInputf(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_TRIGGER);
-                ImGui::Checkbox("CONNECTED", &connected);
-                ImGui::Checkbox("A", &button0);
-                ImGui::Checkbox("B", &button1);
-                ImGui::Checkbox("X", &button2);
-                ImGui::Checkbox("Y", &button3);
-                ImGui::Checkbox("LEFT_BUMPER", &button4);
-                ImGui::Checkbox("RIGHT_BUMPER", &button5);
-                ImGui::Checkbox("BACK", &button6);
-                ImGui::Checkbox("START", &button7);
-                ImGui::Checkbox("GUIDE", &button8);
-                ImGui::Checkbox("LEFT_THUMB", &button9);
-                ImGui::Checkbox("RIGHT_THUMB", &button10);
-                ImGui::Checkbox("DPAD_UP", &button11);
-                ImGui::Checkbox("DPAD_RIGHT", &button12);
-                ImGui::Checkbox("DPAD_DOWN", &button13);
-                ImGui::Checkbox("DPAD_LEFT", &button14);
-                ImGui::SliderFloat("LEFT_X", &axis0, -1.0f, 1.0f);
-                ImGui::SliderFloat("LEFT_Y", &axis1, -1.0f, 1.0f);
-                ImGui::SliderFloat("RIGHT_X", &axis2, -1.0f, 1.0f);
-                ImGui::SliderFloat("RIGHT_Y", &axis3, -1.0f, 1.0f);
-                ImGui::SliderFloat("LEFT_TRIGGER", &axis4, -1.0f, 1.0f);
-                ImGui::SliderFloat("RIGHT_TRIGGER", &axis5, -1.0f, 1.0f);
+                bool connected = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_CONNECTED);
+                bool button0 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_A);
+                bool button1 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_B);
+                bool button2 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_X);
+                bool button3 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_Y);
+                bool button4 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_LEFT_BUMPER);
+                bool button5 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_RIGHT_BUMPER);
+                bool button6 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_BACK);
+                bool button7 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_START);
+                bool button8 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_GUIDE);
+                bool button9 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_LEFT_THUMB);
+                bool button10 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_RIGHT_THUMB);
+                bool button11 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_UP);
+                bool button12 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_RIGHT);
+                bool button13 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_DOWN);
+                bool button14 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_LEFT);
+                float axis0 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_X);
+                float axis1 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_Y);
+                float axis2 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_X);
+                float axis3 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_Y);
+                float axis4 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_TRIGGER);
+                float axis5 = yourgame::getInput(yourgame::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_TRIGGER);
+                ImGui::Checkbox("CONNECTED_1", &connected);
+                ImGui::Checkbox("A_1", &button0);
+                ImGui::Checkbox("B_1", &button1);
+                ImGui::Checkbox("X_1", &button2);
+                ImGui::Checkbox("Y_1", &button3);
+                ImGui::Checkbox("LEFT_BUMPER_1", &button4);
+                ImGui::Checkbox("RIGHT_BUMPER_1", &button5);
+                ImGui::Checkbox("BACK_1", &button6);
+                ImGui::Checkbox("START_1", &button7);
+                ImGui::Checkbox("GUIDE_1", &button8);
+                ImGui::Checkbox("LEFT_THUMB_1", &button9);
+                ImGui::Checkbox("RIGHT_THUMB_1", &button10);
+                ImGui::Checkbox("DPAD_UP_1", &button11);
+                ImGui::Checkbox("DPAD_RIGHT_1", &button12);
+                ImGui::Checkbox("DPAD_DOWN_1", &button13);
+                ImGui::Checkbox("DPAD_LEFT_1", &button14);
+                ImGui::SliderFloat("LEFT_X_1", &axis0, -1.0f, 1.0f);
+                ImGui::SliderFloat("LEFT_Y_1", &axis1, -1.0f, 1.0f);
+                ImGui::SliderFloat("RIGHT_X_1", &axis2, -1.0f, 1.0f);
+                ImGui::SliderFloat("RIGHT_Y_1", &axis3, -1.0f, 1.0f);
+                ImGui::SliderFloat("LEFT_TRIGGER_1", &axis4, -1.0f, 1.0f);
+                ImGui::SliderFloat("RIGHT_TRIGGER_1", &axis5, -1.0f, 1.0f);
             }
             ImGui::EndGroup();
             ImGui::End();
