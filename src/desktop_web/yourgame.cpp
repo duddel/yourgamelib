@@ -145,10 +145,14 @@ namespace yourgame_internal_desktop
         glfwSwapInterval(_context.vsyncEnabled ? 1 : 0);
 
         // enable raw mouse input if supported. affects catched mouse mode, see catchMouse()
+// todo: raw mouse motion available since glfw v3.3,
+// emscripten implements glfw v3.2 API only (2021-01-19)
+#ifndef __EMSCRIPTEN__
         if (glfwRawMouseMotionSupported())
         {
             glfwSetInputMode(_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
         }
+#endif
 
         yourgame_internal_desktop::initInput(_window);
 

@@ -230,6 +230,17 @@ namespace mygame
             yourgame::catchMouse(!yourgame::getCtx().mouseCatched);
         }
 
+        // first-person camera
+        if (yourgame::getCtx().mouseCatched)
+        {
+            g_camera.trafo()->rotateGlobal(-0.001f * yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_X), yourgame::Trafo::AXIS::Y);
+            g_camera.trafo()->rotateLocal(-0.001f * yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_Y), yourgame::Trafo::AXIS::X);
+            g_camera.trafo()->translateLocal(-0.01f * yourgame::getInput(yourgame::InputSource::YOURGAME_KEY_W), yourgame::Trafo::AXIS::Z);
+            g_camera.trafo()->translateLocal(0.01f * yourgame::getInput(yourgame::InputSource::YOURGAME_KEY_S), yourgame::Trafo::AXIS::Z);
+            g_camera.trafo()->translateLocal(0.01f * yourgame::getInput(yourgame::InputSource::YOURGAME_KEY_D), yourgame::Trafo::AXIS::X);
+            g_camera.trafo()->translateLocal(-0.01f * yourgame::getInput(yourgame::InputSource::YOURGAME_KEY_A), yourgame::Trafo::AXIS::X);
+        }
+
         g_camera.setAspect(ctx.winAspectRatio);
         g_skyboxCamera.setAspect(ctx.winAspectRatio);
 
@@ -342,7 +353,12 @@ namespace mygame
             g_assets.get<yourgame::GLGeometry>("quadGeo")->drawAll();
         }
 
-        updateImgui(ctx);
+        // if mouse is catched, first-person camera movement is enabled
+        // (see above), and imgui menu drawing is not desired
+        if (!yourgame::getCtx().mouseCatched)
+        {
+            updateImgui(ctx);
+        }
     }
 
     void shutdown(const yourgame::context &ctx)
