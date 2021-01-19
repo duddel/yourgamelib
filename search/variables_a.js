@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['winaspectratio',['winAspectRatio',['../structyourgame_1_1context.html#a8764d67c0c3123732eb2d14cfe6795f7',1,'yourgame::context']]],
-  ['winheight',['winHeight',['../structyourgame_1_1context.html#af9b67275352f324372a54dd5f522e1f3',1,'yourgame::context']]],
-  ['winisfullscreen',['winIsFullscreen',['../structyourgame_1_1context.html#acbd529ace5f87cf61bcc4b92df362bd2',1,'yourgame::context']]],
-  ['winwidth',['winWidth',['../structyourgame_1_1context.html#a1ae71ea5d9cbb5a250ea9f1e9b7401af',1,'yourgame::context']]]
+  ['vmax',['vMax',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#acac8029a63626eb19a8d982d7d970716',1,'yourgame::GLTextureAtlas::Coords']]],
+  ['vmin',['vMin',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#abe95c2ab68f570a6e0d170a09bb37c5b',1,'yourgame::GLTextureAtlas::Coords']]],
+  ['vsyncenabled',['vsyncEnabled',['../structyourgame_1_1context.html#a0577ab33c63e66c6e394a070379c4842',1,'yourgame::context']]]
 ];
