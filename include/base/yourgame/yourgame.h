@@ -41,7 +41,7 @@ namespace yourgame
     };
 
     /** \brief returns the current context */
-    const yourgame::context &getCtx();
+    yourgame::context getCtx();
 
     /** \brief triggers the application to exit after the cycle this function was called in */
     void notifyShutdown();

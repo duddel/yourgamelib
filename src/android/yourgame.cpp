@@ -217,7 +217,7 @@ namespace yourgame_internal_android
         stbi_set_flip_vertically_on_load(true);
 #endif
 
-        mygame::init(_context);
+        mygame::init();
 
         _initialized = true;
     }
@@ -240,7 +240,7 @@ namespace yourgame_internal_android
             ImGui_ImplAndroid_NewFrame();
             ImGui::NewFrame();
 #endif
-            mygame::tick(_context);
+            mygame::tick();
 #ifdef YOURGAME_EXTPROJ_imgui
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -285,7 +285,7 @@ namespace yourgame_internal_android
         _eglContext = EGL_NO_CONTEXT;
         _surface = EGL_NO_SURFACE;
 
-        mygame::shutdown(_context);
+        mygame::shutdown();
 
         _initialized = false;
     }
@@ -293,7 +293,7 @@ namespace yourgame_internal_android
 
 namespace yourgame
 {
-    const yourgame::context &getCtx()
+    yourgame::context getCtx()
     {
         return yourgame_internal_android::_context;
     }

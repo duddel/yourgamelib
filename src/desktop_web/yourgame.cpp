@@ -172,7 +172,7 @@ namespace yourgame_internal_desktop
         stbi_set_flip_vertically_on_load(true);
 #endif
 
-        mygame::init(_context);
+        mygame::init();
         return 0;
     }
 
@@ -193,7 +193,7 @@ namespace yourgame_internal_desktop
         ImGui::NewFrame();
 #endif
 
-        mygame::tick(_context);
+        mygame::tick();
 
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui::Render();
@@ -217,7 +217,7 @@ namespace yourgame_internal_desktop
         }
         glfwTerminate();
 
-        mygame::shutdown(_context);
+        mygame::shutdown();
 
         return 0;
     }
@@ -225,7 +225,7 @@ namespace yourgame_internal_desktop
 
 namespace yourgame
 {
-    const yourgame::context &getCtx()
+    yourgame::context getCtx()
     {
         return yourgame_internal_desktop::_context;
     }

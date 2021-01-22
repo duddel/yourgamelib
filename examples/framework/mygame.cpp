@@ -50,7 +50,7 @@ namespace mygame
     };
 
     // forward declarations
-    void updateImgui(const yourgame::context &ctx);
+    void updateImgui();
 
     // GL scene
     float g_modelScale = 0.025f;
@@ -71,8 +71,10 @@ namespace mygame
     int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
     yourgame::AssetManager g_assets;
 
-    void init(const yourgame::context &ctx)
+    void init()
     {
+        auto ctx = yourgame::getCtx();
+
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
@@ -212,8 +214,10 @@ namespace mygame
 #endif
     }
 
-    void tick(const yourgame::context &ctx)
+    void tick()
     {
+        auto ctx = yourgame::getCtx();
+
         g_modelTrafo.setScaleLocal(g_modelScale);
         if (g_rotationOn)
         {
@@ -227,11 +231,11 @@ namespace mygame
 
         if (yourgame::getInputDelta(yourgame::InputSource::YOURGAME_KEY_ESCAPE) > 0.0f)
         {
-            yourgame::catchMouse(!yourgame::getCtx().mouseCatched);
+            yourgame::catchMouse(!ctx.mouseCatched);
         }
 
         // first-person camera
-        if (yourgame::getCtx().mouseCatched)
+        if (ctx.mouseCatched)
         {
             g_camera.trafo()->rotateGlobal(-0.001f * yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_X), yourgame::Trafo::AXIS::Y);
             g_camera.trafo()->rotateLocal(-0.001f * yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_Y), yourgame::Trafo::AXIS::X);
@@ -355,13 +359,13 @@ namespace mygame
 
         // if mouse is catched, first-person camera movement is enabled
         // (see above), and imgui menu drawing is not desired
-        if (!yourgame::getCtx().mouseCatched)
+        if (!ctx.mouseCatched)
         {
-            updateImgui(ctx);
+            updateImgui();
         }
     }
 
-    void shutdown(const yourgame::context &ctx)
+    void shutdown()
     {
         if (yourgame::audioIsInitialized())
         {
@@ -369,8 +373,10 @@ namespace mygame
         }
     }
 
-    void updateImgui(const yourgame::context &ctx)
+    void updateImgui()
     {
+        auto ctx = yourgame::getCtx();
+
         static bool showDemoAudio = false;
         static bool showDemoGl = true;
         static bool showLicense = false;
@@ -445,13 +451,13 @@ namespace mygame
             }
             if (ImGui::BeginMenu("Options"))
             {
-                if (ImGui::MenuItem("Fullscreen", "", yourgame::getCtx().winIsFullscreen))
+                if (ImGui::MenuItem("Fullscreen", "", ctx.winIsFullscreen))
                 {
-                    yourgame::enableFullscreen(!yourgame::getCtx().winIsFullscreen);
+                    yourgame::enableFullscreen(!ctx.winIsFullscreen);
                 }
-                if (ImGui::MenuItem("VSync", "", yourgame::getCtx().vsyncEnabled))
+                if (ImGui::MenuItem("VSync", "", ctx.vsyncEnabled))
                 {
-                    yourgame::enableVSync(!yourgame::getCtx().vsyncEnabled);
+                    yourgame::enableVSync(!ctx.vsyncEnabled);
                 }
                 ImGui::EndMenu();
             }
@@ -464,7 +470,7 @@ namespace mygame
                 ImGui::EndMenu();
             }
             ImGui::Text("| fps: %f, mouse delta: %f,%f",
-                        (float)(1.0 / yourgame::getCtx().deltaTimeS),
+                        (float)(1.0 / ctx.deltaTimeS),
                         yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_X),
                         yourgame::getInputDelta(yourgame::InputSource::YOURGAME_MOUSE_Y));
             ImGui::EndMainMenuBar();

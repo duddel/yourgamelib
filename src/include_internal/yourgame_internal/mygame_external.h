@@ -27,9 +27,9 @@ within the yourgame library
 
 namespace mygame
 {
-    extern void init(const yourgame::context &ctx);
-    extern void tick(const yourgame::context &ctx);
-    extern void shutdown(const yourgame::context &ctx);
+    extern void init();
+    extern void tick();
+    extern void shutdown();
 } // namespace mygame
 
 #endif
