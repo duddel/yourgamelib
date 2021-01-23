@@ -277,6 +277,7 @@ namespace yourgame
         yourgame::logd("%v material(s)", materials.size());
 
         std::vector<GLuint> objIdxData;
+        std::vector<GLuint> objLineIdxData;
         std::vector<GLfloat> objPosData;
         std::vector<GLfloat> objNormalData;
         std::vector<GLfloat> objTexCoordData;
@@ -292,7 +293,8 @@ namespace yourgame
         std::map<std::array<int, 4>, int> uniqueIdxMap;
         GLuint uniqueVertCount = 0U;
 
-        // we merge all obj shapes into one GLGeometry shape
+        // we merge all obj meshes (triangle shapes) into one GLGeometry shape,
+        // and all obj line shapes into another GLGeometry shape
         for (auto const &shape : shapes)
         {
             yourgame::logd("shape: %v", shape.name);
@@ -359,6 +361,58 @@ namespace yourgame
                 }
                 shapeMeshReadIdx++;
             }
+
+            // lines. todo: work in progress.
+            // - new unique vertices (for lines) are created with material = -1.
+            //   (lines do not have material)
+            // - as the line vertices share buffers with triangle face vertices,
+            //   they must also reference texcoords/normals (if triangle faces do),
+            //   in order to keep the vertex data "aligned"
+            // - assumption: vertices per line: always 2
+            for (auto const &idx : shape.lines.indices)
+            {
+                int materialId = -1;
+                auto mapRet = uniqueIdxMap.emplace(
+                    std::array<int, 4>{idx.vertex_index, idx.normal_index, idx.texcoord_index, materialId}, uniqueVertCount);
+                if (mapRet.second) // new unique vertex
+                {
+                    try
+                    {
+                        objLineIdxData.push_back(uniqueVertCount);
+                        objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3));
+                        objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 1));
+                        objPosData.push_back((GLfloat)attribs.vertices.at(idx.vertex_index * 3 + 2));
+                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3));
+                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 1));
+                        objColordData.push_back((GLfloat)attribs.colors.at(idx.vertex_index * 3 + 2));
+
+                        // if normals available, use them
+                        if (attribs.normals.size() > 0)
+                        {
+                            objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3));
+                            objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3 + 1));
+                            objNormalData.push_back((GLfloat)attribs.normals.at(idx.normal_index * 3 + 2));
+                        }
+
+                        // if texture coordinates available, use them
+                        if (attribs.texcoords.size() > 0)
+                        {
+                            objTexCoordData.push_back((GLfloat)attribs.texcoords.at(idx.texcoord_index * 2));
+                            objTexCoordData.push_back((GLfloat)attribs.texcoords.at(idx.texcoord_index * 2 + 1));
+                        }
+                    }
+                    catch (...)
+                    {
+                        yourgame::loge("loadGeometry(): %v has faulty line obj vertex data for", objFilename);
+                        return nullptr;
+                    }
+                    uniqueVertCount++;
+                }
+                else // reuse unique vertex index
+                {
+                    objLineIdxData.push_back((GLuint)(mapRet.first->second));
+                }
+            }
         }
 
         GLGeometry *newGeo = GLGeometry::make();
@@ -368,6 +422,7 @@ namespace yourgame
         auto vertTexcoordsSize = objTexCoordData.size() * sizeof(objTexCoordData[0]);
         auto vertColorSize = objColordData.size() * sizeof(objColordData[0]);
         auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
+        auto vertLineIdxSize = objLineIdxData.size() * sizeof(objLineIdxData[0]);
 
         // add available buffers to new Geometry and configure
         // the Geometry shape...
@@ -380,6 +435,7 @@ namespace yourgame
         newGeo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
         newGeo->addBuffer("color", GL_ARRAY_BUFFER, vertColorSize, objColordData.data(), GL_STATIC_DRAW);
         newGeo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
+        newGeo->addBuffer("idxLines", GL_ELEMENT_ARRAY_BUFFER, vertLineIdxSize, objLineIdxData.data(), GL_STATIC_DRAW);
         if (vertNormSize > 0)
         {
             newGeo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
@@ -393,7 +449,11 @@ namespace yourgame
             arBufferNames.push_back("texcoords");
         }
 
+        // all obj triangle shapes
         newGeo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
+
+        // all obj line shapes
+        newGeo->addShape("lines", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_LINES, (GLsizei)objLineIdxData.size()}, "idxLines");
 
         return newGeo;
     }
