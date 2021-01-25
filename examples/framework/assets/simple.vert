@@ -1,9 +1,10 @@
-#version 330
+// meant to be compatible with glsl 330 and 300 es
+// desired #version has to be prepended befor compiling
 
-in vec3 inPosition;
-in vec3 inNormal;
-in vec2 inTexcoords;
-in vec3 inColor;
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec3 inNormal;
+layout(location = 2) in vec2 inTexcoords;
+layout(location = 3) in vec3 inColor;
 
 out vec3 vOutPos;
 out vec3 vOutNorm;

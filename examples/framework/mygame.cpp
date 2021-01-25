@@ -83,104 +83,62 @@ namespace mygame
         g_camera.setPerspective(75.0f, ctx.winAspectRatio, 1.0f, 10.0f);
         g_skyboxCamera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 2.0f);
 
-        // Skybox
-        g_assets.insert("skybox",
-                        yg::loadCubemap(
-                            {"sky_right.png", "sky_left.png", "sky_top.png", "sky_bottom.png", "sky_front.png", "sky_back.png"},
-                            yg::textureUnitSky,
-                            {{GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR},
-                             {GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR},
-                             {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
-                             {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE},
-                             {GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE}},
-                            true));
-
-        g_assets.insert("cube",
-                        yg::loadGeometry("cube.obj", nullptr));
+        // Skybox texture
+        g_assets.insert("skybox", yg::loadCubemap(
+                                      {"sky_right.png", "sky_left.png", "sky_top.png", "sky_bottom.png", "sky_front.png", "sky_back.png"},
+                                      yg::textureUnitSky,
+                                      {{GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR},
+                                       {GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR},
+                                       {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                       {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE},
+                                       {GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE}},
+                                      true));
 
         // Skybox shader
-        g_assets.insert("shaderSkybox",
-                        yg::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                            {{GL_VERTEX_SHADER, "skybox.es.vert"},
-                             {GL_FRAGMENT_SHADER, "skybox.es.frag"}},
-#else
-                            {{GL_VERTEX_SHADER, "skybox.vert"},
-                             {GL_FRAGMENT_SHADER, "skybox.frag"}},
-#endif
-                            {{yg::attrLocPosition, yg::attrNamePosition}},
-                            {{0, "color"}}));
+        g_assets.insert("shaderSkybox", yg::loadShader(
+                                            {{GL_VERTEX_SHADER, "skybox.vert"},
+                                             {GL_FRAGMENT_SHADER, "skybox.frag"}},
+                                            {}, {}));
         g_assets.get<yg::GLShader>("shaderSkybox")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderSkybox")->getUniformLocation(yg::unifNameTextureSky),
                     yg::unifValueTextureSky);
 
         // Normal shader
-        g_assets.insert("shaderNormal",
-                        yg::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                            {{GL_VERTEX_SHADER, "simple.es.vert"},
-                             {GL_FRAGMENT_SHADER, "simplenormal.es.frag"}},
-#else
-                            {{GL_VERTEX_SHADER, "simple.vert"},
-                             {GL_FRAGMENT_SHADER, "simplenormal.frag"}},
-#endif
-                            {{yg::attrLocPosition, yg::attrNamePosition},
-                             {yg::attrLocNormal, yg::attrNameNormal}},
-                            {{0, "color"}}));
+        g_assets.insert("shaderNormal", yg::loadShader(
+                                            {{GL_VERTEX_SHADER, "simple.vert"},
+                                             {GL_FRAGMENT_SHADER, "simplenormal.frag"}},
+                                            {}, {}));
 
         // Color shader
-        g_assets.insert("shaderColor",
-                        yg::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                            {{GL_VERTEX_SHADER, "simple.es.vert"},
-                             {GL_FRAGMENT_SHADER, "simplecolor.es.frag"}},
-#else
-                            {{GL_VERTEX_SHADER, "simple.vert"},
-                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
-#endif
-                            {{yg::attrLocPosition, yg::attrNamePosition},
-                             {yg::attrLocColor, yg::attrNameColor}},
-                            {{0, "color"}}));
+        g_assets.insert("shaderColor", yg::loadShader(
+                                           {{GL_VERTEX_SHADER, "simple.vert"},
+                                            {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
+                                           {}, {}));
         g_assets.get<yg::GLShader>("shaderColor")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderColor")->getUniformLocation(yg::unifNameTextureSky),
                     yg::unifValueTextureSky);
 
         // Texture shader
-        g_assets.insert("shaderTexture",
-                        yg::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                            {{GL_VERTEX_SHADER, "simple.es.vert"},
-                             {GL_FRAGMENT_SHADER, "simpletex.es.frag"}},
-#else
-                            {{GL_VERTEX_SHADER, "simple.vert"},
-                             {GL_FRAGMENT_SHADER, "simpletex.frag"}},
-#endif
-                            {{yg::attrLocPosition, yg::attrNamePosition},
-                             {yg::attrLocTexcoords, yg::attrNameTexcoords}},
-                            {{0, "color"}}));
+        g_assets.insert("shaderTexture", yg::loadShader(
+                                             {{GL_VERTEX_SHADER, "simple.vert"},
+                                              {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+                                             {}, {}));
         g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameTextureDiffuse),
                     yg::unifValueTextureDiffuse);
 
         // Depth Texture shader
-        g_assets.insert("shaderTextureDepth",
-                        yg::loadShader(
-#ifdef YOURGAME_GL_API_GLES
-                            {{GL_VERTEX_SHADER, "simple.es.vert"},
-                             {GL_FRAGMENT_SHADER, "simpletexdepth.es.frag"}},
-#else
-                            {{GL_VERTEX_SHADER, "simple.vert"},
-                             {GL_FRAGMENT_SHADER, "simpletexdepth.frag"}},
-#endif
-                            {{yg::attrLocPosition, yg::attrNamePosition},
-                             {yg::attrLocTexcoords, yg::attrNameTexcoords}},
-                            {{0, "color"}}));
+        g_assets.insert("shaderTextureDepth", yg::loadShader(
+                                                  {{GL_VERTEX_SHADER, "simple.vert"},
+                                                   {GL_FRAGMENT_SHADER, "simpletexdepth.frag"}},
+                                                  {}, {}));
         g_assets.get<yg::GLShader>("shaderTextureDepth")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderTextureDepth")->getUniformLocation(yg::unifNameTextureDiffuse),
                     yg::unifValueTextureDiffuse);
 
-        // quad geometry
+        // geometry
         g_assets.insert("quadGeo", yg::loadGeometry("quad.obj", nullptr));
+        g_assets.insert("cube", yg::loadGeometry("cube.obj", nullptr));
 
         // framebuffer
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:

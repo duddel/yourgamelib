@@ -1,6 +1,7 @@
-#version 330
+// meant to be compatible with glsl 330 and 300 es
+// desired #version has to be prepended befor compiling
 
-in vec3 inPosition;
+layout(location = 0) in vec3 inPosition;
 
 out vec3 vOutPos;
 

@@ -221,7 +221,9 @@ namespace yourgame
         {
             std::vector<uint8_t> shdrCode;
             yourgame::readAssetFile(shdrFile.second.c_str(), shdrCode);
-            shaderCodes.push_back(std::make_pair(shdrFile.first, std::string(shdrCode.begin(), shdrCode.end())));
+            std::string shdrStr = std::string(YOURGAME_GLSL_VERSION_STRING) + "\n" +
+                                  std::string(shdrCode.begin(), shdrCode.end());
+            shaderCodes.push_back(std::make_pair(shdrFile.first, shdrStr));
         }
 
         std::string shaderErrLog;
