@@ -98,12 +98,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab8c0e17e1b50f1e6243d889629926853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba330ad28b274ff07190e5163a5c55d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#aba330ad28b274ff07190e5163a5c55d5">setScaleLocal</a> (float scale)</td></tr>
 <tr class="separator:aba330ad28b274ff07190e5163a5c55d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae78093cea0fac447fb686c785c1b08e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#ae78093cea0fac447fb686c785c1b08e9">setRotation</a> (glm::quat const &amp;rot)</td></tr>
+<tr class="separator:ae78093cea0fac447fb686c785c1b08e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbdaacbbc7f3ff3e4afa70640bd88534"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#abbdaacbbc7f3ff3e4afa70640bd88534">setTranslation</a> (glm::vec3 const &amp;trans)</td></tr>
+<tr class="separator:abbdaacbbc7f3ff3e4afa70640bd88534"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8456ea47403bbad5f40b5c11633bd56e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a8456ea47403bbad5f40b5c11633bd56e">pointTo</a> (glm::vec3 const &amp;eye, glm::vec3 const &amp;center, glm::vec3 const &amp;up)</td></tr>
 <tr class="separator:a8456ea47403bbad5f40b5c11633bd56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac75cc92de811ebe7e6987c1a80ec3792"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#ac75cc92de811ebe7e6987c1a80ec3792">lookAt</a> (glm::vec3 const &amp;eye, glm::vec3 const &amp;center, glm::vec3 const &amp;up)</td></tr>
 <tr class="separator:ac75cc92de811ebe7e6987c1a80ec3792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a229afdcb62a19d89f96bbe5e885de5c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a229afdcb62a19d89f96bbe5e885de5c3">lerp</a> (float t, <a class="el" href="classyourgame_1_1Trafo.html">Trafo</a> const &amp;target, <a class="el" href="classyourgame_1_1Trafo.html">Trafo</a> *dst)</td></tr>
 <tr class="separator:a229afdcb62a19d89f96bbe5e885de5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ad87698a98801a2b296ad78b1eddd81"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a4ad87698a98801a2b296ad78b1eddd81">getAxisLocal</a> (<a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a> ax)</td></tr>
+<tr class="separator:a4ad87698a98801a2b296ad78b1eddd81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a072d679cc293e30c29c44d20113c6aa0"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a072d679cc293e30c29c44d20113c6aa0">getAxisGlobal</a> (<a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a> ax)</td></tr>
+<tr class="separator:a072d679cc293e30c29c44d20113c6aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08148f672826c8251897280c04fd9aa9"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a08148f672826c8251897280c04fd9aa9">getEye</a> ()</td></tr>
+<tr class="separator:a08148f672826c8251897280c04fd9aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="add2f1adf505cecafc41a5d6090c0721e"></a>
@@ -134,6 +144,59 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a072d679cc293e30c29c44d20113c6aa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a072d679cc293e30c29c44d20113c6aa0">&#9670;&nbsp;</a></span>getAxisGlobal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 yourgame::Trafo::getAxisGlobal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a>&#160;</td>
+          <td class="paramname"><em>ax</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ad87698a98801a2b296ad78b1eddd81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ad87698a98801a2b296ad78b1eddd81">&#9670;&nbsp;</a></span>getAxisLocal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 yourgame::Trafo::getAxisLocal </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a>&#160;</td>
+          <td class="paramname"><em>ax</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a08148f672826c8251897280c04fd9aa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08148f672826c8251897280c04fd9aa9">&#9670;&nbsp;</a></span>getEye()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 yourgame::Trafo::getEye </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a229afdcb62a19d89f96bbe5e885de5c3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a229afdcb62a19d89f96bbe5e885de5c3">&#9670;&nbsp;</a></span>lerp()</h2>
 
@@ -309,6 +372,24 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ae78093cea0fac447fb686c785c1b08e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae78093cea0fac447fb686c785c1b08e9">&#9670;&nbsp;</a></span>setRotation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::Trafo::setRotation </td>
+          <td>(</td>
+          <td class="paramtype">glm::quat const &amp;&#160;</td>
+          <td class="paramname"><em>rot</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ab8c0e17e1b50f1e6243d889629926853"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab8c0e17e1b50f1e6243d889629926853">&#9670;&nbsp;</a></span>setScaleLocal() <span class="overload">[1/2]</span></h2>
 
@@ -338,6 +419,24 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>scale</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abbdaacbbc7f3ff3e4afa70640bd88534"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbdaacbbc7f3ff3e4afa70640bd88534">&#9670;&nbsp;</a></span>setTranslation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::Trafo::setTranslation </td>
+          <td>(</td>
+          <td class="paramtype">glm::vec3 const &amp;&#160;</td>
+          <td class="paramname"><em>trans</em></td><td>)</td>
           <td></td>
         </tr>
       </table>

@@ -2,8 +2,11 @@ var searchData=
 [
   ['geo',['geo',['../classyourgame_1_1GLSpriteGrid.html#aa97895c8dd99b9c25bcffc5096eab092',1,'yourgame::GLSpriteGrid']]],
   ['get',['get',['../classyourgame_1_1AssetManager.html#a49b1c868abffbba8df8678dee6f6efaf',1,'yourgame::AssetManager']]],
+  ['getaxisglobal',['getAxisGlobal',['../classyourgame_1_1Trafo.html#a072d679cc293e30c29c44d20113c6aa0',1,'yourgame::Trafo']]],
+  ['getaxislocal',['getAxisLocal',['../classyourgame_1_1Trafo.html#a4ad87698a98801a2b296ad78b1eddd81',1,'yourgame::Trafo']]],
   ['getcoords',['getCoords',['../classyourgame_1_1GLTextureAtlas.html#aded45e07ce8f832e88b52864dded7d67',1,'yourgame::GLTextureAtlas']]],
   ['getctx',['getCtx',['../namespaceyourgame.html#ae1d94e62ec734d6e0b93c395afdd3a22',1,'yourgame']]],
+  ['geteye',['getEye',['../classyourgame_1_1Trafo.html#a08148f672826c8251897280c04fd9aa9',1,'yourgame::Trafo']]],
   ['getinput',['getInput',['../namespaceyourgame.html#a830ad14f4ff02fa22525ed639230a129',1,'yourgame']]],
   ['getinputdelta',['getInputDelta',['../namespaceyourgame.html#a27ece2e7822ec05743987d8390a4cb68',1,'yourgame']]],
   ['getlogr',['getLogr',['../namespaceyourgame.html#af6d08a828dd383a68dfa0b53cd858a2c',1,'yourgame']]],

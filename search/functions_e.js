@@ -9,8 +9,10 @@ var searchData=
   ['setorthographic',['setOrthographic',['../classyourgame_1_1Camera.html#a9a2dd12b39061b91810a313e3f888afb',1,'yourgame::Camera']]],
   ['setperspective',['setPerspective',['../classyourgame_1_1Camera.html#af349ddcc517e926c54bf761d33711a75',1,'yourgame::Camera']]],
   ['setprojection',['setProjection',['../classyourgame_1_1Camera.html#a42f35c62c23d6fffb0169874bc2978ac',1,'yourgame::Camera']]],
+  ['setrotation',['setRotation',['../classyourgame_1_1Trafo.html#ae78093cea0fac447fb686c785c1b08e9',1,'yourgame::Trafo']]],
   ['setscalelocal',['setScaleLocal',['../classyourgame_1_1Trafo.html#ab8c0e17e1b50f1e6243d889629926853',1,'yourgame::Trafo::setScaleLocal(glm::vec3 const &amp;scale)'],['../classyourgame_1_1Trafo.html#aba330ad28b274ff07190e5163a5c55d5',1,'yourgame::Trafo::setScaleLocal(float scale)']]],
   ['setshapeelardescr',['setShapeElArDescr',['../classyourgame_1_1GLGeometry.html#ae3afb46bebc716438e9f15187c361be5',1,'yourgame::GLGeometry']]],
+  ['settranslation',['setTranslation',['../classyourgame_1_1Trafo.html#abbdaacbbc7f3ff3e4afa70640bd88534',1,'yourgame::Trafo']]],
   ['setzfar',['setZFar',['../classyourgame_1_1Camera.html#ad34934c4f341e8e8f349c4e6beed5c96',1,'yourgame::Camera']]],
   ['setznear',['setZNear',['../classyourgame_1_1Camera.html#a4882cf276b5f0350d4ab1a96d51d96ee',1,'yourgame::Camera']]],
   ['shutdown',['shutdown',['../namespacemygame.html#a28a7ec9c031d3c818a55a6cf05e171be',1,'mygame']]]
