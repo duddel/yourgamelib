@@ -1,0 +1,5 @@
+*
+!.gitignore
+!init.bash
+!init.cmd
+!*.cpp
