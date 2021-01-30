@@ -34,8 +34,8 @@ var Module = typeof Module !== 'undefined' ? Module : {};
       } else {
         throw 'using preloaded data can only be done on a web page or in a web worker';
       }
-      var PACKAGE_NAME = 'framework.data';
-      var REMOTE_PACKAGE_BASE = 'framework.data';
+      var PACKAGE_NAME = 'fps.data';
+      var REMOTE_PACKAGE_BASE = 'fps.data';
       if (typeof Module['locateFilePackage'] === 'function' && !Module['locateFile']) {
         Module['locateFile'] = Module['locateFilePackage'];
         err('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
@@ -163,10 +163,10 @@ var Module = typeof Module !== 'undefined' ? Module : {};
             for (var i = 0; i < files.length; ++i) {
               DataRequest.prototype.requests[files[i].filename].onload();
             }
-                Module['removeRunDependency']('datafile_framework.data');
+                Module['removeRunDependency']('datafile_fps.data');
 
       };
-      Module['addRunDependency']('datafile_framework.data');
+      Module['addRunDependency']('datafile_fps.data');
     
       if (!Module.preloadResults) Module.preloadResults = {};
     
@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/sky_right.png", "start": 0, "end": 668720, "audio": 0}, {"filename": "/assets/simpletex.frag", "start": 668720, "end": 669026, "audio": 0}, {"filename": "/assets/LICENSE_android.txt", "start": 669026, "end": 677282, "audio": 0}, {"filename": "/assets/kenney_1bitpack_colored_packed.png", "start": 677282, "end": 700358, "audio": 0}, {"filename": "/assets/LICENSE_desktop.txt", "start": 700358, "end": 711333, "audio": 0}, {"filename": "/assets/sphere.mtl", "start": 711333, "end": 711566, "audio": 0}, {"filename": "/assets/tower.obj", "start": 711566, "end": 788080, "audio": 0}, {"filename": "/assets/sky_left.png", "start": 788080, "end": 1546632, "audio": 0}, {"filename": "/assets/ship_dark.mtl", "start": 1546632, "end": 1547202, "audio": 0}, {"filename": "/assets/sky_top.png", "start": 1547202, "end": 2343003, "audio": 0}, {"filename": "/assets/skybox.vert", "start": 2343003, "end": 2343393, "audio": 0}, {"filename": "/assets/LICENSE_web.txt", "start": 2343393, "end": 2352137, "audio": 0}, {"filename": "/assets/simple.vert", "start": 2352137, "end": 2352756, "audio": 0}, {"filename": "/assets/tower.mtl", "start": 2352756, "end": 2353546, "audio": 0}, {"filename": "/assets/quad.obj", "start": 2353546, "end": 2353750, "audio": 0}, {"filename": "/assets/sphere.obj", "start": 2353750, "end": 2428072, "audio": 0}, {"filename": "/assets/grid.obj", "start": 2428072, "end": 2430383, "audio": 0}, {"filename": "/assets/default.vert", "start": 2430383, "end": 2431002, "audio": 0}, {"filename": "/assets/diffusecolor.frag", "start": 2431002, "end": 2431490, "audio": 0}, {"filename": "/assets/cube.obj", "start": 2431490, "end": 2432423, "audio": 0}, {"filename": "/assets/sky_bottom.png", "start": 2432423, "end": 3221027, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 3221027, "end": 3221284, "audio": 0}, {"filename": "/assets/sky_back.png", "start": 3221284, "end": 3981863, "audio": 0}, {"filename": "/assets/ship_dark.obj", "start": 3981863, "end": 4601501, "audio": 0}, {"filename": "/assets/jingles_SAX07_mono_11025.ogg", "start": 4601501, "end": 4613318, "audio": 1}, {"filename": "/assets/simpletexdepth.frag", "start": 4613318, "end": 4613704, "audio": 0}, {"filename": "/assets/simplenormal.frag", "start": 4613704, "end": 4613988, "audio": 0}, {"filename": "/assets/skybox.frag", "start": 4613988, "end": 4614323, "audio": 0}, {"filename": "/assets/sky_front.png", "start": 4614323, "end": 5403310, "audio": 0}, {"filename": "/assets/jingles_PIZZI00.ogg", "start": 5403310, "end": 5413692, "audio": 1}, {"filename": "/assets/jingles_SAX07.ogg", "start": 5413692, "end": 5444592, "audio": 1}], "remote_package_size": 5444592, "package_uuid": "3573ed40-4f2c-4fe5-8596-f3628b4f1420"});
+   loadPackage({"files": [{"filename": "/assets/grid.obj", "start": 0, "end": 2311, "audio": 0}, {"filename": "/assets/default.vert", "start": 2311, "end": 2930, "audio": 0}, {"filename": "/assets/diffusecolor.frag", "start": 2930, "end": 3418, "audio": 0}, {"filename": "/assets/cube.obj", "start": 3418, "end": 4351, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 4351, "end": 4608, "audio": 0}], "remote_package_size": 4608, "package_uuid": "01cb8b6c-a34e-435b-9be8-7198d9bcc108"});
   
   })();
   
@@ -1684,7 +1684,7 @@ function createExportWrapper(name, fixedasm) {
   };
 }
 
-var wasmBinaryFile = 'framework.wasm';
+var wasmBinaryFile = 'fps.wasm';
 if (!isDataURI(wasmBinaryFile)) {
   wasmBinaryFile = locateFile(wasmBinaryFile);
 }
@@ -1846,14 +1846,14 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  18729: function() {if ((window.AudioContext || window.webkitAudioContext) === undefined) { return 0; } if (typeof(miniaudio) === 'undefined') { miniaudio = {}; miniaudio.devices = []; miniaudio.track_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == null) { miniaudio.devices[iDevice] = device; return iDevice; } } miniaudio.devices.push(device); return miniaudio.devices.length - 1; }; miniaudio.untrack_device_by_index = function(deviceIndex) { miniaudio.devices[deviceIndex] = null; while (miniaudio.devices.length > 0) { if (miniaudio.devices[miniaudio.devices.length-1] == null) { miniaudio.devices.pop(); } else { break; } } }; miniaudio.untrack_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == device) { return miniaudio.untrack_device_by_index(iDevice); } } }; miniaudio.get_device_by_index = function(deviceIndex) { return miniaudio.devices[deviceIndex]; }; } return 1;},  
- 19947: function() {return (navigator.mediaDevices !== undefined && navigator.mediaDevices.getUserMedia !== undefined);},  
- 20088: function() {try { var temp = new (window.AudioContext || window.webkitAudioContext)(); var sampleRate = temp.sampleRate; temp.close(); return sampleRate; } catch(e) { return 0; }},  
- 20342: function($0, $1, $2, $3, $4) {var channels = $0; var sampleRate = $1; var bufferSize = $2; var isCapture = $3; var pDevice = $4; if (typeof(miniaudio) === 'undefined') { return -1; } var device = {}; device.webaudio = new (window.AudioContext || window.webkitAudioContext)({sampleRate:sampleRate}); device.webaudio.suspend(); device.intermediaryBufferSizeInBytes = channels * bufferSize * 4; device.intermediaryBuffer = Module._malloc(device.intermediaryBufferSizeInBytes); device.intermediaryBufferView = new Float32Array(Module.HEAPF32.buffer, device.intermediaryBuffer, device.intermediaryBufferSizeInBytes); device.scriptNode = device.webaudio.createScriptProcessor(bufferSize, channels, channels); if (isCapture) { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } var sendSilence = false; if (device.streamNode === undefined) { sendSilence = true; } if (e.inputBuffer.numberOfChannels != channels) { console.log("Capture: Channel count mismatch. " + e.inputBufer.numberOfChannels + " != " + channels + ". Sending silence."); sendSilence = true; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.inputBuffer.length) { var framesRemaining = e.inputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } if (sendSilence) { device.intermediaryBufferView.fill(0.0); } else { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { for (var iChannel = 0; iChannel < e.inputBuffer.numberOfChannels; ++iChannel) { device.intermediaryBufferView[iFrame*channels + iChannel] = e.inputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame]; } } } ccall("ma_device_process_pcm_frames_capture__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); totalFramesProcessed += framesToProcess; } }; navigator.mediaDevices.getUserMedia({audio:true, video:false}) .then(function(stream) { device.streamNode = device.webaudio.createMediaStreamSource(stream); device.streamNode.connect(device.scriptNode); device.scriptNode.connect(device.webaudio.destination); }) .catch(function(error) { device.scriptNode.connect(device.webaudio.destination); }); } else { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } var outputSilence = false; if (e.outputBuffer.numberOfChannels != channels) { console.log("Playback: Channel count mismatch. " + e.outputBufer.numberOfChannels + " != " + channels + ". Outputting silence."); outputSilence = true; return; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.outputBuffer.length) { var framesRemaining = e.outputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } ccall("ma_device_process_pcm_frames_playback__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); if (outputSilence) { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } } else { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { e.outputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame] = device.intermediaryBufferView[iFrame*channels + iChannel]; } } } totalFramesProcessed += framesToProcess; } }; device.scriptNode.connect(device.webaudio.destination); } return miniaudio.track_device(device);},  
- 24232: function($0) {return miniaudio.get_device_by_index($0).webaudio.sampleRate;},  
- 24334: function($0) {var device = miniaudio.get_device_by_index($0); if (device.scriptNode !== undefined) { device.scriptNode.onaudioprocess = function(e) {}; device.scriptNode.disconnect(); device.scriptNode = undefined; } if (device.streamNode !== undefined) { device.streamNode.disconnect(); device.streamNode = undefined; } device.webaudio.close(); device.webaudio = undefined; if (device.intermediaryBuffer !== undefined) { Module._free(device.intermediaryBuffer); device.intermediaryBuffer = undefined; device.intermediaryBufferView = undefined; device.intermediaryBufferSizeInBytes = undefined; } miniaudio.untrack_device_by_index($0);},  
- 25016: function($0) {miniaudio.get_device_by_index($0).webaudio.resume();},  
- 25098: function($0) {miniaudio.get_device_by_index($0).webaudio.suspend();}
+  9064: function() {if ((window.AudioContext || window.webkitAudioContext) === undefined) { return 0; } if (typeof(miniaudio) === 'undefined') { miniaudio = {}; miniaudio.devices = []; miniaudio.track_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == null) { miniaudio.devices[iDevice] = device; return iDevice; } } miniaudio.devices.push(device); return miniaudio.devices.length - 1; }; miniaudio.untrack_device_by_index = function(deviceIndex) { miniaudio.devices[deviceIndex] = null; while (miniaudio.devices.length > 0) { if (miniaudio.devices[miniaudio.devices.length-1] == null) { miniaudio.devices.pop(); } else { break; } } }; miniaudio.untrack_device = function(device) { for (var iDevice = 0; iDevice < miniaudio.devices.length; ++iDevice) { if (miniaudio.devices[iDevice] == device) { return miniaudio.untrack_device_by_index(iDevice); } } }; miniaudio.get_device_by_index = function(deviceIndex) { return miniaudio.devices[deviceIndex]; }; } return 1;},  
+ 10282: function() {return (navigator.mediaDevices !== undefined && navigator.mediaDevices.getUserMedia !== undefined);},  
+ 10423: function() {try { var temp = new (window.AudioContext || window.webkitAudioContext)(); var sampleRate = temp.sampleRate; temp.close(); return sampleRate; } catch(e) { return 0; }},  
+ 10677: function($0, $1, $2, $3, $4) {var channels = $0; var sampleRate = $1; var bufferSize = $2; var isCapture = $3; var pDevice = $4; if (typeof(miniaudio) === 'undefined') { return -1; } var device = {}; device.webaudio = new (window.AudioContext || window.webkitAudioContext)({sampleRate:sampleRate}); device.webaudio.suspend(); device.intermediaryBufferSizeInBytes = channels * bufferSize * 4; device.intermediaryBuffer = Module._malloc(device.intermediaryBufferSizeInBytes); device.intermediaryBufferView = new Float32Array(Module.HEAPF32.buffer, device.intermediaryBuffer, device.intermediaryBufferSizeInBytes); device.scriptNode = device.webaudio.createScriptProcessor(bufferSize, channels, channels); if (isCapture) { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } var sendSilence = false; if (device.streamNode === undefined) { sendSilence = true; } if (e.inputBuffer.numberOfChannels != channels) { console.log("Capture: Channel count mismatch. " + e.inputBufer.numberOfChannels + " != " + channels + ". Sending silence."); sendSilence = true; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.inputBuffer.length) { var framesRemaining = e.inputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } if (sendSilence) { device.intermediaryBufferView.fill(0.0); } else { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { for (var iChannel = 0; iChannel < e.inputBuffer.numberOfChannels; ++iChannel) { device.intermediaryBufferView[iFrame*channels + iChannel] = e.inputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame]; } } } ccall("ma_device_process_pcm_frames_capture__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); totalFramesProcessed += framesToProcess; } }; navigator.mediaDevices.getUserMedia({audio:true, video:false}) .then(function(stream) { device.streamNode = device.webaudio.createMediaStreamSource(stream); device.streamNode.connect(device.scriptNode); device.scriptNode.connect(device.webaudio.destination); }) .catch(function(error) { device.scriptNode.connect(device.webaudio.destination); }); } else { device.scriptNode.onaudioprocess = function(e) { if (device.intermediaryBuffer === undefined) { return; } var outputSilence = false; if (e.outputBuffer.numberOfChannels != channels) { console.log("Playback: Channel count mismatch. " + e.outputBufer.numberOfChannels + " != " + channels + ". Outputting silence."); outputSilence = true; return; } var totalFramesProcessed = 0; while (totalFramesProcessed < e.outputBuffer.length) { var framesRemaining = e.outputBuffer.length - totalFramesProcessed; var framesToProcess = framesRemaining; if (framesToProcess > (device.intermediaryBufferSizeInBytes/channels/4)) { framesToProcess = (device.intermediaryBufferSizeInBytes/channels/4); } ccall("ma_device_process_pcm_frames_playback__webaudio", "undefined", ["number", "number", "number"], [pDevice, framesToProcess, device.intermediaryBuffer]); if (outputSilence) { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { e.outputBuffer.getChannelData(iChannel).fill(0.0); } } else { for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) { for (var iFrame = 0; iFrame < framesToProcess; ++iFrame) { e.outputBuffer.getChannelData(iChannel)[totalFramesProcessed + iFrame] = device.intermediaryBufferView[iFrame*channels + iChannel]; } } } totalFramesProcessed += framesToProcess; } }; device.scriptNode.connect(device.webaudio.destination); } return miniaudio.track_device(device);},  
+ 14567: function($0) {return miniaudio.get_device_by_index($0).webaudio.sampleRate;},  
+ 14669: function($0) {var device = miniaudio.get_device_by_index($0); if (device.scriptNode !== undefined) { device.scriptNode.onaudioprocess = function(e) {}; device.scriptNode.disconnect(); device.scriptNode = undefined; } if (device.streamNode !== undefined) { device.streamNode.disconnect(); device.streamNode = undefined; } device.webaudio.close(); device.webaudio = undefined; if (device.intermediaryBuffer !== undefined) { Module._free(device.intermediaryBuffer); device.intermediaryBuffer = undefined; device.intermediaryBufferView = undefined; device.intermediaryBufferSizeInBytes = undefined; } miniaudio.untrack_device_by_index($0);},  
+ 15351: function($0) {miniaudio.get_device_by_index($0).webaudio.resume();},  
+ 15433: function($0) {miniaudio.get_device_by_index($0).webaudio.suspend();}
 };
 
 
@@ -1926,42 +1926,6 @@ var ASM_CONSTS = {
   function ___assert_fail(condition, filename, line, func) {
       abort('Assertion failed: ' + UTF8ToString(condition) + ', at: ' + [filename ? UTF8ToString(filename) : 'unknown filename', line, func ? UTF8ToString(func) : 'unknown function']);
     }
-
-  var _emscripten_get_now;if (ENVIRONMENT_IS_NODE) {
-    _emscripten_get_now = function() {
-      var t = process['hrtime']();
-      return t[0] * 1e3 + t[1] / 1e6;
-    };
-  } else if (typeof dateNow !== 'undefined') {
-    _emscripten_get_now = dateNow;
-  } else _emscripten_get_now = function() { return performance.now(); }
-  ;
-  
-  var _emscripten_get_now_is_monotonic=true;;
-  
-  function setErrNo(value) {
-      HEAP32[((___errno_location())>>2)] = value;
-      return value;
-    }
-  function _clock_gettime(clk_id, tp) {
-      // int clock_gettime(clockid_t clk_id, struct timespec *tp);
-      var now;
-      if (clk_id === 0) {
-        now = Date.now();
-      } else if ((clk_id === 1 || clk_id === 4) && _emscripten_get_now_is_monotonic) {
-        now = _emscripten_get_now();
-      } else {
-        setErrNo(28);
-        return -1;
-      }
-      HEAP32[((tp)>>2)] = (now/1000)|0; // seconds
-      HEAP32[(((tp)+(4))>>2)] = ((now % 1000)*1000*1000)|0; // nanoseconds
-      return 0;
-    }
-  function ___clock_gettime(a0,a1
-  ) {
-  return _clock_gettime(a0,a1);
-  }
 
   var ExceptionInfoAttrs={DESTRUCTOR_OFFSET:0,REFCOUNT_OFFSET:4,TYPE_OFFSET:8,CAUGHT_OFFSET:12,RETHROWN_OFFSET:13,SIZE:16};
   function ___cxa_allocate_exception(size) {
@@ -2053,104 +2017,11 @@ var ASM_CONSTS = {
       throw ptr + " - Exception catching is disabled, this exception cannot be caught. Compile with -s DISABLE_EXCEPTION_CATCHING=0 or DISABLE_EXCEPTION_CATCHING=2 to catch.";
     }
 
-  function _gmtime_r(time, tmPtr) {
-      var date = new Date(HEAP32[((time)>>2)]*1000);
-      HEAP32[((tmPtr)>>2)] = date.getUTCSeconds();
-      HEAP32[(((tmPtr)+(4))>>2)] = date.getUTCMinutes();
-      HEAP32[(((tmPtr)+(8))>>2)] = date.getUTCHours();
-      HEAP32[(((tmPtr)+(12))>>2)] = date.getUTCDate();
-      HEAP32[(((tmPtr)+(16))>>2)] = date.getUTCMonth();
-      HEAP32[(((tmPtr)+(20))>>2)] = date.getUTCFullYear()-1900;
-      HEAP32[(((tmPtr)+(24))>>2)] = date.getUTCDay();
-      HEAP32[(((tmPtr)+(36))>>2)] = 0;
-      HEAP32[(((tmPtr)+(32))>>2)] = 0;
-      var start = Date.UTC(date.getUTCFullYear(), 0, 1, 0, 0, 0, 0);
-      var yday = ((date.getTime() - start) / (1000 * 60 * 60 * 24))|0;
-      HEAP32[(((tmPtr)+(28))>>2)] = yday;
-      // Allocate a string "GMT" for us to point to.
-      if (!_gmtime_r.GMTString) _gmtime_r.GMTString = allocateUTF8("GMT");
-      HEAP32[(((tmPtr)+(40))>>2)] = _gmtime_r.GMTString;
-      return tmPtr;
+  function setErrNo(value) {
+      HEAP32[((___errno_location())>>2)] = value;
+      return value;
     }
-  function ___gmtime_r(a0,a1
-  ) {
-  return _gmtime_r(a0,a1);
-  }
-
-  function _tzset() {
-      // TODO: Use (malleable) environment variables instead of system settings.
-      if (_tzset.called) return;
-      _tzset.called = true;
   
-      var currentYear = new Date().getFullYear();
-      var winter = new Date(currentYear, 0, 1);
-      var summer = new Date(currentYear, 6, 1);
-      var winterOffset = winter.getTimezoneOffset();
-      var summerOffset = summer.getTimezoneOffset();
-  
-      // Local standard timezone offset. Local standard time is not adjusted for daylight savings.
-      // This code uses the fact that getTimezoneOffset returns a greater value during Standard Time versus Daylight Saving Time (DST). 
-      // Thus it determines the expected output during Standard Time, and it compares whether the output of the given date the same (Standard) or less (DST).
-      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
-  
-      // timezone is specified as seconds west of UTC ("The external variable
-      // `timezone` shall be set to the difference, in seconds, between
-      // Coordinated Universal Time (UTC) and local standard time."), the same
-      // as returned by stdTimezoneOffset.
-      // See http://pubs.opengroup.org/onlinepubs/009695399/functions/tzset.html
-      HEAP32[((__get_timezone())>>2)] = stdTimezoneOffset * 60;
-  
-      HEAP32[((__get_daylight())>>2)] = Number(winterOffset != summerOffset);
-  
-      function extractZone(date) {
-        var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
-        return match ? match[1] : "GMT";
-      };
-      var winterName = extractZone(winter);
-      var summerName = extractZone(summer);
-      var winterNamePtr = allocateUTF8(winterName);
-      var summerNamePtr = allocateUTF8(summerName);
-      if (summerOffset < winterOffset) {
-        // Northern hemisphere
-        HEAP32[((__get_tzname())>>2)] = winterNamePtr;
-        HEAP32[(((__get_tzname())+(4))>>2)] = summerNamePtr;
-      } else {
-        HEAP32[((__get_tzname())>>2)] = summerNamePtr;
-        HEAP32[(((__get_tzname())+(4))>>2)] = winterNamePtr;
-      }
-    }
-  function _localtime_r(time, tmPtr) {
-      _tzset();
-      var date = new Date(HEAP32[((time)>>2)]*1000);
-      HEAP32[((tmPtr)>>2)] = date.getSeconds();
-      HEAP32[(((tmPtr)+(4))>>2)] = date.getMinutes();
-      HEAP32[(((tmPtr)+(8))>>2)] = date.getHours();
-      HEAP32[(((tmPtr)+(12))>>2)] = date.getDate();
-      HEAP32[(((tmPtr)+(16))>>2)] = date.getMonth();
-      HEAP32[(((tmPtr)+(20))>>2)] = date.getFullYear()-1900;
-      HEAP32[(((tmPtr)+(24))>>2)] = date.getDay();
-  
-      var start = new Date(date.getFullYear(), 0, 1);
-      var yday = ((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))|0;
-      HEAP32[(((tmPtr)+(28))>>2)] = yday;
-      HEAP32[(((tmPtr)+(36))>>2)] = -(date.getTimezoneOffset() * 60);
-  
-      // Attention: DST is in December in South, and some regions don't have DST at all.
-      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-      var winterOffset = start.getTimezoneOffset();
-      var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset))|0;
-      HEAP32[(((tmPtr)+(32))>>2)] = dst;
-  
-      var zonePtr = HEAP32[(((__get_tzname())+(dst ? 4 : 0))>>2)];
-      HEAP32[(((tmPtr)+(40))>>2)] = zonePtr;
-  
-      return tmPtr;
-    }
-  function ___localtime_r(a0,a1
-  ) {
-  return _localtime_r(a0,a1);
-  }
-
   var PATH={splitPath:function(filename) {
         var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
         return splitPathRe.exec(filename).slice(1);
@@ -4531,29 +4402,6 @@ var ASM_CONSTS = {
         else assert(high === -1);
         return low;
       }};
-  function ___sys_dup2(oldfd, suggestFD) {try {
-  
-      var old = SYSCALLS.getStreamFromFD(oldfd);
-      if (old.fd === suggestFD) return suggestFD;
-      return SYSCALLS.doDup(old.path, old.flags, suggestFD);
-    } catch (e) {
-    if (typeof FS === 'undefined' || !(e instanceof FS.ErrnoError)) abort(e);
-    return -e.errno;
-  }
-  }
-
-  function ___sys_dup3(fd, suggestFD, flags) {try {
-  
-      var old = SYSCALLS.getStreamFromFD(fd);
-      assert(!flags);
-      if (old.fd === suggestFD) return -28;
-      return SYSCALLS.doDup(old.path, old.flags, suggestFD);
-    } catch (e) {
-    if (typeof FS === 'undefined' || !(e instanceof FS.ErrnoError)) abort(e);
-    return -e.errno;
-  }
-  }
-
   function ___sys_fcntl64(fd, cmd, varargs) {SYSCALLS.varargs = varargs;
   try {
   
@@ -4665,16 +4513,6 @@ var ASM_CONSTS = {
   }
   }
 
-  function ___sys_lstat64(path, buf) {try {
-  
-      path = SYSCALLS.getStr(path);
-      return SYSCALLS.doStat(FS.lstat, path, buf);
-    } catch (e) {
-    if (typeof FS === 'undefined' || !(e instanceof FS.ErrnoError)) abort(e);
-    return -e.errno;
-  }
-  }
-
   function ___sys_mkdir(path, mode) {try {
   
       path = SYSCALLS.getStr(path);
@@ -4698,29 +4536,6 @@ var ASM_CONSTS = {
   }
   }
 
-  function ___sys_rename(old_path, new_path) {try {
-  
-      old_path = SYSCALLS.getStr(old_path);
-      new_path = SYSCALLS.getStr(new_path);
-      FS.rename(old_path, new_path);
-      return 0;
-    } catch (e) {
-    if (typeof FS === 'undefined' || !(e instanceof FS.ErrnoError)) abort(e);
-    return -e.errno;
-  }
-  }
-
-  function ___sys_rmdir(path) {try {
-  
-      path = SYSCALLS.getStr(path);
-      FS.rmdir(path);
-      return 0;
-    } catch (e) {
-    if (typeof FS === 'undefined' || !(e instanceof FS.ErrnoError)) abort(e);
-    return -e.errno;
-  }
-  }
-
   function ___sys_stat64(path, buf) {try {
   
       path = SYSCALLS.getStr(path);
@@ -4731,44 +4546,41 @@ var ASM_CONSTS = {
   }
   }
 
-  function ___sys_unlink(path) {try {
-  
-      path = SYSCALLS.getStr(path);
-      FS.unlink(path);
-      return 0;
-    } catch (e) {
-    if (typeof FS === 'undefined' || !(e instanceof FS.ErrnoError)) abort(e);
-    return -e.errno;
-  }
-  }
-
   function _abort() {
       abort();
     }
 
-  function _clock() {
-      if (_clock.start === undefined) _clock.start = Date.now();
-      return ((Date.now() - _clock.start) * (1000000 / 1000))|0;
-    }
-
-
-  function _difftime(time1, time0) {
-      return time1 - time0;
+  var _emscripten_get_now;if (ENVIRONMENT_IS_NODE) {
+    _emscripten_get_now = function() {
+      var t = process['hrtime']();
+      return t[0] * 1e3 + t[1] / 1e6;
+    };
+  } else if (typeof dateNow !== 'undefined') {
+    _emscripten_get_now = dateNow;
+  } else _emscripten_get_now = function() { return performance.now(); }
+  ;
+  
+  var _emscripten_get_now_is_monotonic=true;;
+  function _clock_gettime(clk_id, tp) {
+      // int clock_gettime(clockid_t clk_id, struct timespec *tp);
+      var now;
+      if (clk_id === 0) {
+        now = Date.now();
+      } else if ((clk_id === 1 || clk_id === 4) && _emscripten_get_now_is_monotonic) {
+        now = _emscripten_get_now();
+      } else {
+        setErrNo(28);
+        return -1;
+      }
+      HEAP32[((tp)>>2)] = (now/1000)|0; // seconds
+      HEAP32[(((tp)+(4))>>2)] = ((now % 1000)*1000*1000)|0; // nanoseconds
+      return 0;
     }
 
   function _emscripten_asm_const_int(code, sigPtr, argbuf) {
       var args = readAsmConstArgs(sigPtr, argbuf);
       return ASM_CONSTS[code].apply(null, args);
     }
-
-  function _longjmp(env, value) {
-      _setThrew(env, value || 1);
-      throw 'longjmp';
-    }
-  function _emscripten_longjmp(a0,a1
-  ) {
-  return _longjmp(a0,a1);
-  }
 
   function _emscripten_memcpy_big(dest, src, num) {
       HEAPU8.copyWithin(dest, src, src + num);
@@ -5584,13 +5396,6 @@ var ASM_CONSTS = {
       setMainLoop(browserIterationFunc, fps, simulateInfiniteLoop);
     }
 
-  function _emscripten_thread_sleep(msecs) {
-      var start = _emscripten_get_now();
-      while (_emscripten_get_now() - start < msecs) {
-        // Do nothing.
-      }
-    }
-
   var ENV={};
   
   function getExecutableName() {
@@ -5654,12 +5459,6 @@ var ASM_CONSTS = {
   }
   }
 
-  function _exit(status) {
-      // void _exit(int status);
-      // http://pubs.opengroup.org/onlinepubs/000095399/functions/exit.html
-      exit(status);
-    }
-
   function _fd_close(fd) {try {
   
       var stream = SYSCALLS.getStreamFromFD(fd);
@@ -5718,10 +5517,6 @@ var ASM_CONSTS = {
     return e.errno;
   }
   }
-
-  function _getTempRet0() {
-      return (getTempRet0() | 0);
-    }
 
   function _gettimeofday(ptr) {
       var now = Date.now();
@@ -5944,12 +5739,6 @@ var ASM_CONSTS = {
       GLctx.bindBuffer(target, GL.buffers[buffer]);
     }
 
-  function _glBindFramebuffer(target, framebuffer) {
-  
-      GLctx.bindFramebuffer(target, GL.framebuffers[framebuffer]);
-  
-    }
-
   function _glBindTexture(target, texture) {
       GLctx.bindTexture(target, GL.textures[texture]);
     }
@@ -5980,8 +5769,6 @@ var ASM_CONSTS = {
         GLctx.bufferData(target, data ? HEAPU8.subarray(data, data+size) : size, usage);
       }
     }
-
-  function _glCheckFramebufferStatus(x0) { return GLctx['checkFramebufferStatus'](x0) }
 
   function _glClear(x0) { GLctx['clear'](x0) }
 
@@ -6020,17 +5807,6 @@ var ASM_CONSTS = {
   
         if (id == GLctx.currentPixelPackBufferBinding) GLctx.currentPixelPackBufferBinding = 0;
         if (id == GLctx.currentPixelUnpackBufferBinding) GLctx.currentPixelUnpackBufferBinding = 0;
-      }
-    }
-
-  function _glDeleteFramebuffers(n, framebuffers) {
-      for (var i = 0; i < n; ++i) {
-        var id = HEAP32[(((framebuffers)+(i*4))>>2)];
-        var framebuffer = GL.framebuffers[id];
-        if (!framebuffer) continue; // GL spec: "glDeleteFramebuffers silently ignores 0s and names that do not correspond to existing framebuffer objects".
-        GLctx.deleteFramebuffer(framebuffer);
-        framebuffer.name = 0;
-        GL.framebuffers[id] = null;
       }
     }
 
@@ -6077,10 +5853,6 @@ var ASM_CONSTS = {
       }
     }
 
-  function _glDepthMask(flag) {
-      GLctx.depthMask(!!flag);
-    }
-
   function _glDetachShader(program, shader) {
       GLctx.detachShader(GL.programs[program],
                               GL.shaders[shader]);
@@ -6098,11 +5870,6 @@ var ASM_CONSTS = {
 
   function _glEnableVertexAttribArray(index) {
       GLctx.enableVertexAttribArray(index);
-    }
-
-  function _glFramebufferTexture2D(target, attachment, textarget, texture, level) {
-      GLctx.framebufferTexture2D(target, attachment, textarget,
-                                      GL.textures[texture], level);
     }
 
   function __glGenObject(n, buffers, createFunction, objectTable
@@ -6124,11 +5891,6 @@ var ASM_CONSTS = {
         );
     }
 
-  function _glGenFramebuffers(n, ids) {
-      __glGenObject(n, ids, 'createFramebuffer', GL.framebuffers
-        );
-    }
-
   function _glGenTextures(n, textures) {
       __glGenObject(n, textures, 'createTexture', GL.textures
         );
@@ -6138,8 +5900,6 @@ var ASM_CONSTS = {
       __glGenObject(n, arrays, 'createVertexArray', GL.vaos
         );
     }
-
-  function _glGenerateMipmap(x0) { GLctx['generateMipmap'](x0) }
 
   function _glGetAttribLocation(program, name) {
       return GLctx.getAttribLocation(GL.programs[program], UTF8ToString(name));
@@ -6579,10 +6339,6 @@ var ASM_CONSTS = {
     }
 
   function _glTexParameteri(x0, x1, x2) { GLctx['texParameteri'](x0, x1, x2) }
-
-  function _glUniform1f(location, v0) {
-      GLctx.uniform1f(GL.uniforms[location], v0);
-    }
 
   function _glUniform1i(location, v0) {
       GLctx.uniform1i(GL.uniforms[location], v0);
@@ -7662,47 +7418,74 @@ var ASM_CONSTS = {
       GLFW.hints[target] = hint;
     }
 
-
-  function _mktime(tmPtr) {
-      _tzset();
-      var date = new Date(HEAP32[(((tmPtr)+(20))>>2)] + 1900,
-                          HEAP32[(((tmPtr)+(16))>>2)],
-                          HEAP32[(((tmPtr)+(12))>>2)],
-                          HEAP32[(((tmPtr)+(8))>>2)],
-                          HEAP32[(((tmPtr)+(4))>>2)],
-                          HEAP32[((tmPtr)>>2)],
-                          0);
+  function _tzset() {
+      // TODO: Use (malleable) environment variables instead of system settings.
+      if (_tzset.called) return;
+      _tzset.called = true;
   
-      // There's an ambiguous hour when the time goes back; the tm_isdst field is
-      // used to disambiguate it.  Date() basically guesses, so we fix it up if it
-      // guessed wrong, or fill in tm_isdst with the guess if it's -1.
-      var dst = HEAP32[(((tmPtr)+(32))>>2)];
-      var guessedOffset = date.getTimezoneOffset();
-      var start = new Date(date.getFullYear(), 0, 1);
-      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-      var winterOffset = start.getTimezoneOffset();
-      var dstOffset = Math.min(winterOffset, summerOffset); // DST is in December in South
-      if (dst < 0) {
-        // Attention: some regions don't have DST at all.
-        HEAP32[(((tmPtr)+(32))>>2)] = Number(summerOffset != winterOffset && dstOffset == guessedOffset);
-      } else if ((dst > 0) != (dstOffset == guessedOffset)) {
-        var nonDstOffset = Math.max(winterOffset, summerOffset);
-        var trueOffset = dst > 0 ? dstOffset : nonDstOffset;
-        // Don't try setMinutes(date.getMinutes() + ...) -- it's messed up.
-        date.setTime(date.getTime() + (trueOffset - guessedOffset)*60000);
+      var currentYear = new Date().getFullYear();
+      var winter = new Date(currentYear, 0, 1);
+      var summer = new Date(currentYear, 6, 1);
+      var winterOffset = winter.getTimezoneOffset();
+      var summerOffset = summer.getTimezoneOffset();
+  
+      // Local standard timezone offset. Local standard time is not adjusted for daylight savings.
+      // This code uses the fact that getTimezoneOffset returns a greater value during Standard Time versus Daylight Saving Time (DST). 
+      // Thus it determines the expected output during Standard Time, and it compares whether the output of the given date the same (Standard) or less (DST).
+      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
+  
+      // timezone is specified as seconds west of UTC ("The external variable
+      // `timezone` shall be set to the difference, in seconds, between
+      // Coordinated Universal Time (UTC) and local standard time."), the same
+      // as returned by stdTimezoneOffset.
+      // See http://pubs.opengroup.org/onlinepubs/009695399/functions/tzset.html
+      HEAP32[((__get_timezone())>>2)] = stdTimezoneOffset * 60;
+  
+      HEAP32[((__get_daylight())>>2)] = Number(winterOffset != summerOffset);
+  
+      function extractZone(date) {
+        var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
+        return match ? match[1] : "GMT";
+      };
+      var winterName = extractZone(winter);
+      var summerName = extractZone(summer);
+      var winterNamePtr = allocateUTF8(winterName);
+      var summerNamePtr = allocateUTF8(summerName);
+      if (summerOffset < winterOffset) {
+        // Northern hemisphere
+        HEAP32[((__get_tzname())>>2)] = winterNamePtr;
+        HEAP32[(((__get_tzname())+(4))>>2)] = summerNamePtr;
+      } else {
+        HEAP32[((__get_tzname())>>2)] = summerNamePtr;
+        HEAP32[(((__get_tzname())+(4))>>2)] = winterNamePtr;
       }
-  
-      HEAP32[(((tmPtr)+(24))>>2)] = date.getDay();
-      var yday = ((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))|0;
-      HEAP32[(((tmPtr)+(28))>>2)] = yday;
-      // To match expected behavior, update fields from date
+    }
+  function _localtime_r(time, tmPtr) {
+      _tzset();
+      var date = new Date(HEAP32[((time)>>2)]*1000);
       HEAP32[((tmPtr)>>2)] = date.getSeconds();
       HEAP32[(((tmPtr)+(4))>>2)] = date.getMinutes();
       HEAP32[(((tmPtr)+(8))>>2)] = date.getHours();
       HEAP32[(((tmPtr)+(12))>>2)] = date.getDate();
       HEAP32[(((tmPtr)+(16))>>2)] = date.getMonth();
+      HEAP32[(((tmPtr)+(20))>>2)] = date.getFullYear()-1900;
+      HEAP32[(((tmPtr)+(24))>>2)] = date.getDay();
   
-      return (date.getTime() / 1000)|0;
+      var start = new Date(date.getFullYear(), 0, 1);
+      var yday = ((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))|0;
+      HEAP32[(((tmPtr)+(28))>>2)] = yday;
+      HEAP32[(((tmPtr)+(36))>>2)] = -(date.getTimezoneOffset() * 60);
+  
+      // Attention: DST is in December in South, and some regions don't have DST at all.
+      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
+      var winterOffset = start.getTimezoneOffset();
+      var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset))|0;
+      HEAP32[(((tmPtr)+(32))>>2)] = dst;
+  
+      var zonePtr = HEAP32[(((__get_tzname())+(dst ? 4 : 0))>>2)];
+      HEAP32[(((tmPtr)+(40))>>2)] = zonePtr;
+  
+      return tmPtr;
     }
 
   function _pthread_create() {
@@ -8075,60 +7858,8 @@ var ASM_CONSTS = {
       writeArrayToMemory(bytes, s);
       return bytes.length-1;
     }
-
   function _strftime_l(s, maxsize, format, tm) {
       return _strftime(s, maxsize, format, tm); // no locale support yet
-    }
-
-  function _system(command) {
-      if (ENVIRONMENT_IS_NODE) {
-        if (!command) return 1; // shell is available
-  
-        var cmdstr = UTF8ToString(command);
-        if (!cmdstr.length) return 0; // this is what glibc seems to do (shell works test?)
-  
-        var cp = require('child_process');
-        var ret = cp.spawnSync(cmdstr, [], {shell:true, stdio:'inherit'});
-  
-        var _W_EXITCODE = function(ret, sig) {
-          return ((ret) << 8 | (sig));
-        }
-  
-        // this really only can happen if process is killed by signal
-        if (ret.status === null) {
-          // sadly node doesn't expose such function
-          var signalToNumber = function(sig) {
-            // implement only the most common ones, and fallback to SIGINT
-            switch (sig) {
-              case 'SIGHUP': return 1;
-              case 'SIGINT': return 2;
-              case 'SIGQUIT': return 3;
-              case 'SIGFPE': return 8;
-              case 'SIGKILL': return 9;
-              case 'SIGALRM': return 14;
-              case 'SIGTERM': return 15;
-            }
-            return 2; // SIGINT
-          }
-          return _W_EXITCODE(0, signalToNumber(ret.signal));
-        }
-  
-        return _W_EXITCODE(ret.status, 0);
-      }
-      // int system(const char *command);
-      // http://pubs.opengroup.org/onlinepubs/000095399/functions/system.html
-      // Can't call external programs.
-      if (!command) return 0; // no shell available
-      setErrNo(6);
-      return -1;
-    }
-
-  function _time(ptr) {
-      var ret = (Date.now()/1000)|0;
-      if (ptr) {
-        HEAP32[((ptr)>>2)] = ret;
-      }
-      return ret;
     }
 
   var readAsmConstArgsArray=[];
@@ -8245,47 +7976,31 @@ function intArrayToString(array) {
 
 var asmLibraryArg = {
   "__assert_fail": ___assert_fail,
-  "__clock_gettime": ___clock_gettime,
   "__cxa_allocate_exception": ___cxa_allocate_exception,
   "__cxa_atexit": ___cxa_atexit,
   "__cxa_throw": ___cxa_throw,
-  "__gmtime_r": ___gmtime_r,
-  "__localtime_r": ___localtime_r,
-  "__sys_dup2": ___sys_dup2,
-  "__sys_dup3": ___sys_dup3,
   "__sys_fcntl64": ___sys_fcntl64,
   "__sys_ioctl": ___sys_ioctl,
-  "__sys_lstat64": ___sys_lstat64,
   "__sys_mkdir": ___sys_mkdir,
   "__sys_open": ___sys_open,
-  "__sys_rename": ___sys_rename,
-  "__sys_rmdir": ___sys_rmdir,
   "__sys_stat64": ___sys_stat64,
-  "__sys_unlink": ___sys_unlink,
   "abort": _abort,
-  "clock": _clock,
   "clock_gettime": _clock_gettime,
-  "difftime": _difftime,
   "emscripten_asm_const_int": _emscripten_asm_const_int,
-  "emscripten_longjmp": _emscripten_longjmp,
   "emscripten_memcpy_big": _emscripten_memcpy_big,
   "emscripten_resize_heap": _emscripten_resize_heap,
   "emscripten_set_main_loop": _emscripten_set_main_loop,
-  "emscripten_thread_sleep": _emscripten_thread_sleep,
   "environ_get": _environ_get,
   "environ_sizes_get": _environ_sizes_get,
-  "exit": _exit,
   "fd_close": _fd_close,
   "fd_read": _fd_read,
   "fd_seek": _fd_seek,
   "fd_write": _fd_write,
-  "getTempRet0": _getTempRet0,
   "gettimeofday": _gettimeofday,
   "glActiveTexture": _glActiveTexture,
   "glAttachShader": _glAttachShader,
   "glBindAttribLocation": _glBindAttribLocation,
   "glBindBuffer": _glBindBuffer,
-  "glBindFramebuffer": _glBindFramebuffer,
   "glBindTexture": _glBindTexture,
   "glBindVertexArray": _glBindVertexArray,
   "glBlendEquation": _glBlendEquation,
@@ -8293,30 +8008,24 @@ var asmLibraryArg = {
   "glBlendFunc": _glBlendFunc,
   "glBlendFuncSeparate": _glBlendFuncSeparate,
   "glBufferData": _glBufferData,
-  "glCheckFramebufferStatus": _glCheckFramebufferStatus,
   "glClear": _glClear,
   "glClearColor": _glClearColor,
   "glCompileShader": _glCompileShader,
   "glCreateProgram": _glCreateProgram,
   "glCreateShader": _glCreateShader,
   "glDeleteBuffers": _glDeleteBuffers,
-  "glDeleteFramebuffers": _glDeleteFramebuffers,
   "glDeleteProgram": _glDeleteProgram,
   "glDeleteShader": _glDeleteShader,
   "glDeleteTextures": _glDeleteTextures,
   "glDeleteVertexArrays": _glDeleteVertexArrays,
-  "glDepthMask": _glDepthMask,
   "glDetachShader": _glDetachShader,
   "glDisable": _glDisable,
   "glDrawElements": _glDrawElements,
   "glEnable": _glEnable,
   "glEnableVertexAttribArray": _glEnableVertexAttribArray,
-  "glFramebufferTexture2D": _glFramebufferTexture2D,
   "glGenBuffers": _glGenBuffers,
-  "glGenFramebuffers": _glGenFramebuffers,
   "glGenTextures": _glGenTextures,
   "glGenVertexArrays": _glGenVertexArrays,
-  "glGenerateMipmap": _glGenerateMipmap,
   "glGetAttribLocation": _glGetAttribLocation,
   "glGetBufferParameteriv": _glGetBufferParameteriv,
   "glGetIntegerv": _glGetIntegerv,
@@ -8333,7 +8042,6 @@ var asmLibraryArg = {
   "glShaderSource": _glShaderSource,
   "glTexImage2D": _glTexImage2D,
   "glTexParameteri": _glTexParameteri,
-  "glUniform1f": _glUniform1f,
   "glUniform1i": _glUniform1i,
   "glUniform3fv": _glUniform3fv,
   "glUniformMatrix3fv": _glUniformMatrix3fv,
@@ -8373,16 +8081,11 @@ var asmLibraryArg = {
   "glfwSwapInterval": _glfwSwapInterval,
   "glfwTerminate": _glfwTerminate,
   "glfwWindowHint": _glfwWindowHint,
-  "invoke_vii": invoke_vii,
   "localtime_r": _localtime_r,
-  "mktime": _mktime,
   "pthread_create": _pthread_create,
   "pthread_join": _pthread_join,
   "setTempRet0": _setTempRet0,
-  "strftime": _strftime,
-  "strftime_l": _strftime_l,
-  "system": _system,
-  "time": _time
+  "strftime_l": _strftime_l
 };
 var asm = createWasm();
 /** @type {function(...*):?} */
@@ -8393,9 +8096,6 @@ var ___errno_location = Module["___errno_location"] = createExportWrapper("__err
 
 /** @type {function(...*):?} */
 var _free = Module["_free"] = createExportWrapper("free");
-
-/** @type {function(...*):?} */
-var _realloc = Module["_realloc"] = createExportWrapper("realloc");
 
 /** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
@@ -8411,12 +8111,6 @@ var _fflush = Module["_fflush"] = createExportWrapper("fflush");
 
 /** @type {function(...*):?} */
 var _main = Module["_main"] = createExportWrapper("main");
-
-/** @type {function(...*):?} */
-var _saveSetjmp = Module["_saveSetjmp"] = createExportWrapper("saveSetjmp");
-
-/** @type {function(...*):?} */
-var _testSetjmp = Module["_testSetjmp"] = createExportWrapper("testSetjmp");
 
 /** @type {function(...*):?} */
 var __get_tzname = Module["__get_tzname"] = createExportWrapper("_get_tzname");
@@ -8458,15 +8152,6 @@ var _emscripten_stack_get_free = Module["_emscripten_stack_get_free"] = function
 var _setThrew = Module["_setThrew"] = createExportWrapper("setThrew");
 
 /** @type {function(...*):?} */
-var dynCall_vijiiiii = Module["dynCall_vijiiiii"] = createExportWrapper("dynCall_vijiiiii");
-
-/** @type {function(...*):?} */
-var dynCall_vijiiiiiii = Module["dynCall_vijiiiiiii"] = createExportWrapper("dynCall_vijiiiiiii");
-
-/** @type {function(...*):?} */
-var dynCall_viijii = Module["dynCall_viijii"] = createExportWrapper("dynCall_viijii");
-
-/** @type {function(...*):?} */
 var dynCall_iiiji = Module["dynCall_iiiji"] = createExportWrapper("dynCall_iiiji");
 
 /** @type {function(...*):?} */
@@ -8479,13 +8164,7 @@ var dynCall_jiij = Module["dynCall_jiij"] = createExportWrapper("dynCall_jiij");
 var dynCall_ji = Module["dynCall_ji"] = createExportWrapper("dynCall_ji");
 
 /** @type {function(...*):?} */
-var dynCall_ijiji = Module["dynCall_ijiji"] = createExportWrapper("dynCall_ijiji");
-
-/** @type {function(...*):?} */
-var dynCall_iiji = Module["dynCall_iiji"] = createExportWrapper("dynCall_iiji");
-
-/** @type {function(...*):?} */
-var dynCall_iiiijiiijiiiii = Module["dynCall_iiiijiiijiiiii"] = createExportWrapper("dynCall_iiiijiiijiiiii");
+var dynCall_viijii = Module["dynCall_viijii"] = createExportWrapper("dynCall_viijii");
 
 /** @type {function(...*):?} */
 var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
@@ -8499,17 +8178,6 @@ var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_i
 /** @type {function(...*):?} */
 var dynCall_iiiiiijj = Module["dynCall_iiiiiijj"] = createExportWrapper("dynCall_iiiiiijj");
 
-
-function invoke_vii(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    wasmTable.get(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
 
 
 
