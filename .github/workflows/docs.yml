@@ -11,51 +11,51 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        example_name: [framework]
+        example_name: [framework,fps]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: setup python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.6'
-    - name: install python deps
-      run: |
-        python -m pip install --upgrade pip
-        pip install Jinja2 gitpython
-    - name: install emsdk
-      run: |
-        git clone https://github.com/emscripten-core/emsdk.git
-        cd emsdk
-        ./emsdk install latest
-        ./emsdk activate latest
-    - name: initialize
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./init.bash
-    - name: configure
-      run: |
-        source ./emsdk/emsdk_env.sh
-        cd examples/${{ matrix.example_name }}
-        mkdir _build
-        cd _build
-        emcmake cmake .. -DYOURGAME_PLATFORM=web
-    - name: build
-      run: |
-        source ./emsdk/emsdk_env.sh
-        cd examples/${{ matrix.example_name }}/_build
-        emmake cmake --build .
+      - uses: actions/checkout@v1
+      - name: setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.6"
+      - name: install python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install Jinja2 gitpython
+      - name: install emsdk
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+      - name: initialize
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./init.bash
+      - name: configure
+        run: |
+          source ./emsdk/emsdk_env.sh
+          cd examples/${{ matrix.example_name }}
+          mkdir _build
+          cd _build
+          emcmake cmake .. -DYOURGAME_PLATFORM=web
+      - name: build
+        run: |
+          source ./emsdk/emsdk_env.sh
+          cd examples/${{ matrix.example_name }}/_build
+          emmake cmake --build .
 
-    - name: prepare upload
-      run: |
-        cd examples/${{ matrix.example_name }}/_build
-        mkdir _upload
-        mv ./${{ matrix.example_name }}.* ./_upload
-    - name: upload wasm artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: ${{ matrix.example_name }}
-        path: examples/${{ matrix.example_name }}/_build/_upload
+      - name: prepare upload
+        run: |
+          cd examples/${{ matrix.example_name }}/_build
+          mkdir _upload
+          mv ./${{ matrix.example_name }}.* ./_upload
+      - name: upload wasm artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ matrix.example_name }}
+          path: examples/${{ matrix.example_name }}/_build/_upload
 
   docs:
     name: build and deploy docs
@@ -80,10 +80,16 @@ jobs:
           mkdir examples
           mv ../docs/_doxyout/html/* ./
 
-      - name: download wasm artifacts
+      - name: download wasm artifacts framework
         uses: actions/download-artifact@v1
         with:
-          name: framework # todo: 2020-01-13 download framework example only, no "download-all" available
+          name: framework # todo: 2020-01-13 download framework example manually, no "download-all" available
+          path: _deploy/examples/
+
+      - name: download wasm artifacts fps
+        uses: actions/download-artifact@v1
+        with:
+          name: fps # todo: 2020-01-13 download fps example manually, no "download-all" available
           path: _deploy/examples/
 
       - name: deploy
