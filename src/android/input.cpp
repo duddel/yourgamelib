@@ -29,16 +29,28 @@ namespace yourgame_internal_android
     {
         struct InputValue
         {
-            InputValue() : val(0.0f), valLast(0.0f) {}
+            InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
             float val;
             float valLast;
         };
 
         std::map<yourgame::InputSource, InputValue> _inputStates;
 
+        // used for buttons/keys. if first input of source occurs, valLast
+        // is defaulted to 0.0f (via default ctor), resulting in positive
+        // value delta, if first input of source is "key down".
         void set(yourgame::InputSource source, float value)
         {
             _inputStates[source].val = value;
+        }
+
+        // used for positions/axes or other "continuous" signals.
+        // if first input of source occurs, valLast is set = value,
+        // resulting in zero value delta after first input.
+        void set2(yourgame::InputSource source, float value)
+        {
+            auto emret = _inputStates.emplace(source, value);
+            emret.first->second.val = value;
         }
     } // namespace
 
@@ -111,8 +123,8 @@ namespace yourgame_internal_android
                                                          ? 1.0f
                                                          : 0.0f));
                     // set initial location
-                    set(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
-                    set(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
+                    set2(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
+                    set2(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
                 }
             }
             break;
@@ -122,8 +134,8 @@ namespace yourgame_internal_android
                 for (auto i = 0; i < evNumPtr; i++)
                 {
                     int32_t pointerId = AMotionEvent_getPointerId(inputEvent, i);
-                    set(srcsTouchX[pointerId], (float)AMotionEvent_getX(inputEvent, i));
-                    set(srcsTouchY[pointerId], (float)AMotionEvent_getY(inputEvent, i));
+                    set2(srcsTouchX[pointerId], (float)AMotionEvent_getX(inputEvent, i));
+                    set2(srcsTouchY[pointerId], (float)AMotionEvent_getY(inputEvent, i));
                 }
             }
             break;

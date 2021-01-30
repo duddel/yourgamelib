@@ -28,6 +28,7 @@ namespace yourgame_internal_desktop
     {
         const std::map<int, yourgame::InputSource> keyApiMapping =
             {{GLFW_KEY_UNKNOWN, yourgame::InputSource::YOURGAME_KEY_UNKNOWN},
+             {GLFW_KEY_SPACE, yourgame::InputSource::YOURGAME_KEY_SPACE},
              {GLFW_KEY_APOSTROPHE, yourgame::InputSource::YOURGAME_KEY_APOSTROPHE},
              {GLFW_KEY_COMMA, yourgame::InputSource::YOURGAME_KEY_COMMA},
              {GLFW_KEY_MINUS, yourgame::InputSource::YOURGAME_KEY_MINUS},
@@ -172,16 +173,28 @@ namespace yourgame_internal_desktop
 
         struct InputValue
         {
-            InputValue() : val(0.0f), valLast(0.0f) {}
+            InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
             float val;
             float valLast;
         };
 
         std::map<yourgame::InputSource, InputValue> _inputStates;
 
+        // used for buttons/keys. if first input of source occurs, valLast
+        // is defaulted to 0.0f (via default ctor), resulting in positive
+        // value delta, if first input of source is "key down".
         void set(yourgame::InputSource source, float value)
         {
             _inputStates[source].val = value;
+        }
+
+        // used for positions/axes or other "continuous" signals.
+        // if first input of source occurs, valLast is set = value,
+        // resulting in zero value delta after first input.
+        void set2(yourgame::InputSource source, float value)
+        {
+            auto emret = _inputStates.emplace(source, value);
+            emret.first->second.val = value;
         }
 
         void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -198,8 +211,8 @@ namespace yourgame_internal_desktop
 
         static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
         {
-            set(yourgame::InputSource::YOURGAME_MOUSE_X, (float)xpos);
-            set(yourgame::InputSource::YOURGAME_MOUSE_Y, (float)ypos);
+            set2(yourgame::InputSource::YOURGAME_MOUSE_X, (float)xpos);
+            set2(yourgame::InputSource::YOURGAME_MOUSE_Y, (float)ypos);
         }
 
         void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
@@ -278,12 +291,12 @@ namespace yourgame_internal_desktop
                 set(static_cast<yourgame::InputSource>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN] == GLFW_PRESS ? 1.0f : 0.0f);
                 set(static_cast<yourgame::InputSource>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT] == GLFW_PRESS ? 1.0f : 0.0f);
                 int axisWriteIdx = static_cast<int>(pad.second.second);
-                set(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_X]);
-                set(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]);
-                set(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]);
-                set(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]);
-                set(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER]);
-                set(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER]);
+                set2(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_X]);
+                set2(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]);
+                set2(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]);
+                set2(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]);
+                set2(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER]);
+                set2(static_cast<yourgame::InputSource>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER]);
             }
         }
 #endif

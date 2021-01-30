@@ -65,6 +65,18 @@ namespace yourgame
         m_matInvalidated = true;
     }
 
+    void Trafo::setRotation(glm::quat const &rot)
+    {
+        m_rot = rot;
+        m_matInvalidated = true;
+    }
+
+    void Trafo::setTranslation(glm::vec3 const &trans)
+    {
+        m_eye = trans;
+        m_matInvalidated = true;
+    }
+
     void Trafo::pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up)
     {
         auto dir = glm::normalize(center - eye);
@@ -134,5 +146,10 @@ namespace yourgame
             return glm::vec3(0.0f, 0.0f, 1.0f);
             break;
         }
+    }
+
+    glm::vec3 Trafo::getEye()
+    {
+        return m_eye;
     }
 } // namespace yourgame

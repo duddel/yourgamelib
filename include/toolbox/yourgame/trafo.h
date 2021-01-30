@@ -43,9 +43,14 @@ namespace yourgame
         void translateGlobal(float distance, AXIS ax);
         void setScaleLocal(glm::vec3 const &scale);
         void setScaleLocal(float scale);
+        void setRotation(glm::quat const &rot);
+        void setTranslation(glm::vec3 const &trans);
         void pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
         void lookAt(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
         void lerp(float t, Trafo const &target, Trafo *dst);
+        glm::vec3 getAxisLocal(AXIS ax);
+        glm::vec3 getAxisGlobal(AXIS ax);
+        glm::vec3 getEye();
 
     private:
         glm::vec3 m_eye = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -57,8 +62,6 @@ namespace yourgame
                                     0.0f, 0.0f, 0.0f, 1.0f);
         bool m_matInvalidated = false;
         void updateMatrixIfInvalidated();
-        glm::vec3 getAxisLocal(AXIS ax);
-        glm::vec3 getAxisGlobal(AXIS ax);
     };
 } // namespace yourgame
 

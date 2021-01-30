@@ -26,6 +26,7 @@ namespace yourgame
     enum class InputSource
     {
         YOURGAME_KEY_UNKNOWN,
+        YOURGAME_KEY_SPACE,
         YOURGAME_KEY_APOSTROPHE,
         YOURGAME_KEY_COMMA,
         YOURGAME_KEY_MINUS,
