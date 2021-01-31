@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/grid.obj", "start": 0, "end": 2311, "audio": 0}, {"filename": "/assets/default.vert", "start": 2311, "end": 2930, "audio": 0}, {"filename": "/assets/diffusecolor.frag", "start": 2930, "end": 3418, "audio": 0}, {"filename": "/assets/cube.obj", "start": 3418, "end": 4351, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 4351, "end": 4608, "audio": 0}], "remote_package_size": 4608, "package_uuid": "01cb8b6c-a34e-435b-9be8-7198d9bcc108"});
+   loadPackage({"files": [{"filename": "/assets/grid.obj", "start": 0, "end": 2311, "audio": 0}, {"filename": "/assets/default.vert", "start": 2311, "end": 2930, "audio": 0}, {"filename": "/assets/diffusecolor.frag", "start": 2930, "end": 3418, "audio": 0}, {"filename": "/assets/cube.obj", "start": 3418, "end": 4351, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 4351, "end": 4608, "audio": 0}], "remote_package_size": 4608, "package_uuid": "1cbfe797-f53f-4dae-966d-10ecbed6b272"});
   
   })();
   
@@ -7326,8 +7326,6 @@ var ASM_CONSTS = {
 
   function _glfwMakeContextCurrent(winid) {}
 
-  function _glfwPollEvents() {}
-
   function _glfwSetCharCallback(winid, cbfun) {
       return GLFW.setCharCallback(winid, cbfun);
     }
@@ -8064,7 +8062,6 @@ var asmLibraryArg = {
   "glfwGetWindowSize": _glfwGetWindowSize,
   "glfwInit": _glfwInit,
   "glfwMakeContextCurrent": _glfwMakeContextCurrent,
-  "glfwPollEvents": _glfwPollEvents,
   "glfwSetCharCallback": _glfwSetCharCallback,
   "glfwSetClipboardString": _glfwSetClipboardString,
   "glfwSetCursor": _glfwSetCursor,
