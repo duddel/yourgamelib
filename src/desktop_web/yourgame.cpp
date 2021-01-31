@@ -178,9 +178,6 @@ namespace yourgame_internal_desktop
 
     void tick()
     {
-        yourgame_internal_desktop::tickInput();
-        glfwPollEvents();
-
         // timing
         auto now = std::chrono::steady_clock::now();
         std::chrono::duration<double> duration = now - lastNowTime;
@@ -201,6 +198,13 @@ namespace yourgame_internal_desktop
 #endif
 
         glfwSwapBuffers(_window);
+
+        yourgame_internal_desktop::tickInput();
+// todo: glfw callbacks seem to be invoked by emscripten automatically
+// sometime after glfwSwapBuffers()
+#ifndef __EMSCRIPTEN__
+        glfwPollEvents();
+#endif
     }
 
     int shutdown()
