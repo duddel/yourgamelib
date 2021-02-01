@@ -2,24 +2,6 @@
 
 Here is a list of third-party libraries ("External Projects") that can optionally be integrated, or are mandatory for specific target platforms. Below is a detailed list of the origins, licenses and possible modifications for each library. Also, each library has a `ExtProj-<alias>.cmake` file (in [cmake/](../cmake)) that can be investigated for details about the integration.
 
-## Optional libraries
-
-| Alias                           | Name                | Desktop            | Android            | Web                |
-| ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
-| [box2d](#box2d)                 | Box2D               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [bullet](#bullet)               | Bullet              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [choreograph](#choreograph)     | Choreograph         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [flecs](#flecs)                 | Flecs               | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [fsm](#fsm)                     | fsm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [lua](#lua)                     | Lua                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [miniaudio](#miniaudio)         | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [qu3e](#qu3e)                   | qu3e                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-
 ## Mandatory dependencies
 
 | Alias                                     | Name               | Desktop            | Android            | Web                |
@@ -29,6 +11,31 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 | [glad](#glad)                             | glad               | :heavy_check_mark: |                    |                    |
 | [glfw](#glfw)                             | GLFW               | :heavy_check_mark: |                    |                    |
 | [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark: |                    |                    |
+
+## Toolbox libraries
+
+These libraries are integrated if the project has been initialized with default settings, which include the *toolbox* (by **not** using the `--bare` option). See [cmake/Toolbox.cmake](../cmake/Toolbox.cmake) for details.
+
+| Alias                           | Name                | Desktop            | Android            | Web                |
+| ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
+| [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [miniaudio](#miniaudio)         | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+
+## Optional libraries
+
+| Alias                       | Name        | Desktop            | Android            | Web                |
+| --------------------------- | ----------- | ------------------ | ------------------ | ------------------ |
+| [box2d](#box2d)             | Box2D       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [bullet](#bullet)           | Bullet      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [choreograph](#choreograph) | Choreograph | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [flecs](#flecs)             | Flecs       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [fsm](#fsm)                 | fsm         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [lua](#lua)                 | Lua         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [qu3e](#qu3e)               | qu3e        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 * * *
 

@@ -1,10 +1,10 @@
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "glm"
   "imgui"
+  "json"
   "miniaudio"
   "stb"
   "tinyobjloader"
-  "json"
 )
 
 list(APPEND YOURGAME_SRC_FILES
