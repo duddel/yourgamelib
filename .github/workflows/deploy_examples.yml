@@ -51,3 +51,67 @@ jobs:
         build_desktop_release.cmd
       if: startsWith(matrix.os, 'windows')
       shell: cmd
+
+  deploy_examples_web:
+    name: web
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example_name: [framework,bare,template,fps]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.6'
+    - name: install python deps
+      run: |
+        python -m pip install --upgrade pip
+        pip install Jinja2 gitpython
+    - name: install emsdk
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+    - name: initialize
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./init.bash
+    - name: configure/build
+      # build_web_release.bash needs to know the emsdk location
+      # in order to call: source $EMSDK/emsdk_env.sh:
+      env:
+        EMSDK: "$GITHUB_WORKSPACE/emsdk"
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./build_web_release.bash
+
+  deploy_examples_android:
+    name: android
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example_name: [framework,bare,template,fps]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.5'
+    - name: install python deps
+      run: |
+        python -m pip install --upgrade pip
+        pip install Jinja2 gitpython
+    - name: initialize
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./init.bash
+    - name: assemble
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./build_android_release.bash
