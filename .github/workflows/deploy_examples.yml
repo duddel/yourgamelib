@@ -91,9 +91,10 @@ jobs:
 
     - name: prepare deploy
       run: |
+        cd examples/${{ matrix.example_name }}
         mkdir _deploy
-        cd _build_web_release
-        mv ./*.zip ../_deploy
+        cd _deploy
+        mv ../_build_web_release/*.zip ./
     - name: deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
