@@ -21,8 +21,8 @@ def copy_file_items(items, src, dst):
 aPars = argparse.ArgumentParser(
     description="Initialize a new YourGameLib project from template")
 aPars.add_argument("name", type=str, help='name of the new project')
-aPars.add_argument('--noSources', action='store_true',
-                   help='do not copy source files from template')
+aPars.add_argument('--noStub', action='store_true',
+                   help='do not copy source files and assets/ from template')
 aPars.add_argument('--bare', action='store_true',
                    help='bare project (no toolbox, minimal dependencies)')
 aPars.add_argument("--extProj", nargs="*", type=str, default=[],
@@ -52,16 +52,20 @@ if not os.path.isdir(tgtDir):
 else:
     print("{} already present".format(tgtDir))
 
-# assets/
+# list content of template/ to copy for new project
+fileItemsToCopy = os.listdir(os.path.join(ygRoot, 'template'))
+
+# if new project already contains code (no stub from template desired),
+# or if new project is supposed to be "bare",
+# do not copy template code and assets
+if(args.noStub or args.bare):
+    fileItemsToCopy = [i for i in fileItemsToCopy if not i.endswith(".cpp")]
+    fileItemsToCopy = [i for i in fileItemsToCopy if not i == "assets"]
+
+# create empty assets/ directory if not present
 if not os.path.isdir(os.path.join(tgtDir, 'assets')):
     os.mkdir(os.path.join(tgtDir, 'assets'))
     print("{} created".format(os.path.join(tgtDir, 'assets')))
-
-fileItemsToCopy = os.listdir(os.path.join(ygRoot, 'template'))
-
-if(args.noSources):
-    fileItemsToCopy = [i for i in fileItemsToCopy if not i.endswith(".cpp")]
-    # todo: more patterns to exclude if --noSource requested?
 
 print("copying these items to {}:".format(tgtDir))
 print("\n".join(fileItemsToCopy))
