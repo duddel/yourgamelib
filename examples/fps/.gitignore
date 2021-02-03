@@ -1,5 +1,7 @@
 *
+!assets/
+!assets/*
 !.gitignore
+!*.cpp
 !init.bash
 !init.cmd
-!*.cpp
