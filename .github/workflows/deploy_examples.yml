@@ -92,8 +92,8 @@ jobs:
     - name: prepare deploy
       run: |
         mkdir _deploy
-        cd _deploy
-        mv ../_build_web_release/*.zip ./
+        cd _build_web_release
+        mv ./*.zip ../_deploy
     - name: deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
