@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-18.04, windows-latest]
         example_name: [framework,bare,template,fps]
 
     steps:
@@ -55,7 +55,7 @@ jobs:
   deploy_examples_web:
     name: web
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         example_name: [framework,bare,template,fps]
@@ -84,7 +84,7 @@ jobs:
       # build_web_release.bash needs to know the emsdk location
       # in order to call: source $EMSDK/emsdk_env.sh:
       env:
-        EMSDK: $GITHUB_WORKSPACE/emsdk
+        EMSDK: ${{ env.GITHUB_WORKSPACE }}/emsdk
       run: |
         cd examples/${{ matrix.example_name }}
         ./build_web_release.bash
@@ -92,7 +92,7 @@ jobs:
   deploy_examples_android:
     name: android
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         example_name: [framework,bare,template,fps]
