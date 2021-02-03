@@ -1,0 +1,53 @@
+name: deploy examples
+
+on: push
+
+jobs:
+  deploy_examples_desktop:
+    name: desktop
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        example_name: [framework,bare,template,fps]
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: setup python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.5'
+    - name: install python deps
+      run: |
+        python -m pip install --upgrade pip
+        pip install Jinja2 gitpython
+    - name: install deps
+      run: |
+        sudo apt update
+        sudo apt install libgl1-mesa-dev xorg-dev
+      if: startsWith(matrix.os, 'ubuntu')
+    # ubuntu: init, configure, build ...
+    - name: initialize (ubuntu)
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./init.bash
+      if: startsWith(matrix.os, 'ubuntu')
+    - name: configure/build (ubuntu)
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./build_desktop_release.bash
+      if: startsWith(matrix.os, 'ubuntu')
+    # windows: init, configure, build ...
+    - name: initialize (windows)
+      run: |
+        cd examples/${{ matrix.example_name }}
+        init.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
+    - name: configure/build (windows)
+      run: |
+        cd examples/${{ matrix.example_name }}
+        build_desktop_release.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
