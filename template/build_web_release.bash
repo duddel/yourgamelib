@@ -17,6 +17,6 @@ if [ ! -d "_deploy" ]; then
   mkdir _deploy
 fi
 
-mv -f _build_web_release/*.tgz _deploy/
+mv -f _build_web_release/*.tar.gz _deploy/
 mv -f _build_web_release/*.zip _deploy/
 cd -
