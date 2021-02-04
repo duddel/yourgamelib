@@ -8,3 +8,9 @@ IF NOT EXIST _build_release\ (
 )
 
 cd _build_release && cmake --build . --target package  && cd ..
+
+IF NOT EXIST _deploy\ (
+  mkdir _deploy
+)
+
+move /Y _build_release\*.zip _deploy

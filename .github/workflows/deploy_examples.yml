@@ -52,6 +52,16 @@ jobs:
       if: startsWith(matrix.os, 'windows')
       shell: cmd
 
+    - name: deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        CLEAN: false
+        FOLDER: examples/${{ matrix.example_name }}/_deploy
+        TARGET_FOLDER: examples/${{ matrix.example_name }}
+
+
   deploy_examples_web:
     name: web
 
@@ -89,11 +99,6 @@ jobs:
         cd examples/${{ matrix.example_name }}
         ./build_web_release.bash
 
-    - name: prepare deploy
-      run: |
-        cd examples/${{ matrix.example_name }}
-        mkdir _deploy
-        mv _build_web_release/*.zip _deploy/
     - name: deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
@@ -102,6 +107,7 @@ jobs:
         CLEAN: false
         FOLDER: examples/${{ matrix.example_name }}/_deploy
         TARGET_FOLDER: examples/${{ matrix.example_name }}
+
 
   deploy_examples_android:
     name: android
@@ -129,3 +135,12 @@ jobs:
       run: |
         cd examples/${{ matrix.example_name }}
         ./build_android_release.bash
+
+    - name: deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        CLEAN: false
+        FOLDER: examples/${{ matrix.example_name }}/_deploy
+        TARGET_FOLDER: examples/${{ matrix.example_name }}

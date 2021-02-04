@@ -136,12 +136,12 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
 
   if(CPACK_GENERATOR)
-    # these 4 file are typically created by emscripten.
-    # the .data file might be missing if there are no assets
+    # these 4 files are typically created by emscripten: .html, .js, .wasm, .data.
+    # the .data file is only available if any asset files have been packed (see above)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.html DESTINATION . RENAME index.html)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.js DESTINATION .)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.wasm DESTINATION .)
-    if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.data)
+    if(ASSET_FILES)
       install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.data DESTINATION .)
     endif()
     set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY 0)

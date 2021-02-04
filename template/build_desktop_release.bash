@@ -10,3 +10,9 @@ fi
 cd _build_release
 cmake --build . --target package
 cd -
+
+if [ ! -d "_deploy" ]; then
+  mkdir _deploy
+fi
+
+mv -f _build_release/*.tgz _deploy/
