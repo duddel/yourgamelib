@@ -43,7 +43,7 @@ namespace yourgame
                       std::string elArBufferName);
         bool setShapeElArDescr(std::string name,
                                GLShape::ElemArrBufferDescr elArDescr);
-        void drawAll();
+        void drawAll() const;
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */

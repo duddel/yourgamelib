@@ -233,6 +233,24 @@ namespace yourgame
         {
             yourgame::loge("shader failed to make: %v", shaderErrLog);
         }
+        else
+        {
+            // set common uniform values
+            newShader->useProgram();
+            GLint unif;
+
+            // diffuse texture
+            unif = newShader->getUniformLocation(yourgame::unifNameTextureDiffuse);
+            if (unif != -1)
+                glUniform1i(unif, yourgame::unifValueTextureDiffuse);
+
+            // sky texture
+            unif = newShader->getUniformLocation(yourgame::unifNameTextureSky);
+            if (unif != -1)
+                glUniform1i(unif, yourgame::unifValueTextureSky);
+
+            glUseProgram(0);
+        }
 
         return newShader;
     }

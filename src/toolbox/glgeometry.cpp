@@ -105,7 +105,7 @@ namespace yourgame
         return false;
     }
 
-    void GLGeometry::drawAll()
+    void GLGeometry::drawAll() const
     {
         for (const auto &s : m_shapes)
         {

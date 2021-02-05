@@ -83,6 +83,53 @@ namespace mygame
     std::vector<Box> g_boxes;
     Lightsource g_light{{4.07625f, 5.90386f, -1.00545f}, {1.0f, 1.0f, 1.0f}};
 
+    void drawGeo(const yg::GLGeometry *geo,
+                 yg::GLShader *shader,
+                 std::vector<const yg::GLTexture2D *> textures,
+                 const glm::mat4 &modelMat = glm::mat4(1),
+                 const yg::Camera *camera = nullptr)
+    {
+        if (!geo)
+            return;
+
+        // mvp matrix
+        if (shader)
+        {
+            GLint unif;
+            unif = shader->getUniformLocation(yg::unifNameMvpMatrix);
+            if (unif != -1)
+            {
+                auto mvp = camera ? (g_camera.pMat() * g_camera.vMat() * modelMat)
+                                  : modelMat;
+                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(mvp));
+            }
+
+            // model matrix
+            unif = shader->getUniformLocation(yg::unifNameModelMatrix);
+            if (unif != -1)
+            {
+                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(modelMat));
+            }
+
+            // normal matrix
+            unif = shader->getUniformLocation(yg::unifNameNormalMatrix);
+            if (unif != -1)
+            {
+                auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
+                glUniformMatrix3fv(unif, 1, GL_FALSE, glm::value_ptr(normalMat));
+            }
+        }
+
+        // textures
+        for (const auto &t : textures)
+        {
+            if (t)
+                t->bind();
+        }
+
+        geo->drawAll();
+    }
+
     void init()
     {
         auto ctx = yg::getCtx();
@@ -105,11 +152,19 @@ namespace mygame
                                                              {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
                                                             {}, {}));
 
+        g_assets.insert("shaderSimpleTex", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
+                                                           {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+                                                          {}, {}));
+
+        g_assets.insert("texCube", yg::loadTexture("cube.png", yg::textureUnitDiffuse, GL_NEAREST, false));
+
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         //yg::enableVSync(true);
         //yg::enableFullscreen(true);
+#ifndef __EMSCRIPTEN__ // todo: we can not initially catch the mouse if the viewport does not have focus (web)
         yg::catchMouse(true);
+#endif
 
         g_bullet.dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
 
@@ -247,18 +302,24 @@ namespace mygame
         glViewport(0, 0, ctx.winWidth, ctx.winHeight);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        ImGui::Begin("fps demo");
-        ImGui::Text("move: [WASD]\nlook: mouse or arrows\njump: [SPACE]\nfire: [E] or LMB\ncatch/release mouse: [M]");
-        ImGui::Text("player velocity: %f (%f,%f,%f)",
-                    g_player.body->getLinearVelocity().length(),
-                    g_player.body->getLinearVelocity().getX(),
-                    g_player.body->getLinearVelocity().getY(),
-                    g_player.body->getLinearVelocity().getZ());
-        ImGui::Text("player position: (%f,%f,%f)",
-                    g_player.body->getCenterOfMassPosition().getX(),
-                    g_player.body->getCenterOfMassPosition().getY(),
-                    g_player.body->getCenterOfMassPosition().getZ());
-        ImGui::End();
+        if (ImGui::BeginMainMenuBar())
+        {
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("License"))
+                {
+                    //showLicense = true;
+                }
+                ImGui::EndMenu();
+            }
+
+            ImGui::Text("| mouse delta: %f,%f, player velocity: %f, fps: %f",
+                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X),
+                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y),
+                        g_player.body->getLinearVelocity().length(),
+                        (float)(1.0 / ctx.deltaTimeS));
+            ImGui::EndMainMenuBar();
+        }
 
         // first-person camera
         g_camera.trafo()->rotateGlobal(-0.002f * yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X), yg::Trafo::AXIS::Y);
@@ -271,10 +332,16 @@ namespace mygame
         g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_DOWN), yg::Trafo::AXIS::X);
 
         // prepare diffuse color shader
+        // todo: GLShader::useProgram() should get references to objects,
+        // to set uniforms once per frame (lightsource)
         auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
         shdrDiffCol->useProgram();
         glUniform3fv(shdrDiffCol->getUniformLocation("lightPos"), 1, &g_light.position[0]);
         glUniform3fv(shdrDiffCol->getUniformLocation("lightDiffuse"), 1, &g_light.diffuse[0]);
+
+        // texture shader
+        auto shdrTex = g_assets.get<yg::GLShader>("shaderSimpleTex");
+        shdrTex->useProgram();
 
         // draw boxes
         for (const auto &b : g_boxes)
@@ -291,20 +358,13 @@ namespace mygame
             btVector3 bExtends = bShape->getHalfExtentsWithMargin();
             modelTrafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
 
-            // calc matrixes
-            auto modelMat = modelTrafo.mat();
-            auto mvp = g_camera.pMat() * g_camera.vMat() * modelMat;
-            auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-            glUniformMatrix4fv(shdrDiffCol->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            glUniformMatrix4fv(shdrDiffCol->getUniformLocation(yg::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-            glUniformMatrix3fv(shdrDiffCol->getUniformLocation(yg::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-
-            // draw
-            g_assets.get<yg::GLGeometry>("geoCube")->drawAll();
+            drawGeo(g_assets.get<yg::GLGeometry>("geoCube"), shdrTex, {g_assets.get<yg::GLTexture2D>("texCube")}, modelTrafo.mat(), &g_camera);
         }
 
         // draw blaster
         {
+            shdrDiffCol->useProgram();
+
             // blaster trafo relative to camera eye
             yg::Trafo blasterTrafo;
             blasterTrafo.setTranslation({0.275f, -0.35f, -0.7f});
@@ -315,16 +375,8 @@ namespace mygame
             // filter rotation only, reset translation to camera eye:
             g_camTrafoFltr.setTranslation(g_camera.trafo()->getEye());
 
-            // calc matrixes
             auto modelMat = g_camTrafoFltr.mat() * blasterTrafo.mat();
-            auto mvp = g_camera.pMat() * g_camera.vMat() * modelMat;
-            auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-            glUniformMatrix4fv(shdrDiffCol->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            glUniformMatrix4fv(shdrDiffCol->getUniformLocation(yg::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-            glUniformMatrix3fv(shdrDiffCol->getUniformLocation(yg::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-
-            // draw
-            g_assets.get<yg::GLGeometry>("geoBlaster")->drawAll();
+            drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), shdrDiffCol, {}, modelMat, &g_camera);
         }
 
         // draw grid + crosshair
@@ -332,17 +384,16 @@ namespace mygame
             auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColor");
             shdrSimpCol->useProgram();
 
-            auto gridMvp = g_camera.pMat() * g_camera.vMat() * glm::mat4(1);
-            glUniformMatrix4fv(shdrSimpCol->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(gridMvp));
-            g_assets.get<yg::GLGeometry>("geoGrid")->drawAll();
+            // grid
+            drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpCol, {}, glm::mat4(1), &g_camera);
 
+            // crosshair
             static const float crossOrthoScale = 50.0f;
             static const auto crossMvp = glm::ortho(-crossOrthoScale * ctx.winAspectRatio,
                                                     crossOrthoScale * ctx.winAspectRatio,
                                                     -crossOrthoScale,
                                                     crossOrthoScale);
-            glUniformMatrix4fv(shdrSimpCol->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(crossMvp));
-            g_assets.get<yg::GLGeometry>("geoCross")->drawAll();
+            drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), shdrSimpCol, {}, crossMvp);
         }
     }
 

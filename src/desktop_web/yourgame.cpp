@@ -91,7 +91,7 @@ namespace yourgame_internal_desktop
 
         // create window with the current primary monitor mode ("desktop")
 #ifdef __EMSCRIPTEN__
-        _window = glfwCreateWindow(1536, 864, "", NULL, NULL);
+        _window = glfwCreateWindow(960, 540, "", NULL, NULL);
 #else
         const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwWindowHint(GLFW_RED_BITS, mode->redBits);
