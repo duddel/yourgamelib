@@ -51,18 +51,10 @@ jobs:
         build_desktop_release.cmd
       if: startsWith(matrix.os, 'windows')
       shell: cmd
-
-    # todo: deploy Action not available on windows.
-    # workaround: switch back to upload/download artifacts
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
       with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
-        CLEAN: false
-        FOLDER: examples/${{ matrix.example_name }}/_deploy
-        TARGET_FOLDER: examples/${{ matrix.example_name }}
-      if: startsWith(matrix.os, 'ubuntu')
+        path: examples/${{ matrix.example_name }}/_deploy/*
 
 
   deploy_examples_web:
@@ -101,15 +93,10 @@ jobs:
       run: |
         cd examples/${{ matrix.example_name }}
         ./build_web_release.bash
-
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
       with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
-        CLEAN: false
-        FOLDER: examples/${{ matrix.example_name }}/_deploy
-        TARGET_FOLDER: examples/${{ matrix.example_name }}
+        path: examples/${{ matrix.example_name }}/_deploy/*
 
 
   deploy_examples_android:
@@ -138,12 +125,7 @@ jobs:
       run: |
         cd examples/${{ matrix.example_name }}
         ./build_android_release.bash
-
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
       with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
-        CLEAN: false
-        FOLDER: examples/${{ matrix.example_name }}/_deploy
-        TARGET_FOLDER: examples/${{ matrix.example_name }}
+        path: examples/${{ matrix.example_name }}/_deploy/*

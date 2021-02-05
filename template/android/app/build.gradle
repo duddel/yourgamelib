@@ -10,7 +10,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
         externalNativeBuild {
             cmake {
                 arguments "-DYOURGAME_PLATFORM=android"
@@ -22,6 +22,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${defaultConfig.applicationId}-${defaultConfig.versionName}-${variant.buildType.name}.apk"
         }
     }
 
