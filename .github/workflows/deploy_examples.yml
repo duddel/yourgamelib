@@ -129,3 +129,16 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         path: examples/${{ matrix.example_name }}/_deploy/*
+
+
+  deploy_gh_pages:
+    name: deploy to gh-pages
+    runs-on: ubuntu-18.04
+    needs: [deploy_examples_desktop, deploy_examples_web, deploy_examples_android]
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: artifact # default name (by not giving any name to actions/upload-artifact@v2)
+    - name: print directory
+      run: ls -R
+    # todo: unzip all *-Emscripten*.zip, upload them to gh-pages
