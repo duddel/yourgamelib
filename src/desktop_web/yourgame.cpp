@@ -18,6 +18,9 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <chrono>
+#ifdef __EMSCRIPTEN__
+#include <emscripten/html5.h>
+#endif
 #include "yourgame/gl_include.h"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -89,10 +92,26 @@ namespace yourgame_internal_desktop
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, YOURGAME_GL_MAJOR);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, YOURGAME_GL_MINOR);
 
-        // create window with the current primary monitor mode ("desktop")
+        // create the window
 #ifdef __EMSCRIPTEN__
-        _window = glfwCreateWindow(960, 540, "", NULL, NULL);
+        {
+            // the desired size of the glfw "window" is the size of the canvas
+            // element in the .html file.
+            double widthD, heightD;
+            auto ret = emscripten_get_element_css_size("#canvas", &widthD, &heightD);
+            if (ret == EMSCRIPTEN_RESULT_SUCCESS)
+            {
+                int width = static_cast<int>(widthD);
+                int height = static_cast<int>(heightD);
+                _window = glfwCreateWindow(width, height, "", NULL, NULL);
+            }
+            else
+            {
+                _window = glfwCreateWindow(960, 540, "", NULL, NULL);
+            }
+        }
 #else
+        // create window with the current primary monitor mode ("desktop")
         const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwWindowHint(GLFW_RED_BITS, mode->redBits);
         glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
@@ -178,6 +197,24 @@ namespace yourgame_internal_desktop
 
     void tick()
     {
+#ifdef __EMSCRIPTEN__
+        {
+            // the desired size of the glfw "window" is the size of the canvas
+            // element in the .html file, which can change if the browser
+            // window is resized or set to fullscreen.
+            // glfwSetWindowSize() seems to take care of resizing the framebuffer.
+            // todo: do this via a "canvas resized" callback, if available
+            double widthD, heightD;
+            auto ret = emscripten_get_element_css_size("#canvas", &widthD, &heightD);
+            int width = static_cast<int>(widthD);
+            int height = static_cast<int>(heightD);
+            if (ret == EMSCRIPTEN_RESULT_SUCCESS && (_context.winWidth != width || _context.winHeight != height))
+            {
+                glfwSetWindowSize(_window, width, height);
+            }
+        }
+#endif
+
         // timing
         auto now = std::chrono::steady_clock::now();
         std::chrono::duration<double> duration = now - lastNowTime;
