@@ -136,19 +136,16 @@ jobs:
     runs-on: ubuntu-18.04
     needs: [deploy_examples_desktop, deploy_examples_web, deploy_examples_android]
     steps:
-    - name: install deps
-      run: |
-        sudo apt update
-        sudo apt install unzip
+    - uses: actions/checkout@v1
     - uses: actions/download-artifact@v2
       with:
         name: artifact # default name (by not giving any name to actions/upload-artifact@v2)
+        path: _artifact
     - name: print directory
       run: ls -R
     - name: unzip web examples
       run: |
-        mkdir examples
-        cd examples
+        cd _artifact && mkdir _deploy && cd _deploy
         for filename in ../*Emscripten.zip
         do
           # sed regex matches: "../project-version-Emscripten.zip" and replaces
@@ -161,5 +158,5 @@ jobs:
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: examples
+        FOLDER: _artifact/_deploy
         TARGET_FOLDER: examples
