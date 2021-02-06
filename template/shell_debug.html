@@ -10,12 +10,11 @@ https://github.com/emscripten-core/emscripten/blob/1fc1c90941936c140827e101dce15
     <title>YourGameLib project</title>
     <style>
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+      textarea.emscripten { font-family: monospace; width: 80%; color: white; background-color: rgb(31, 31, 31); }
       div.emscripten { text-align: center; color: white; }
+      div.emscripten_border { border: 0px solid rgb(0, 0, 0); }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-      /* the canvas should cover the entire browser window (viewport),
-         but 100vw and 100vh seem to cause problems when browser window is set to fullscreen.
-         todo: investigate. workaround: set to 99vw, 99vh. */
-      canvas.emscripten { width: 100vw; height: 100vh; border: 0px none; background-color: black; }
+      canvas.emscripten { border: 0px none; background-color: black; }
 
       body { background-color: black; margin: 0; padding: 0; }
 
@@ -60,8 +59,19 @@ https://github.com/emscripten-core/emscripten/blob/1fc1c90941936c140827e101dce15
       <progress value="0" max="100" id="progress" hidden=1></progress>  
     </div>
 
-    <!-- the actual canvas -->
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+    <div class="emscripten_border">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+    </div>
+
+    <div class="emscripten">
+      <input type="checkbox" id="resize" checked>Resize canvas
+      <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer
+      &nbsp;&nbsp;&nbsp;
+      <input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, 
+                                                                                document.getElementById('resize').checked)">
+    </div>
+    
+    <textarea class="emscripten" id="output" rows="8"></textarea>
 
     <script type='text/javascript'>
       var statusElement = document.getElementById('status');
