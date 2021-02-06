@@ -136,9 +136,30 @@ jobs:
     runs-on: ubuntu-18.04
     needs: [deploy_examples_desktop, deploy_examples_web, deploy_examples_android]
     steps:
+    - name: install deps
+      run: |
+        sudo apt update
+        sudo apt install unzip
     - uses: actions/download-artifact@v2
       with:
         name: artifact # default name (by not giving any name to actions/upload-artifact@v2)
     - name: print directory
       run: ls -R
-    # todo: unzip all *-Emscripten*.zip, upload them to gh-pages
+    - name: unzip web examples
+      run: |
+        mkdir examples
+        cd examples
+        for filename in ../*Emscripten.zip
+        do
+          # sed regex matches: "../project-version-Emscripten.zip" and replaces
+          # it with the sole project name (match group \1)
+          projname=$(echo $filename | sed -E 's/.*\/(.+)-(.+)-(.+)\.zip/\1/')
+          unzip $filename -d $projname
+        done
+    - name: deploy
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: examples
+        TARGET_FOLDER: examples
