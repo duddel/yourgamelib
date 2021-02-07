@@ -139,6 +139,14 @@ namespace mygame
 
         g_camera.setPerspective(65.0f, ctx.winAspectRatio, 0.2f, 100.0f);
 
+        // load license info file
+        {
+            std::vector<uint8_t> licFileData;
+            yg::readAssetFile("LICENSE_web.txt", licFileData);
+            std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
+            g_assets.insert("licenseStr", licStr);
+        }
+
         g_assets.insert("geoCube", yg::loadGeometry("cube.obj", nullptr));
         g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
         g_assets.insert("geoCross", yg::loadGeometry("cross.obj", nullptr));
@@ -302,13 +310,14 @@ namespace mygame
         glViewport(0, 0, ctx.winWidth, ctx.winHeight);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        static bool showLicenseWindow = false;
         if (ImGui::BeginMainMenuBar())
         {
             if (ImGui::BeginMenu("Help"))
             {
                 if (ImGui::MenuItem("License"))
                 {
-                    //showLicense = true;
+                    showLicenseWindow = true;
                 }
                 ImGui::EndMenu();
             }
@@ -319,6 +328,21 @@ namespace mygame
                         g_player.body->getLinearVelocity().length(),
                         (float)(1.0 / ctx.deltaTimeS));
             ImGui::EndMainMenuBar();
+        }
+
+        if (showLicenseWindow)
+        {
+            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
+                                                       (float)(ctx.winHeight) * 0.5f),
+                                                ImVec2((float)(ctx.winWidth) * 0.8f,
+                                                       (float)(ctx.winHeight) * 0.8f));
+            ImGui::Begin("License", &showLicenseWindow, (ImGuiWindowFlags_NoCollapse));
+            /* The following procedure allows displaying long wrapped text,
+                       whereas ImGui::TextWrapped() has a size limit and cuts the content. */
+            ImGui::PushTextWrapPos(0.0f);
+            ImGui::TextUnformatted(g_assets.get<std::string>("licenseStr")->c_str());
+            ImGui::PopTextWrapPos();
+            ImGui::End();
         }
 
         // first-person camera
@@ -389,10 +413,10 @@ namespace mygame
 
             // crosshair
             static const float crossOrthoScale = 50.0f;
-            static const auto crossMvp = glm::ortho(-crossOrthoScale * ctx.winAspectRatio,
-                                                    crossOrthoScale * ctx.winAspectRatio,
-                                                    -crossOrthoScale,
-                                                    crossOrthoScale);
+            auto crossMvp = glm::ortho(-crossOrthoScale * ctx.winAspectRatio,
+                                       crossOrthoScale * ctx.winAspectRatio,
+                                       -crossOrthoScale,
+                                       crossOrthoScale);
             drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), shdrSimpCol, {}, crossMvp);
         }
     }
