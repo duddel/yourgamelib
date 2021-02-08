@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['elemarrbufferdescr',['ElemArrBufferDescr',['../structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html',1,'yourgame::GLShape']]]
+  ['camera',['Camera',['../classyourgame_1_1Camera.html',1,'yourgame']]],
+  ['context',['context',['../structyourgame_1_1context.html',1,'yourgame']]],
+  ['coords',['Coords',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html',1,'yourgame::GLTextureAtlas']]]
 ];
