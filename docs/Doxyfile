@@ -1,8 +1,8 @@
-INPUT                   = ../include/base/yourgame \
-                          ../include/toolbox/yourgame \
+INPUT                   = ../include \
                           ../docs \
                           ../src/include_internal/yourgame_internal/mygame_external.h
 EXTRACT_ALL             = YES
+RECURSIVE               = YES
 OUTPUT_DIRECTORY        = ./_doxyout
 PROJECT_NAME            = "YourGameLib API"
 HTML_EXTRA_STYLESHEET   = ./customdoxy.css

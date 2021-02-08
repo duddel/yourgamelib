@@ -2,10 +2,12 @@
 # output: writes file (YOURGAME_EXT_PROJ_OUT_FILE) to be
 # included by the main CMake instance
 #
-# YOURGAME_EXT_PROJ_LIST        - list of external projects
-# YOURGAME_EXT_PROJ_MODULE_DIR  - absolute path to directory of ExtProj-<proj>.cmake modules
-# YOURGAME_EXT_PROJ_CODE_DIR    - absolute path to the root directory of external project code
-# YOURGAME_EXT_PROJ_OUT_FILE    - absolute path to output file
+# YOURGAME_EXT_PROJ_LIST           - list of external projects
+# YOURGAME_EXT_PROJ_MODULE_DIR     - absolute path to directory of ExtProj-<proj>.cmake modules
+# YOURGAME_EXT_PROJ_CODE_DIR       - absolute path to the root directory of external project code
+# YOURGAME_EXT_PROJ_UTILS_SRC_DIR  - absolute path to the root directory of yourgame utils sources
+# YOURGAME_EXT_PROJ_UTILS_INC_DIR  - absolute path to the root include directory of yourgame utils
+# YOURGAME_EXT_PROJ_OUT_FILE       - absolute path to output file
 #
 # the modules (ExtProj-<proj>.cmake) may write CMake commands,
 # such as add_subdirectory(), and may append items to these lists:

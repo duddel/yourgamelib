@@ -4,6 +4,7 @@
 #include "btBulletDynamicsCommon.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/toolbox.h"
+#include "yourgame/bulletenv.h"
 #include "imgui.h"
 #include "yourgame/gl_include.h"
 
@@ -27,56 +28,8 @@ namespace mygame
         btRigidBody *body;
     };
 
-    struct BulletEnv
-    {
-        btDefaultCollisionConfiguration *collisionCfg;
-        btCollisionDispatcher *collisionDispatcher;
-        btDbvtBroadphase *broadphase;
-        btSequentialImpulseConstraintSolver *constraintSolver;
-        btDiscreteDynamicsWorld *dynamicsWorld;
-        std::map<std::string, btCollisionShape *> shapes;
-
-        BulletEnv()
-        {
-            collisionCfg = new btDefaultCollisionConfiguration();
-            collisionDispatcher = new btCollisionDispatcher(collisionCfg);
-            broadphase = new btDbvtBroadphase();
-            constraintSolver = new btSequentialImpulseConstraintSolver();
-            dynamicsWorld = new btDiscreteDynamicsWorld(collisionDispatcher, broadphase, constraintSolver, collisionCfg);
-        }
-
-        ~BulletEnv()
-        {
-            // remove all rigid bodies from world, delete them and their motion state
-            for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
-            {
-                auto collObj = dynamicsWorld->getCollisionObjectArray()[i];
-                btRigidBody *body = btRigidBody::upcast(collObj);
-                if (body && body->getMotionState())
-                {
-                    delete body->getMotionState();
-                }
-                dynamicsWorld->removeCollisionObject(collObj);
-                delete collObj;
-            }
-
-            // delete all shapes
-            for (const auto &s : shapes)
-            {
-                delete s.second;
-            }
-            shapes.clear();
-
-            delete dynamicsWorld;
-            delete constraintSolver;
-            delete broadphase;
-            delete collisionDispatcher;
-            delete collisionCfg;
-        }
-    };
-
     yg::AssetManager g_assets;
-    BulletEnv g_bullet;
+    yg::BulletEnv g_bullet;
     yg::Camera g_camera;
     yg::Trafo g_camTrafoFltr;
     Player g_player;
@@ -174,37 +127,37 @@ namespace mygame
         yg::catchMouse(true);
 #endif
 
-        g_bullet.dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
+        g_bullet.m_dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
 
         // spawn boxes
-        g_bullet.shapes["box"] = new btBoxShape(btVector3(0.5, 0.5, 0.5));
+        g_bullet.m_shapes["box"] = new btBoxShape(btVector3(0.5, 0.5, 0.5));
         for (int bi = 0; bi <= 10; bi++)
         {
             btTransform trafo;
             btScalar mass(100.0);
             btVector3 inertia(0, 0, 0);
-            g_bullet.shapes["box"]->calculateLocalInertia(mass, inertia);
+            g_bullet.m_shapes["box"]->calculateLocalInertia(mass, inertia);
             trafo.setIdentity();
             trafo.setOrigin(btVector3(-10 + 2 * bi, 50 - 5 * bi, 10 - 2 * bi));
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.shapes["box"], inertia);
+            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.m_shapes["box"], inertia);
             rbInfo.m_restitution = 0.2f;
             rbInfo.m_friction = 0.75f;
             auto newBody = new btRigidBody(rbInfo);
             newBody->setSleepingThresholds(0, 0); // never sleep
-            g_bullet.dynamicsWorld->addRigidBody(newBody);
+            g_bullet.m_dynamicsWorld->addRigidBody(newBody);
             g_boxes.push_back({newBody});
         }
 
         // spawn player
         {
-            g_bullet.shapes["player"] = new btBoxShape(btVector3(1, 2, 1));
+            g_bullet.m_shapes["player"] = new btBoxShape(btVector3(1, 2, 1));
             btTransform trafo;
             btScalar mass(100.0);
             btVector3 inertia(0, 0, 0);
-            g_bullet.shapes["player"]->calculateLocalInertia(mass, inertia);
+            g_bullet.m_shapes["player"]->calculateLocalInertia(mass, inertia);
             trafo.setIdentity();
             trafo.setOrigin(btVector3(8.0f, 2.0f, 8.0f));
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.shapes["player"], inertia);
+            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.m_shapes["player"], inertia);
             rbInfo.m_restitution = 0.0f;
             rbInfo.m_friction = 0.75f;
             rbInfo.m_linearDamping = 0.9f;
@@ -212,21 +165,21 @@ namespace mygame
             g_player = Player({newBody});
             g_player.body->setAngularFactor(0);         // simple way to lock rotation axes
             g_player.body->setSleepingThresholds(0, 0); // never sleep
-            g_bullet.dynamicsWorld->addRigidBody(newBody);
+            g_bullet.m_dynamicsWorld->addRigidBody(newBody);
         }
 
         // spawn ground
         {
-            g_bullet.shapes["ground"] = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+            g_bullet.m_shapes["ground"] = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
             btTransform trafo;
             trafo.setIdentity();
             trafo.setOrigin(btVector3(0, -50, 0));
             btScalar mass(0.0);
             btVector3 inertia(0, 0, 0);
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.shapes["ground"], inertia);
+            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.m_shapes["ground"], inertia);
             rbInfo.m_restitution = 1.0f;
             rbInfo.m_friction = 1.0f;
-            g_bullet.dynamicsWorld->addRigidBody(new btRigidBody(rbInfo));
+            g_bullet.m_dynamicsWorld->addRigidBody(new btRigidBody(rbInfo));
         }
     }
 
@@ -235,7 +188,7 @@ namespace mygame
         auto ctx = yg::getCtx();
 
         // tick bullet world
-        g_bullet.dynamicsWorld->stepSimulation(ctx.deltaTimeS, 10);
+        g_bullet.m_dynamicsWorld->stepSimulation(ctx.deltaTimeS, 10);
 
         // set camera trafo from bullet player body
         btTransform trans;
@@ -280,7 +233,7 @@ namespace mygame
             btVector3 btFrom(eye.x, eye.y, eye.z);
             btVector3 btTo(to.x, to.y, to.z);
             btCollisionWorld::ClosestRayResultCallback res(btFrom, btTo);
-            g_bullet.dynamicsWorld->rayTest(btFrom, btTo, res);
+            g_bullet.m_dynamicsWorld->rayTest(btFrom, btTo, res);
             if (res.hasHit())
             {
                 // todo: upcast() returns const btRigidBody* because res.m_collisionObject is const.
@@ -338,7 +291,7 @@ namespace mygame
                                                        (float)(ctx.winHeight) * 0.8f));
             ImGui::Begin("License", &showLicenseWindow, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
-                       whereas ImGui::TextWrapped() has a size limit and cuts the content. */
+               whereas ImGui::TextWrapped() has a size limit and cuts the content. */
             ImGui::PushTextWrapPos(0.0f);
             ImGui::TextUnformatted(g_assets.get<std::string>("licenseStr")->c_str());
             ImGui::PopTextWrapPos();
