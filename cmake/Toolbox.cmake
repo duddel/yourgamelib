@@ -15,6 +15,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gldrawing.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glframebuffer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glgeometry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gllightsource.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glloading.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshader.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshape.cpp

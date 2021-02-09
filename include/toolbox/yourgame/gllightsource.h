@@ -17,25 +17,35 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_TOOLBOX_H
-#define YOURGAME_TOOLBOX_H
+#ifndef YOURGAME_GLLIGHTSOURCE_H
+#define YOURGAME_GLLIGHTSOURCE_H
 
-// the following includes are part of the yourgame (toolbox) API
-#include "yourgame/assetmanager.h"
-#include "yourgame/audioplayer.h"
-#include "yourgame/camera.h"
-#include "yourgame/glbuffer.h"
-#include "yourgame/glconventions.h"
-#include "yourgame/gldrawing.h"
-#include "yourgame/glframebuffer.h"
-#include "yourgame/glgeometry.h"
-#include "yourgame/gllightsource.h"
-#include "yourgame/glloading.h"
-#include "yourgame/glshader.h"
-#include "yourgame/glshape.h"
-#include "yourgame/glspritegrid.h"
-#include "yourgame/gltexture2d.h"
-#include "yourgame/gltextureatlas.h"
+#include <array>
 #include "yourgame/trafo.h"
+
+namespace yourgame
+{
+    class GLLightsource
+    {
+    public:
+        Trafo *trafo();
+        std::array<float, 12> data();
+        glm::vec3 ambient();
+        glm::vec3 diffuse();
+        glm::vec3 specular();
+        void setAmbient(glm::vec3 col);
+        void setDiffuse(glm::vec3 col);
+        void setSpecular(glm::vec3 col);
+
+    private:
+        void updateDataIfInvalidated();
+        bool m_dataInvalidated = true;
+        Trafo m_trafo;
+        std::array<float, 12> m_data;
+        glm::vec3 m_ambient = glm::vec3(0.0);
+        glm::vec3 m_diffuse = glm::vec3(1.0);
+        glm::vec3 m_specular = glm::vec3(1.0);
+    };
+} // namespace yourgame
 
 #endif

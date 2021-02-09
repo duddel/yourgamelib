@@ -6,18 +6,11 @@
 #include "yourgame/toolbox.h"
 #include "yourgame/bulletenv.h"
 #include "imgui.h"
-#include "yourgame/gl_include.h"
 
 namespace yg = yourgame; // convenience
 
 namespace mygame
 {
-    struct Lightsource
-    {
-        glm::vec3 position;
-        glm::vec3 diffuse;
-    };
-
     struct Player
     {
         btRigidBody *body;
@@ -34,7 +27,7 @@ namespace mygame
     yg::Trafo g_camTrafoFltr;
     Player g_player;
     std::vector<Box> g_boxes;
-    Lightsource g_light{{4.07625f, 5.90386f, -1.00545f}, {1.0f, 1.0f, 1.0f}};
+    yg::GLLightsource g_light;
 
     void init()
     {
@@ -43,6 +36,7 @@ namespace mygame
         yg::audioInit(2, 44100, 5);
         yg::audioStoreFile("laserSmall_000.ogg");
 
+        g_light.trafo()->setTranslation({4.07625f, 5.90386f, -1.00545f});
         g_camera.setPerspective(65.0f, ctx.winAspectRatio, 0.2f, 100.0f);
 
         // load license info file
@@ -266,8 +260,8 @@ namespace mygame
         // to set uniforms once per frame (lightsource)
         auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
         shdrDiffCol->useProgram();
-        glUniform3fv(shdrDiffCol->getUniformLocation("lightPos"), 1, &g_light.position[0]);
-        glUniform3fv(shdrDiffCol->getUniformLocation("lightDiffuse"), 1, &g_light.diffuse[0]);
+        glUniform3fv(shdrDiffCol->getUniformLocation("lightPos"), 1, glm::value_ptr(g_light.trafo()->getEye()));
+        glUniform3fv(shdrDiffCol->getUniformLocation("lightDiffuse"), 1, glm::value_ptr(g_light.diffuse()));
 
         // texture shader
         auto shdrTex = g_assets.get<yg::GLShader>("shaderSimpleTex");
