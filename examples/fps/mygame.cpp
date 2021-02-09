@@ -36,53 +36,6 @@ namespace mygame
     std::vector<Box> g_boxes;
     Lightsource g_light{{4.07625f, 5.90386f, -1.00545f}, {1.0f, 1.0f, 1.0f}};
 
-    void drawGeo(const yg::GLGeometry *geo,
-                 yg::GLShader *shader,
-                 std::vector<const yg::GLTexture2D *> textures,
-                 const glm::mat4 &modelMat = glm::mat4(1),
-                 const yg::Camera *camera = nullptr)
-    {
-        if (!geo)
-            return;
-
-        // mvp matrix
-        if (shader)
-        {
-            GLint unif;
-            unif = shader->getUniformLocation(yg::unifNameMvpMatrix);
-            if (unif != -1)
-            {
-                auto mvp = camera ? (g_camera.pMat() * g_camera.vMat() * modelMat)
-                                  : modelMat;
-                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(mvp));
-            }
-
-            // model matrix
-            unif = shader->getUniformLocation(yg::unifNameModelMatrix);
-            if (unif != -1)
-            {
-                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(modelMat));
-            }
-
-            // normal matrix
-            unif = shader->getUniformLocation(yg::unifNameNormalMatrix);
-            if (unif != -1)
-            {
-                auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-                glUniformMatrix3fv(unif, 1, GL_FALSE, glm::value_ptr(normalMat));
-            }
-        }
-
-        // textures
-        for (const auto &t : textures)
-        {
-            if (t)
-                t->bind();
-        }
-
-        geo->drawAll();
-    }
-
     void init()
     {
         auto ctx = yg::getCtx();
@@ -335,7 +288,7 @@ namespace mygame
             btVector3 bExtends = bShape->getHalfExtentsWithMargin();
             modelTrafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
 
-            drawGeo(g_assets.get<yg::GLGeometry>("geoCube"), shdrTex, {g_assets.get<yg::GLTexture2D>("texCube")}, modelTrafo.mat(), &g_camera);
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCube"), shdrTex, {g_assets.get<yg::GLTexture2D>("texCube")}, modelTrafo.mat(), &g_camera);
         }
 
         // draw blaster
@@ -353,7 +306,7 @@ namespace mygame
             g_camTrafoFltr.setTranslation(g_camera.trafo()->getEye());
 
             auto modelMat = g_camTrafoFltr.mat() * blasterTrafo.mat();
-            drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), shdrDiffCol, {}, modelMat, &g_camera);
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), shdrDiffCol, {}, modelMat, &g_camera);
         }
 
         // draw grid + crosshair
@@ -362,7 +315,7 @@ namespace mygame
             shdrSimpCol->useProgram();
 
             // grid
-            drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpCol, {}, glm::mat4(1), &g_camera);
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpCol, {}, glm::mat4(1), &g_camera);
 
             // crosshair
             static const float crossOrthoScale = 50.0f;
@@ -370,7 +323,7 @@ namespace mygame
                                        crossOrthoScale * ctx.winAspectRatio,
                                        -crossOrthoScale,
                                        crossOrthoScale);
-            drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), shdrSimpCol, {}, crossMvp);
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), shdrSimpCol, {}, crossMvp);
         }
     }
 
