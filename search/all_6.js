@@ -20,6 +20,8 @@ var searchData=
   ['glframebuffer_2eh',['glframebuffer.h',['../glframebuffer_8h.html',1,'']]],
   ['glgeometry',['GLGeometry',['../classyourgame_1_1GLGeometry.html',1,'yourgame::GLGeometry'],['../classyourgame_1_1GLGeometry.html#a7f883be42e8c79d0c2dd78ceb9498cda',1,'yourgame::GLGeometry::GLGeometry()']]],
   ['glgeometry_2eh',['glgeometry.h',['../glgeometry_8h.html',1,'']]],
+  ['gllightsource',['GLLightsource',['../classyourgame_1_1GLLightsource.html',1,'yourgame']]],
+  ['gllightsource_2eh',['gllightsource.h',['../gllightsource_8h.html',1,'']]],
   ['glloading_2eh',['glloading.h',['../glloading_8h.html',1,'']]],
   ['glm_5fenable_5fexperimental',['GLM_ENABLE_EXPERIMENTAL',['../camera_8h.html#abd75661fe7969e19439052a5f69ba5d1',1,'GLM_ENABLE_EXPERIMENTAL():&#160;camera.h'],['../trafo_8h.html#abd75661fe7969e19439052a5f69ba5d1',1,'GLM_ENABLE_EXPERIMENTAL():&#160;trafo.h']]],
   ['glshader',['GLShader',['../classyourgame_1_1GLShader.html',1,'yourgame::GLShader'],['../classyourgame_1_1GLShader.html#ae93d8bf0fc218359063f0cd23fd69059',1,'yourgame::GLShader::GLShader()']]],

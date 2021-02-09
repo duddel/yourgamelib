@@ -2,6 +2,7 @@ var searchData=
 [
   ['addbuffer',['addBuffer',['../classyourgame_1_1GLGeometry.html#adeaea98af55037906eeed7df485960e0',1,'yourgame::GLGeometry']]],
   ['addshape',['addShape',['../classyourgame_1_1GLGeometry.html#a35383fcaabd57862aaf642c7e6afc746',1,'yourgame::GLGeometry']]],
+  ['ambient',['ambient',['../classyourgame_1_1GLLightsource.html#a51bc0643e547094df6839dbad1754cd9',1,'yourgame::GLLightsource']]],
   ['arrbufferdescr',['ArrBufferDescr',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html',1,'yourgame::GLShape']]],
   ['assetmanager',['AssetManager',['../classyourgame_1_1AssetManager.html',1,'yourgame']]],
   ['assetmanager_2eh',['assetmanager.h',['../assetmanager_8h.html',1,'']]],
