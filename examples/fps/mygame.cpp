@@ -285,18 +285,17 @@ namespace mygame
         {
             shdrDiffCol->useProgram();
 
-            // blaster trafo relative to camera eye
-            yg::Trafo blasterTrafo;
-            blasterTrafo.setTranslation({0.275f, -0.35f, -0.7f});
-            blasterTrafo.setScaleLocal(1.25f);
-
             // filter camera trafo over time for blaster "displacement"
             g_camTrafoFltr.lerp(static_cast<float>(ctx.deltaTimeS) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
             // filter rotation only, reset translation to camera eye:
             g_camTrafoFltr.setTranslation(g_camera.trafo()->getEye());
 
-            auto modelMat = g_camTrafoFltr.mat() * blasterTrafo.mat();
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), shdrDiffCol, {}, modelMat, &g_camera);
+            // blaster Trafo: filtered camera trafo, followed by manual displacement and scale
+            yg::Trafo blasterTrafo = g_camTrafoFltr;
+            blasterTrafo.translateLocal({0.275f, -0.35f, -0.7f});
+            blasterTrafo.setScaleLocal(1.25f);
+
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), shdrDiffCol, {}, blasterTrafo.mat(), &g_camera);
         }
 
         // draw grid + crosshair

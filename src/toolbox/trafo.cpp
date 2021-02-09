@@ -47,9 +47,23 @@ namespace yourgame
         m_matInvalidated = true;
     }
 
+    void Trafo::translateLocal(glm::vec3 const &trans)
+    {
+        translateLocal(trans.x, AXIS::X);
+        translateLocal(trans.y, AXIS::Y);
+        translateLocal(trans.z, AXIS::Z);
+        m_matInvalidated = true;
+    }
+
     void Trafo::translateGlobal(float distance, AXIS ax)
     {
         m_eye += (getAxisGlobal(ax) * distance);
+        m_matInvalidated = true;
+    }
+
+    void Trafo::translateGlobal(glm::vec3 const &trans)
+    {
+        m_eye += trans;
         m_matInvalidated = true;
     }
 

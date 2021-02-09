@@ -40,7 +40,9 @@ namespace yourgame
         void rotateLocal(float angle, AXIS ax);
         void rotateGlobal(float angle, AXIS ax);
         void translateLocal(float distance, AXIS ax);
+        void translateLocal(glm::vec3 const &trans);
         void translateGlobal(float distance, AXIS ax);
+        void translateGlobal(glm::vec3 const &trans);
         void setScaleLocal(glm::vec3 const &scale);
         void setScaleLocal(float scale);
         void setRotation(glm::quat const &rot);
