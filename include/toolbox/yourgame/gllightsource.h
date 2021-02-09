@@ -39,10 +39,10 @@ namespace yourgame
 
     private:
         // ambient, diffuse, specular, position
-        std::array<float, 12> m_data = {0.0f, 0.0f, 0.0f,
-                                        1.0f, 1.0f, 1.0f,
-                                        1.0f, 1.0f, 1.0f,
-                                        0.0f, 0.0f, 0.0f};
+        std::array<float, 12> m_data = {{0.0f, 0.0f, 0.0f,
+                                         1.0f, 1.0f, 1.0f,
+                                         1.0f, 1.0f, 1.0f,
+                                         0.0f, 0.0f, 0.0f}};
     };
 } // namespace yourgame
 

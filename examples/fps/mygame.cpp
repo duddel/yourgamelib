@@ -64,6 +64,10 @@ namespace mygame
                                                            {GL_FRAGMENT_SHADER, "simpletex.frag"}},
                                                           {}, {}));
 
+        g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
+                                                            {GL_FRAGMENT_SHADER, "diffusetex.frag"}},
+                                                           {}, {}));
+
         g_assets.insert("texCube", yg::loadTexture("cube.png", yg::textureUnitDiffuse, GL_NEAREST, false));
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
@@ -260,8 +264,8 @@ namespace mygame
         shdrDiffCol->useProgram(&g_light);
 
         // texture shader
-        auto shdrTex = g_assets.get<yg::GLShader>("shaderSimpleTex");
-        shdrTex->useProgram();
+        auto shdrTex = g_assets.get<yg::GLShader>("shaderDiffuseTex");
+        shdrTex->useProgram(&g_light);
 
         // draw boxes
         for (const auto &b : g_boxes)
