@@ -21,61 +21,56 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    Trafo *GLLightsource::trafo()
-    {
-        m_dataInvalidated = true; // assuming it gets changed
-        return &m_trafo;
-    }
-
     std::array<float, 12> GLLightsource::data()
     {
-        updateDataIfInvalidated();
         return m_data;
     }
 
-    glm::vec3 GLLightsource::ambient()
+    std::array<float, 3> GLLightsource::ambient()
     {
-        return m_ambient;
+        return std::array<float, 3>({m_data[0], m_data[1], m_data[2]});
     }
 
-    glm::vec3 GLLightsource::diffuse()
+    std::array<float, 3> GLLightsource::diffuse()
     {
-        return m_diffuse;
+        return std::array<float, 3>({m_data[3], m_data[4], m_data[5]});
     }
 
-    glm::vec3 GLLightsource::specular()
+    std::array<float, 3> GLLightsource::specular()
     {
-        return m_specular;
+        return std::array<float, 3>({m_data[6], m_data[7], m_data[8]});
     }
 
-    void GLLightsource::setAmbient(glm::vec3 col)
+    std::array<float, 3> GLLightsource::position()
     {
-        m_ambient = col;
+        return std::array<float, 3>({m_data[9], m_data[10], m_data[11]});
     }
 
-    void GLLightsource::setDiffuse(glm::vec3 col)
+    void GLLightsource::setAmbient(std::array<float, 3> col)
     {
-        m_diffuse = col;
+        m_data[0] = col[0];
+        m_data[1] = col[1];
+        m_data[2] = col[2];
     }
 
-    void GLLightsource::setSpecular(glm::vec3 col)
+    void GLLightsource::setDiffuse(std::array<float, 3> col)
     {
-        m_specular = col;
+        m_data[3] = col[0];
+        m_data[4] = col[1];
+        m_data[5] = col[2];
     }
 
-    void GLLightsource::updateDataIfInvalidated()
+    void GLLightsource::setSpecular(std::array<float, 3> col)
     {
-        if (m_dataInvalidated)
-        {
-            auto eye = m_trafo.getEye();
-            for (int i = 0; i < 3; i++)
-            {
-                m_data[i] = m_ambient[i];
-                m_data[3 + i] = m_diffuse[i];
-                m_data[6 + i] = m_specular[i];
-                m_data[9 + i] = eye[i];
-            }
-            m_dataInvalidated = false;
-        }
+        m_data[6] = col[0];
+        m_data[7] = col[1];
+        m_data[8] = col[2];
+    }
+
+    void GLLightsource::setPosition(std::array<float, 3> pos)
+    {
+        m_data[9] = pos[0];
+        m_data[10] = pos[1];
+        m_data[11] = pos[2];
     }
 } // namespace yourgame

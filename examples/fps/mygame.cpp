@@ -36,7 +36,7 @@ namespace mygame
         yg::audioInit(2, 44100, 5);
         yg::audioStoreFile("laserSmall_000.ogg");
 
-        g_light.trafo()->setTranslation({4.07625f, 5.90386f, -1.00545f});
+        g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_camera.setPerspective(65.0f, ctx.winAspectRatio, 0.2f, 100.0f);
 
         // load license info file
@@ -256,12 +256,8 @@ namespace mygame
         g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_DOWN), yg::Trafo::AXIS::X);
 
         // prepare diffuse color shader
-        // todo: GLShader::useProgram() should get references to objects,
-        // to set uniforms once per frame (lightsource)
         auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
-        shdrDiffCol->useProgram();
-        glUniform3fv(shdrDiffCol->getUniformLocation("lightPos"), 1, glm::value_ptr(g_light.trafo()->getEye()));
-        glUniform3fv(shdrDiffCol->getUniformLocation("lightDiffuse"), 1, glm::value_ptr(g_light.diffuse()));
+        shdrDiffCol->useProgram(&g_light);
 
         // texture shader
         auto shdrTex = g_assets.get<yg::GLShader>("shaderSimpleTex");

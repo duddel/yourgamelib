@@ -18,8 +18,8 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <string>
-#include "yourgame/gl_include.h"
 #include "yourgame/glshader.h"
+#include "yourgame/glconventions.h"
 
 namespace yourgame
 {
@@ -120,9 +120,37 @@ namespace yourgame
         glDeleteProgram(m_programHandle);
     }
 
-    void GLShader::useProgram()
+    void GLShader::useProgram(GLLightsource *lightsource)
     {
         glUseProgram(m_programHandle);
+
+        if (lightsource)
+        {
+            GLint unif;
+            unif = getUniformLocation(yourgame::unifNameLightAmbient);
+            if (unif != -1)
+            {
+                glUniform3fv(unif, 1, &lightsource->ambient()[0]);
+            }
+
+            unif = getUniformLocation(yourgame::unifNameLightDiffuse);
+            if (unif != -1)
+            {
+                glUniform3fv(unif, 1, &lightsource->diffuse()[0]);
+            }
+
+            unif = getUniformLocation(yourgame::unifNameLightSpecular);
+            if (unif != -1)
+            {
+                glUniform3fv(unif, 1, &lightsource->specular()[0]);
+            }
+
+            unif = getUniformLocation(yourgame::unifNameLightPosition);
+            if (unif != -1)
+            {
+                glUniform3fv(unif, 1, &lightsource->position()[0]);
+            }
+        }
     }
 
     GLint GLShader::getUniformLocation(const GLchar *name)

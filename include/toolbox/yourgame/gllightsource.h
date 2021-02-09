@@ -21,30 +21,28 @@ freely, subject to the following restrictions:
 #define YOURGAME_GLLIGHTSOURCE_H
 
 #include <array>
-#include "yourgame/trafo.h"
 
 namespace yourgame
 {
     class GLLightsource
     {
     public:
-        Trafo *trafo();
         std::array<float, 12> data();
-        glm::vec3 ambient();
-        glm::vec3 diffuse();
-        glm::vec3 specular();
-        void setAmbient(glm::vec3 col);
-        void setDiffuse(glm::vec3 col);
-        void setSpecular(glm::vec3 col);
+        std::array<float, 3> ambient();
+        std::array<float, 3> diffuse();
+        std::array<float, 3> specular();
+        std::array<float, 3> position();
+        void setAmbient(std::array<float, 3> col);
+        void setDiffuse(std::array<float, 3> col);
+        void setSpecular(std::array<float, 3> col);
+        void setPosition(std::array<float, 3> pos);
 
     private:
-        void updateDataIfInvalidated();
-        bool m_dataInvalidated = true;
-        Trafo m_trafo;
-        std::array<float, 12> m_data;
-        glm::vec3 m_ambient = glm::vec3(0.0);
-        glm::vec3 m_diffuse = glm::vec3(1.0);
-        glm::vec3 m_specular = glm::vec3(1.0);
+        // ambient, diffuse, specular, position
+        std::array<float, 12> m_data = {0.0f, 0.0f, 0.0f,
+                                        1.0f, 1.0f, 1.0f,
+                                        1.0f, 1.0f, 1.0f,
+                                        0.0f, 0.0f, 0.0f};
     };
 } // namespace yourgame
 
