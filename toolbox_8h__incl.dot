@@ -38,7 +38,6 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/tool
   Node15 [label="yourgame/gl_include.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gl__include_8h.html"];
   Node0 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node16 [label="yourgame/glconventions.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$glconventions_8h.html"];
-  Node16 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node16 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node0 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 [label="yourgame/gldrawing.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gldrawing_8h.html"];
@@ -66,6 +65,7 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/tool
   Node21 [label="yourgame/gllightsource.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gllightsource_8h.html"];
   Node21 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node22 [label="array",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node20 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node23 [label="yourgame/gltexture2d.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gltexture2d_8h.html"];
   Node23 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];

@@ -4,7 +4,5 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/glco
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node0 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/glconventions.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node1 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
-  Node0 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="yourgame/gl_include.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gl__include_8h.html"];
+  Node1 [label="yourgame/gl_include.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gl__include_8h.html"];
 }

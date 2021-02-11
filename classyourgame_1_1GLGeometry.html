@@ -84,10 +84,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af9517b6f75ddea9cd26459936475a457"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35383fcaabd57862aaf642c7e6afc746"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#a35383fcaabd57862aaf642c7e6afc746">addShape</a> (std::string name, std::vector&lt; <a class="el" href="structyourgame_1_1GLShape_1_1ArrBufferDescr.html">GLShape::ArrBufferDescr</a> &gt; arDescrs, std::vector&lt; std::string &gt; arBufferNames, <a class="el" href="structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html">GLShape::ElemArrBufferDescr</a> elArDescr, std::string elArBufferName)</td></tr>
 <tr class="separator:a35383fcaabd57862aaf642c7e6afc746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a818891376c4fd3fc06f9c22c4cf16212"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#a818891376c4fd3fc06f9c22c4cf16212">addBufferToShape</a> (std::string shapeName, std::vector&lt; <a class="el" href="structyourgame_1_1GLShape_1_1ArrBufferDescr.html">GLShape::ArrBufferDescr</a> &gt; arDescrs, std::string bufferName)</td></tr>
+<tr class="separator:a818891376c4fd3fc06f9c22c4cf16212"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3afb46bebc716438e9f15187c361be5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#ae3afb46bebc716438e9f15187c361be5">setShapeElArDescr</a> (std::string name, <a class="el" href="structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html">GLShape::ElemArrBufferDescr</a> elArDescr)</td></tr>
 <tr class="separator:ae3afb46bebc716438e9f15187c361be5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa38597be88dd8e705034a4ca7a276543"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#aa38597be88dd8e705034a4ca7a276543">drawAll</a> () const</td></tr>
 <tr class="separator:aa38597be88dd8e705034a4ca7a276543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261cd4b451bb7db18281e58a1173e35f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#a261cd4b451bb7db18281e58a1173e35f">drawAllInstanced</a> (GLsizei instancecount) const</td></tr>
+<tr class="separator:a261cd4b451bb7db18281e58a1173e35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f883be42e8c79d0c2dd78ceb9498cda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#a7f883be42e8c79d0c2dd78ceb9498cda">GLGeometry</a> (<a class="el" href="classyourgame_1_1GLGeometry.html">GLGeometry</a> const &amp;)=delete</td></tr>
 <tr class="separator:a7f883be42e8c79d0c2dd78ceb9498cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a882d402c82e38257c6164eec4c8b2316"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLGeometry.html">GLGeometry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLGeometry.html#a882d402c82e38257c6164eec4c8b2316">operator=</a> (<a class="el" href="classyourgame_1_1GLGeometry.html">GLGeometry</a> const &amp;)=delete</td></tr>
@@ -189,6 +193,40 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a818891376c4fd3fc06f9c22c4cf16212"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a818891376c4fd3fc06f9c22c4cf16212">&#9670;&nbsp;</a></span>addBufferToShape()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool yourgame::GLGeometry::addBufferToShape </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>shapeName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structyourgame_1_1GLShape_1_1ArrBufferDescr.html">GLShape::ArrBufferDescr</a> &gt;&#160;</td>
+          <td class="paramname"><em>arDescrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>bufferName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a35383fcaabd57862aaf642c7e6afc746"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a35383fcaabd57862aaf642c7e6afc746">&#9670;&nbsp;</a></span>addShape()</h2>
 
@@ -279,6 +317,24 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">void yourgame::GLGeometry::drawAll </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a261cd4b451bb7db18281e58a1173e35f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a261cd4b451bb7db18281e58a1173e35f">&#9670;&nbsp;</a></span>drawAllInstanced()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::GLGeometry::drawAllInstanced </td>
+          <td>(</td>
+          <td class="paramtype">GLsizei&#160;</td>
+          <td class="paramname"><em>instancecount</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>

@@ -5,5 +5,7 @@ var searchData=
   ['diffuse',['diffuse',['../classyourgame_1_1GLLightsource.html#a5c0cbca287099ef2cbad2d2f1717dfde',1,'yourgame::GLLightsource']]],
   ['draw',['draw',['../classyourgame_1_1GLShape.html#a2f7a98fb105da31a0507a5234fc4e1a8',1,'yourgame::GLShape']]],
   ['drawall',['drawAll',['../classyourgame_1_1GLGeometry.html#aa38597be88dd8e705034a4ca7a276543',1,'yourgame::GLGeometry']]],
-  ['drawgeo',['drawGeo',['../namespaceyourgame.html#a26e29187d3e44c6d68875411bd101b9c',1,'yourgame']]]
+  ['drawallinstanced',['drawAllInstanced',['../classyourgame_1_1GLGeometry.html#a261cd4b451bb7db18281e58a1173e35f',1,'yourgame::GLGeometry']]],
+  ['drawgeo',['drawGeo',['../namespaceyourgame.html#aa290500b8b28dbae982f4b6291bb5ed1',1,'yourgame']]],
+  ['drawinstanced',['drawInstanced',['../classyourgame_1_1GLShape.html#a6a0a9f929def4bc6930d4d0f98465ea9',1,'yourgame::GLShape']]]
 ];

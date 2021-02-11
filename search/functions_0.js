@@ -1,6 +1,8 @@
 var searchData=
 [
+  ['addarrbuf',['addArrBuf',['../classyourgame_1_1GLShape.html#aa729cd1a964f7b1700237b148e338959',1,'yourgame::GLShape']]],
   ['addbuffer',['addBuffer',['../classyourgame_1_1GLGeometry.html#adeaea98af55037906eeed7df485960e0',1,'yourgame::GLGeometry']]],
+  ['addbuffertoshape',['addBufferToShape',['../classyourgame_1_1GLGeometry.html#a818891376c4fd3fc06f9c22c4cf16212',1,'yourgame::GLGeometry']]],
   ['addshape',['addShape',['../classyourgame_1_1GLGeometry.html#a35383fcaabd57862aaf642c7e6afc746',1,'yourgame::GLGeometry']]],
   ['ambient',['ambient',['../classyourgame_1_1GLLightsource.html#a51bc0643e547094df6839dbad1754cd9',1,'yourgame::GLLightsource']]],
   ['audioinit',['audioInit',['../namespaceyourgame.html#ae48236e308602407c18ea8e5a9279c0f',1,'yourgame']]],

@@ -7,5 +7,12 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/came
   Node5 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/gldrawing.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$gldrawing_8h.html"];
   Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node6 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/toolbox.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$toolbox_8h.html"];
+  Node4 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/glshader.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$glshader_8h.html"];
+  Node7 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/home/runner/work/yourgamelib\l/yourgamelib/include/toolbox\l/yourgame/glloading.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$glloading_8h.html"];
+  Node8 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node4 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }
