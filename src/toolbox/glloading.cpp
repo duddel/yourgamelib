@@ -447,8 +447,8 @@ namespace yourgame
         // add available buffers to new Geometry and configure
         // the Geometry shape...
         std::vector<GLShape::ArrBufferDescr> arDescrs =
-            {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-             {attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}};
+            {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+             {attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0}};
 
         std::vector<std::string> arBufferNames = {"pos", "color"};
 
@@ -459,13 +459,13 @@ namespace yourgame
         if (vertNormSize > 0)
         {
             newGeo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-            arDescrs.push_back({attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0});
+            arDescrs.push_back({attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
             arBufferNames.push_back("norm");
         }
         if (vertTexcoordsSize > 0)
         {
             newGeo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
-            arDescrs.push_back({attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0});
+            arDescrs.push_back({attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
             arBufferNames.push_back("texcoords");
         }
 

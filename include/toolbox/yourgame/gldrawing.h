@@ -32,7 +32,8 @@ namespace yourgame
                  yourgame::GLShader *shader,
                  std::vector<const yourgame::GLTexture2D *> textures,
                  const glm::mat4 &modelMat = glm::mat4(1),
-                 yourgame::Camera *camera = nullptr);
+                 yourgame::Camera *camera = nullptr,
+                 GLsizei instancecount = 1);
 } // namespace yourgame
 
 #endif

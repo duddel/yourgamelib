@@ -37,6 +37,7 @@ namespace yourgame
             GLboolean normalized;
             GLsizei stride;
             const GLvoid *pointer;
+            GLuint attribDivisor;
         };
 
         struct ElemArrBufferDescr
@@ -51,8 +52,10 @@ namespace yourgame
                              ElemArrBufferDescr elArDescr,
                              GLBuffer *elArBuffer);
         bool setElArDescr(GLShape::ElemArrBufferDescr elArDescr);
+        bool addArrBuf(ArrBufferDescr arDescr, GLBuffer *buf);
         ~GLShape();
         void draw();
+        void drawInstanced(GLsizei instancecount);
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */

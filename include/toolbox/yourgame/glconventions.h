@@ -20,7 +20,6 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_GLCONVENTIONS_H
 #define YOURGAME_GLCONVENTIONS_H
 
-#include <string>
 #include "yourgame/gl_include.h"
 
 namespace yourgame
@@ -29,11 +28,12 @@ namespace yourgame
     extern const GLuint attrLocNormal;
     extern const GLuint attrLocTexcoords;
     extern const GLuint attrLocColor;
-    extern const std::string attrNamePosition;
-    extern const std::string attrNameNormal;
-    extern const std::string attrNameTexcoords;
-    extern const std::string attrNameColor;
+    extern const GLuint attrLocInstModelMatCol0;
+    extern const GLuint attrLocInstModelMatCol1;
+    extern const GLuint attrLocInstModelMatCol2;
+    extern const GLuint attrLocInstModelMatCol3;
     extern const GLchar *unifNameMvpMatrix;
+    extern const GLchar *unifNameVpMatrix;
     extern const GLchar *unifNameModelMatrix;
     extern const GLchar *unifNameNormalMatrix;
     extern const GLchar *unifNameCameraPosition;

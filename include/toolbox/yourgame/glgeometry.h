@@ -41,9 +41,13 @@ namespace yourgame
                       std::vector<std::string> arBufferNames,
                       GLShape::ElemArrBufferDescr elArDescr,
                       std::string elArBufferName);
+        bool addBufferToShape(std::string shapeName,
+                              std::vector<GLShape::ArrBufferDescr> arDescrs,
+                              std::string bufferName);
         bool setShapeElArDescr(std::string name,
                                GLShape::ElemArrBufferDescr elArDescr);
         void drawAll() const;
+        void drawAllInstanced(GLsizei instancecount) const;
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */

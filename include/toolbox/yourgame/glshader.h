@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 #include <map>
 #include "yourgame/gl_include.h"
 #include "yourgame/gllightsource.h"
+#include "yourgame/camera.h"
 
 namespace yourgame
 {
@@ -36,7 +37,7 @@ namespace yourgame
                               std::vector<std::pair<GLuint, std::string>> fragDataLocs,
                               std::string &errorLog);
         ~GLShader();
-        void useProgram(GLLightsource *lightsource = nullptr);
+        void useProgram(GLLightsource *lightsource = nullptr, Camera *camera = nullptr);
         GLint getUniformLocation(const GLchar *name);
 
         /* deleting the copy constructor and the copy assignment operator

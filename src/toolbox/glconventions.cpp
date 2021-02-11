@@ -17,7 +17,6 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <string>
 #include "yourgame/gl_include.h"
 #include "yourgame/glconventions.h"
 
@@ -27,11 +26,12 @@ namespace yourgame
     const GLuint attrLocNormal = 1;
     const GLuint attrLocTexcoords = 2;
     const GLuint attrLocColor = 3;
-    const std::string attrNamePosition = "inPosition";
-    const std::string attrNameNormal = "inNormal";
-    const std::string attrNameTexcoords = "inTexcoords";
-    const std::string attrNameColor = "inColor";
+    const GLuint attrLocInstModelMatCol0 = 4;
+    const GLuint attrLocInstModelMatCol1 = 5;
+    const GLuint attrLocInstModelMatCol2 = 6;
+    const GLuint attrLocInstModelMatCol3 = 7;
     const GLchar *unifNameMvpMatrix = "mvpMat";
+    const GLchar *unifNameVpMatrix = "vpMat";
     const GLchar *unifNameModelMatrix = "modelMat";
     const GLchar *unifNameNormalMatrix = "normalMat";
     const GLchar *unifNameCameraPosition = "camPos";
@@ -46,5 +46,4 @@ namespace yourgame
     const GLint unifValueTextureSky = 4;
     const GLenum textureUnitDiffuse = GL_TEXTURE0;
     const GLenum textureUnitSky = GL_TEXTURE4;
-
 } // namespace yourgame

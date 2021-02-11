@@ -64,6 +64,31 @@ namespace yourgame
         return true;
     }
 
+    bool GLShape::addArrBuf(ArrBufferDescr arDescr, GLBuffer *buf)
+    {
+        glBindVertexArray(m_vaoHandle);
+
+        if (buf)
+        {
+            buf->bind();
+        }
+        glEnableVertexAttribArray(arDescr.index);
+        glVertexAttribPointer(arDescr.index,
+                              arDescr.size,
+                              arDescr.type,
+                              arDescr.normalized,
+                              arDescr.stride,
+                              arDescr.pointer);
+
+        if (arDescr.attribDivisor > 0)
+        {
+            glVertexAttribDivisor(arDescr.index, arDescr.attribDivisor);
+        }
+
+        glBindVertexArray(0);
+        return true;
+    }
+
     GLShape::~GLShape()
     {
         glDeleteVertexArrays(1, &m_vaoHandle);
@@ -73,6 +98,13 @@ namespace yourgame
     {
         glBindVertexArray(m_vaoHandle);
         glDrawElements(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0);
+        glBindVertexArray(0);
+    }
+
+    void GLShape::drawInstanced(GLsizei instancecount)
+    {
+        glBindVertexArray(m_vaoHandle);
+        glDrawElementsInstanced(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0, instancecount);
         glBindVertexArray(0);
     }
 } // namespace yourgame

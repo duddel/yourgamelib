@@ -120,13 +120,13 @@ namespace yourgame
         glDeleteProgram(m_programHandle);
     }
 
-    void GLShader::useProgram(GLLightsource *lightsource)
+    void GLShader::useProgram(GLLightsource *lightsource, Camera *camera)
     {
         glUseProgram(m_programHandle);
 
+        GLint unif;
         if (lightsource)
         {
-            GLint unif;
             unif = getUniformLocation(yourgame::unifNameLightAmbient);
             if (unif != -1)
             {
@@ -149,6 +149,15 @@ namespace yourgame
             if (unif != -1)
             {
                 glUniform3fv(unif, 1, &lightsource->position()[0]);
+            }
+        }
+
+        if (camera)
+        {
+            unif = getUniformLocation(yourgame::unifNameVpMatrix);
+            if (unif != -1)
+            {
+                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(camera->pMat() * camera->vMat()));
             }
         }
     }

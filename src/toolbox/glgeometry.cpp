@@ -94,6 +94,25 @@ namespace yourgame
         return false;
     }
 
+    bool GLGeometry::addBufferToShape(std::string shapeName, std::vector<GLShape::ArrBufferDescr> arDescrs, std::string bufferName)
+    {
+        auto it = m_shapes.find(shapeName);
+        if (it != m_shapes.end())
+        {
+            // the actual buffer only needs to be passed once to GLShape::addArrBuf()
+            auto numArDescrs = arDescrs.size();
+            if (numArDescrs > 0)
+            {
+                it->second->addArrBuf(arDescrs[0], m_buffers[bufferName]);
+            }
+            for (auto i = 1; i < numArDescrs; i++)
+            {
+                it->second->addArrBuf(arDescrs[i], nullptr);
+            }
+        }
+        return false;
+    }
+
     bool GLGeometry::setShapeElArDescr(std::string name,
                                        GLShape::ElemArrBufferDescr elArDescr)
     {
@@ -110,6 +129,14 @@ namespace yourgame
         for (const auto &s : m_shapes)
         {
             s.second->draw();
+        }
+    }
+
+    void GLGeometry::drawAllInstanced(GLsizei instancecount) const
+    {
+        for (const auto &s : m_shapes)
+        {
+            s.second->drawInstanced(instancecount);
         }
     }
 } // namespace yourgame

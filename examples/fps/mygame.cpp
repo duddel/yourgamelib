@@ -53,22 +53,26 @@ namespace mygame
         g_assets.insert("geoBlaster", yg::loadGeometry("blasterD.obj", "blasterD.mtl"));
 
         g_assets.insert("shaderDiffuseColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                              {GL_FRAGMENT_SHADER, "diffusecolor.frag"}},
-                                                             {}, {}));
+                                                              {GL_FRAGMENT_SHADER, "diffusecolor.frag"}}));
 
         g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
-                                                            {}, {}));
+                                                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
 
-        g_assets.insert("shaderSimpleTex", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                           {GL_FRAGMENT_SHADER, "simpletex.frag"}},
-                                                          {}, {}));
-
-        g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                            {GL_FRAGMENT_SHADER, "diffusetex.frag"}},
-                                                           {}, {}));
+        g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "default_instanced.vert"},
+                                                            {GL_FRAGMENT_SHADER, "diffusetex.frag"}}));
 
         g_assets.insert("texCube", yg::loadTexture("cube.png", yg::textureUnitDiffuse, GL_NEAREST, false));
+
+        // for instanced drawing of the cube, add and configure a buffer for per-cube (per draw instance) matrixes:
+        GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
+        g_assets.get<yg::GLGeometry>("geoCube")->addBuffer("instModelMat", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+        g_assets.get<yg::GLGeometry>("geoCube")
+            ->addBufferToShape("main",
+                               {{yg::attrLocInstModelMatCol0, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)0, 1},
+                                {yg::attrLocInstModelMatCol1, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(vec4Size), 1},
+                                {yg::attrLocInstModelMatCol2, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(2 * vec4Size), 1},
+                                {yg::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(3 * vec4Size), 1}},
+                               "instModelMat");
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
@@ -265,24 +269,28 @@ namespace mygame
 
         // texture shader
         auto shdrTex = g_assets.get<yg::GLShader>("shaderDiffuseTex");
-        shdrTex->useProgram(&g_light);
+        shdrTex->useProgram(&g_light, &g_camera);
 
         // draw boxes
-        for (const auto &b : g_boxes)
         {
-            yg::Trafo modelTrafo;
-
-            // get box data from bullet
-            btTransform trans;
-            b.body->getMotionState()->getWorldTransform(trans);
-            btQuaternion rot = trans.getRotation();
-            modelTrafo.setTranslation({trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()});
-            modelTrafo.setRotation({rot.getW(), rot.getX(), rot.getY(), rot.getZ()});
-            btBoxShape *bShape = static_cast<btBoxShape *>(b.body->getCollisionShape());
-            btVector3 bExtends = bShape->getHalfExtentsWithMargin();
-            modelTrafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
-
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCube"), shdrTex, {g_assets.get<yg::GLTexture2D>("texCube")}, modelTrafo.mat(), &g_camera);
+            std::vector<glm::mat4> trafos;
+            for (const auto &b : g_boxes)
+            {
+                yg::Trafo modelTrafo;
+                // get box data from bullet
+                btTransform trans;
+                b.body->getMotionState()->getWorldTransform(trans);
+                btQuaternion rot = trans.getRotation();
+                modelTrafo.setTranslation({trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()});
+                modelTrafo.setRotation({rot.getW(), rot.getX(), rot.getY(), rot.getZ()});
+                btBoxShape *bShape = static_cast<btBoxShape *>(b.body->getCollisionShape());
+                btVector3 bExtends = bShape->getHalfExtentsWithMargin();
+                modelTrafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
+                trafos.push_back(modelTrafo.mat());
+            }
+            auto geoCube = g_assets.get<yg::GLGeometry>("geoCube");
+            geoCube->bufferData("instModelMat", trafos.size() * sizeof(trafos[0]), trafos.data());
+            yg::drawGeo(geoCube, shdrTex, {g_assets.get<yg::GLTexture2D>("texCube")}, glm::mat4(1), &g_camera, g_boxes.size());
         }
 
         // draw blaster
@@ -325,5 +333,4 @@ namespace mygame
         yg::audioShutdown();
         g_assets.clear();
     }
-
 } // namespace mygame

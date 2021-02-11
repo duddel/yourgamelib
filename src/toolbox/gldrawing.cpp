@@ -26,7 +26,8 @@ namespace yourgame
                 yourgame::GLShader *shader,
                 std::vector<const yourgame::GLTexture2D *> textures,
                 const glm::mat4 &modelMat,
-                yourgame::Camera *camera)
+                yourgame::Camera *camera,
+                GLsizei instancecount)
    {
       if (!geo)
          return;
@@ -66,6 +67,13 @@ namespace yourgame
             t->bind();
       }
 
-      geo->drawAll();
+      if (instancecount > 1)
+      {
+         geo->drawAllInstanced(instancecount);
+      }
+      else
+      {
+         geo->drawAll();
+      }
    }
 } // namespace yourgame

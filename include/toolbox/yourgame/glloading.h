@@ -75,8 +75,8 @@ namespace yourgame
                                          bool generateMipmap);
 
     GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
-                         std::vector<std::pair<GLuint, std::string>> attrLocs,
-                         std::vector<std::pair<GLuint, std::string>> fragDataLocs);
+                         std::vector<std::pair<GLuint, std::string>> attrLocs = {},
+                         std::vector<std::pair<GLuint, std::string>> fragDataLocs = {});
 
     GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename);
 } // namespace yourgame

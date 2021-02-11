@@ -181,10 +181,10 @@ namespace yourgame
             std::vector<std::string> arBufferNames = {"pos", "norm", "texcoords", "color"};
 
             std::vector<yourgame::GLShape::ArrBufferDescr> arDescrs =
-                {{yourgame::attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                 {yourgame::attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                 {yourgame::attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0},
-                 {yourgame::attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0}};
+                {{yourgame::attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+                 {yourgame::attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+                 {yourgame::attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+                 {yourgame::attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0}};
 
             m_geo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
 
