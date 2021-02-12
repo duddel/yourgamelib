@@ -17,26 +17,8 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_TOOLBOX_H
-#define YOURGAME_TOOLBOX_H
-
-// the following includes are part of the yourgame (toolbox) API
-#include "yourgame/assetmanager.h"
-#include "yourgame/audioplayer.h"
-#include "yourgame/camera.h"
-#include "yourgame/glbuffer.h"
-#include "yourgame/glconventions.h"
-#include "yourgame/gldrawing.h"
-#include "yourgame/glframebuffer.h"
-#include "yourgame/glgeometry.h"
-#include "yourgame/gllightsource.h"
-#include "yourgame/glloading.h"
-#include "yourgame/glshader.h"
-#include "yourgame/glshape.h"
-#include "yourgame/glspritegrid.h"
-#include "yourgame/gltexture2d.h"
-#include "yourgame/gltextureatlas.h"
 #include "yourgame/particles.h"
-#include "yourgame/trafo.h"
 
-#endif
+namespace yourgame
+{
+} // namespace yourgame
