@@ -63,12 +63,141 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classyourgame_1_1Particles-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">yourgame::Particles Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="particles_8h_source.html">particles.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for yourgame::Particles:</div>
+<div class="dyncontent">
+<div class="center"><img src="classyourgame_1_1Particles__coll__graph.png" border="0" usemap="#yourgame_1_1Particles_coll__map" alt="Collaboration graph"/></div>
+<!-- MAP 0 -->
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Particle system configuration.  <a href="structyourgame_1_1Particles_1_1Config.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:abeaf407dcf96023b88ca56bddaadd261"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Particles.html#abeaf407dcf96023b88ca56bddaadd261">Particles</a> (const <a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a> cfg=<a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a>())</td></tr>
+<tr class="separator:abeaf407dcf96023b88ca56bddaadd261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ab8462c30bd07592429945b42a63c90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Particles.html#a3ab8462c30bd07592429945b42a63c90">tick</a> (float dt)</td></tr>
+<tr class="memdesc:a3ab8462c30bd07592429945b42a63c90"><td class="mdescLeft">&#160;</td><td class="mdescRight">ticks the particle system  <a href="#a3ab8462c30bd07592429945b42a63c90">More...</a><br /></td></tr>
+<tr class="separator:a3ab8462c30bd07592429945b42a63c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a33c7594f0fe3abfd3715f64da82413df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Particles.html#a33c7594f0fe3abfd3715f64da82413df">m_cfg</a></td></tr>
+<tr class="separator:a33c7594f0fe3abfd3715f64da82413df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f0c37bd7dcf12a3b7eacc7e6e46b5dc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; glm::vec4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Particles.html#a6f0c37bd7dcf12a3b7eacc7e6e46b5dc">m_positionData</a></td></tr>
+<tr class="separator:a6f0c37bd7dcf12a3b7eacc7e6e46b5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ca81ebeff14b4eb1d12fdb359acbcd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Particles.html#a40ca81ebeff14b4eb1d12fdb359acbcd">m_progressData</a></td></tr>
+<tr class="separator:a40ca81ebeff14b4eb1d12fdb359acbcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><p class="startdd">change count during runtime? </p>
+<p>prevent scatterOnSpawn during spawn() on init </p>
+<p class="enddd">communicate that the system is eventually "finished" if respawn == false </p>
+</dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="abeaf407dcf96023b88ca56bddaadd261"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abeaf407dcf96023b88ca56bddaadd261">&#9670;&nbsp;</a></span>Particles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">yourgame::Particles::Particles </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a>&#160;</td>
+          <td class="paramname"><em>cfg</em> = <code><a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a>()</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a3ab8462c30bd07592429945b42a63c90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ab8462c30bd07592429945b42a63c90">&#9670;&nbsp;</a></span>tick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::Particles::tick </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ticks the particle system </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dt</td><td>time delta </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a33c7594f0fe3abfd3715f64da82413df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33c7594f0fe3abfd3715f64da82413df">&#9670;&nbsp;</a></span>m_cfg</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structyourgame_1_1Particles_1_1Config.html">Config</a> yourgame::Particles::m_cfg</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f0c37bd7dcf12a3b7eacc7e6e46b5dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f0c37bd7dcf12a3b7eacc7e6e46b5dc">&#9670;&nbsp;</a></span>m_positionData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;glm::vec4&gt; yourgame::Particles::m_positionData</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a40ca81ebeff14b4eb1d12fdb359acbcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40ca81ebeff14b4eb1d12fdb359acbcd">&#9670;&nbsp;</a></span>m_progressData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;float&gt; yourgame::Particles::m_progressData</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/<a class="el" href="particles_8h_source.html">particles.h</a></li>
 </ul>

@@ -4,6 +4,7 @@ var searchData=
   ['umin',['uMin',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#ae38923891f6b03bd86d5d9f49ae54e76',1,'yourgame::GLTextureAtlas::Coords']]],
   ['unbindtarget',['unbindTarget',['../classyourgame_1_1GLBuffer.html#a07fe6fc610b44e1411303c99fab3ca08',1,'yourgame::GLBuffer::unbindTarget()'],['../classyourgame_1_1GLFramebuffer.html#aeffd5e20ecde3cac68112e99b6769396',1,'yourgame::GLFramebuffer::unbindTarget()'],['../classyourgame_1_1GLTexture2D.html#a2f7c231bf25b30ef0419ecd6f5f26289',1,'yourgame::GLTexture2D::unbindTarget()']]],
   ['unifnamecameraposition',['unifNameCameraPosition',['../namespaceyourgame.html#ae1db8789c09ec427fa24a00e762c66a8',1,'yourgame']]],
+  ['unifnamecameratrafo',['unifNameCameraTrafo',['../namespaceyourgame.html#a5f2ade11ae306769d9bc2e465867e7a5',1,'yourgame']]],
   ['unifnamelightambient',['unifNameLightAmbient',['../namespaceyourgame.html#a05b242fc5a4f74bc45a57eeb2e2a46af',1,'yourgame']]],
   ['unifnamelightdiffuse',['unifNameLightDiffuse',['../namespaceyourgame.html#a2d99f4f90d2c5971da577a882c507907',1,'yourgame']]],
   ['unifnamelightposition',['unifNameLightPosition',['../namespaceyourgame.html#a9ef18f593f8779169a2d1123bfa166d8',1,'yourgame']]],

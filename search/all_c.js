@@ -1,5 +1,6 @@
 var searchData=
 [
   ['operator_3d',['operator=',['../classyourgame_1_1GLBuffer.html#a60593179fd0ad052c0574d72ee1b1cc4',1,'yourgame::GLBuffer::operator=()'],['../classyourgame_1_1GLFramebuffer.html#ad5945c536b21251f7808653f1b110df1',1,'yourgame::GLFramebuffer::operator=()'],['../classyourgame_1_1GLGeometry.html#a882d402c82e38257c6164eec4c8b2316',1,'yourgame::GLGeometry::operator=()'],['../classyourgame_1_1GLShader.html#a455cfc463bd67c99b40388865ce298e9',1,'yourgame::GLShader::operator=()'],['../classyourgame_1_1GLShape.html#acb5efb43abcc6ed9530161caba1e0560',1,'yourgame::GLShape::operator=()'],['../classyourgame_1_1GLSpriteGrid.html#a5781bcb6d7e46da3e709ff9ef38ab828',1,'yourgame::GLSpriteGrid::operator=()'],['../classyourgame_1_1GLTexture2D.html#a578add46f75b32eca18a079b03c8089b',1,'yourgame::GLTexture2D::operator=()'],['../classyourgame_1_1GLTextureAtlas.html#aa97c0c8f8ab43ce14077cee88ada1473',1,'yourgame::GLTextureAtlas::operator=()']]],
+  ['origin',['origin',['../structyourgame_1_1Particles_1_1Config.html#a886e4a8ca75bb8f0190550a8aaff73ae',1,'yourgame::Particles::Config']]],
   ['orthographic',['ORTHOGRAPHIC',['../classyourgame_1_1Camera.html#abd9deece2ac9cf689efde21234a20ee2a197833f339c57af4c0aaba39540e64cc',1,'yourgame::Camera']]]
 ];

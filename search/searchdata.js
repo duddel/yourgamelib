@@ -5,10 +5,11 @@ var indexSectionsWithContent =
   2: "my",
   3: "abcfgilmpty",
   4: "abcdeghilmnoprstuvw~",
-  5: "adfimnpstuvw",
+  5: "abcdefimnoprstuvw",
   6: "aip",
   7: "opxyz",
-  8: "g"
+  8: "g",
+  9: "t"
 };
 
 var indexSectionNames =
@@ -21,7 +22,8 @@ var indexSectionNames =
   5: "variables",
   6: "enums",
   7: "enumvalues",
-  8: "defines"
+  8: "defines",
+  9: "pages"
 };
 
 var indexSectionLabels =
@@ -34,6 +36,7 @@ var indexSectionLabels =
   5: "Variables",
   6: "Enumerations",
   7: "Enumerator",
-  8: "Macros"
+  8: "Macros",
+  9: "Pages"
 };
 

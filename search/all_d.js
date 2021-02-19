@@ -1,7 +1,7 @@
 var searchData=
 [
   ['parameteri',['parameteri',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html#a5f09be60563d7d905cf69be2ebde0708',1,'yourgame::GLFramebuffer::TextureAttachDescr']]],
-  ['particles',['Particles',['../classyourgame_1_1Particles.html',1,'yourgame']]],
+  ['particles',['Particles',['../classyourgame_1_1Particles.html',1,'yourgame::Particles'],['../classyourgame_1_1Particles.html#abeaf407dcf96023b88ca56bddaadd261',1,'yourgame::Particles::Particles()']]],
   ['particles_2eh',['particles.h',['../particles_8h.html',1,'']]],
   ['perspective',['PERSPECTIVE',['../classyourgame_1_1Camera.html#abd9deece2ac9cf689efde21234a20ee2ad46c97be63d6c4cb887419a4a3df5347',1,'yourgame::Camera']]],
   ['pmat',['pMat',['../classyourgame_1_1Camera.html#a20cb4c6b70d47328f11180fbe3956a5d',1,'yourgame::Camera']]],

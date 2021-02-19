@@ -1,6 +1,9 @@
 var searchData=
 [
   ['savefilepath',['saveFilePath',['../namespaceyourgame.html#a46668c9b4590aa5e40a58ed515c2105e',1,'yourgame']]],
+  ['scatteroninit',['scatterOnInit',['../structyourgame_1_1Particles_1_1Config.html#adb4ff89ab952ebea175b153c59c4773b',1,'yourgame::Particles::Config']]],
+  ['scatteronspawn',['scatterOnSpawn',['../structyourgame_1_1Particles_1_1Config.html#a8546b737348051f60cd0752d3fa59b96',1,'yourgame::Particles::Config']]],
+  ['seed',['seed',['../structyourgame_1_1Particles_1_1Config.html#adea4d3d1c4ab3690b1c8e14684685ccd',1,'yourgame::Particles::Config']]],
   ['sendcmdtoenv',['sendCmdToEnv',['../namespaceyourgame.html#a098e420d09d0f1967aaf84845223ccbf',1,'yourgame']]],
   ['setambient',['setAmbient',['../classyourgame_1_1GLLightsource.html#a42098ed19a9b2f0ae118ec9f60849491',1,'yourgame::GLLightsource']]],
   ['setaspect',['setAspect',['../classyourgame_1_1Camera.html#ac0a7e5c3d6ee691d70df58bdde7322da',1,'yourgame::Camera']]],
