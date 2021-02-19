@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/default.vert", "start": 0, "end": 619, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 619, "end": 876, "audio": 0}, {"filename": "/assets/diffusecolor.frag", "start": 876, "end": 1364, "audio": 0}, {"filename": "/assets/grid.obj", "start": 1364, "end": 3675, "audio": 0}, {"filename": "/assets/cube.obj", "start": 3675, "end": 4608, "audio": 0}], "remote_package_size": 4608, "package_uuid": "03139955-426b-4423-8f28-07b32273c645"});
+   loadPackage({"files": [{"filename": "/assets/default.vert", "start": 0, "end": 619, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 619, "end": 876, "audio": 0}, {"filename": "/assets/diffusecolor.frag", "start": 876, "end": 1364, "audio": 0}, {"filename": "/assets/grid.obj", "start": 1364, "end": 3675, "audio": 0}, {"filename": "/assets/cube.obj", "start": 3675, "end": 4608, "audio": 0}], "remote_package_size": 4608, "package_uuid": "ca70f98f-3bef-48cd-80ef-211af044310e"});
   
   })();
   

@@ -187,7 +187,7 @@ var Module = typeof Module !== 'undefined' ? Module : {};
     }
   
    }
-   loadPackage({"files": [{"filename": "/assets/LICENSE_web.txt", "start": 0, "end": 8558, "audio": 0}, {"filename": "/assets/quad.obj", "start": 8558, "end": 8762, "audio": 0}, {"filename": "/assets/default.vert", "start": 8762, "end": 9381, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 9381, "end": 9638, "audio": 0}, {"filename": "/assets/default_instanced.vert", "start": 9638, "end": 10582, "audio": 0}, {"filename": "/assets/grid.obj", "start": 10582, "end": 12893, "audio": 0}], "remote_package_size": 12893, "package_uuid": "46e93a62-ee1f-4aab-8e57-d4c4fec3e7d6"});
+   loadPackage({"files": [{"filename": "/assets/LICENSE_web.txt", "start": 0, "end": 8558, "audio": 0}, {"filename": "/assets/quad.obj", "start": 8558, "end": 8762, "audio": 0}, {"filename": "/assets/default.vert", "start": 8762, "end": 9381, "audio": 0}, {"filename": "/assets/simplecolor.frag", "start": 9381, "end": 9638, "audio": 0}, {"filename": "/assets/default_instanced.vert", "start": 9638, "end": 10582, "audio": 0}, {"filename": "/assets/grid.obj", "start": 10582, "end": 12893, "audio": 0}], "remote_package_size": 12893, "package_uuid": "6a86faa3-f6d3-48f6-ab1a-703e66aa8a86"});
   
   })();
   
