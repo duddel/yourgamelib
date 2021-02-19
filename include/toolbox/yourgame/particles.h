@@ -60,7 +60,7 @@ namespace yourgame
             float noisLifetime = 0.4f;                    /**< \brief uniform noise for lifetime */
         };
 
-        Particles(const Config cfg = Config());
+        Particles(const Config cfg);
 
         /**
         \brief ticks the particle system
