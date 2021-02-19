@@ -125,8 +125,7 @@ namespace yourgame_internal_android
         elAndroidDispatcher *dispatcher = el::Helpers::logDispatchCallback<elAndroidDispatcher>("AndroidDispatcher");
         dispatcher->setEnabled(true);
 
-        // initialize timing
-        lastNowTime = std::chrono::steady_clock::now();
+        // check clock period
         double clockPeriod = (double)std::chrono::steady_clock::period::num /
                              (double)std::chrono::steady_clock::period::den;
         yourgame::logi("steady_clock precision: %vs (%vns)", clockPeriod, clockPeriod * 1.0e+9);
@@ -220,6 +219,12 @@ namespace yourgame_internal_android
         mygame::init();
 
         _initialized = true;
+
+        // initialize timing:
+        // get the initial time point just before tick() starts, which will
+        // result in a small time delta in the first tick() cycle.
+        // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
+        lastNowTime = std::chrono::steady_clock::now();
     }
 
     void tick()

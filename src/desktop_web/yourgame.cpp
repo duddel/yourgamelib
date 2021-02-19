@@ -67,8 +67,7 @@ namespace yourgame_internal_desktop
         START_EASYLOGGINGPP(argc, argv);
         logger = el::Loggers::getLogger("default");
 
-        // initialize timing
-        lastNowTime = std::chrono::steady_clock::now();
+        // check clock period
         double clockPeriod = (double)std::chrono::steady_clock::period::num /
                              (double)std::chrono::steady_clock::period::den;
         yourgame::logi("steady_clock precision: %vs (%vns)", clockPeriod, clockPeriod * 1.0e+9);
@@ -192,11 +191,24 @@ namespace yourgame_internal_desktop
 #endif
 
         mygame::init();
+
+        // initialize timing:
+        // get the initial time point just before tick() starts, which will
+        // result in a small time delta in the first tick() cycle.
+        // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
+        lastNowTime = std::chrono::steady_clock::now();
+
         return 0;
     }
 
     void tick()
     {
+        // timing
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> duration = now - lastNowTime;
+        lastNowTime = now;
+        _context.deltaTimeS = (duration.count());
+
 #ifdef __EMSCRIPTEN__
         {
             // the desired size of the glfw "window" is the size of the canvas
@@ -214,12 +226,6 @@ namespace yourgame_internal_desktop
             }
         }
 #endif
-
-        // timing
-        auto now = std::chrono::steady_clock::now();
-        std::chrono::duration<double> duration = now - lastNowTime;
-        lastNowTime = now;
-        _context.deltaTimeS = (duration.count());
 
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplOpenGL3_NewFrame();
