@@ -159,6 +159,12 @@ namespace yourgame
             {
                 glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(camera->pMat() * camera->vMat()));
             }
+            
+            unif = getUniformLocation(yourgame::unifNameCameraTrafo);
+            if (unif != -1)
+            {
+                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(camera->trafo()->mat()));
+            }
         }
     }
 

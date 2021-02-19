@@ -20,14 +20,71 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_PARTICLES_H
 #define YOURGAME_PARTICLES_H
 
-#define GLM_ENABLE_EXPERIMENTAL
+#include <vector>
+#include <random>
+#include <ctime>
 #include <glm/glm.hpp>
-#include <glm/ext.hpp>
 
 namespace yourgame
 {
+    /**
+    \todo change count during runtime?
+    \todo prevent scatterOnSpawn during spawn() on init
+    \todo communicate that the system is eventually "finished" if respawn == false
+     */
     class Particles
     {
+    public:
+        /**
+        \brief Particle system configuration
+
+        Should be configured and handed over to Particles() ctor.
+        Can be changed during runtime via Particles::m_cfg.
+        */
+        struct Config
+        {
+            size_t count = 100;                           /**< \brief number of particles */
+            unsigned int seed = std::time(nullptr);       /**< \brief seed for random generator */
+            bool scatterOnInit = true;                    /**< \brief if true, particles are scattered in the volume when system is initialized */
+            bool scatterOnSpawn = false;                  /**< \brief if true, particles are scattered when they are respawned */
+            bool respawn = true;                          /**< \brief if true, particles are respawned after their lifetime ends */
+            glm::vec3 origin = {0.0f, 0.0f, 0.0f};        /**< \brief origin of the system */
+            glm::vec3 emitterA = {0.0f, 0.0f, 0.0f};      /**< \brief first vector that forms a volume inside particles are spawned */
+            glm::vec3 emitterB = {0.0f, 0.0f, 0.0f};      /**< \brief second vector that forms a volume inside particles are spawned */
+            glm::vec3 emitterC = {0.0f, 0.0f, 0.0f};      /**< \brief third vector that forms a volume inside particles are spawned */
+            glm::vec3 baseDirection = {0.0f, 1.0f, 0.0f}; /**< \brief base direction of particles */
+            glm::vec3 noisDirection = {0.2f, 0.2f, 0.2f}; /**< \brief uniform noise for direction */
+            float baseVelocity = 1.5f;                    /**< \brief base velocity of particles */
+            float noisVelocity = 0.2f;                    /**< \brief uniform noise for velocity */
+            float baseLifetime = 3.0f;                    /**< \brief base lifetime of particles */
+            float noisLifetime = 0.4f;                    /**< \brief uniform noise for lifetime */
+        };
+
+        Particles(const Config cfg = Config());
+
+        /**
+        \brief ticks the particle system
+        \param dt time delta
+         */
+        void tick(float dt);
+        Config m_cfg;
+        std::vector<glm::vec4> m_positionData;
+        std::vector<float> m_progressData;
+
+    private:
+        struct Part
+        {
+            glm::vec3 pos;
+            glm::vec3 move;
+            float lifetime;
+            float totalLifeInv;
+            float progress;
+        };
+        std::default_random_engine m_rndgen;
+        std::uniform_real_distribution<float> m_unirnd;
+        std::vector<Part> m_parts;
+        Part spawn();
+        float rnd1();
     };
 } // namespace yourgame
 

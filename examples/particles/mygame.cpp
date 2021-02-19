@@ -16,6 +16,10 @@ namespace mygame
     {
         auto ctx = yg::getCtx();
 
+        yg::Particles::Config partCfg;
+        partCfg.count = 250;
+        g_assets.insert("parts1", new yg::Particles(partCfg));
+
         g_camera.trafo()->lookAt(glm::vec3(7.35889f, 4.95831f, 6.92579f),
                                  glm::vec3(0.0f, 0.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
@@ -31,8 +35,16 @@ namespace mygame
 
         g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
 
+        g_assets.insert("geoQuad", yg::loadGeometry("quad.obj", nullptr));
+        GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
+        g_assets.get<yg::GLGeometry>("geoQuad")->addBuffer("instModelPos", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+        g_assets.get<yg::GLGeometry>("geoQuad")
+            ->addBufferToShape("main", {{yg::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1}}, "instModelPos");
+
         g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
                                                              {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
+        g_assets.insert("shaderSimpleColorInst", yg::loadShader({{GL_VERTEX_SHADER, "default_instanced.vert"},
+                                                                 {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
@@ -121,6 +133,19 @@ namespace mygame
 
             // grid
             yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpCol, {}, glm::mat4(1), &g_camera);
+        }
+
+        // draw particles
+        {
+            g_assets.get<yg::Particles>("parts1")->tick(static_cast<float>(ctx.deltaTimeS));
+            std::vector<glm::vec4> &partPos = g_assets.get<yg::Particles>("parts1")->m_positionData;
+
+            auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColorInst");
+            shdrSimpCol->useProgram(nullptr, &g_camera);
+
+            auto geoQuad = g_assets.get<yg::GLGeometry>("geoQuad");
+            geoQuad->bufferData("instModelPos", partPos.size() * sizeof(partPos[0]), partPos.data());
+            yg::drawGeo(geoQuad, shdrSimpCol, {}, glm::scale(glm::vec3(0.1f)), &g_camera, partPos.size());
         }
     }
 

@@ -37,6 +37,7 @@ namespace yourgame
     extern const GLchar *unifNameModelMatrix;
     extern const GLchar *unifNameNormalMatrix;
     extern const GLchar *unifNameCameraPosition;
+    extern const GLchar *unifNameCameraTrafo;
     extern const GLchar *unifNameSkyRotationInv;
     extern const GLchar *unifNameTextureDiffuse;
     extern const GLchar *unifNameTextureSky;
