@@ -17,11 +17,10 @@ namespace mygame
         auto ctx = yg::getCtx();
 
         yg::Particles::Config partCfg;
-        partCfg.count = 250;
-        g_assets.insert("parts1", new yg::Particles(partCfg));
+        g_assets.insert("particles", new yg::Particles(partCfg));
 
         g_camera.trafo()->lookAt(glm::vec3(7.35889f, 4.95831f, 6.92579f),
-                                 glm::vec3(0.0f, 0.0f, 0.0f),
+                                 glm::vec3(0.0f, 4.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
         g_camera.setPerspective(65.0f, ctx.winAspectRatio, 0.2f, 100.0f);
 
@@ -33,31 +32,149 @@ namespace mygame
             g_assets.insert("licenseStr", licStr);
         }
 
+        // geometry
         g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
-
         g_assets.insert("geoQuad", yg::loadGeometry("quad.obj", nullptr));
+        // geoQuad is used for drawing particles.
+        // prepare buffers for instanced position and progress:
         GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
         g_assets.get<yg::GLGeometry>("geoQuad")->addBuffer("instModelPos", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+        g_assets.get<yg::GLGeometry>("geoQuad")->addBuffer("instProgress", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
         g_assets.get<yg::GLGeometry>("geoQuad")
             ->addBufferToShape("main", {{yg::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1}}, "instModelPos");
+        g_assets.get<yg::GLGeometry>("geoQuad")
+            ->addBufferToShape("main", {{yg::attrLocInstProgress, 1, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (void *)0, 1}}, "instProgress");
 
+        // shaders
         g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
                                                              {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
-        g_assets.insert("shaderSimpleColorInst", yg::loadShader({{GL_VERTEX_SHADER, "default_instanced.vert"},
-                                                                 {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
+        g_assets.insert("shaderParticleColorFade", yg::loadShader({{GL_VERTEX_SHADER, "particle_colorfade.vert"},
+                                                                   {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
 
-        glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         //yg::enableVSync(true);
         //yg::enableFullscreen(true);
-#ifndef __EMSCRIPTEN__ // todo: we can not initially catch the mouse if the viewport does not have focus (web)
-        yg::catchMouse(true);
+#ifndef __EMSCRIPTEN__ // todo: we can not initially catch the mouse if the viewport does not have focus (web) \
+                       //yg::catchMouse(true);
 #endif
     }
 
     void tick()
     {
         auto ctx = yg::getCtx();
+        auto parts = g_assets.get<yg::Particles>("particles");
+
+        ImGui::Begin("Particles", nullptr, (ImGuiWindowFlags_AlwaysAutoResize));
+        static int preset = 0;
+        static int presetLast = -1;
+        ImGui::Combo("Preset", &preset, "fountain (default)\0snow\0glitter\0sparkler\0\0");
+        ImGui::Checkbox("scatterOnSpawn", &parts->m_cfg.scatterOnSpawn);
+        ImGui::Checkbox("respawn", &parts->m_cfg.respawn);
+        ImGui::SliderFloat("origin.x", &parts->m_cfg.origin.x, -10.0f, 10.0f);
+        ImGui::SliderFloat("origin.y", &parts->m_cfg.origin.y, -10.0f, 10.0f);
+        ImGui::SliderFloat("origin.z", &parts->m_cfg.origin.z, -10.0f, 10.0f);
+        ImGui::SliderFloat("emitterA.x", &parts->m_cfg.emitterA.x, 0.0f, 10.0f);
+        ImGui::SliderFloat("emitterB.y", &parts->m_cfg.emitterB.y, 0.0f, 10.0f);
+        ImGui::SliderFloat("emitterC.z", &parts->m_cfg.emitterC.z, 0.0f, 10.0f);
+        ImGui::SliderFloat("baseDirection.x", &parts->m_cfg.baseDirection.x, -10.0f, 10.0f);
+        ImGui::SliderFloat("baseDirection.y", &parts->m_cfg.baseDirection.y, -10.0f, 10.0f);
+        ImGui::SliderFloat("baseDirection.z", &parts->m_cfg.baseDirection.z, -10.0f, 10.0f);
+        ImGui::SliderFloat("noisDirection.x", &parts->m_cfg.noisDirection.x, -10.0f, 10.0f);
+        ImGui::SliderFloat("noisDirection.y", &parts->m_cfg.noisDirection.y, -10.0f, 10.0f);
+        ImGui::SliderFloat("noisDirection.z", &parts->m_cfg.noisDirection.z, -10.0f, 10.0f);
+        ImGui::SliderFloat("baseVelocity", &parts->m_cfg.baseVelocity, 0.0f, 10.0f);
+        ImGui::SliderFloat("noisVelocity", &parts->m_cfg.noisVelocity, 0.0f, 10.0f);
+        ImGui::SliderFloat("baseLifetime", &parts->m_cfg.baseLifetime, 0.0f, 10.0f);
+        ImGui::SliderFloat("noisLifetime", &parts->m_cfg.noisLifetime, 0.0f, 10.0f);
+        ImGui::Separator();
+        static bool drawGrid = true;
+        ImGui::Checkbox("Draw grid", &drawGrid);
+        static float particlesTickRate = 1.0f;
+        ImGui::SliderFloat("Tick rate", &particlesTickRate, 0.0f, 1.0f);
+        static ImVec4 clearColor = ImVec4(0.05f, 0.05f, 0.1f, 1.0f);
+        ImGui::ColorPicker3("Clear color", (float *)&clearColor, ImGuiColorEditFlags_NoInputs);
+        ImGui::End();
+
+        glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+
+        if (preset != presetLast)
+        {
+            auto shdrPartsColorFade = g_assets.get<yg::GLShader>("shaderParticleColorFade");
+            shdrPartsColorFade->useProgram();
+            std::array<GLfloat, 5 * 3> colors; // num colors == 5, fixed in shader
+            switch (preset)
+            {
+            case 0: // default
+                parts->m_cfg = yg::Particles::Config();
+                parts->m_cfg.count = 1000;
+                parts->reset();
+                colors = {1.0f, 1.0f, 0.75f,
+                          1.0f, 1.0f, 0.5f,
+                          1.0f, 0.75f, 0.0f,
+                          1.0f, 0.5f, 0.0f,
+                          1.0f, 0.25f, 0.0f};
+                break;
+            case 1: // snow
+                parts->m_cfg = yg::Particles::Config();
+                parts->m_cfg.count = 1000;
+                parts->m_cfg.origin.y = 10.0f;
+                parts->m_cfg.emitterA.x = 5.0f;
+                parts->m_cfg.emitterC.z = 5.0f;
+                parts->m_cfg.baseDirection.y = -1.0f;
+                parts->m_cfg.noisDirection = {0.35f, 0.0f, 0.35f};
+                parts->m_cfg.baseVelocity = 5.0f;
+                parts->m_cfg.noisVelocity = 2.0f;
+                parts->m_cfg.baseLifetime = 2.0f;
+                parts->m_cfg.noisLifetime = 0.0f;
+                parts->reset();
+                colors = {1.0f, 1.0f, 1.0f,
+                          1.0f, 1.0f, 1.0f,
+                          1.0f, 1.0f, 1.0f,
+                          1.0f, 1.0f, 1.0f,
+                          1.0f, 1.0f, 1.0f};
+                break;
+            case 2: // glitter
+                parts->m_cfg = yg::Particles::Config();
+                parts->m_cfg.count = 1000;
+                parts->m_cfg.scatterOnSpawn = true;
+                parts->m_cfg.origin = {0.0f, 5.0f, 0.0f};
+                parts->m_cfg.emitterA.x = 5.0f;
+                parts->m_cfg.emitterB.y = 5.0f;
+                parts->m_cfg.emitterC.z = 5.0f;
+                parts->m_cfg.baseDirection = {0.0f, 0.0f, 0.0f};
+                parts->m_cfg.noisDirection = {0.5f, 0.5f, 0.5f};
+                parts->m_cfg.baseVelocity = 0.3f;
+                parts->m_cfg.noisVelocity = 0.1f;
+                parts->m_cfg.baseLifetime = 0.35f;
+                parts->m_cfg.noisLifetime = 0.0f;
+                parts->reset();
+                colors = {1.0f, 0.0f, 1.0f,
+                          1.0f, 0.0f, 1.0f,
+                          0.5f, 0.2f, 0.75f,
+                          0.25f, 0.25f, 1.0f,
+                          1.0f, 0.85f, 0.0f};
+                break;
+            case 3: // sparkler
+                parts->m_cfg = yg::Particles::Config();
+                parts->m_cfg.count = 1000;
+                parts->m_cfg.origin = {0.0f, 5.0f, 0.0f};
+                parts->m_cfg.baseDirection = {0.0f, 0.0f, 0.0f};
+                parts->m_cfg.noisDirection = {0.5f, 0.5f, 0.5f};
+                parts->m_cfg.baseVelocity = 3.5f;
+                parts->m_cfg.noisVelocity = 0.25f;
+                parts->m_cfg.baseLifetime = 0.35f;
+                parts->m_cfg.noisLifetime = 0.15f;
+                parts->reset();
+                colors = {1.0f, 1.0f, 0.75f,
+                          1.0f, 1.0f, 0.5f,
+                          1.0f, 0.75f, 0.0f,
+                          1.0f, 0.5f, 0.0f,
+                          1.0f, 0.25f, 0.0f};
+                break;
+            }
+            presetLast = preset;
+            glUniform3fv(shdrPartsColorFade->getUniformLocation("fadeColors"), colors.size(), (GLfloat *)colors.data());
+        }
 
         // lock/release mouse
         if (yg::getInputDelta(yg::InputSource::YOURGAME_KEY_M) > 0.0f)
@@ -116,36 +233,40 @@ namespace mygame
             g_camera.trafo()->rotateLocal(-0.002f * yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y), yg::Trafo::AXIS::X);
             g_camera.trafo()->rotateGlobal(-0.001f * yg::getInputDelta(yg::InputSource::YOURGAME_TOUCH_0_X), yg::Trafo::AXIS::Y);
             g_camera.trafo()->rotateLocal(-0.001f * yg::getInputDelta(yg::InputSource::YOURGAME_TOUCH_0_Y), yg::Trafo::AXIS::X);
-            g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_LEFT), yg::Trafo::AXIS::Y);
-            g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_RIGHT), yg::Trafo::AXIS::Y);
-            g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_UP), yg::Trafo::AXIS::X);
-            g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_DOWN), yg::Trafo::AXIS::X);
-            g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_W), yg::Trafo::AXIS::Z);
-            g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_S), yg::Trafo::AXIS::Z);
-            g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_D), yg::Trafo::AXIS::X);
-            g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_A), yg::Trafo::AXIS::X);
         }
+        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_W), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_S), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_D), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_A), yg::Trafo::AXIS::X);
 
         // draw grid
+        if (drawGrid)
         {
-            auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColor");
-            shdrSimpCol->useProgram();
-
-            // grid
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpCol, {}, glm::mat4(1), &g_camera);
+            auto shdrSimpleColor = g_assets.get<yg::GLShader>("shaderSimpleColor");
+            shdrSimpleColor->useProgram();
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpleColor, {}, glm::mat4(1), &g_camera);
         }
 
         // draw particles
         {
-            g_assets.get<yg::Particles>("parts1")->tick(static_cast<float>(ctx.deltaTimeS));
-            std::vector<glm::vec4> &partPos = g_assets.get<yg::Particles>("parts1")->m_positionData;
-
-            auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColorInst");
-            shdrSimpCol->useProgram(nullptr, &g_camera);
+            g_assets.get<yg::Particles>("particles")->tick(static_cast<float>(ctx.deltaTimeS) * particlesTickRate);
 
             auto geoQuad = g_assets.get<yg::GLGeometry>("geoQuad");
+            std::vector<glm::vec4> &partPos = g_assets.get<yg::Particles>("particles")->m_positionData;
+            std::vector<float> &partProg = g_assets.get<yg::Particles>("particles")->m_progressData;
             geoQuad->bufferData("instModelPos", partPos.size() * sizeof(partPos[0]), partPos.data());
-            yg::drawGeo(geoQuad, shdrSimpCol, {}, glm::scale(glm::vec3(0.1f)), &g_camera, partPos.size());
+            geoQuad->bufferData("instProgress", partProg.size() * sizeof(partProg[0]), partProg.data());
+
+            // model matrix: scaling and billboard-like rotation (from camera trafo)
+            auto modelMat = glm::mat4(glm::mat3(g_camera.trafo()->mat()) * glm::mat3(glm::scale(glm::vec3(0.04f))));
+
+            auto shdrPartsColorFade = g_assets.get<yg::GLShader>("shaderParticleColorFade");
+            shdrPartsColorFade->useProgram(nullptr, &g_camera);
+            yg::drawGeo(geoQuad, shdrPartsColorFade, {}, modelMat, &g_camera, partPos.size());
         }
     }
 

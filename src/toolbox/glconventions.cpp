@@ -30,6 +30,7 @@ namespace yourgame
     const GLuint attrLocInstModelMatCol1 = 5;
     const GLuint attrLocInstModelMatCol2 = 6;
     const GLuint attrLocInstModelMatCol3 = 7;
+    const GLuint attrLocInstProgress = 8; // GL_MAX_VERTEX_ATTRIBS is at least 16 in gl/es 3, but only 8 in gles 2!
     const GLchar *unifNameMvpMatrix = "mvpMat";
     const GLchar *unifNameVpMatrix = "vpMat";
     const GLchar *unifNameModelMatrix = "modelMat";

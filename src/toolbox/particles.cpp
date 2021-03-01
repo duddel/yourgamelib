@@ -26,21 +26,7 @@ namespace yourgame
         m_rndgen.seed(m_cfg.seed);
         m_unirnd = std::uniform_real_distribution<float>(-1.0f, 1.0f);
 
-        m_parts.reserve(m_cfg.count);
-        for (size_t i = 0; i < m_cfg.count; i++)
-        {
-            m_parts.push_back(spawn());
-        }
-
-        if (m_cfg.scatterOnInit)
-        {
-            for (auto &p : m_parts)
-            {
-                float dt = (rnd1() * 0.5f + 0.5f) * p.lifetime;
-                p.pos += (dt * p.move);
-                p.lifetime -= dt;
-            }
-        }
+        reset();
     }
 
     void Particles::tick(float dt)
@@ -70,6 +56,26 @@ namespace yourgame
         }
     }
 
+    void Particles::reset()
+    {
+        m_parts.clear();
+        m_parts.reserve(m_cfg.count);
+        for (size_t i = 0; i < m_cfg.count; i++)
+        {
+            m_parts.push_back(spawn());
+        }
+
+        if (m_cfg.scatterOnInit)
+        {
+            for (auto &p : m_parts)
+            {
+                float dt = (rnd1() * 0.5f + 0.5f) * p.lifetime;
+                p.pos += (dt * p.move);
+                p.lifetime -= dt;
+            }
+        }
+    }
+
     Particles::Part Particles::spawn()
     {
         Part p;
@@ -80,13 +86,14 @@ namespace yourgame
         p.lifetime = m_cfg.baseLifetime + (rnd1() * m_cfg.noisLifetime);
 
         p.totalLifeInv = 1.0f / p.lifetime;
-        p.progress = 1.0f;
+        p.progress = 0.0f;
 
         if (m_cfg.scatterOnSpawn)
         {
             auto dt = (rnd1() * 0.5f + 0.5f) * p.lifetime;
             p.pos += (dt * p.move);
             p.lifetime -= dt;
+            p.progress = 1.0f - (p.totalLifeInv * p.lifetime);
         }
 
         return p;

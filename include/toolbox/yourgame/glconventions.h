@@ -32,6 +32,7 @@ namespace yourgame
     extern const GLuint attrLocInstModelMatCol1;
     extern const GLuint attrLocInstModelMatCol2;
     extern const GLuint attrLocInstModelMatCol3;
+    extern const GLuint attrLocInstProgress;
     extern const GLchar *unifNameMvpMatrix;
     extern const GLchar *unifNameVpMatrix;
     extern const GLchar *unifNameModelMatrix;

@@ -31,6 +31,7 @@ namespace yourgame
     \todo change count during runtime?
     \todo prevent scatterOnSpawn during spawn() on init
     \todo communicate that the system is eventually "finished" if respawn == false
+    \todo depth sorting?
      */
     class Particles
     {
@@ -67,6 +68,7 @@ namespace yourgame
         \param dt time delta
          */
         void tick(float dt);
+        void reset();
         Config m_cfg;
         std::vector<glm::vec4> m_positionData;
         std::vector<float> m_progressData;
