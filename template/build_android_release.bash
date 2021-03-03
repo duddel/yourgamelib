@@ -5,6 +5,6 @@ if [ ! -d "_deploy" ]; then
 fi
 
 cd android
-./gradlew assembleRelease
+gradle assembleRelease
 cd -
 mv -f android/app/build/outputs/apk/release/*.apk _deploy/
