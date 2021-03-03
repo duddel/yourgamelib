@@ -117,4 +117,4 @@ jobs:
     - name: assemble
       run: |
         cd examples/${{ matrix.example_name }}/android
-        ./gradlew assembleDebug
+        gradle assembleDebug

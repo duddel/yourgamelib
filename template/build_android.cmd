@@ -1,3 +1,3 @@
 @echo off
 
-cd android && gradlew assembleDebug && cd ..
+cd android && gradle assembleDebug && cd ..

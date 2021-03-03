@@ -1,6 +1,9 @@
 name: deploy examples
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   deploy_examples_desktop:
