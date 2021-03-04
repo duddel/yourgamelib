@@ -822,10 +822,10 @@ namespace mygame
             ImGui::SliderInt("start tile", &startTile, 0, maxNumTiles - 1);
             numTiles = (numTiles > maxNumTiles - startTile) ? (maxNumTiles - startTile) : numTiles;
             ImGui::SliderInt("num tiles", &numTiles, 1, maxNumTiles - startTile);
-            ImGui::InputFloat("x offset 0.1", &xOffset, 0.1f, 0.5f, 3);
-            ImGui::InputFloat("y offset 0.1", &yOffset, 0.1f, 0.5f, 3);
-            ImGui::InputFloat("x offset 1.0", &xOffset, 1.0f, 1.0f, 3);
-            ImGui::InputFloat("y offset 1.0", &yOffset, 1.0f, 1.0f, 3);
+            ImGui::InputFloat("x offset 0.1", &xOffset, 0.1f, 0.5f);
+            ImGui::InputFloat("y offset 0.1", &yOffset, 0.1f, 0.5f);
+            ImGui::InputFloat("x offset 1.0", &xOffset, 1.0f, 1.0f);
+            ImGui::InputFloat("y offset 1.0", &yOffset, 1.0f, 1.0f);
             ImGui::RadioButton("GL_NEAREST", &texFilter, 0);
             ImGui::SameLine();
             ImGui::RadioButton("GL_LINEAR", &texFilter, 1);

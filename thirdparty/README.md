@@ -137,30 +137,24 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Dear ImGui
 
--   version: **1.79**
--   origin: <https://github.com/ocornut/imgui/releases/tag/v1.79>
+-   version: **1.82 WIP**
+-   origin: <https://github.com/ocornut/imgui/tree/ee643b2ad919f9e85b973f3915d13a4fc0612a5a>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
-    -   examples/imgui_impl_glfw.{h,cpp}
-    -   examples/imgui_impl_opengl3.{h,cpp}
+    -   backends/imgui_impl_android.{h,cpp}
+    -   backends/imgui_impl_glfw.{h,cpp}
+    -   backends/imgui_impl_opengl3.{h,cpp}
     -   imconfig.h
     -   imgui.{h,cpp}
     -   imgui_demo.cpp
     -   imgui_draw.cpp
     -   imgui_internal.h
+    -   imgui_tables.cpp
     -   imgui_widgets.cpp
 -   license: mentioned in files
     -   [imstb_rectpack.h](imgui/imstb_rectpack.h)
     -   [imstb_textedit.h](imgui/imstb_textedit.h)
     -   [imstb_truetype.h](imgui/imstb_truetype.h)
-
-### Dear ImGui Android back-end
-
--   version: **1297dda (android_native)**
--   origin: <https://github.com/duddel/imgui/tree/1297dda1e1ac016dd07ca4cbb521776169900aff>
--   extracted from origin: see files below
--   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
-    -   backends/imgui_impl_android.{h,cpp}
 
 ## JSON for Modern C++
 
