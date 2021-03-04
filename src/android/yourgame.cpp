@@ -100,7 +100,7 @@ namespace yourgame_internal_android
     {
         yourgame_internal_android::handleInputEvent(inputEvent);
 #ifdef YOURGAME_EXTPROJ_imgui
-        ImGui_ImplAndroid_handleInputEvent(inputEvent);
+        ImGui_ImplAndroid_HandleInputEvent(inputEvent);
 #endif
         return 1;
     }
