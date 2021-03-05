@@ -48,10 +48,16 @@ jobs:
         init.cmd
       if: startsWith(matrix.os, 'windows')
       shell: cmd
-    - name: configure/build (windows)
+    - name: configure/build (win32)
       run: |
         cd examples/${{ matrix.example_name }}
-        build_desktop_release.cmd
+        build_desktop_release_win32.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
+    - name: configure/build (win64)
+      run: |
+        cd examples/${{ matrix.example_name }}
+        build_desktop_release_win64.cmd
       if: startsWith(matrix.os, 'windows')
       shell: cmd
     - name: upload artifacts

@@ -27,33 +27,42 @@ jobs:
         sudo apt update
         sudo apt install libgl1-mesa-dev xorg-dev
       if: startsWith(matrix.os, 'ubuntu')
+    # ubuntu: init, configure, build ...
     - name: initialize (ubuntu)
       run: |
         cd examples/${{ matrix.example_name }}
         ./init.bash
       if: startsWith(matrix.os, 'ubuntu')
+    - name: configure/build (ubuntu)
+      run: |
+        cd examples/${{ matrix.example_name }}
+        ./build_desktop_debug.bash
+      if: startsWith(matrix.os, 'ubuntu')
+    # windows: init, configure, build ...
     - name: initialize (windows)
       run: |
         cd examples/${{ matrix.example_name }}
         init.cmd
       if: startsWith(matrix.os, 'windows')
       shell: cmd
-    - name: configure
+    - name: configure/build (win32)
       run: |
         cd examples/${{ matrix.example_name }}
-        mkdir _build
-        cd _build
-        cmake -DYOURGAME_PLATFORM=desktop ..
-    - name: build
+        build_desktop_debug_win32.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
+    - name: configure/build (win64)
       run: |
-        cd examples/${{ matrix.example_name }}/_build
-        cmake --build .
+        cd examples/${{ matrix.example_name }}
+        build_desktop_debug_win64.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
 
 
   build_examples_web:
     name: web
 
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         example_name: [framework,bare,template,fps,particles]
@@ -78,24 +87,20 @@ jobs:
       run: |
         cd examples/${{ matrix.example_name }}
         ./init.bash
-    - name: configure
+    - name: configure/build
+      # build_web_debug.bash needs to know the emsdk location
+      # in order to call: source $EMSDK/emsdk_env.sh:
+      env:
+        EMSDK: ${{ github.workspace }}/emsdk
       run: |
-        source ./emsdk/emsdk_env.sh
         cd examples/${{ matrix.example_name }}
-        mkdir _build
-        cd _build
-        emcmake cmake .. -DYOURGAME_PLATFORM=web
-    - name: build
-      run: |
-        source ./emsdk/emsdk_env.sh
-        cd examples/${{ matrix.example_name }}/_build
-        emmake cmake --build .
+        ./build_web_debug.bash
 
 
   build_examples_android:
     name: android
 
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         example_name: [framework,bare,template,fps,particles]
@@ -116,5 +121,5 @@ jobs:
         ./init.bash
     - name: assemble
       run: |
-        cd examples/${{ matrix.example_name }}/android
-        gradle assembleDebug
+        cd examples/${{ matrix.example_name }}
+        ./build_android_debug.bash
