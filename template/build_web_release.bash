@@ -5,7 +5,7 @@ source $EMSDK/emsdk_env.sh
 if [ ! -d "_build_web_release" ]; then
   mkdir _build_web_release
   cd _build_web_release
-  emcmake cmake -DYOURGAME_PLATFORM=web -DCPACK_GENERATOR="TGZ;ZIP" ..
+  emcmake cmake -DYOURGAME_PLATFORM=web -DCMAKE_BUILD_TYPE=RELEASE -DCPACK_GENERATOR="TGZ;ZIP" ..
   cd -
 fi
 
