@@ -1,0 +1,10 @@
+digraph "yourgame::GLParticles"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="yourgame::GLParticles",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="yourgame::Particles",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classyourgame_1_1Particles.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" m_cfg" ,fontname="Helvetica"];
+  Node4 [label="yourgame::Particles\l::Config",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structyourgame_1_1Particles_1_1Config.html",tooltip="Particle system configuration. "];
+}

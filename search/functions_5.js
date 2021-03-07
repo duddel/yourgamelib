@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['geo',['geo',['../classyourgame_1_1GLSpriteGrid.html#aa97895c8dd99b9c25bcffc5096eab092',1,'yourgame::GLSpriteGrid']]],
+  ['geo',['geo',['../classyourgame_1_1GLParticles.html#a39ee8544a90db97d07e7ecff92243e44',1,'yourgame::GLParticles::geo()'],['../classyourgame_1_1GLSpriteGrid.html#aa97895c8dd99b9c25bcffc5096eab092',1,'yourgame::GLSpriteGrid::geo()']]],
   ['get',['get',['../classyourgame_1_1AssetManager.html#a49b1c868abffbba8df8678dee6f6efaf',1,'yourgame::AssetManager']]],
   ['getaxisglobal',['getAxisGlobal',['../classyourgame_1_1Trafo.html#a072d679cc293e30c29c44d20113c6aa0',1,'yourgame::Trafo']]],
   ['getaxislocal',['getAxisLocal',['../classyourgame_1_1Trafo.html#a4ad87698a98801a2b296ad78b1eddd81',1,'yourgame::Trafo']]],
