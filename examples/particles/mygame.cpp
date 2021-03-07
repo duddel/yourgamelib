@@ -16,9 +16,6 @@ namespace mygame
     {
         auto ctx = yg::getCtx();
 
-        yg::Particles::Config partCfg;
-        g_assets.insert("particles", new yg::Particles(partCfg));
-
         g_camera.trafo()->lookAt(glm::vec3(7.35889f, 4.95831f, 6.92579f),
                                  glm::vec3(0.0f, 4.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
@@ -32,18 +29,12 @@ namespace mygame
             g_assets.insert("licenseStr", licStr);
         }
 
+        // particles
+        yg::Particles::Config partCfg;
+        g_assets.insert("particles", yg::GLParticles::make(partCfg, yg::loadGeometry("quad.obj", nullptr)));
+
         // geometry
         g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
-        g_assets.insert("geoQuad", yg::loadGeometry("quad.obj", nullptr));
-        // geoQuad is used for drawing particles.
-        // prepare buffers for instanced position and progress:
-        GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
-        g_assets.get<yg::GLGeometry>("geoQuad")->addBuffer("instModelPos", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
-        g_assets.get<yg::GLGeometry>("geoQuad")->addBuffer("instProgress", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
-        g_assets.get<yg::GLGeometry>("geoQuad")
-            ->addBufferToShape("main", {{yg::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1}}, "instModelPos");
-        g_assets.get<yg::GLGeometry>("geoQuad")
-            ->addBufferToShape("main", {{yg::attrLocInstProgress, 1, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (void *)0, 1}}, "instProgress");
 
         // shaders
         g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
@@ -62,7 +53,7 @@ namespace mygame
     void tick()
     {
         auto ctx = yg::getCtx();
-        auto parts = g_assets.get<yg::Particles>("particles");
+        auto parts = g_assets.get<yg::GLParticles>("particles");
 
         ImGui::Begin("Particles", nullptr, (ImGuiWindowFlags_AlwaysAutoResize));
         static int preset = 0;
@@ -253,20 +244,13 @@ namespace mygame
 
         // draw particles
         {
-            g_assets.get<yg::Particles>("particles")->tick(static_cast<float>(ctx.deltaTimeS) * particlesTickRate);
-
-            auto geoQuad = g_assets.get<yg::GLGeometry>("geoQuad");
-            std::vector<glm::vec4> &partPos = g_assets.get<yg::Particles>("particles")->m_positionData;
-            std::vector<float> &partProg = g_assets.get<yg::Particles>("particles")->m_progressData;
-            geoQuad->bufferData("instModelPos", partPos.size() * sizeof(partPos[0]), partPos.data());
-            geoQuad->bufferData("instProgress", partProg.size() * sizeof(partProg[0]), partProg.data());
-
+            yg::GLParticles *parts = g_assets.get<yg::GLParticles>("particles");
+            parts->tick(static_cast<float>(ctx.deltaTimeS) * particlesTickRate);
             // model matrix: scaling and billboard-like rotation (from camera trafo)
             auto modelMat = glm::mat4(glm::mat3(g_camera.trafo()->mat()) * glm::mat3(glm::scale(glm::vec3(0.04f))));
-
             auto shdrPartsColorFade = g_assets.get<yg::GLShader>("shaderParticleColorFade");
             shdrPartsColorFade->useProgram(nullptr, &g_camera);
-            yg::drawGeo(geoQuad, shdrPartsColorFade, {}, modelMat, &g_camera, partPos.size());
+            yg::drawGeo(parts->geo(), shdrPartsColorFade, {}, modelMat, &g_camera, parts->numParticles());
         }
     }
 

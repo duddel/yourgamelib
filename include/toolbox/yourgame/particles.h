@@ -67,7 +67,7 @@ namespace yourgame
         \brief ticks the particle system
         \param dt time delta
          */
-        void tick(float dt);
+        virtual void tick(float dt);
         void reset();
         Config m_cfg;
         std::vector<glm::vec4> m_positionData;
