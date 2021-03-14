@@ -96,8 +96,8 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Flecs
 
--   version: **76a0221, 2.2.0**
--   origin: <https://github.com/SanderMertens/flecs/tree/76a02215982dee495494af7b651163eb234a48df>
+-   version: **2.3.2**
+-   origin: <https://github.com/SanderMertens/flecs/releases/tag/v2.3.2>
 -   extracted from origin:
     -   LICENSE, flecs.{h,c}
 -   license: [flecs/LICENSE](flecs/LICENSE)
