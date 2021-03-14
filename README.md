@@ -44,10 +44,12 @@ To build for target `desktop`, you need:
 
 To build for target `android`, you need:
 
--   the Android SDK
-    -   manually install `ndk-bundle` (tested version 20.0.5594570)
-    -   and `cmake` (tested version 3.6.4111459) via the `sdkmanager`
--   Make sure the environment variable `ANDROID_SDK_ROOT` is set and points to the android sdk.
+-   The Android SDK
+    -   check yourgame template [build.gradle](template/android/app/build.gradle)...
+        -   ...and install the requested **NDK** version (`ndkVersion`) via **sdkmanager**, or change suitable
+        -   ...do the same for other Android SDK components, if they are not installed automatically
+-   Gradle (tested version 6.8.3), **or...**
+-   ...use Android Studio. It generates a Gradle Wrapper for the project, not requiring a separate Gradle installation
 
 To build for target `web`, you need:
 
