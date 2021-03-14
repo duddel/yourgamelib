@@ -22,58 +22,58 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-   void drawGeo(const yourgame::GLGeometry *geo,
-                yourgame::GLShader *shader,
-                std::vector<const yourgame::GLTexture2D *> textures,
-                const glm::mat4 &modelMat,
-                yourgame::Camera *camera,
-                GLsizei instancecount)
-   {
-      if (!geo)
-         return;
+    void drawGeo(const yourgame::GLGeometry *geo,
+                 yourgame::GLShader *shader,
+                 std::vector<const yourgame::GLTexture2D *> textures,
+                 const glm::mat4 &modelMat,
+                 yourgame::Camera *camera,
+                 GLsizei instancecount)
+    {
+        if (!geo)
+            return;
 
-      // mvp matrix
-      if (shader)
-      {
-         GLint unif;
-         unif = shader->getUniformLocation(yourgame::unifNameMvpMatrix);
-         if (unif != -1)
-         {
-            auto mvp = camera ? (camera->pMat() * camera->vMat() * modelMat)
-                              : modelMat;
-            glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(mvp));
-         }
+        // mvp matrix
+        if (shader)
+        {
+            GLint unif;
+            unif = shader->getUniformLocation(yourgame::unifNameMvpMatrix);
+            if (unif != -1)
+            {
+                auto mvp = camera ? (camera->pMat() * camera->vMat() * modelMat)
+                                  : modelMat;
+                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(mvp));
+            }
 
-         // model matrix
-         unif = shader->getUniformLocation(yourgame::unifNameModelMatrix);
-         if (unif != -1)
-         {
-            glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(modelMat));
-         }
+            // model matrix
+            unif = shader->getUniformLocation(yourgame::unifNameModelMatrix);
+            if (unif != -1)
+            {
+                glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(modelMat));
+            }
 
-         // normal matrix
-         unif = shader->getUniformLocation(yourgame::unifNameNormalMatrix);
-         if (unif != -1)
-         {
-            auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-            glUniformMatrix3fv(unif, 1, GL_FALSE, glm::value_ptr(normalMat));
-         }
-      }
+            // normal matrix
+            unif = shader->getUniformLocation(yourgame::unifNameNormalMatrix);
+            if (unif != -1)
+            {
+                auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
+                glUniformMatrix3fv(unif, 1, GL_FALSE, glm::value_ptr(normalMat));
+            }
+        }
 
-      // textures
-      for (const auto &t : textures)
-      {
-         if (t)
-            t->bind();
-      }
+        // textures
+        for (const auto &t : textures)
+        {
+            if (t)
+                t->bind();
+        }
 
-      if (instancecount > 1)
-      {
-         geo->drawAllInstanced(instancecount);
-      }
-      else
-      {
-         geo->drawAll();
-      }
-   }
+        if (instancecount > 1)
+        {
+            geo->drawAllInstanced(instancecount);
+        }
+        else
+        {
+            geo->drawAll();
+        }
+    }
 } // namespace yourgame

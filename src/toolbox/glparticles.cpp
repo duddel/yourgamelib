@@ -17,7 +17,6 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <vector>
 #include <glm/glm.hpp>
 #include "yourgame/glparticles.h"
 #include "yourgame/glconventions.h"
@@ -51,10 +50,8 @@ namespace yourgame
     void GLParticles::tick(float dt)
     {
         yourgame::Particles::tick(dt);
-        std::vector<glm::vec4> &partPos = m_positionData;
-        std::vector<float> &partProg = m_progressData;
-        m_geo->bufferData("instModelPos", partPos.size() * sizeof(partPos[0]), partPos.data());
-        m_geo->bufferData("instProgress", partProg.size() * sizeof(partProg[0]), partProg.data());
+        m_geo->bufferData("instModelPos", m_positionData.size() * sizeof(m_positionData[0]), m_positionData.data());
+        m_geo->bufferData("instProgress", m_progressData.size() * sizeof(m_progressData[0]), m_progressData.data());
     }
     yourgame::GLGeometry *GLParticles::geo()
     {
