@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #include "yourgame/gl_include.h"
 #include "yourgame/yourgame.h"
 #include "yourgame/toolbox.h"
+#include "yourgame/audioplayer.h"
 #include "imgui.h"
 #include "box2d/box2d.h"
 #include "flecs.h"

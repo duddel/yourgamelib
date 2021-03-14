@@ -14,14 +14,13 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 
 ## Toolbox libraries
 
-These libraries are integrated if the project has been initialized with default settings, which include the *toolbox* (by **not** using the `--bare` option). See [cmake/Toolbox.cmake](../cmake/Toolbox.cmake) for details.
+These libraries are integrated if the project has been initialized with default settings, which include the _toolbox_ (by **not** using the `--bare` option). See [cmake/Toolbox.cmake](../cmake/Toolbox.cmake) for details.
 
 | Alias                           | Name                | Desktop            | Android            | Web                |
 | ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
 | [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [miniaudio](#miniaudio)         | miniaudio           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
@@ -35,6 +34,7 @@ These libraries are integrated if the project has been initialized with default 
 | [flecs](#flecs)             | Flecs       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [fsm](#fsm)                 | fsm         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [lua](#lua)                 | Lua         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [miniaudio](#miniaudio)     | miniaudio   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [qu3e](#qu3e)               | qu3e        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 * * *

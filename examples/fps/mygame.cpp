@@ -5,6 +5,7 @@
 #include "yourgame/yourgame.h"
 #include "yourgame/toolbox.h"
 #include "yourgame/bulletenv.h"
+#include "yourgame/audioplayer.h"
 #include "imgui.h"
 
 namespace yg = yourgame; // convenience

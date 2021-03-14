@@ -2,13 +2,11 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
   "glm"
   "imgui"
   "json"
-  "miniaudio"
   "stb"
   "tinyobjloader"
 )
 
 list(APPEND YOURGAME_SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/audioplayer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/camera.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glbuffer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glconventions.cpp

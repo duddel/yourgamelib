@@ -3,4 +3,4 @@
 cd %~dp0
 cd ..
 
-python ../init.py fps --noStub --extProj bullet
+python ../init.py fps --noStub --extProj bullet miniaudio
