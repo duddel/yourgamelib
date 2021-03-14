@@ -10,8 +10,6 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/toolbox" {
     dir_a60850a87a477dbcc0e6f59871872d7a [shape=box label="yourgame" color="black" fillcolor="white" style="filled" URL="dir_a60850a87a477dbcc0e6f59871872d7a.html"];
   }
   }
-  dir_821002d4f10779a80d4fb17bc32f21f1 [shape=box label="utils" fillcolor="white" style="filled" color="red" URL="dir_821002d4f10779a80d4fb17bc32f21f1.html"];
   dir_ab1c81409f0df724f17c9ef30afee877 [shape=box label="base" fillcolor="white" style="filled" color="red" URL="dir_ab1c81409f0df724f17c9ef30afee877.html"];
-  dir_a60850a87a477dbcc0e6f59871872d7a->dir_821002d4f10779a80d4fb17bc32f21f1 [headlabel="1", labeldistance=1.5 headhref="dir_000004_000005.html"];
   dir_a60850a87a477dbcc0e6f59871872d7a->dir_ab1c81409f0df724f17c9ef30afee877 [headlabel="9", labeldistance=1.5 headhref="dir_000004_000001.html"];
 }
