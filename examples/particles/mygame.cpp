@@ -256,7 +256,6 @@ namespace mygame
 
     void shutdown()
     {
-        yg::audioShutdown();
         g_assets.clear();
     }
 } // namespace mygame
