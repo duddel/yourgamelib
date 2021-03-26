@@ -22,8 +22,10 @@ var searchData=
   ['settranslation',['setTranslation',['../classyourgame_1_1Trafo.html#abbdaacbbc7f3ff3e4afa70640bd88534',1,'yourgame::Trafo']]],
   ['setzfar',['setZFar',['../classyourgame_1_1Camera.html#ad34934c4f341e8e8f349c4e6beed5c96',1,'yourgame::Camera']]],
   ['setznear',['setZNear',['../classyourgame_1_1Camera.html#a4882cf276b5f0350d4ab1a96d51d96ee',1,'yourgame::Camera']]],
+  ['shader',['shader',['../structyourgame_1_1DrawConfig.html#a158fee9f64969ea8d56ed655ee14227f',1,'yourgame::DrawConfig']]],
   ['shutdown',['shutdown',['../namespacemygame.html#a28a7ec9c031d3c818a55a6cf05e171be',1,'mygame']]],
   ['size',['size',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6ad7ce4efc47f00b28665e5a82aabbd3',1,'yourgame::GLShape::ArrBufferDescr']]],
   ['specular',['specular',['../classyourgame_1_1GLLightsource.html#a35e66326514235b631a5b76f9db7bc57',1,'yourgame::GLLightsource']]],
-  ['stride',['stride',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6af383d1956c20ed1a3e19c706d52f4f',1,'yourgame::GLShape::ArrBufferDescr']]]
+  ['stride',['stride',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6af383d1956c20ed1a3e19c706d52f4f',1,'yourgame::GLShape::ArrBufferDescr']]],
+  ['subtex',['subtex',['../structyourgame_1_1DrawConfig.html#ad4d1e93436a347b716c69aca29dc2a8f',1,'yourgame::DrawConfig']]]
 ];

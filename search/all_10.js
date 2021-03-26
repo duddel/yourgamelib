@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['tex',['tex',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#ae1e678694495a967f3cfb0bd86c997bd',1,'yourgame::GLTextureAtlas::Coords']]],
   ['texture',['texture',['../classyourgame_1_1GLTextureAtlas.html#a0dc37ce23bb1881e7fee4eb41e8adfea',1,'yourgame::GLTextureAtlas']]],
   ['textureattachdescr',['TextureAttachDescr',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html',1,'yourgame::GLFramebuffer']]],
   ['textureattachment',['textureAttachment',['../classyourgame_1_1GLFramebuffer.html#a95315cd4ffa594f6c446443cccb850f0',1,'yourgame::GLFramebuffer']]],
+  ['textures',['textures',['../structyourgame_1_1DrawConfig.html#a73652bd74e43ba3a31e94ba2c52eac53',1,'yourgame::DrawConfig']]],
   ['textureunitdiffuse',['textureUnitDiffuse',['../namespaceyourgame.html#af9c1a4c6c56649d6bc198103e0c0520f',1,'yourgame']]],
   ['textureunitsky',['textureUnitSky',['../namespaceyourgame.html#a5ce0ebf34ae7c3c0cab18bcb3d996642',1,'yourgame']]],
   ['tick',['tick',['../classyourgame_1_1GLParticles.html#acd3efb9e4a6011f90ec23a06eb8c28e2',1,'yourgame::GLParticles::tick()'],['../classyourgame_1_1Particles.html#ae66456b428fe5412aef539158d553693',1,'yourgame::Particles::tick()'],['../namespacemygame.html#ab1121048bb4f4e56f0f424b3898049f2',1,'mygame::tick()']]],

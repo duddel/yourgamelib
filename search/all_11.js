@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['umax',['uMax',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#a8bd960f5eb7cbbf3c9f5b8e8337dfdbb',1,'yourgame::GLTextureAtlas::Coords']]],
-  ['umin',['uMin',['../structyourgame_1_1GLTextureAtlas_1_1Coords.html#ae38923891f6b03bd86d5d9f49ae54e76',1,'yourgame::GLTextureAtlas::Coords']]],
   ['unbindtarget',['unbindTarget',['../classyourgame_1_1GLBuffer.html#a07fe6fc610b44e1411303c99fab3ca08',1,'yourgame::GLBuffer::unbindTarget()'],['../classyourgame_1_1GLFramebuffer.html#aeffd5e20ecde3cac68112e99b6769396',1,'yourgame::GLFramebuffer::unbindTarget()'],['../classyourgame_1_1GLTexture2D.html#a2f7c231bf25b30ef0419ecd6f5f26289',1,'yourgame::GLTexture2D::unbindTarget()']]],
   ['unifnamecameraposition',['unifNameCameraPosition',['../namespaceyourgame.html#ae1db8789c09ec427fa24a00e762c66a8',1,'yourgame']]],
   ['unifnamecameratrafo',['unifNameCameraTrafo',['../namespaceyourgame.html#a5f2ade11ae306769d9bc2e465867e7a5',1,'yourgame']]],
@@ -13,6 +11,7 @@ var searchData=
   ['unifnamemvpmatrix',['unifNameMvpMatrix',['../namespaceyourgame.html#a9d277cc2294828592d34e13fde329983',1,'yourgame']]],
   ['unifnamenormalmatrix',['unifNameNormalMatrix',['../namespaceyourgame.html#a3bf2c1e650e39fe4c2ffb6016fbb063e',1,'yourgame']]],
   ['unifnameskyrotationinv',['unifNameSkyRotationInv',['../namespaceyourgame.html#a11d5556309923a4b73be46e8576547f1',1,'yourgame']]],
+  ['unifnamesubtexture',['unifNameSubtexture',['../namespaceyourgame.html#aa6455c658220facc291aa7b29a44b7e5',1,'yourgame']]],
   ['unifnametexturediffuse',['unifNameTextureDiffuse',['../namespaceyourgame.html#acaaf7d5562c8fd69853bc7775ca62963',1,'yourgame']]],
   ['unifnametexturesky',['unifNameTextureSky',['../namespaceyourgame.html#ad4e9aa889f4404e7c6717853d9a65b62',1,'yourgame']]],
   ['unifnamevpmatrix',['unifNameVpMatrix',['../namespaceyourgame.html#a52a8b80d616a12ef6c2f7c4df1fc3c4b',1,'yourgame']]],

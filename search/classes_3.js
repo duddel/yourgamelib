@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elemarrbufferdescr',['ElemArrBufferDescr',['../structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html',1,'yourgame::GLShape']]]
+  ['drawconfig',['DrawConfig',['../structyourgame_1_1DrawConfig.html',1,'yourgame']]]
 ];

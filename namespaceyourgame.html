@@ -80,6 +80,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structyourgame_1_1context.html">context</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structyourgame_1_1DrawConfig.html">DrawConfig</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLBuffer.html">GLBuffer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLFramebuffer.html">GLFramebuffer</a></td></tr>
@@ -482,6 +484,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ae1d94e62ec734d6e0b93c395afdd3a22"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structyourgame_1_1context.html">yourgame::context</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ae1d94e62ec734d6e0b93c395afdd3a22">getCtx</a> ()</td></tr>
 <tr class="memdesc:ae1d94e62ec734d6e0b93c395afdd3a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the current context  <a href="#ae1d94e62ec734d6e0b93c395afdd3a22">More...</a><br /></td></tr>
 <tr class="separator:ae1d94e62ec734d6e0b93c395afdd3a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23ae9bf87b5b661f9191e8a601f7d4bd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a23ae9bf87b5b661f9191e8a601f7d4bd">getTime</a> ()</td></tr>
+<tr class="memdesc:a23ae9bf87b5b661f9191e8a601f7d4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns (monotonic) time duration [seconds] since init  <a href="#a23ae9bf87b5b661f9191e8a601f7d4bd">More...</a><br /></td></tr>
+<tr class="separator:a23ae9bf87b5b661f9191e8a601f7d4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ed5dcb225aff2adeb27dfd1505f65c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a3ed5dcb225aff2adeb27dfd1505f65c6">notifyShutdown</a> ()</td></tr>
 <tr class="memdesc:a3ed5dcb225aff2adeb27dfd1505f65c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">triggers the application to exit after the cycle this function was called in  <a href="#a3ed5dcb225aff2adeb27dfd1505f65c6">More...</a><br /></td></tr>
 <tr class="separator:a3ed5dcb225aff2adeb27dfd1505f65c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -497,8 +502,8 @@ Functions</h2></td></tr>
 <tr class="memitem:ad6bb93482b4a8bd5767faaeabb952395"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ad6bb93482b4a8bd5767faaeabb952395">catchMouse</a> (bool enable)</td></tr>
 <tr class="memdesc:ad6bb93482b4a8bd5767faaeabb952395"><td class="mdescLeft">&#160;</td><td class="mdescRight">disable mouse cursor, infinite movement  <a href="#ad6bb93482b4a8bd5767faaeabb952395">More...</a><br /></td></tr>
 <tr class="separator:ad6bb93482b4a8bd5767faaeabb952395"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa290500b8b28dbae982f4b6291bb5ed1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#aa290500b8b28dbae982f4b6291bb5ed1">drawGeo</a> (const <a class="el" href="classyourgame_1_1GLGeometry.html">yourgame::GLGeometry</a> *geo, <a class="el" href="classyourgame_1_1GLShader.html">yourgame::GLShader</a> *shader, std::vector&lt; const <a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *&gt; textures, const glm::mat4 &amp;modelMat=glm::mat4(1), <a class="el" href="classyourgame_1_1Camera.html">yourgame::Camera</a> *camera=nullptr, GLsizei instancecount=1)</td></tr>
-<tr class="separator:aa290500b8b28dbae982f4b6291bb5ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3140b6caef697006a4a7b61ff751e7ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a3140b6caef697006a4a7b61ff751e7ee">drawGeo</a> (const <a class="el" href="classyourgame_1_1GLGeometry.html">yourgame::GLGeometry</a> *geo, const <a class="el" href="structyourgame_1_1DrawConfig.html">yourgame::DrawConfig</a> &amp;cfg)</td></tr>
+<tr class="separator:a3140b6caef697006a4a7b61ff751e7ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1570db4889aa249750583f456cdfafd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a1570db4889aa249750583f456cdfafd9">loadTexture</a> (const char *filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)</td></tr>
 <tr class="separator:a1570db4889aa249750583f456cdfafd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af86f5d68d90c84cb233ebff1edea1145"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTextureAtlas.html">GLTextureAtlas</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#af86f5d68d90c84cb233ebff1edea1145">loadTextureAtlasCrunch</a> (const char *filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)</td></tr>
@@ -581,6 +586,8 @@ Variables</h2></td></tr>
 <tr class="separator:abce3dcb0a1b5d1858c2ae5b769325793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ef18f593f8779169a2d1123bfa166d8"><td class="memItemLeft" align="right" valign="top">const GLchar *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a9ef18f593f8779169a2d1123bfa166d8">unifNameLightPosition</a></td></tr>
 <tr class="separator:a9ef18f593f8779169a2d1123bfa166d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6455c658220facc291aa7b29a44b7e5"><td class="memItemLeft" align="right" valign="top">const GLchar *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#aa6455c658220facc291aa7b29a44b7e5">unifNameSubtexture</a></td></tr>
+<tr class="separator:aa6455c658220facc291aa7b29a44b7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bdef5ba2d62f0174350cbae7d9f0da4"><td class="memItemLeft" align="right" valign="top">const GLint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a6bdef5ba2d62f0174350cbae7d9f0da4">unifValueTextureDiffuse</a></td></tr>
 <tr class="separator:a6bdef5ba2d62f0174350cbae7d9f0da4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a927953a48cb4a98f50ac700f650eda37"><td class="memItemLeft" align="right" valign="top">const GLint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a927953a48cb4a98f50ac700f650eda37">unifValueTextureSky</a></td></tr>
@@ -1075,8 +1082,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="aa290500b8b28dbae982f4b6291bb5ed1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa290500b8b28dbae982f4b6291bb5ed1">&#9670;&nbsp;</a></span>drawGeo()</h2>
+<a id="a3140b6caef697006a4a7b61ff751e7ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3140b6caef697006a4a7b61ff751e7ee">&#9670;&nbsp;</a></span>drawGeo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1090,32 +1097,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classyourgame_1_1GLShader.html">yourgame::GLShader</a> *&#160;</td>
-          <td class="paramname"><em>shader</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; const <a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *&gt;&#160;</td>
-          <td class="paramname"><em>textures</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const glm::mat4 &amp;&#160;</td>
-          <td class="paramname"><em>modelMat</em> = <code>glm::mat4(1)</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classyourgame_1_1Camera.html">yourgame::Camera</a> *&#160;</td>
-          <td class="paramname"><em>camera</em> = <code>nullptr</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">GLsizei&#160;</td>
-          <td class="paramname"><em>instancecount</em> = <code>1</code>&#160;</td>
+          <td class="paramtype">const <a class="el" href="structyourgame_1_1DrawConfig.html">yourgame::DrawConfig</a> &amp;&#160;</td>
+          <td class="paramname"><em>cfg</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1243,6 +1226,25 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>returns the default logger instance </p>
+
+</div>
+</div>
+<a id="a23ae9bf87b5b661f9191e8a601f7d4bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ae9bf87b5b661f9191e8a601f7d4bd">&#9670;&nbsp;</a></span>getTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double yourgame::getTime </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns (monotonic) time duration [seconds] since init </p>
 
 </div>
 </div>
@@ -2400,6 +2402,20 @@ template&lt;typename T &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">const GLchar* yourgame::unifNameSkyRotationInv</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa6455c658220facc291aa7b29a44b7e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6455c658220facc291aa7b29a44b7e5">&#9670;&nbsp;</a></span>unifNameSubtexture</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const GLchar* yourgame::unifNameSubtexture</td>
         </tr>
       </table>
 </div><div class="memdoc">

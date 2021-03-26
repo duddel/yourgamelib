@@ -1,0 +1,10 @@
+digraph "yourgame::DrawConfig"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="yourgame::DrawConfig",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" camera" ,fontname="Helvetica"];
+  Node2 [label="yourgame::Camera",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classyourgame_1_1Camera.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" shader" ,fontname="Helvetica"];
+  Node3 [label="yourgame::GLShader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classyourgame_1_1GLShader.html"];
+}

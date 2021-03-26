@@ -74,11 +74,6 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="gltextureatlas_8h_source.html">gltextureatlas.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structyourgame_1_1GLTextureAtlas_1_1Coords.html">Coords</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac90373a8c9a94cc5beb30e7cd1e53e69"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#ac90373a8c9a94cc5beb30e7cd1e53e69">GLTextureAtlas</a> ()</td></tr>
@@ -93,8 +88,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a93fb85ee05cb74076164b1c68cf44313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9221ab669068499351739df6d598471b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#a9221ab669068499351739df6d598471b">pushCoords</a> (std::string name, float uMin, float uMax, float vMin, float vMax)</td></tr>
 <tr class="separator:a9221ab669068499351739df6d598471b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aded45e07ce8f832e88b52864dded7d67"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#aded45e07ce8f832e88b52864dded7d67">getCoords</a> (std::string name, <a class="el" href="structyourgame_1_1GLTextureAtlas_1_1Coords.html">Coords</a> &amp;dst) const</td></tr>
-<tr class="separator:aded45e07ce8f832e88b52864dded7d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a3d72572b66cf4c3b73118285d80291"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *, std::array&lt; float, 4 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#a1a3d72572b66cf4c3b73118285d80291">getCoords</a> (std::string name) const</td></tr>
+<tr class="separator:a1a3d72572b66cf4c3b73118285d80291"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f3709d82e4d88a3449e04837b082731"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *, std::array&lt; float, 4 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#a9f3709d82e4d88a3449e04837b082731">getCoords</a> (std::string seqName, int seqFrame) const</td></tr>
+<tr class="separator:a9f3709d82e4d88a3449e04837b082731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e6a57394783436b2fffa43119a6f2ce"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#a7e6a57394783436b2fffa43119a6f2ce">getSeqFrames</a> (std::string seqName) const</td></tr>
+<tr class="separator:a7e6a57394783436b2fffa43119a6f2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b72909efad1fdb47f07d55573465f5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#ae4b72909efad1fdb47f07d55573465f5">getSequenceNames</a> () const</td></tr>
+<tr class="separator:ae4b72909efad1fdb47f07d55573465f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dc37ce23bb1881e7fee4eb41e8adfea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1GLTextureAtlas.html#a0dc37ce23bb1881e7fee4eb41e8adfea">texture</a> (int idx) const</td></tr>
 <tr class="separator:a0dc37ce23bb1881e7fee4eb41e8adfea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -104,6 +105,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">yourgame::GLTextureAtlas::GLTextureAtlas </td>
@@ -112,6 +116,11 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -160,28 +169,81 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aded45e07ce8f832e88b52864dded7d67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aded45e07ce8f832e88b52864dded7d67">&#9670;&nbsp;</a></span>getCoords()</h2>
+<a id="a1a3d72572b66cf4c3b73118285d80291"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a3d72572b66cf4c3b73118285d80291">&#9670;&nbsp;</a></span>getCoords() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool yourgame::GLTextureAtlas::getCoords </td>
+          <td class="memname">std::pair&lt;<a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *, std::array&lt;float, 4&gt; &gt; yourgame::GLTextureAtlas::getCoords </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9f3709d82e4d88a3449e04837b082731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f3709d82e4d88a3449e04837b082731">&#9670;&nbsp;</a></span>getCoords() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt;<a class="el" href="classyourgame_1_1GLTexture2D.html">yourgame::GLTexture2D</a> *, std::array&lt;float, 4&gt; &gt; yourgame::GLTextureAtlas::getCoords </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>seqName</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structyourgame_1_1GLTextureAtlas_1_1Coords.html">Coords</a> &amp;&#160;</td>
-          <td class="paramname"><em>dst</em>&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>seqFrame</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
           <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e6a57394783436b2fffa43119a6f2ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e6a57394783436b2fffa43119a6f2ce">&#9670;&nbsp;</a></span>getSeqFrames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int yourgame::GLTextureAtlas::getSeqFrames </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>seqName</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae4b72909efad1fdb47f07d55573465f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4b72909efad1fdb47f07d55573465f5">&#9670;&nbsp;</a></span>getSequenceNames()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; yourgame::GLTextureAtlas::getSequenceNames </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
