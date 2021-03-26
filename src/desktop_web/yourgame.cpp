@@ -45,6 +45,7 @@ namespace yourgame_internal_desktop
         el::Logger *logger = nullptr;
         yourgame::context _context;
         std::chrono::steady_clock::time_point lastNowTime;
+        std::chrono::steady_clock::time_point initTime;
         bool _pendingShutdown = false;
 
         GLFWwindow *_window = NULL;
@@ -197,6 +198,7 @@ namespace yourgame_internal_desktop
         // result in a small time delta in the first tick() cycle.
         // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
         lastNowTime = std::chrono::steady_clock::now();
+        initTime = lastNowTime;
 
         return 0;
     }
@@ -275,6 +277,13 @@ namespace yourgame
     yourgame::context getCtx()
     {
         return yourgame_internal_desktop::_context;
+    }
+
+    double getTime()
+    {
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> duration = now - yourgame_internal_desktop::initTime;
+        return duration.count();
     }
 
     el::Logger *getLogr()

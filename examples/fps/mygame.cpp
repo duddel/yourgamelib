@@ -291,7 +291,12 @@ namespace mygame
             }
             auto geoCube = g_assets.get<yg::GLGeometry>("geoCube");
             geoCube->bufferData("instModelMat", trafos.size() * sizeof(trafos[0]), trafos.data());
-            yg::drawGeo(geoCube, shdrTex, {g_assets.get<yg::GLTexture2D>("texCube")}, glm::mat4(1), &g_camera, g_boxes.size());
+            yg::DrawConfig cfg;
+            cfg.shader = shdrTex;
+            cfg.textures = {g_assets.get<yg::GLTexture2D>("texCube")};
+            cfg.camera = &g_camera;
+            cfg.instancecount = g_boxes.size();
+            yg::drawGeo(geoCube, cfg);
         }
 
         // draw blaster
@@ -308,7 +313,11 @@ namespace mygame
             blasterTrafo.translateLocal({0.275f, -0.35f, -0.7f});
             blasterTrafo.setScaleLocal(1.25f);
 
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), shdrDiffCol, {}, blasterTrafo.mat(), &g_camera);
+            yg::DrawConfig cfg;
+            cfg.shader = shdrDiffCol;
+            cfg.modelMat = blasterTrafo.mat();
+            cfg.camera = &g_camera;
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), cfg);
         }
 
         // draw grid + crosshair
@@ -317,7 +326,10 @@ namespace mygame
             shdrSimpCol->useProgram();
 
             // grid
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpCol, {}, glm::mat4(1), &g_camera);
+            yg::DrawConfig cfg;
+            cfg.shader = shdrSimpCol;
+            cfg.camera = &g_camera;
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), cfg);
 
             // crosshair
             static const float crossOrthoScale = 50.0f;
@@ -325,7 +337,9 @@ namespace mygame
                                        crossOrthoScale * ctx.winAspectRatio,
                                        -crossOrthoScale,
                                        crossOrthoScale);
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), shdrSimpCol, {}, crossMvp);
+            cfg.camera = nullptr;
+            cfg.modelMat = crossMvp;
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), cfg);
         }
     }
 

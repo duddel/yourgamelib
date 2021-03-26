@@ -44,6 +44,7 @@ namespace yourgame
     const GLchar *unifNameLightDiffuse = "lightDiffuse";
     const GLchar *unifNameLightSpecular = "lightSpecular";
     const GLchar *unifNameLightPosition = "lightPosition";
+    const GLchar *unifNameSubtexture = "subtex";
     const GLint unifValueTextureDiffuse = 0;
     const GLint unifValueTextureSky = 4;
     const GLenum textureUnitDiffuse = GL_TEXTURE0;

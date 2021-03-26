@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
-        example_name: [framework,bare,template,fps,particles]
+        example_name: [framework,bare,template,fps,particles,sprites]
 
     steps:
     - uses: actions/checkout@v2
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        example_name: [framework,bare,template,fps,particles]
+        example_name: [framework,bare,template,fps,particles,sprites]
 
     steps:
     - uses: actions/checkout@v2
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        example_name: [framework,bare,template,fps,particles]
+        example_name: [framework,bare,template,fps,particles,sprites]
 
     steps:
     - uses: actions/checkout@v2

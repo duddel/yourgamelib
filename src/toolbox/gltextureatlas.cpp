@@ -21,8 +21,6 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    GLTextureAtlas::GLTextureAtlas() {}
-
     GLTextureAtlas::~GLTextureAtlas()
     {
         for (auto t : m_textures)
@@ -39,20 +37,69 @@ namespace yourgame
     void GLTextureAtlas::pushCoords(std::string name, float uMin, float uMax, float vMin, float vMax)
     {
         m_coords[name] = Coords{uMin, uMax, vMin, vMax, m_textures.back()};
+
+        // matches sprite names that have indexes at the end (with - or _),
+        // like walking_01, or walking-01, but NOT: walking01
+        static std::regex reSequence("^(.+)[-_](\\d+)$");
+        std::smatch reMatch;
+        if (std::regex_match(name, reMatch, reSequence) && reMatch.size() == 3)
+        {
+            // match 0: full string, 1: base, 2: index string
+            int seqFrameIdx = std::stoi(reMatch[2].str());
+            m_sequences[reMatch[1].str()].seqIdxMap[seqFrameIdx] = name;
+        }
     }
 
-    bool GLTextureAtlas::getCoords(std::string name, Coords &dst) const
+    std::pair<yourgame::GLTexture2D *, std::array<float, 4>> GLTextureAtlas::getCoords(std::string name) const
     {
+        std::pair<yourgame::GLTexture2D *, std::array<float, 4>> ret;
+
         auto it = m_coords.find(name);
         if (it == m_coords.end())
         {
-            return false;
+            ret.first = nullptr;
         }
         else
         {
-            dst = it->second;
-            return true;
+            ret.first = it->second.tex;
+            ret.second[0] = it->second.uMin;
+            ret.second[1] = it->second.uMax;
+            ret.second[2] = it->second.vMin;
+            ret.second[3] = it->second.vMax;
         }
+
+        return ret;
+    }
+
+    std::pair<yourgame::GLTexture2D *, std::array<float, 4>> GLTextureAtlas::getCoords(std::string seqName, int seqFrame) const
+    {
+        auto it = m_sequences.find(seqName);
+        if (it == m_sequences.end())
+        {
+            std::pair<yourgame::GLTexture2D *, std::array<float, 4>> ret;
+            ret.first = nullptr;
+            return ret;
+        }
+        else
+        {
+            return getCoords(it->second.seqIdxMap.at(seqFrame % it->second.seqIdxMap.size()));
+        }
+    }
+
+    int GLTextureAtlas::getSeqFrames(std::string seqName) const
+    {
+        auto it = m_sequences.find(seqName);
+        return (it == m_sequences.end()) ? 0 : it->second.seqIdxMap.size();
+    }
+
+    std::vector<std::string> GLTextureAtlas::getSequenceNames() const
+    {
+        std::vector<std::string> seqNames;
+        for (const auto &seq : m_sequences)
+        {
+            seqNames.push_back(seq.first);
+        }
+        return seqNames;
     }
 
     yourgame::GLTexture2D *GLTextureAtlas::texture(int idx) const

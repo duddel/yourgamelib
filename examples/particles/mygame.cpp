@@ -239,7 +239,10 @@ namespace mygame
         {
             auto shdrSimpleColor = g_assets.get<yg::GLShader>("shaderSimpleColor");
             shdrSimpleColor->useProgram();
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), shdrSimpleColor, {}, glm::mat4(1), &g_camera);
+            yg::DrawConfig cfg;
+            cfg.shader = shdrSimpleColor;
+            cfg.camera = &g_camera;
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), cfg);
         }
 
         // draw particles
@@ -250,7 +253,12 @@ namespace mygame
             auto modelMat = glm::mat4(glm::mat3(g_camera.trafo()->mat()) * glm::mat3(glm::scale(glm::vec3(0.04f))));
             auto shdrPartsColorFade = g_assets.get<yg::GLShader>("shaderParticleColorFade");
             shdrPartsColorFade->useProgram(nullptr, &g_camera);
-            yg::drawGeo(parts->geo(), shdrPartsColorFade, {}, modelMat, &g_camera, parts->numParticles());
+            yg::DrawConfig cfg;
+            cfg.shader = shdrPartsColorFade;
+            cfg.modelMat = modelMat;
+            cfg.camera = &g_camera;
+            cfg.instancecount = parts->numParticles();
+            yg::drawGeo(parts->geo(), cfg);
         }
     }
 

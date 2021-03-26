@@ -22,7 +22,9 @@ freely, subject to the following restrictions:
 
 #include <vector>
 #include <map>
+#include <array>
 #include <string>
+#include <regex>
 #include "yourgame/gltexture2d.h"
 
 namespace yourgame
@@ -30,16 +32,7 @@ namespace yourgame
     class GLTextureAtlas
     {
     public:
-        struct Coords
-        {
-            float uMin;
-            float uMax;
-            float vMin;
-            float vMax;
-            yourgame::GLTexture2D *tex;
-        };
-
-        GLTextureAtlas();
+        GLTextureAtlas(){};
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */
@@ -50,12 +43,32 @@ namespace yourgame
 
         void pushTexture(yourgame::GLTexture2D *newTex);
         void pushCoords(std::string name, float uMin, float uMax, float vMin, float vMax);
-        bool getCoords(std::string name, Coords &dst) const;
+
+        std::pair<yourgame::GLTexture2D *, std::array<float, 4>> getCoords(std::string name) const;
+        std::pair<yourgame::GLTexture2D *, std::array<float, 4>> getCoords(std::string seqName, int seqFrame) const;
+        int getSeqFrames(std::string seqName) const;
+        std::vector<std::string> getSequenceNames() const;
         yourgame::GLTexture2D *texture(int idx) const;
 
     private:
+        struct Coords
+        {
+            float uMin;
+            float uMax;
+            float vMin;
+            float vMax;
+            yourgame::GLTexture2D *tex;
+        };
+
+        struct Sequence
+        {
+            // maps sequence frame index to atlas sprite name
+            std::map<int, std::string> seqIdxMap;
+        };
+
         std::vector<yourgame::GLTexture2D *> m_textures;
         std::map<std::string, Coords> m_coords;
+        std::map<std::string, Sequence> m_sequences;
     };
 } // namespace yourgame
 

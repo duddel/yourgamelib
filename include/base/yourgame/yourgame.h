@@ -43,6 +43,9 @@ namespace yourgame
     /** \brief returns the current context */
     yourgame::context getCtx();
 
+    /** \brief returns (monotonic) time duration [seconds] since init */
+    double getTime();
+
     /** \brief triggers the application to exit after the cycle this function was called in */
     void notifyShutdown();
 

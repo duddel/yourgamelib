@@ -69,6 +69,7 @@ namespace yourgame_internal_android
         el::Logger *logger = nullptr;
         yourgame::context _context;
         std::chrono::steady_clock::time_point lastNowTime;
+        std::chrono::steady_clock::time_point initTime;
         bool _initialized = false;
 
         EGLDisplay _display = EGL_NO_DISPLAY;
@@ -225,6 +226,7 @@ namespace yourgame_internal_android
         // result in a small time delta in the first tick() cycle.
         // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
         lastNowTime = std::chrono::steady_clock::now();
+        initTime = lastNowTime;
     }
 
     void tick()
@@ -301,6 +303,13 @@ namespace yourgame
     yourgame::context getCtx()
     {
         return yourgame_internal_android::_context;
+    }
+
+    double getTime()
+    {
+        auto now = std::chrono::steady_clock::now();
+        std::chrono::duration<double> duration = now - yourgame_internal_android::initTime;
+        return duration.count();
     }
 
     el::Logger *getLogr()

@@ -46,6 +46,7 @@ namespace yourgame
     extern const GLchar *unifNameLightDiffuse;
     extern const GLchar *unifNameLightSpecular;
     extern const GLchar *unifNameLightPosition;
+    extern const GLchar *unifNameSubtexture;
     extern const GLint unifValueTextureDiffuse;
     extern const GLint unifValueTextureSky;
     extern const GLenum textureUnitDiffuse;

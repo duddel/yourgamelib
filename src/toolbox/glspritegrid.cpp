@@ -48,13 +48,13 @@ namespace yourgame
         std::vector<GLfloat> objColordData(numVerts * 3, 1.0f);
 
         // precalc tile width/height
-        yourgame::GLTextureAtlas::Coords coords;
-        if (!atlas->getCoords(tiles[0], coords))
+        auto coords = atlas->getCoords(tiles[0]);
+        if (!coords.first)
         {
             return -2;
         }
-        float tileAspectNum = (coords.tex->width() * (coords.uMax - coords.uMin));
-        float tileAspectDen = (coords.tex->height() * (coords.vMax - coords.vMin));
+        float tileAspectNum = (coords.first->width() * (coords.second[1] - coords.second[0]));
+        float tileAspectDen = (coords.first->height() * (coords.second[3] - coords.second[2]));
         float tileAspect = (tileAspectNum > 1.0e-6f && tileAspectDen > 1.0e-6f) ? (tileAspectNum / tileAspectDen) : 1.0f;
         float tileWidth = 1.0f;
         float tileHeight = 1.0f;
@@ -91,8 +91,8 @@ namespace yourgame
         size_t iWrite = 0;
         for (int i = 0; i < numTiles; i++)
         {
-            yourgame::GLTextureAtlas::Coords coords;
-            if (!atlas->getCoords(tiles[i], coords))
+            auto coords = atlas->getCoords(tiles[i]);
+            if (!coords.first)
             {
                 return -3;
             }
@@ -112,14 +112,14 @@ namespace yourgame
             objPosData[pWrite++] = orgZ;
 
             // texture coordinates
-            objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
-            objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
-            objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
-            objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
-            objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[0];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[3];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[1];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[3];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[1];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[2];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[0];
+            objTexCoordData[tWrite++] = (GLfloat)coords.second[2];
 
             // normals
             objNormalData[nWrite++] = 0.0f;
