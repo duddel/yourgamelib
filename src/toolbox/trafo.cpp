@@ -129,11 +129,20 @@ namespace yourgame
         }
     }
 
+    void Trafo::setIdentity()
+    {
+        m_eye = glm::vec3(0.0f, 0.0f, 0.0f);
+        m_rot = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
+        m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
+        m_matInvalidated = true;
+    }
+
     glm::vec3 Trafo::getAxisLocal(AXIS ax)
     {
         updateMatrixIfInvalidated();
         switch (ax)
         {
+        default:
         case AXIS::X:
             return m_mat[0];
             break;
@@ -146,10 +155,11 @@ namespace yourgame
         }
     }
 
-    glm::vec3 Trafo::getAxisGlobal(AXIS ax)
+    glm::vec3 Trafo::getAxisGlobal(AXIS ax) const
     {
         switch (ax)
         {
+        default:
         case AXIS::X:
             return glm::vec3(1.0f, 0.0f, 0.0f);
             break;
@@ -162,8 +172,18 @@ namespace yourgame
         }
     }
 
-    glm::vec3 Trafo::getEye()
+    glm::vec3 Trafo::getEye() const
     {
         return m_eye;
+    }
+
+    glm::quat Trafo::getRotation() const
+    {
+        return m_rot;
+    }
+
+    glm::vec3 Trafo::getScale() const
+    {
+        return m_scale;
     }
 } // namespace yourgame

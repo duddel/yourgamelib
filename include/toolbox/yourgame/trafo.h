@@ -50,9 +50,12 @@ namespace yourgame
         void pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
         void lookAt(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
         void lerp(float t, Trafo const &target, Trafo *dst);
+        void setIdentity();
         glm::vec3 getAxisLocal(AXIS ax);
-        glm::vec3 getAxisGlobal(AXIS ax);
-        glm::vec3 getEye();
+        glm::vec3 getAxisGlobal(AXIS ax) const;
+        glm::vec3 getEye() const;
+        glm::quat getRotation() const;
+        glm::vec3 getScale() const;
 
     private:
         glm::vec3 m_eye = glm::vec3(0.0f, 0.0f, 0.0f);
