@@ -1,0 +1,77 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy_desktop:
+    name: desktop
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    # ubuntu: install deps, configure/build
+    - name: install deps
+      run: |
+        sudo apt update
+        sudo apt install libgl1-mesa-dev xorg-dev
+      if: startsWith(matrix.os, 'ubuntu')
+    - name: configure/build (ubuntu)
+      run: ./build_desktop_release.bash
+      if: startsWith(matrix.os, 'ubuntu')
+    # windows: configure/build
+    - name: configure/build (win32)
+      run: build_desktop_release_win32.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
+    - name: configure/build (win64)
+      run: build_desktop_release_win64.cmd
+      if: startsWith(matrix.os, 'windows')
+      shell: cmd
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: _deploy/*
+
+
+  deploy_web:
+    name: web
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install emsdk
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git
+        cd emsdk
+        ./emsdk install latest
+        ./emsdk activate latest
+    - name: configure/build
+      # build_web_release.bash needs to know the emsdk location
+      # in order to call: source $EMSDK/emsdk_env.sh:
+      env:
+        EMSDK: ${{ github.workspace }}/emsdk
+      run: ./build_web_release.bash
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: _deploy/*
+
+
+  deploy_android:
+    name: android
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: assemble
+      run: ./build_android_release.bash
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        path: _deploy/*

@@ -98,3 +98,9 @@ templ = jEnv.get_template("android/app/src/main/AndroidManifest.xml")
 templ.stream(
     YOURGAME_PROJECT_NAME=newProjName
 ).dump(os.path.join(tgtDir, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'))
+
+# process README.md
+templ = jEnv.get_template("README.md")
+templ.stream(
+    YOURGAME_PROJECT_NAME=newProjName
+).dump(os.path.join(tgtDir, "README.md"))
