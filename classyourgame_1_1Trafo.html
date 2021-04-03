@@ -112,12 +112,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac75cc92de811ebe7e6987c1a80ec3792"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a229afdcb62a19d89f96bbe5e885de5c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a229afdcb62a19d89f96bbe5e885de5c3">lerp</a> (float t, <a class="el" href="classyourgame_1_1Trafo.html">Trafo</a> const &amp;target, <a class="el" href="classyourgame_1_1Trafo.html">Trafo</a> *dst)</td></tr>
 <tr class="separator:a229afdcb62a19d89f96bbe5e885de5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e7e4e5366c9102001f6d4b0dcc63a6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a45e7e4e5366c9102001f6d4b0dcc63a6">setIdentity</a> ()</td></tr>
+<tr class="separator:a45e7e4e5366c9102001f6d4b0dcc63a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ad87698a98801a2b296ad78b1eddd81"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a4ad87698a98801a2b296ad78b1eddd81">getAxisLocal</a> (<a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a> ax)</td></tr>
 <tr class="separator:a4ad87698a98801a2b296ad78b1eddd81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a072d679cc293e30c29c44d20113c6aa0"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a072d679cc293e30c29c44d20113c6aa0">getAxisGlobal</a> (<a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a> ax)</td></tr>
-<tr class="separator:a072d679cc293e30c29c44d20113c6aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08148f672826c8251897280c04fd9aa9"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a08148f672826c8251897280c04fd9aa9">getEye</a> ()</td></tr>
-<tr class="separator:a08148f672826c8251897280c04fd9aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17502ba79df6417c629acb83a587b548"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a17502ba79df6417c629acb83a587b548">getAxisGlobal</a> (<a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a> ax) const</td></tr>
+<tr class="separator:a17502ba79df6417c629acb83a587b548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22e81af9f80fdcefea79dfe8a69bd7ad"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a22e81af9f80fdcefea79dfe8a69bd7ad">getEye</a> () const</td></tr>
+<tr class="separator:a22e81af9f80fdcefea79dfe8a69bd7ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec42ea253b9cbf2d3807f8bb861d55f0"><td class="memItemLeft" align="right" valign="top">glm::quat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#aec42ea253b9cbf2d3807f8bb861d55f0">getRotation</a> () const</td></tr>
+<tr class="separator:aec42ea253b9cbf2d3807f8bb861d55f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cb8a78e6a4d91f2bab5d8aa93894c56"><td class="memItemLeft" align="right" valign="top">glm::vec3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1Trafo.html#a9cb8a78e6a4d91f2bab5d8aa93894c56">getScale</a> () const</td></tr>
+<tr class="separator:a9cb8a78e6a4d91f2bab5d8aa93894c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="add2f1adf505cecafc41a5d6090c0721e"></a>
@@ -148,8 +154,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a072d679cc293e30c29c44d20113c6aa0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a072d679cc293e30c29c44d20113c6aa0">&#9670;&nbsp;</a></span>getAxisGlobal()</h2>
+<a id="a17502ba79df6417c629acb83a587b548"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17502ba79df6417c629acb83a587b548">&#9670;&nbsp;</a></span>getAxisGlobal()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,7 +165,7 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classyourgame_1_1Trafo.html#add2f1adf505cecafc41a5d6090c0721e">AXIS</a>&#160;</td>
           <td class="paramname"><em>ax</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -184,8 +190,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a08148f672826c8251897280c04fd9aa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08148f672826c8251897280c04fd9aa9">&#9670;&nbsp;</a></span>getEye()</h2>
+<a id="a22e81af9f80fdcefea79dfe8a69bd7ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22e81af9f80fdcefea79dfe8a69bd7ad">&#9670;&nbsp;</a></span>getEye()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,7 +200,41 @@ Public Member Functions</h2></td></tr>
           <td class="memname">glm::vec3 yourgame::Trafo::getEye </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec42ea253b9cbf2d3807f8bb861d55f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec42ea253b9cbf2d3807f8bb861d55f0">&#9670;&nbsp;</a></span>getRotation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::quat yourgame::Trafo::getRotation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9cb8a78e6a4d91f2bab5d8aa93894c56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cb8a78e6a4d91f2bab5d8aa93894c56">&#9670;&nbsp;</a></span>getScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::vec3 yourgame::Trafo::getScale </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -370,6 +410,23 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a45e7e4e5366c9102001f6d4b0dcc63a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e7e4e5366c9102001f6d4b0dcc63a6">&#9670;&nbsp;</a></span>setIdentity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::Trafo::setIdentity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">

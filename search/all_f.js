@@ -11,6 +11,7 @@ var searchData=
   ['setelardescr',['setElArDescr',['../classyourgame_1_1GLShape.html#a15f6d00369faaa178d29c508cf973923',1,'yourgame::GLShape']]],
   ['setfovy',['setFovy',['../classyourgame_1_1Camera.html#a2d869991d79fe1af181883eda7a7f0b9',1,'yourgame::Camera']]],
   ['setheight',['setHeight',['../classyourgame_1_1Camera.html#ae20209e7339ea92914a0ee2d9f16e52d',1,'yourgame::Camera']]],
+  ['setidentity',['setIdentity',['../classyourgame_1_1Trafo.html#a45e7e4e5366c9102001f6d4b0dcc63a6',1,'yourgame::Trafo']]],
   ['setorthographic',['setOrthographic',['../classyourgame_1_1Camera.html#a9a2dd12b39061b91810a313e3f888afb',1,'yourgame::Camera']]],
   ['setperspective',['setPerspective',['../classyourgame_1_1Camera.html#af349ddcc517e926c54bf761d33711a75',1,'yourgame::Camera']]],
   ['setposition',['setPosition',['../classyourgame_1_1GLLightsource.html#abe6f756a1f2ca3bbd5a1da5470384165',1,'yourgame::GLLightsource']]],
