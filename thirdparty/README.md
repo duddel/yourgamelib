@@ -191,12 +191,13 @@ These libraries are integrated if the project has been initialized with default 
 
 ## stb
 
--   version: **f54acd4 (master)**
--   origin: <https://github.com/nothings/stb/tree/f54acd4e13430c5122cab4ca657705c84aa61b08>
+-   version: **c9064e3 (master)**
+-   origin: <https://github.com/nothings/stb/tree/c9064e317699d2e495f36ba4f9ac037e88ee371a>
 -   extracted from origin: see files below
 -   license: mentioned in files
-    -   [stb_image.h](stb/stb_image.h), version: **2.25**
-    -   [stb_vorbis.c](stb/stb_vorbis.c), version: **1.19**
+    -   [stb_image.h](stb/stb_image.h), version: **2.26**
+    -   [stb_image_write.h](stb/stb_image_write.h), version: **1.15**
+    -   [stb_vorbis.c](stb/stb_vorbis.c), version: **1.20**
 
 ## tinyobjloader
 

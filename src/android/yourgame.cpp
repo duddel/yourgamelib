@@ -30,6 +30,7 @@ freely, subject to the following restrictions:
 #endif
 #ifdef YOURGAME_EXTPROJ_stb
 #include "stb_image.h"
+#include "stb_image_write.h"
 #endif
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
@@ -215,6 +216,7 @@ namespace yourgame_internal_android
 
 #ifdef YOURGAME_EXTPROJ_stb
         stbi_set_flip_vertically_on_load(true);
+        stbi_flip_vertically_on_write(true);
 #endif
 
         mygame::init();
