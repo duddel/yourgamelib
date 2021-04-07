@@ -1,0 +1,414 @@
+// meant to be compatible with glsl 330 and 300 es
+// desired #version has to be prepended befor compiling
+
+layout(location = 0) in vec3 inPosition;
+layout(location = 1) in vec3 inNormal;
+layout(location = 2) in vec2 inTexcoords;
+layout(location = 3) in vec3 inColor;
+
+out vec3 vOutPos;
+out vec3 vOutNorm;
+out vec2 vOutTex;
+out vec3 vOutCol;
+
+uniform mat4 mvpMat;
+uniform mat4 modelMat;
+uniform mat3 normalMat;
+uniform vec4 subtex;
+
+void main()
+{
+    vOutPos = (modelMat * vec4(inPosition, 1.0)).xyz;
+    vOutNorm = normalMat * inNormal;
+    vOutTex = (inTexcoords * vec2(subtex[0], subtex[1])) + vec2(subtex[2], subtex[3]);
+    vOutCol = inColor;
+    gl_Position = mvpMat * vec4(inPosition, 1.0);
+}
+// meant to be compatible with glsl 330 and 300 es
+// desired #version has to be prepended befor compiling
+
+precision mediump float; // required for es
+
+in vec2 vOutTex;
+
+layout(location = 0) out vec4 color;
+
+uniform sampler2D textureDiffuse;
+
+void main()
+{
+    vec4 texColor = texture(textureDiffuse, vOutTex);
+    if (texColor.a < 1.0)
+        discard;
+    color = texColor;
+}
+This project uses open source software, the licenses are given below.
+Platform: web
+
+===========================================================
+License of Dear ImGui
+===========================================================
+The MIT License (MIT)
+
+Copyright (c) 2014-2019 Omar Cornut
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+===========================================================
+License of Easylogging++
+===========================================================
+The MIT License (MIT)
+
+Copyright (c) 2012-2018 Zuhd Web Services
+Copyright (c) 2012-2018 @abumusamq
+
+https://github.com/zuhd-org/
+https://zuhd.org
+https://muflihun.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+===========================================================
+License of EMSCRIPTEN
+===========================================================
+Copyright (c) 2018 Emscripten authors (see AUTHORS in Emscripten)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+===========================================================
+License of glm
+===========================================================
+Copyright (c) 2005 - 2014 G-Truc Creation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+===========================================================
+License of miniaudio
+===========================================================
+Copyright 2020 David Reid
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+===========================================================
+License of stb
+===========================================================
+Copyright (c) 2017 Sean Barrett
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+===========================================================
+License of tinyobjloader
+===========================================================
+The MIT License (MIT)
+
+Copyright (c) 2012-2019 Syoyo Fujita and many contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+v -10 0 0 0.2 0 0
+v  10 0 0 1 0 0
+v 0 -10 0 0 0.2 0
+v 0  10 0 0 1 0
+v 0 0 -10 0 0 0.2
+v 0 0  10 0 0 1
+
+v -10 0 -10 0.5 0.5 0.5
+v  10 0 -10 0.5 0.5 0.5
+v -10 0  -9 0.5 0.5 0.5
+v  10 0  -9 0.5 0.5 0.5
+v -10 0  -8 0.5 0.5 0.5
+v  10 0  -8 0.5 0.5 0.5
+v -10 0  -7 0.5 0.5 0.5
+v  10 0  -7 0.5 0.5 0.5
+v -10 0  -6 0.5 0.5 0.5
+v  10 0  -6 0.5 0.5 0.5
+v -10 0  -5 1 1 1
+v  10 0  -5 1 1 1
+v -10 0  -4 0.5 0.5 0.5
+v  10 0  -4 0.5 0.5 0.5
+v -10 0  -3 0.5 0.5 0.5
+v  10 0  -3 0.5 0.5 0.5
+v -10 0  -2 0.5 0.5 0.5
+v  10 0  -2 0.5 0.5 0.5
+v -10 0  -1 0.5 0.5 0.5
+v  10 0  -1 0.5 0.5 0.5
+v -10 0   1 0.5 0.5 0.5
+v  10 0   1 0.5 0.5 0.5
+v -10 0   2 0.5 0.5 0.5
+v  10 0   2 0.5 0.5 0.5
+v -10 0   3 0.5 0.5 0.5
+v  10 0   3 0.5 0.5 0.5
+v -10 0   4 0.5 0.5 0.5
+v  10 0   4 0.5 0.5 0.5
+v -10 0   5 1 1 1
+v  10 0   5 1 1 1
+v -10 0   6 0.5 0.5 0.5
+v  10 0   6 0.5 0.5 0.5
+v -10 0   7 0.5 0.5 0.5
+v  10 0   7 0.5 0.5 0.5
+v -10 0   8 0.5 0.5 0.5
+v  10 0   8 0.5 0.5 0.5
+v -10 0   9 0.5 0.5 0.5
+v  10 0   9 0.5 0.5 0.5
+v -10 0  10 0.5 0.5 0.5
+v  10 0  10 0.5 0.5 0.5
+
+v -10 0 -10 0.5 0.5 0.5
+v -10 0  10 0.5 0.5 0.5
+v -9  0 -10 0.5 0.5 0.5
+v -9  0  10 0.5 0.5 0.5
+v -8  0 -10 0.5 0.5 0.5
+v -8  0  10 0.5 0.5 0.5
+v -7  0 -10 0.5 0.5 0.5
+v -7  0  10 0.5 0.5 0.5
+v -6  0 -10 0.5 0.5 0.5
+v -6  0  10 0.5 0.5 0.5
+v -5  0 -10 1 1 1
+v -5  0  10 1 1 1
+v -4  0 -10 0.5 0.5 0.5
+v -4  0  10 0.5 0.5 0.5
+v -3  0 -10 0.5 0.5 0.5
+v -3  0  10 0.5 0.5 0.5
+v -2  0 -10 0.5 0.5 0.5
+v -2  0  10 0.5 0.5 0.5
+v -1  0 -10 0.5 0.5 0.5
+v -1  0  10 0.5 0.5 0.5
+v  1  0 -10 0.5 0.5 0.5
+v  1  0  10 0.5 0.5 0.5
+v  2  0 -10 0.5 0.5 0.5
+v  2  0  10 0.5 0.5 0.5
+v  3  0 -10 0.5 0.5 0.5
+v  3  0  10 0.5 0.5 0.5
+v  4  0 -10 0.5 0.5 0.5
+v  4  0  10 0.5 0.5 0.5
+v  5  0 -10 1 1 1
+v  5  0  10 1 1 1
+v  6  0 -10 0.5 0.5 0.5
+v  6  0  10 0.5 0.5 0.5
+v  7  0 -10 0.5 0.5 0.5
+v  7  0  10 0.5 0.5 0.5
+v  8  0 -10 0.5 0.5 0.5
+v  8  0  10 0.5 0.5 0.5
+v  9  0 -10 0.5 0.5 0.5
+v  9  0  10 0.5 0.5 0.5
+v 10  0 -10 0.5 0.5 0.5
+v 10  0  10 0.5 0.5 0.5
+l 1 2
+l 3 4
+l 5 6
+l 7 8
+l 9 10
+l 11 12
+l 13 14
+l 15 16
+l 17 18
+l 19 20
+l 21 22
+l 23 24
+l 25 26
+l 27 28
+l 29 30
+l 31 32
+l 33 34
+l 35 36
+l 37 38
+l 39 40
+l 41 42
+l 43 44
+l 45 46
+l 47 48
+l 49 50
+l 51 52
+l 53 54
+l 55 56
+l 57 58
+l 59 60
+l 61 62
+l 63 64
+l 65 66
+l 67 68
+l 69 70
+l 71 72
+l 73 74
+l 75 76
+l 77 78
+l 79 80
+l 81 82
+l 83 84
+l 85 86
+{
+	"textures":[
+		{
+			"name":"sprites0",
+			"images":[
+				{ "n":"sprites_flame2_1", "x":0, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_flame2_2", "x":0, "y":8, "w":8, "h":8 },
+				{ "n":"sprites_flame2_3", "x":0, "y":16, "w":8, "h":8 },
+				{ "n":"sprites_flame2_4", "x":0, "y":24, "w":8, "h":8 },
+				{ "n":"sprites_flame2_5", "x":0, "y":32, "w":8, "h":8 },
+				{ "n":"sprites_flame_0", "x":0, "y":40, "w":8, "h":8 },
+				{ "n":"sprites_flame_1", "x":0, "y":48, "w":8, "h":8 },
+				{ "n":"sprites_flame_2", "x":0, "y":56, "w":8, "h":8 },
+				{ "n":"sprites_flame_3", "x":8, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_flame_4", "x":16, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_flame_5", "x":24, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_heart_0", "x":32, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_flame2_0", "x":40, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_heart_2", "x":48, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_heart_3", "x":56, "y":0, "w":8, "h":8 },
+				{ "n":"sprites_heart_4", "x":8, "y":8, "w":8, "h":8 },
+				{ "n":"sprites_heart_5", "x":8, "y":16, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_0", "x":8, "y":24, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_1", "x":8, "y":32, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_2", "x":8, "y":40, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_3", "x":8, "y":48, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_4", "x":8, "y":56, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_5", "x":16, "y":8, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_6", "x":24, "y":8, "w":8, "h":8 },
+				{ "n":"sprites_rainbow_ball_7", "x":32, "y":8, "w":8, "h":8 },
+				{ "n":"sprites_heart_1", "x":40, "y":8, "w":8, "h":8 }
+			]
+		}
+	]
+}v -0.5 -0.5 0.0
+v 0.5 -0.5 0.0
+v 0.5 0.5 0.0
+v -0.5 0.5 0.0
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+vn 0.0 0.0 1.0
+vn 0.0 0.0 1.0
+vn 0.0 0.0 1.0
+vn 0.0 0.0 1.0
+f 1/1/1 2/2/2 3/3/3
+f 1/1/1 3/3/3 4/4/4
+‰PNG
+
+   IHDR   @   @   ·ì   <PLTE   ?‰²ÄMX§yÿ €ó†0ïïïpçñÇôdÿÿÿ$	ƒğÜu¡ìA7ÍÊÊÊ¾55‘_3Ñ0÷îYYÍ6Å¯ñõ   tRNS @æØf  ìIDATxÅ”rã …A&&¶â¦÷¿ëêl×ËtWd¦·‚Œôô("ÿB8¦iÒ?.Œç½E¤Ïã‘ ºà4MI+<ìõÑÏµ”PÓíÆ‹)}|¤”¦Z×ö
+’şûı÷K²,¨!I×¡í'ãîW@® Í9g$h]ÛËB ó, k¸äZH€yû2ƒH¾@–ÛÏµ°ÖµÆ¦Åuˆç¼‹¨ußD'hŠ¿ä«ş§öØt-
+ê(ç•¢ıpé×£™®åÈ„² 2¡¬ˆLØıpé7MW<°`5@ê Œ`òÈ°`5@êL_“§Øõ¿L_›qgˆı;CüIÆ®ˆgøÂVßïÿn?ùÀ0;>ùw@rêïA_¦Gpö{ˆC!€fWåIQœWàï"ú¦"~Àİnà¨ æƒ¡!¾AÆ €¯°QÿËX6D¡Ê¸¡ó°yæ? úÀ;Äq€<CFÒşO
+€åÑG ¸Ày¸e&È|€œó ò[†8"£ö	Q^#>x!úä‘ñ…Î#T¹ı— äƒwqüu3á‹Âyùş/DAmÀ çª‘¸İ0Œ ÔC‘ñdÑ¨l]VQ    IEND®B`‚// meant to be compatible with glsl 330 and 300 es
+// desired #version has to be prepended befor compiling
+
+precision mediump float; // required for es
+
+in vec3 vOutCol;
+
+layout(location = 0) out vec4 color;
+
+void main()
+{
+    color = vec4(vOutCol, 1.0);
+}
