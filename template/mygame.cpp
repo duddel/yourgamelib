@@ -6,16 +6,10 @@ namespace yg = yourgame; // convenience
 
 namespace mygame
 {
-    struct Lightsource
-    {
-        glm::vec3 position;
-        glm::vec3 diffuse;
-    };
-
     yg::AssetManager g_assets;
     yg::Camera g_camera;
     yg::Trafo g_modelTrafo;
-    Lightsource g_light{{4.07625f, 5.90386f, -1.00545f}, {1.0f, 1.0f, 1.0f}};
+    yg::GLLightsource g_light;
 
     void init()
     {
@@ -25,6 +19,9 @@ namespace mygame
                                  glm::vec3(0.0f, 0.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
         g_camera.setPerspective(40.0f, ctx.winAspectRatio, 1.0f, 100.0f);
+
+        g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
+        g_light.setDiffuse({1.0f, 1.0f, 1.0f});
 
         g_assets.insert("geoCube", yg::loadGeometry("cube.obj", nullptr));
         g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
@@ -39,7 +36,7 @@ namespace mygame
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
-        //yg::enableVSync(false);
+        //yg::enableVSync(true);
         //yg::enableFullscreen(true);
         //yg::catchMouse(true);
     }
@@ -69,29 +66,30 @@ namespace mygame
 
         // fade light
         static float lightT = 0.0f;
-        g_light.diffuse = glm::vec3(std::cos(lightT) * 0.5f + 0.5f);
+        float light = std::cos(lightT) * 0.5f + 0.5f;
+        g_light.setDiffuse({light, light, light});
         lightT += (static_cast<float>(ctx.deltaTimeS) * 0.65f);
 
-        // prepare matrixes for shaders
-        auto modelMat = g_modelTrafo.mat();
-        auto mvp = g_camera.pMat() * g_camera.vMat() * modelMat;
-        auto normalMat = glm::inverseTranspose(glm::mat3(modelMat));
-
         // draw cube
-        auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
-        shdrDiffCol->useProgram();
-        glUniform3fv(shdrDiffCol->getUniformLocation("lightPos"), 1, &g_light.position[0]);
-        glUniform3fv(shdrDiffCol->getUniformLocation("lightDiffuse"), 1, &g_light.diffuse[0]);
-        glUniformMatrix4fv(shdrDiffCol->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-        glUniformMatrix4fv(shdrDiffCol->getUniformLocation(yg::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-        glUniformMatrix3fv(shdrDiffCol->getUniformLocation(yg::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
-        g_assets.get<yg::GLGeometry>("geoCube")->drawAll();
+        {
+            auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
+            shdrDiffCol->useProgram(&g_light, &g_camera);
+            yg::DrawConfig cfg;
+            cfg.camera = &g_camera;
+            cfg.modelMat = g_modelTrafo.mat();
+            cfg.shader = shdrDiffCol;
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCube"), cfg);
+        }
 
         // draw grid
-        auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColor");
-        shdrSimpCol->useProgram();
-        glUniformMatrix4fv(shdrSimpCol->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-        g_assets.get<yg::GLGeometry>("geoGrid")->drawAll();
+        {
+            auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColor");
+            shdrSimpCol->useProgram(nullptr, &g_camera);
+            yg::DrawConfig cfg;
+            cfg.camera = &g_camera;
+            cfg.shader = shdrSimpCol;
+            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), cfg);
+        }
     }
 
     void shutdown()
