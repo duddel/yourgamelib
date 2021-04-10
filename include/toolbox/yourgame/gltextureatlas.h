@@ -24,7 +24,6 @@ freely, subject to the following restrictions:
 #include <map>
 #include <array>
 #include <string>
-#include <regex>
 #include "yourgame/gltexture2d.h"
 
 namespace yourgame
