@@ -29,15 +29,15 @@ namespace yourgame
     /** \brief reads an entire file (from asset file location) and returns it as a vector of bytes */
     int readAssetFile(const char *filename, std::vector<uint8_t> &dst);
 
+    /** \brief returns the absolute path to the save file filename */
+    std::string saveFilePath(const char *filename);
+
     /** \brief reads an entire file (from save file location) and returns it as a vector of bytes */
     int readSaveFile(const char *filename, std::vector<uint8_t> &dst);
 
     /** \brief writes numBytes bytes from data to a file called filename in the save file location.
         overwrites the file if it exists */
     int writeSaveFile(const char *filename, const void *data, size_t numBytes);
-
-    /** \brief returns the absolute path to the save file filename */
-    void saveFilePath(const char *filename, std::string &dst);
 } // namespace yourgame
 
 #endif

@@ -75,18 +75,18 @@ namespace yourgame
         return readFileRet;
     }
 
+    std::string saveFilePath(const char *filename)
+    {
+        return (yourgame_internal_desktop::basePath + yourgame_internal_desktop::saveFilesPath + filename);
+    }
+
     int readSaveFile(const char *filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile((yourgame_internal_desktop::saveFilesPath + filename).c_str(), dst);
+        return yourgame_internal::readFile(saveFilePath(filename).c_str(), dst);
     }
 
     int writeSaveFile(const char *filename, const void *data, size_t numBytes)
     {
-        return yourgame_internal::writeFile((yourgame_internal_desktop::saveFilesPath + filename).c_str(), data, numBytes);
-    }
-
-    void saveFilePath(const char *filename, std::string &dst)
-    {
-        dst = (yourgame_internal_desktop::saveFilesPath + filename);
+        return yourgame_internal::writeFile(saveFilePath(filename).c_str(), data, numBytes);
     }
 } // namespace yourgame
