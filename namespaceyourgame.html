@@ -437,6 +437,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b807929b43e7c0cece837f8fea75a55"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a8b807929b43e7c0cece837f8fea75a55">readSaveFile</a> (const char *filename, std::vector&lt; uint8_t &gt; &amp;dst)</td></tr>
 <tr class="memdesc:a8b807929b43e7c0cece837f8fea75a55"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an entire file (from save file location) and returns it as a vector of bytes  <a href="#a8b807929b43e7c0cece837f8fea75a55">More...</a><br /></td></tr>
 <tr class="separator:a8b807929b43e7c0cece837f8fea75a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a959cd4d4969ab60e2d198d128dddf350"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a959cd4d4969ab60e2d198d128dddf350">readFile</a> (const char *filename, std::vector&lt; uint8_t &gt; &amp;dst)</td></tr>
+<tr class="memdesc:a959cd4d4969ab60e2d198d128dddf350"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an entire file and returns it as a vector of bytes  <a href="#a959cd4d4969ab60e2d198d128dddf350">More...</a><br /></td></tr>
+<tr class="separator:a959cd4d4969ab60e2d198d128dddf350"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4725185e00478e851832b9c1aa5244b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a4725185e00478e851832b9c1aa5244b2">writeSaveFile</a> (const char *filename, const void *data, size_t numBytes)</td></tr>
 <tr class="memdesc:a4725185e00478e851832b9c1aa5244b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes numBytes bytes from data to a file called filename in the save file location. overwrites the file if it exists  <a href="#a4725185e00478e851832b9c1aa5244b2">More...</a><br /></td></tr>
 <tr class="separator:a4725185e00478e851832b9c1aa5244b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1972,6 +1975,44 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>reads an entire file (from asset file location) and returns it as a vector of bytes </p>
+
+</div>
+</div>
+<a id="a959cd4d4969ab60e2d198d128dddf350"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a959cd4d4969ab60e2d198d128dddf350">&#9670;&nbsp;</a></span>readFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int yourgame::readFile </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>filename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; uint8_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>reads an entire file and returns it as a vector of bytes </p>
+<ul>
+<li>prepend <code>a//</code> to load a file from asset file location</li>
+<li>prepend <code>s//</code> to load a file from save file location</li>
+<li>prepend none of the above to load a file with unchanged filename as path</li>
+<li>example: <code>loadFile("a//file1.bin" ...) // loads file1.bin from assets</code></li>
+<li>example: <code>loadFile("s//file2.bin" ...) // loads file2.bin from save file location</code></li>
+<li>example: <code>loadFile("file3.bin" ...) // loads file3.bin from working directory </code> </li>
+</ul>
 
 </div>
 </div>

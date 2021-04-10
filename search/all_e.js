@@ -1,6 +1,7 @@
 var searchData=
 [
   ['readassetfile',['readAssetFile',['../namespaceyourgame.html#a518749543a4fcd52c07408afe441ed44',1,'yourgame']]],
+  ['readfile',['readFile',['../namespaceyourgame.html#a959cd4d4969ab60e2d198d128dddf350',1,'yourgame']]],
   ['readsavefile',['readSaveFile',['../namespaceyourgame.html#a8b807929b43e7c0cece837f8fea75a55',1,'yourgame']]],
   ['reset',['reset',['../classyourgame_1_1Particles.html#af27963df236c5f51b80f7ae47e0fbc0d',1,'yourgame::Particles']]],
   ['resize',['resize',['../classyourgame_1_1GLFramebuffer.html#a80f878420a9c8f64b52ee8e488b40505',1,'yourgame::GLFramebuffer']]],
