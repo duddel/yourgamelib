@@ -35,6 +35,16 @@ namespace yourgame
     /** \brief reads an entire file (from save file location) and returns it as a vector of bytes */
     int readSaveFile(const char *filename, std::vector<uint8_t> &dst);
 
+    /** \brief reads an entire file and returns it as a vector of bytes
+    - prepend \c a// to load a file from asset file location
+    - prepend \c s// to load a file from save file location
+    - prepend none of the above to load a file with unchanged filename as path
+    - example: <code>loadFile("a//file1.bin" ...) // loads file1.bin from assets</code>
+    - example: <code>loadFile("s//file2.bin" ...) // loads file2.bin from save file location</code>
+    - example: <code>loadFile("file3.bin" ...) // loads file3.bin from working directory </code>
+    */
+    int readFile(const char *filename, std::vector<uint8_t> &dst);
+
     /** \brief writes numBytes bytes from data to a file called filename in the save file location.
         overwrites the file if it exists */
     int writeSaveFile(const char *filename, const void *data, size_t numBytes);

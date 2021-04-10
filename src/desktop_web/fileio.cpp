@@ -20,6 +20,7 @@ freely, subject to the following restrictions:
 #include <algorithm> // std::replace()
 #include <string>
 #include <vector>
+#include <regex>
 #ifndef __EMSCRIPTEN__
 #include "whereami.h"
 #endif
@@ -83,6 +84,30 @@ namespace yourgame
     int readSaveFile(const char *filename, std::vector<uint8_t> &dst)
     {
         return yourgame_internal::readFile(saveFilePath(filename).c_str(), dst);
+    }
+
+    int readFile(const char *filename, std::vector<uint8_t> &dst)
+    {
+        static std::regex reFilenameAsset("^a\\/\\/(.+)$");
+        static std::regex reFilenameSavefile("^s\\/\\/(.+)$");
+
+        std::smatch reMatch;
+        std::string filenameStr = std::string(filename);
+
+        if (std::regex_match(filenameStr, reMatch, reFilenameAsset) && reMatch.size() == 2)
+        {
+            // match 0: full string, 1: filepath after a//
+            return readAssetFile(reMatch[1].str().c_str(), dst);
+        }
+        else if (std::regex_match(filenameStr, reMatch, reFilenameSavefile) && reMatch.size() == 2)
+        {
+            // match 0: full string, 1: filepath after s//
+            return readSaveFile(reMatch[1].str().c_str(), dst);
+        }
+        else
+        {
+            return yourgame_internal::readFile(filename, dst);
+        }
     }
 
     int writeSaveFile(const char *filename, const void *data, size_t numBytes)

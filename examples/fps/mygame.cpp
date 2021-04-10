@@ -35,7 +35,7 @@ namespace mygame
         auto ctx = yg::getCtx();
 
         yg::audioInit(2, 44100, 5);
-        yg::audioStoreFile("laserSmall_000.ogg");
+        yg::audioStoreFile("a//laserSmall_000.ogg");
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_camera.setPerspective(65.0f, ctx.winAspectRatio, 0.2f, 100.0f);
@@ -43,26 +43,26 @@ namespace mygame
         // load license info file
         {
             std::vector<uint8_t> licFileData;
-            yg::readAssetFile("LICENSE_web.txt", licFileData);
+            yg::readFile("a//LICENSE_web.txt", licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
 
-        g_assets.insert("geoCube", yg::loadGeometry("cube.obj", nullptr));
-        g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
-        g_assets.insert("geoCross", yg::loadGeometry("cross.obj", nullptr));
-        g_assets.insert("geoBlaster", yg::loadGeometry("blasterD.obj", "blasterD.mtl"));
+        g_assets.insert("geoCube", yg::loadGeometry("a//cube.obj", nullptr));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
+        g_assets.insert("geoCross", yg::loadGeometry("a//cross.obj", nullptr));
+        g_assets.insert("geoBlaster", yg::loadGeometry("a//blasterD.obj", "a//blasterD.mtl"));
 
-        g_assets.insert("shaderDiffuseColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                              {GL_FRAGMENT_SHADER, "diffusecolor.frag"}}));
+        g_assets.insert("shaderDiffuseColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                              {GL_FRAGMENT_SHADER, "a//diffusecolor.frag"}}));
 
-        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
+        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
 
-        g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "default_instanced.vert"},
-                                                            {GL_FRAGMENT_SHADER, "diffusetex.frag"}}));
+        g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "a//default_instanced.vert"},
+                                                            {GL_FRAGMENT_SHADER, "a//diffusetex.frag"}}));
 
-        g_assets.insert("texCube", yg::loadTexture("cube.png", yg::textureUnitDiffuse, GL_NEAREST, false));
+        g_assets.insert("texCube", yg::loadTexture("a//cube.png", yg::textureUnitDiffuse, GL_NEAREST, false));
 
         // for instanced drawing of the cube, add and configure a buffer for per-cube (per draw instance) matrixes:
         GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
@@ -179,7 +179,7 @@ namespace mygame
         if (yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_BUTTON_1) > 0.0f ||
             yg::getInputDelta(yg::InputSource::YOURGAME_KEY_E) > 0.0f)
         {
-            yg::audioPlay("laserSmall_000.ogg");
+            yg::audioPlay("a//laserSmall_000.ogg");
 
             // cast ray from camera into scene and test what it hits
             static const float rayLength = 100.0f;

@@ -185,7 +185,7 @@ namespace yourgame
         }
 
         std::vector<uint8_t> fileData;
-        if (yourgame::readAssetFile(filename.c_str(), fileData) == 0)
+        if (yourgame::readFile(filename.c_str(), fileData) == 0)
         {
             g_audioFileData.emplace(filename, fileData);
             return 0;

@@ -78,6 +78,21 @@ namespace mygame
     {
         auto ctx = yg::getCtx();
 
+        // load license info file
+        {
+#if defined(YOURGAME_PLATFORM_DESKTOP)
+            static const std::string licFilename("a//LICENSE_desktop.txt");
+#elif defined(YOURGAME_PLATFORM_ANDROID)
+            static const std::string licFilename("a//LICENSE_android.txt");
+#elif defined(YOURGAME_PLATFORM_WEB)
+            static const std::string licFilename("a//LICENSE_web.txt");
+#endif
+            std::vector<uint8_t> licFileData;
+            yg::readFile(licFilename.c_str(), licFileData);
+            std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
+            g_assets.insert("licenseStr", licStr);
+        }
+
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
@@ -86,7 +101,7 @@ namespace mygame
 
         // Skybox texture
         g_assets.insert("skybox", yg::loadCubemap(
-                                      {"sky_right.png", "sky_left.png", "sky_top.png", "sky_bottom.png", "sky_front.png", "sky_back.png"},
+                                      {"a//sky_right.png", "a//sky_left.png", "a//sky_top.png", "a//sky_bottom.png", "a//sky_front.png", "a//sky_back.png"},
                                       yg::textureUnitSky,
                                       {{GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR},
                                        {GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR},
@@ -97,8 +112,8 @@ namespace mygame
 
         // Skybox shader
         g_assets.insert("shaderSkybox", yg::loadShader(
-                                            {{GL_VERTEX_SHADER, "skybox.vert"},
-                                             {GL_FRAGMENT_SHADER, "skybox.frag"}},
+                                            {{GL_VERTEX_SHADER, "a//skybox.vert"},
+                                             {GL_FRAGMENT_SHADER, "a//skybox.frag"}},
                                             {}, {}));
         g_assets.get<yg::GLShader>("shaderSkybox")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderSkybox")->getUniformLocation(yg::unifNameTextureSky),
@@ -106,14 +121,14 @@ namespace mygame
 
         // Normal shader
         g_assets.insert("shaderNormal", yg::loadShader(
-                                            {{GL_VERTEX_SHADER, "simple.vert"},
-                                             {GL_FRAGMENT_SHADER, "simplenormal.frag"}},
+                                            {{GL_VERTEX_SHADER, "a//simple.vert"},
+                                             {GL_FRAGMENT_SHADER, "a//simplenormal.frag"}},
                                             {}, {}));
 
         // Color shader
         g_assets.insert("shaderColor", yg::loadShader(
-                                           {{GL_VERTEX_SHADER, "simple.vert"},
-                                            {GL_FRAGMENT_SHADER, "simplecolor.frag"}},
+                                           {{GL_VERTEX_SHADER, "a//simple.vert"},
+                                            {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}},
                                            {}, {}));
         g_assets.get<yg::GLShader>("shaderColor")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderColor")->getUniformLocation(yg::unifNameTextureSky),
@@ -121,8 +136,8 @@ namespace mygame
 
         // Texture shader
         g_assets.insert("shaderTexture", yg::loadShader(
-                                             {{GL_VERTEX_SHADER, "simple.vert"},
-                                              {GL_FRAGMENT_SHADER, "simpletex.frag"}},
+                                             {{GL_VERTEX_SHADER, "a//simple.vert"},
+                                              {GL_FRAGMENT_SHADER, "a//simpletex.frag"}},
                                              {}, {}));
         g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameTextureDiffuse),
@@ -130,16 +145,16 @@ namespace mygame
 
         // Depth Texture shader
         g_assets.insert("shaderTextureDepth", yg::loadShader(
-                                                  {{GL_VERTEX_SHADER, "simple.vert"},
-                                                   {GL_FRAGMENT_SHADER, "simpletexdepth.frag"}},
+                                                  {{GL_VERTEX_SHADER, "a//simple.vert"},
+                                                   {GL_FRAGMENT_SHADER, "a//simpletexdepth.frag"}},
                                                   {}, {}));
         g_assets.get<yg::GLShader>("shaderTextureDepth")->useProgram();
         glUniform1i(g_assets.get<yg::GLShader>("shaderTextureDepth")->getUniformLocation(yg::unifNameTextureDiffuse),
                     yg::unifValueTextureDiffuse);
 
         // geometry
-        g_assets.insert("quadGeo", yg::loadGeometry("quad.obj", nullptr));
-        g_assets.insert("cube", yg::loadGeometry("cube.obj", nullptr));
+        g_assets.insert("quadGeo", yg::loadGeometry("a//quad.obj", nullptr));
+        g_assets.insert("cube", yg::loadGeometry("a//cube.obj", nullptr));
 
         // framebuffer
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
@@ -217,7 +232,8 @@ namespace mygame
         // load geometry on demand
         if (g_geos.find(g_geoName) == g_geos.end())
         {
-            g_geos[g_geoName] = yg::loadGeometry(std::string(g_geoName + ".obj").c_str(), std::string(g_geoName + ".mtl").c_str());
+            g_geos[g_geoName] = yg::loadGeometry((std::string("a//") + std::string(g_geoName + ".obj")).c_str(),
+                                                 (std::string("a//") + std::string(g_geoName + ".mtl")).c_str());
         }
 
         // drawing
@@ -526,20 +542,20 @@ namespace mygame
                 if (!yg::audioIsInitialized())
                 {
                     yg::audioInit(2, 44100, numAudioSources);
-                    yg::audioStoreFile("jingles_SAX07_mono_11025.ogg");
-                    yg::audioStoreFile("jingles_PIZZI00.ogg");
+                    yg::audioStoreFile("a//jingles_SAX07_mono_11025.ogg");
+                    yg::audioStoreFile("a//jingles_PIZZI00.ogg");
                 }
 
                 ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
                 if (ImGui::Button("Play"))
                 {
-                    yg::audioPlay("jingles_PIZZI00.ogg");
+                    yg::audioPlay("a//jingles_PIZZI00.ogg");
                 }
                 ImGui::SameLine();
 
                 if (ImGui::Button("Play Loop"))
                 {
-                    yg::audioPlay("jingles_SAX07_mono_11025.ogg", true);
+                    yg::audioPlay("a//jingles_SAX07_mono_11025.ogg", true);
                 }
 
                 static float audioBalance[numAudioSources] = {0.0f};
@@ -584,7 +600,7 @@ namespace mygame
             {
                 std::vector<uint8_t> fileData;
                 // try to read save file
-                if (!yg::readSaveFile("testValue.bin", fileData))
+                if (!yg::readFile("s//testValue.bin", fileData))
                 {
                     testValue = *((int *)fileData.data());
                 }
@@ -801,7 +817,7 @@ namespace mygame
             static const int maxNumTiles = tilesWide * tilesHigh;
             if (!spriteGridInitialized)
             {
-                spriteGridAtlas = yg::loadTextureAtlasGrid("kenney_1bitpack_colored_packed.png",
+                spriteGridAtlas = yg::loadTextureAtlasGrid("a//kenney_1bitpack_colored_packed.png",
                                                            tilesWide,
                                                            tilesHigh,
                                                            yg::textureUnitDiffuse,
@@ -1049,18 +1065,6 @@ namespace mygame
         // license window
         if (showLicense)
         {
-#if defined(YOURGAME_PLATFORM_DESKTOP)
-            static const char licFilename[] = "LICENSE_desktop.txt";
-#elif defined(YOURGAME_PLATFORM_ANDROID)
-            static const char licFilename[] = "LICENSE_android.txt";
-#elif defined(YOURGAME_PLATFORM_WEB)
-            static const char licFilename[] = "LICENSE_web.txt";
-#endif
-
-            // todo: do not load license on every frame!
-            std::vector<uint8_t> licFileData;
-            yg::readAssetFile(licFilename, licFileData);
-            std::string licStr(licFileData.begin(), licFileData.end());
             ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
                                                        (float)(ctx.winHeight) * 0.5f),
                                                 ImVec2((float)(ctx.winWidth),
@@ -1069,7 +1073,7 @@ namespace mygame
             /* The following procedure allows displaying long wrapped text,
                 whereas ImGui::TextWrapped() has a size limit and cuts the content. */
             ImGui::PushTextWrapPos(0.0f);
-            ImGui::TextUnformatted(licStr.c_str());
+            ImGui::TextUnformatted(g_assets.get<std::string>("licenseStr")->c_str());
             ImGui::PopTextWrapPos();
             ImGui::End();
         }

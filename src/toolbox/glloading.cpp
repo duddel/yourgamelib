@@ -55,7 +55,7 @@ namespace yourgame
         int height;
         int numChannels;
         std::vector<uint8_t> imgData;
-        yourgame::readAssetFile(filename, imgData);
+        yourgame::readFile(filename, imgData);
         auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
 
         if (img)
@@ -93,7 +93,7 @@ namespace yourgame
             int height;
             int numChannels;
             std::vector<uint8_t> imgData;
-            yourgame::readAssetFile(f.c_str(), imgData);
+            yourgame::readFile(f.c_str(), imgData);
             // assuming "flip vertically on load" is true, disable it here because
             // opengl expects cubemap textures "unflipped"...
             stbi_set_flip_vertically_on_load(false);
@@ -131,7 +131,7 @@ namespace yourgame
     GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
     {
         std::vector<uint8_t> atlasFile;
-        if (yourgame::readAssetFile(filename, atlasFile))
+        if (yourgame::readFile(filename, atlasFile))
         {
             yourgame::loge("failed to load %v", filename);
             return nullptr;
@@ -220,7 +220,7 @@ namespace yourgame
         for (const auto &shdrFile : shaderFilenames)
         {
             std::vector<uint8_t> shdrCode;
-            yourgame::readAssetFile(shdrFile.second.c_str(), shdrCode);
+            yourgame::readFile(shdrFile.second.c_str(), shdrCode);
             std::string shdrStr = std::string(YOURGAME_GLSL_VERSION_STRING) + "\n" +
                                   std::string(shdrCode.begin(), shdrCode.end());
             shaderCodes.push_back(std::make_pair(shdrFile.first, shdrStr));
@@ -260,7 +260,7 @@ namespace yourgame
         yourgame::logd("loading geometry %v...", objFilename);
 
         std::vector<uint8_t> objData;
-        if (yourgame::readAssetFile(objFilename, objData))
+        if (yourgame::readFile(objFilename, objData))
         {
             yourgame::loge("loadGeometry(): failed to load obj file %v", objFilename);
             return nullptr;
@@ -271,7 +271,7 @@ namespace yourgame
         if (mtlFilename)
         {
             std::vector<uint8_t> mtlData;
-            if (yourgame::readAssetFile(mtlFilename, mtlData))
+            if (yourgame::readFile(mtlFilename, mtlData))
             {
                 yourgame::loge("loadGeometry(): failed to load mtl file %v", mtlFilename);
                 return nullptr;

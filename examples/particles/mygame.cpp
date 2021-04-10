@@ -24,23 +24,23 @@ namespace mygame
         // load license info file
         {
             std::vector<uint8_t> licFileData;
-            yg::readAssetFile("LICENSE_web.txt", licFileData);
+            yg::readFile("a//LICENSE_web.txt", licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
 
         // particles
         yg::Particles::Config partCfg;
-        g_assets.insert("particles", yg::GLParticles::make(partCfg, yg::loadGeometry("quad.obj", nullptr)));
+        g_assets.insert("particles", yg::GLParticles::make(partCfg, yg::loadGeometry("a//quad.obj", nullptr)));
 
         // geometry
-        g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
 
         // shaders
-        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
-        g_assets.insert("shaderParticleColorFade", yg::loadShader({{GL_VERTEX_SHADER, "particle_colorfade.vert"},
-                                                                   {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
+        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
+        g_assets.insert("shaderParticleColorFade", yg::loadShader({{GL_VERTEX_SHADER, "a//particle_colorfade.vert"},
+                                                                   {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
 
         glEnable(GL_DEPTH_TEST);
         //yg::enableVSync(true);

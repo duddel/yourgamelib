@@ -24,24 +24,24 @@ namespace mygame
         // load license info file
         {
             std::vector<uint8_t> licFileData;
-            yg::readAssetFile("LICENSE_web.txt", licFileData);
+            yg::readFile("a//LICENSE_web.txt", licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
 
         // atlas
-        g_assets.insert("atlas", yg::loadTextureAtlasCrunch("sprites.json", yg::textureUnitDiffuse, GL_NEAREST));
+        g_assets.insert("atlas", yg::loadTextureAtlasCrunch("a//sprites.json", yg::textureUnitDiffuse, GL_NEAREST));
 
         // geometry
-        g_assets.insert("geoGrid", yg::loadGeometry("grid.obj", nullptr));
-        g_assets.insert("geoQuad", yg::loadGeometry("quad.obj", nullptr));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
+        g_assets.insert("geoQuad", yg::loadGeometry("a//quad.obj", nullptr));
 
         // shaders
-        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                             {GL_FRAGMENT_SHADER, "simplecolor.frag"}}));
+        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
 
-        g_assets.insert("shaderSimpleSubtex", yg::loadShader({{GL_VERTEX_SHADER, "default.vert"},
-                                                              {GL_FRAGMENT_SHADER, "simpletex.frag"}}));
+        g_assets.insert("shaderSimpleSubtex", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                              {GL_FRAGMENT_SHADER, "a//simpletex.frag"}}));
 
         glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
         glEnable(GL_DEPTH_TEST);
