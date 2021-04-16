@@ -34,6 +34,11 @@ namespace yourgame
         return m_pMat;
     }
 
+    glm::mat4 Camera::pMat(float zNear, float zFar)
+    {
+        return calcPMat(zNear, zFar);
+    }
+
     Trafo *Camera::trafo()
     {
         m_vMatInvalidated = true; // assuming it gets changed
@@ -118,17 +123,22 @@ namespace yourgame
     {
         if (m_pMatInvalidated)
         {
-            if (m_proj == PROJECTION::PERSPECTIVE)
-            {
-                m_pMat = glm::perspective(m_fovy * 0.01745329251f, m_aspect, m_zNear, m_zFar);
-            }
-            else
-            {
-                float heightHalf = m_height * 0.5f;
-                float widthHalf = heightHalf * m_aspect;
-                m_pMat = glm::ortho(-widthHalf, widthHalf, -heightHalf, heightHalf, m_zNear, m_zFar);
-            }
+            m_pMat = calcPMat(m_zNear, m_zFar);
             m_pMatInvalidated = false;
+        }
+    }
+
+    glm::mat4 Camera::calcPMat(float zNear, float zFar)
+    {
+        if (m_proj == PROJECTION::PERSPECTIVE)
+        {
+            return glm::perspective(m_fovy * 0.01745329251f, m_aspect, zNear, zFar);
+        }
+        else
+        {
+            float heightHalf = m_height * 0.5f;
+            float widthHalf = heightHalf * m_aspect;
+            return glm::ortho(-widthHalf, widthHalf, -heightHalf, heightHalf, zNear, zFar);
         }
     }
 } // namespace yourgame

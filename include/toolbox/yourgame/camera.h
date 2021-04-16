@@ -39,6 +39,7 @@ namespace yourgame
         Trafo *trafo();
         glm::mat4 vMat();
         glm::mat4 pMat();
+        glm::mat4 pMat(float zNear, float zFar);
         void setProjection(PROJECTION proj);
         void setPerspective(float fovy, float aspect, float zNear, float zFar);
         void setOrthographic(float height, float aspect, float zNear, float zFar);
@@ -69,6 +70,7 @@ namespace yourgame
                                      0.0f, 0.0f, 0.0f, 1.0f);
         bool m_pMatInvalidated = false;
         void updatePMatIfInvalidated();
+        glm::mat4 calcPMat(float zNear, float zFar);
     };
 } // namespace yourgame
 
