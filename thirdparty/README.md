@@ -4,13 +4,14 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 
 ## Mandatory dependencies
 
-| Alias                                     | Name               | Desktop            | Android            | Web                |
-| ----------------------------------------- | ------------------ | ------------------ | ------------------ | ------------------ |
-| [android-native-app](#android-native-app) | Android Native App |                    | :heavy_check_mark: |                    |
-| [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [glad](#glad)                             | glad               | :heavy_check_mark: |                    |                    |
-| [glfw](#glfw)                             | GLFW               | :heavy_check_mark: |                    |                    |
-| [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark: |                    |                    |
+| Alias                                     | Name               | Desktop                           | Android            | Web                |
+| ----------------------------------------- | ------------------ | --------------------------------- | ------------------ | ------------------ |
+| [android-native-app](#android-native-app) | Android Native App |                                   | :heavy_check_mark: |                    |
+| [dirent](#dirent)                         | Dirent             | :heavy_check_mark: (Windows only) |                    |                    |
+| [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark:                | :heavy_check_mark: | :heavy_check_mark: |
+| [glad](#glad)                             | glad               | :heavy_check_mark:                |                    |                    |
+| [glfw](#glfw)                             | GLFW               | :heavy_check_mark:                |                    |                    |
+| [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark:                |                    |                    |
 
 ## Toolbox libraries
 
@@ -85,6 +86,14 @@ These libraries are integrated if the project has been initialized with default 
     -   src/\*
 -   modifications are marked with `YOURGAME_MODIFICATION`
 -   license: [choreograph/LICENSE.md](choreograph/LICENSE.md)
+
+## Dirent
+
+-   version: **1.23.2**
+-   origin: <https://github.com/tronkko/dirent/releases/tag/1.23.2>
+-   extracted from origin:
+    -   include/dirent.h, LICENSE
+-   license: [dirent/LICENSE](dirent/LICENSE)
 
 ## Easylogging++
 
