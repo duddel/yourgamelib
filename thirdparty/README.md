@@ -137,8 +137,8 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Dear ImGui
 
--   version: **1.82 WIP**
--   origin: <https://github.com/ocornut/imgui/tree/ee643b2ad919f9e85b973f3915d13a4fc0612a5a>
+-   version: **1.82**
+-   origin: <https://github.com/ocornut/imgui/releases/tag/v1.82>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   backends/imgui_impl_android.{h,cpp}
