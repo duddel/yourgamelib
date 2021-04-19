@@ -18,16 +18,16 @@ list(APPEND YOURGAME_SRC_FILES
 )
 ") # file()
 
+if(YOURGAME_PLATFORM STREQUAL "desktop")
 # on windows, imgui uses functions from imm.h, but imm32 library is not linked by mingw.
 # ...or consider defining IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCTIONS in imconfig.h
-if(YOURGAME_PLATFORM STREQUAL "desktop")
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") # todo: even if mingw is used, MSVC is reported
 file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
-"list(APPEND YOURGAME_LIBS
-  imm32
-)
-") # file()
+"if(MINGW)
+  list(APPEND YOURGAME_LIBS
+    imm32
+  )
 endif()
+") # file()
 endif()
 
 # platform specific backends
