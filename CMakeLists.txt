@@ -71,6 +71,7 @@ list(APPEND YOURGAME_COMPILE_DEFS
 # external projects and yourgame config
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "easyloggingpp"
+  "dirent"
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop")
   list(APPEND YOURGAME_EXT_PROJ_LIST

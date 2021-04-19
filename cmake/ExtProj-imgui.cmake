@@ -5,6 +5,7 @@ file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
 "list(APPEND YOURGAME_INC_DIRS
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/backends
+  ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/filedialog
 )
 list(APPEND YOURGAME_SRC_FILES
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/imgui.cpp
@@ -13,6 +14,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/imgui_tables.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/imgui_widgets.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
+  ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/filedialog/ImGuiFileDialog.cpp
 )
 ") # file()
 

@@ -165,6 +165,17 @@ These libraries are integrated if the project has been initialized with default 
     -   [imstb_textedit.h](imgui/imstb_textedit.h)
     -   [imstb_truetype.h](imgui/imstb_truetype.h)
 
+### ImGuiFileDialog
+
+-   version: **0.5.5**
+-   origin: <https://github.com/aiekick/ImGuiFileDialog/tree/96d4d58c7d3a8bab31794738b8a8496d1013d4af>
+-   extracted from origin:
+    -   ImGuiFileDialog.{h,cpp}
+    -   ImGuiFileDialogConfig.h
+    -   LICENSE
+-   modifications are marked with `YOURGAME_MODIFICATION`
+-   license: [imgui/filedialog/LICENSE](imgui/filedialog/LICENSE)
+
 ## JSON for Modern C++
 
 -   version: **3.8.0**

@@ -26,6 +26,7 @@ freely, subject to the following restrictions:
 #include "yourgame/toolbox.h"
 #include "yourgame/audioplayer.h"
 #include "imgui.h"
+#include "ImGuiFileDialog.h"
 #include "box2d/box2d.h"
 #include "flecs.h"
 #include "choreograph/Choreograph.h"
@@ -372,6 +373,11 @@ namespace mygame
         {
             if (ImGui::BeginMenu("File"))
             {
+                if (ImGui::MenuItem("Open"))
+                {
+                    // displaying the file dialog is done below
+                    ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".*", ".");
+                }
                 if (ImGui::MenuItem("Exit"))
                 {
                     yg::notifyShutdown();
@@ -451,6 +457,21 @@ namespace mygame
                         yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X),
                         yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y));
             ImGui::EndMainMenuBar();
+        }
+
+        // display Imgui file dialog
+        if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+        {
+            // action if OK
+            if (ImGuiFileDialog::Instance()->IsOk())
+            {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+                // action
+            }
+
+            // close
+            ImGuiFileDialog::Instance()->Close();
         }
 
         // Imgui demo window
