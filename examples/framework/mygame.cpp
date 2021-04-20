@@ -26,7 +26,9 @@ freely, subject to the following restrictions:
 #include "yourgame/toolbox.h"
 #include "yourgame/audioplayer.h"
 #include "imgui.h"
+#ifdef YOURGAME_PLATFORM_DESKTOP
 #include "ImGuiFileDialog.h"
+#endif
 #include "box2d/box2d.h"
 #include "flecs.h"
 #include "choreograph/Choreograph.h"
@@ -375,8 +377,10 @@ namespace mygame
             {
                 if (ImGui::MenuItem("Open"))
                 {
-                    // displaying the file dialog is done below
+// displaying the file dialog is done below
+#ifdef YOURGAME_PLATFORM_DESKTOP
                     ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".*", ".");
+#endif
                 }
                 if (ImGui::MenuItem("Exit"))
                 {
@@ -459,7 +463,8 @@ namespace mygame
             ImGui::EndMainMenuBar();
         }
 
-        // display Imgui file dialog
+// display Imgui file dialog
+#ifdef YOURGAME_PLATFORM_DESKTOP
         if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
         {
             // action if OK
@@ -473,6 +478,7 @@ namespace mygame
             // close
             ImGuiFileDialog::Instance()->Close();
         }
+#endif
 
         // Imgui demo window
         if (showImguiDemo)

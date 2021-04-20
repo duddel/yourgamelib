@@ -4,14 +4,14 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 
 ## Mandatory dependencies
 
-| Alias                                     | Name               | Desktop                           | Android            | Web                |
-| ----------------------------------------- | ------------------ | --------------------------------- | ------------------ | ------------------ |
-| [android-native-app](#android-native-app) | Android Native App |                                   | :heavy_check_mark: |                    |
-| [dirent](#dirent)                         | Dirent             | :heavy_check_mark: (Windows only) |                    |                    |
-| [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark:                | :heavy_check_mark: | :heavy_check_mark: |
-| [glad](#glad)                             | glad               | :heavy_check_mark:                |                    |                    |
-| [glfw](#glfw)                             | GLFW               | :heavy_check_mark:                |                    |                    |
-| [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark:                |                    |                    |
+| Alias                                     | Name               | Desktop                       | Android            | Web                |
+| ----------------------------------------- | ------------------ | ----------------------------- | ------------------ | ------------------ |
+| [android-native-app](#android-native-app) | Android Native App |                               | :heavy_check_mark: |                    |
+| [dirent](#dirent)                         | Dirent             | :heavy_check_mark: (Win only) |                    |                    |
+| [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark:            | :heavy_check_mark: | :heavy_check_mark: |
+| [glad](#glad)                             | glad               | :heavy_check_mark:            |                    |                    |
+| [glfw](#glfw)                             | GLFW               | :heavy_check_mark:            |                    |                    |
+| [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark:            |                    |                    |
 
 ## Toolbox libraries
 
@@ -21,6 +21,7 @@ These libraries are integrated if the project has been initialized with default 
 | ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
 | [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+|                                 | ImGuiFileDialog     | :heavy_check_mark: |                    |                    |
 | [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
