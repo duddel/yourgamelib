@@ -30,21 +30,23 @@ namespace yourgame_internal_android
     {
         AAssetManager *assMan;
         std::string saveFilesPath = "";
+        std::string projectPath = "";
     } // namespace
 
     void initFileIO(struct android_app *app)
     {
         assMan = app->activity->assetManager;
         saveFilesPath = std::string(app->activity->internalDataPath);
+        projectPath = saveFilesPath;
     }
 } // namespace yourgame_internal_android
 
 namespace yourgame
 {
-    int readAssetFile(const char *filename, std::vector<uint8_t> &dst)
+    int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
         AAsset *assDesc = AAssetManager_open(yourgame_internal_android::assMan,
-                                             filename,
+                                             filename.c_str(),
                                              AASSET_MODE_BUFFER);
         if (assDesc)
         {
@@ -58,33 +60,47 @@ namespace yourgame
         return -1;
     }
 
-    std::string saveFilePath(const char *filename)
+    int readSaveFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        return (yourgame_internal_android::saveFilesPath + filename);
+        return yourgame_internal::readFile(yourgame_internal_android::saveFilesPath + filename, dst);
     }
 
-    int readSaveFile(const char *filename, std::vector<uint8_t> &dst)
+    int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile(saveFilePath(filename).c_str(), dst);
+        return yourgame_internal::readFile(yourgame_internal_android::projectPath + filename, dst);
     }
 
-    int readFile(const char *filename, std::vector<uint8_t> &dst)
+    void setProjectPath(const std::string &path)
+    {
+        yourgame_internal_android::projectPath = path;
+        if (yourgame_internal_android::projectPath.back() != '/')
+        {
+            yourgame_internal_android::projectPath += "/";
+        }
+    }
+
+    int readFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
         static std::regex reFilenameAsset("^a\\/\\/(.+)$");
         static std::regex reFilenameSavefile("^s\\/\\/(.+)$");
+        static std::regex reFilenameProjectFile("^p\\/\\/(.+)$");
 
         std::smatch reMatch;
-        std::string filenameStr = std::string(filename);
 
-        if (std::regex_match(filenameStr, reMatch, reFilenameAsset) && reMatch.size() == 2)
+        if (std::regex_match(filename, reMatch, reFilenameAsset) && reMatch.size() == 2)
         {
             // match 0: full string, 1: filepath after a//
-            return readAssetFile(reMatch[1].str().c_str(), dst);
+            return readAssetFile(reMatch[1].str(), dst);
         }
-        else if (std::regex_match(filenameStr, reMatch, reFilenameSavefile) && reMatch.size() == 2)
+        else if (std::regex_match(filename, reMatch, reFilenameSavefile) && reMatch.size() == 2)
         {
             // match 0: full string, 1: filepath after s//
-            return readSaveFile(reMatch[1].str().c_str(), dst);
+            return readSaveFile(reMatch[1].str(), dst);
+        }
+        else if (std::regex_match(filename, reMatch, reFilenameProjectFile) && reMatch.size() == 2)
+        {
+            // match 0: full string, 1: filepath after p//
+            return readProjectFile(reMatch[1].str(), dst);
         }
         else
         {
@@ -92,8 +108,15 @@ namespace yourgame
         }
     }
 
-    int writeSaveFile(const char *filename, const void *data, size_t numBytes)
+    int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
     {
-        return yourgame_internal::writeFile(saveFilePath(filename).c_str(), data, numBytes);
+        return yourgame_internal::writeFile(
+            yourgame_internal_android::saveFilesPath + filename, data, numBytes);
+    }
+
+    int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
+    {
+        return yourgame_internal::writeFile(
+            yourgame_internal_android::projectPath + filename, data, numBytes);
     }
 } // namespace yourgame

@@ -24,7 +24,7 @@ namespace yourgame
 {
     GLTexture2D *GLTexture2D::make(GLenum target,
                                    GLenum unit,
-                                   std::vector<std::pair<GLenum, GLint>> parameteri)
+                                   const std::vector<std::pair<GLenum, GLint>> &parameteri)
     {
         GLuint handle;
 

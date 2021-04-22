@@ -34,22 +34,47 @@ using json = nlohmann::json;
 
 namespace yourgame
 {
-    GLTexture2D *loadTexture(const char *filename, GLenum unit, GLint minMaxFilter, bool generateMipmap)
+    GLTexture2D *loadTexture(const std::string &filename,
+                             GLenum unit,
+                             GLint minMaxFilter,
+                             bool generateMipmap)
     {
-        return loadTexture(filename, unit, {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}}, generateMipmap);
+        return loadTexture(filename,
+                           unit,
+                           {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}},
+                           generateMipmap);
     }
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit, GLint minMaxFilter, bool generateMipmap)
+    GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
+                                           GLenum unit,
+                                           GLint minMaxFilter,
+                                           bool generateMipmap)
     {
-        return loadTextureAtlasCrunch(filename, unit, {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}}, generateMipmap);
+        return loadTextureAtlasCrunch(filename,
+                                      unit,
+                                      {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}},
+                                      generateMipmap);
     }
 
-    GLTextureAtlas *loadTextureAtlasGrid(const char *filename, int tilesWidth, int tilesHeight, GLenum unit, GLint minMaxFilter, bool generateMipmap)
+    GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
+                                         int tilesWidth,
+                                         int tilesHeight,
+                                         GLenum unit,
+                                         GLint minMaxFilter,
+                                         bool generateMipmap)
     {
-        return loadTextureAtlasGrid(filename, tilesWidth, tilesHeight, unit, {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}}, generateMipmap);
+        return loadTextureAtlasGrid(filename,
+                                    tilesWidth,
+                                    tilesHeight,
+                                    unit,
+                                    {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}},
+                                    generateMipmap);
     }
 
-    GLTexture2D *loadTexture(const char *filename, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
+    GLTexture2D *loadTexture(const std::string &filename,
+                             GLenum unit,
+                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
+                             bool generateMipmap)
     {
         int width;
         int height;
@@ -82,7 +107,10 @@ namespace yourgame
         }
     }
 
-    GLTexture2D *loadCubemap(std::vector<std::string> filenames, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
+    GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
+                             GLenum unit,
+                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
+                             bool generateMipmap)
     {
         GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_CUBE_MAP, unit, parameteri);
 
@@ -93,7 +121,7 @@ namespace yourgame
             int height;
             int numChannels;
             std::vector<uint8_t> imgData;
-            yourgame::readFile(f.c_str(), imgData);
+            yourgame::readFile(f, imgData);
             // assuming "flip vertically on load" is true, disable it here because
             // opengl expects cubemap textures "unflipped"...
             stbi_set_flip_vertically_on_load(false);
@@ -104,7 +132,7 @@ namespace yourgame
 
             if (img)
             {
-                yourgame::logd("loaded %v: %vx%vx%v", f.c_str(), width, height, numChannels);
+                yourgame::logd("loaded %v: %vx%vx%v", f, width, height, numChannels);
                 texture->updateData(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                                     0,
                                     GL_RGBA8,
@@ -119,7 +147,7 @@ namespace yourgame
             }
             else
             {
-                yourgame::logw("image %v failed to load", f.c_str());
+                yourgame::logw("image %v failed to load", f);
                 delete texture;
                 return nullptr;
             }
@@ -128,7 +156,10 @@ namespace yourgame
         return texture;
     }
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename, GLenum unit, std::vector<std::pair<GLenum, GLint>> parameteri, bool generateMipmap)
+    GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
+                                           GLenum unit,
+                                           const std::vector<std::pair<GLenum, GLint>> &parameteri,
+                                           bool generateMipmap)
     {
         std::vector<uint8_t> atlasFile;
         if (yourgame::readFile(filename, atlasFile))
@@ -155,7 +186,7 @@ namespace yourgame
             // todo: always assume .png for crunch atlasses?
             std::string texFileName = jTex["name"].get<std::string>() + ".png";
 
-            auto newTex = yourgame::loadTexture(texFileName.c_str(), unit, parameteri, generateMipmap);
+            auto newTex = yourgame::loadTexture(texFileName, unit, parameteri, generateMipmap);
             if (newTex)
             {
                 newAtlas->pushTexture(newTex);
@@ -180,11 +211,11 @@ namespace yourgame
         return newAtlas;
     }
 
-    GLTextureAtlas *loadTextureAtlasGrid(const char *filename,
+    GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
                                          int tilesWidth,
                                          int tilesHeight,
                                          GLenum unit,
-                                         std::vector<std::pair<GLenum, GLint>> parameteri,
+                                         const std::vector<std::pair<GLenum, GLint>> &parameteri,
                                          bool generateMipmap)
     {
         auto newTex = yourgame::loadTexture(filename, unit, parameteri, generateMipmap);
@@ -211,16 +242,16 @@ namespace yourgame
         return newAtlas;
     }
 
-    GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
-                         std::vector<std::pair<GLuint, std::string>> attrLocs,
-                         std::vector<std::pair<GLuint, std::string>> fragDataLocs)
+    GLShader *loadShader(const std::vector<std::pair<GLenum, std::string>> &shaderFilenames,
+                         const std::vector<std::pair<GLuint, std::string>> &attrLocs,
+                         const std::vector<std::pair<GLuint, std::string>> &fragDataLocs)
     {
         std::vector<std::pair<GLenum, std::string>> shaderCodes;
 
         for (const auto &shdrFile : shaderFilenames)
         {
             std::vector<uint8_t> shdrCode;
-            yourgame::readFile(shdrFile.second.c_str(), shdrCode);
+            yourgame::readFile(shdrFile.second, shdrCode);
             std::string shdrStr = std::string(YOURGAME_GLSL_VERSION_STRING) + "\n" +
                                   std::string(shdrCode.begin(), shdrCode.end());
             shaderCodes.push_back(std::make_pair(shdrFile.first, shdrStr));
@@ -255,7 +286,8 @@ namespace yourgame
         return newShader;
     }
 
-    GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename)
+    GLGeometry *loadGeometry(const std::string &objFilename,
+                             const std::string &mtlFilename)
     {
         yourgame::logd("loading geometry %v...", objFilename);
 
@@ -268,7 +300,7 @@ namespace yourgame
         std::string objStr(objData.begin(), objData.end());
 
         std::string mtlStr = "";
-        if (mtlFilename)
+        if (!mtlFilename.empty())
         {
             std::vector<uint8_t> mtlData;
             if (yourgame::readFile(mtlFilename, mtlData))

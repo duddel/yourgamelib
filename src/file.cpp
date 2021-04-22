@@ -20,12 +20,13 @@ freely, subject to the following restrictions:
 #include <cstdint>
 #include <cstdio>
 #include <vector>
+#include <string>
 
 namespace yourgame_internal
 {
-    int readFile(const char *filename, std::vector<uint8_t> &dst)
+    int readFile(const std::string &filepath, std::vector<uint8_t> &dst)
     {
-        std::FILE *f = std::fopen(filename, "rb");
+        std::FILE *f = std::fopen(filepath.c_str(), "rb");
         if (f)
         {
             std::fseek(f, 0, SEEK_END);
@@ -39,10 +40,10 @@ namespace yourgame_internal
         return -1;
     }
 
-    int writeFile(const char *filename, const void *data, size_t numBytes)
+    int writeFile(const std::string &filepath, const void *data, size_t numBytes)
     {
         int ret = -1;
-        std::FILE *f = std::fopen(filename, "wb");
+        std::FILE *f = std::fopen(filepath.c_str(), "wb");
         if (f)
         {
             std::fwrite(data, 1, numBytes, f);

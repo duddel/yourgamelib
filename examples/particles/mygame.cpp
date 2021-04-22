@@ -31,10 +31,10 @@ namespace mygame
 
         // particles
         yg::Particles::Config partCfg;
-        g_assets.insert("particles", yg::GLParticles::make(partCfg, yg::loadGeometry("a//quad.obj", nullptr)));
+        g_assets.insert("particles", yg::GLParticles::make(partCfg, yg::loadGeometry("a//quad.obj")));
 
         // geometry
-        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj"));
 
         // shaders
         g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},

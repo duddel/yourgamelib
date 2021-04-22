@@ -48,9 +48,9 @@ namespace mygame
             g_assets.insert("licenseStr", licStr);
         }
 
-        g_assets.insert("geoCube", yg::loadGeometry("a//cube.obj", nullptr));
-        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
-        g_assets.insert("geoCross", yg::loadGeometry("a//cross.obj", nullptr));
+        g_assets.insert("geoCube", yg::loadGeometry("a//cube.obj"));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj"));
+        g_assets.insert("geoCross", yg::loadGeometry("a//cross.obj"));
         g_assets.insert("geoBlaster", yg::loadGeometry("a//blasterD.obj", "a//blasterD.mtl"));
 
         g_assets.insert("shaderDiffuseColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},

@@ -22,11 +22,12 @@ freely, subject to the following restrictions:
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 namespace yourgame_internal
 {
-    int readFile(const char *filename, std::vector<uint8_t> &dst);
-    int writeFile(const char *filename, const void *data, size_t numBytes);
+    int readFile(const std::string &filepath, std::vector<uint8_t> &dst);
+    int writeFile(const std::string &filepath, const void *data, size_t numBytes);
 } // namespace yourgame_internal
 
 #endif

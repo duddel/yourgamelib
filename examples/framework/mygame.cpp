@@ -91,7 +91,7 @@ namespace mygame
             static const std::string licFilename("a//LICENSE_web.txt");
 #endif
             std::vector<uint8_t> licFileData;
-            yg::readFile(licFilename.c_str(), licFileData);
+            yg::readFile(licFilename, licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
@@ -156,8 +156,8 @@ namespace mygame
                     yg::unifValueTextureDiffuse);
 
         // geometry
-        g_assets.insert("quadGeo", yg::loadGeometry("a//quad.obj", nullptr));
-        g_assets.insert("cube", yg::loadGeometry("a//cube.obj", nullptr));
+        g_assets.insert("quadGeo", yg::loadGeometry("a//quad.obj"));
+        g_assets.insert("cube", yg::loadGeometry("a//cube.obj"));
 
         // framebuffer
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
@@ -235,8 +235,8 @@ namespace mygame
         // load geometry on demand
         if (g_geos.find(g_geoName) == g_geos.end())
         {
-            g_geos[g_geoName] = yg::loadGeometry((std::string("a//") + std::string(g_geoName + ".obj")).c_str(),
-                                                 (std::string("a//") + std::string(g_geoName + ".mtl")).c_str());
+            g_geos[g_geoName] = yg::loadGeometry(std::string("a//") + g_geoName + ".obj",
+                                                 std::string("a//") + g_geoName + ".mtl");
         }
 
         // drawing
@@ -473,6 +473,7 @@ namespace mygame
                 std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
                 std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
                 // action
+                yg::setProjectPath(filePath);
             }
 
             // close

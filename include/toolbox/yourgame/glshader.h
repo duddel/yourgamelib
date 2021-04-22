@@ -32,9 +32,9 @@ namespace yourgame
     class GLShader
     {
     public:
-        static GLShader *make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                              std::vector<std::pair<GLuint, std::string>> attrLocs,
-                              std::vector<std::pair<GLuint, std::string>> fragDataLocs,
+        static GLShader *make(const std::vector<std::pair<GLenum, std::string>> &shaderCodes,
+                              const std::vector<std::pair<GLuint, std::string>> &attrLocs,
+                              const std::vector<std::pair<GLuint, std::string>> &fragDataLocs,
                               std::string &errorLog);
         ~GLShader();
         void useProgram(GLLightsource *lightsource = nullptr, Camera *camera = nullptr);

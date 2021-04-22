@@ -30,26 +30,26 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    GLTexture2D *loadTexture(const char *filename,
+    GLTexture2D *loadTexture(const std::string &filename,
                              GLenum unit,
                              GLint minMaxFilter = GL_LINEAR,
                              bool generateMipmap = false);
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename,
+    GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
                                            GLenum unit,
                                            GLint minMaxFilter = GL_LINEAR,
                                            bool generateMipmap = false);
 
-    GLTextureAtlas *loadTextureAtlasGrid(const char *filename,
+    GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
                                          int tilesWidth,
                                          int tilesHeight,
                                          GLenum unit,
                                          GLint minMaxFilter = GL_LINEAR,
                                          bool generateMipmap = false);
 
-    GLTexture2D *loadTexture(const char *filename,
+    GLTexture2D *loadTexture(const std::string &filename,
                              GLenum unit,
-                             std::vector<std::pair<GLenum, GLint>> parameteri,
+                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
                              bool generateMipmap);
 
     /**
@@ -57,28 +57,29 @@ namespace yourgame
 
     \param filenames this order: POSITIVE_X, NEGATIVE_X, POSITIVE_Y, NEGATIVE_Y, POSITIVE_Z, NEGATIVE_Z
     */
-    GLTexture2D *loadCubemap(std::vector<std::string> filenames,
+    GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
                              GLenum unit,
-                             std::vector<std::pair<GLenum, GLint>> parameteri,
+                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
                              bool generateMipmap);
 
-    GLTextureAtlas *loadTextureAtlasCrunch(const char *filename,
+    GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
                                            GLenum unit,
-                                           std::vector<std::pair<GLenum, GLint>> parameteri,
+                                           const std::vector<std::pair<GLenum, GLint>> &parameteri,
                                            bool generateMipmap);
 
-    GLTextureAtlas *loadTextureAtlasGrid(const char *filename,
+    GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
                                          int tilesWidth,
                                          int tilesHeight,
                                          GLenum unit,
-                                         std::vector<std::pair<GLenum, GLint>> parameteri,
+                                         const std::vector<std::pair<GLenum, GLint>> &parameteri,
                                          bool generateMipmap);
 
-    GLShader *loadShader(std::vector<std::pair<GLenum, std::string>> shaderFilenames,
-                         std::vector<std::pair<GLuint, std::string>> attrLocs = {},
-                         std::vector<std::pair<GLuint, std::string>> fragDataLocs = {});
+    GLShader *loadShader(const std::vector<std::pair<GLenum, std::string>> &shaderFilenames,
+                         const std::vector<std::pair<GLuint, std::string>> &attrLocs = {},
+                         const std::vector<std::pair<GLuint, std::string>> &fragDataLocs = {});
 
-    GLGeometry *loadGeometry(const char *objFilename, const char *mtlFilename);
+    GLGeometry *loadGeometry(const std::string &objFilename,
+                             const std::string &mtlFilename = "");
 } // namespace yourgame
 
 #endif

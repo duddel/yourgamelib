@@ -177,7 +177,7 @@ namespace yourgame
         return g_audioInitialized;
     }
 
-    int audioStoreFile(std::string filename)
+    int audioStoreFile(const std::string &filename)
     {
         if (g_audioFileData.find(filename) != g_audioFileData.end())
         {
@@ -185,7 +185,7 @@ namespace yourgame
         }
 
         std::vector<uint8_t> fileData;
-        if (yourgame::readFile(filename.c_str(), fileData) == 0)
+        if (yourgame::readFile(filename, fileData) == 0)
         {
             g_audioFileData.emplace(filename, fileData);
             return 0;
@@ -196,7 +196,7 @@ namespace yourgame
         }
     }
 
-    int audioPlay(std::string filename, bool loop)
+    int audioPlay(const std::string &filename, bool loop)
     {
         auto audioFile = g_audioFileData.find(filename);
         if (audioFile == g_audioFileData.end())

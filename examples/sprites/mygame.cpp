@@ -33,8 +33,8 @@ namespace mygame
         g_assets.insert("atlas", yg::loadTextureAtlasCrunch("a//sprites.json", yg::textureUnitDiffuse, GL_NEAREST));
 
         // geometry
-        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
-        g_assets.insert("geoQuad", yg::loadGeometry("a//quad.obj", nullptr));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj"));
+        g_assets.insert("geoQuad", yg::loadGeometry("a//quad.obj"));
 
         // shaders
         g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},

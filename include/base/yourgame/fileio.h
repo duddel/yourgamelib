@@ -27,27 +27,36 @@ freely, subject to the following restrictions:
 namespace yourgame
 {
     /** \brief reads an entire file (from asset file location) and returns it as a vector of bytes */
-    int readAssetFile(const char *filename, std::vector<uint8_t> &dst);
-
-    /** \brief returns the absolute path to the save file filename */
-    std::string saveFilePath(const char *filename);
+    int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst);
 
     /** \brief reads an entire file (from save file location) and returns it as a vector of bytes */
-    int readSaveFile(const char *filename, std::vector<uint8_t> &dst);
+    int readSaveFile(const std::string &filename, std::vector<uint8_t> &dst);
+
+    /** \brief reads an entire file (from project file location) and returns it as a vector of bytes */
+    int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst);
+
+    /** \brief sets the path to the current project directory */
+    void setProjectPath(const std::string &path);
 
     /** \brief reads an entire file and returns it as a vector of bytes
     - prepend \c a// to load a file from asset file location
     - prepend \c s// to load a file from save file location
+    - prepend \c p// to load a file from project file location
     - prepend none of the above to load a file with unchanged filename as path
     - example: <code>loadFile("a//file1.bin" ...) // loads file1.bin from assets</code>
     - example: <code>loadFile("s//file2.bin" ...) // loads file2.bin from save file location</code>
-    - example: <code>loadFile("file3.bin" ...) // loads file3.bin from working directory </code>
+    - example: <code>loadFile("p//file3.bin" ...) // loads file3.bin from project file location</code>
+    - example: <code>loadFile("file4.bin" ...) // loads file4.bin from working directory </code>
     */
-    int readFile(const char *filename, std::vector<uint8_t> &dst);
+    int readFile(const std::string &filename, std::vector<uint8_t> &dst);
 
     /** \brief writes numBytes bytes from data to a file called filename in the save file location.
         overwrites the file if it exists */
-    int writeSaveFile(const char *filename, const void *data, size_t numBytes);
+    int writeSaveFile(const std::string &filename, const void *data, size_t numBytes);
+
+    /** \brief writes numBytes bytes from data to a file called filename in the project file location.
+        overwrites the file if it exists */
+    int writeProjectFile(const std::string &filename, const void *data, size_t numBytes);
 } // namespace yourgame
 
 #endif

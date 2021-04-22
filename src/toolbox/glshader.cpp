@@ -47,9 +47,9 @@ namespace yourgame
         }
     } // namespace
 
-    GLShader *GLShader::make(std::vector<std::pair<GLenum, std::string>> shaderCodes,
-                             std::vector<std::pair<GLuint, std::string>> attrLocs,
-                             std::vector<std::pair<GLuint, std::string>> fragDataLocs,
+    GLShader *GLShader::make(const std::vector<std::pair<GLenum, std::string>> &shaderCodes,
+                             const std::vector<std::pair<GLuint, std::string>> &attrLocs,
+                             const std::vector<std::pair<GLuint, std::string>> &fragDataLocs,
                              std::string &errorLog)
     {
         std::vector<GLuint> shdrHandles;
@@ -159,7 +159,7 @@ namespace yourgame
             {
                 glUniformMatrix4fv(unif, 1, GL_FALSE, glm::value_ptr(camera->pMat() * camera->vMat()));
             }
-            
+
             unif = getUniformLocation(yourgame::unifNameCameraTrafo);
             if (unif != -1)
             {

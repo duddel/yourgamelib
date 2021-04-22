@@ -29,9 +29,9 @@ namespace yourgame
     int audioInit(ma_uint32 numChannels, ma_uint32 sampleRate, int numSources);
     void audioShutdown();
     bool audioIsInitialized();
-    int audioStoreFile(std::string filename);
+    int audioStoreFile(const std::string &filename);
 
-    int audioPlay(std::string filename, bool loop = false);
+    int audioPlay(const std::string &filename, bool loop = false);
     int audioStop(int sourceId);
     int audioPause(int sourceId, bool pause);
     int audioSetChannelGains(int sourceId, const std::vector<float> &gains);
