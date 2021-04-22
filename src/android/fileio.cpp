@@ -19,7 +19,6 @@ freely, subject to the following restrictions:
 */
 #include <string>
 #include <vector>
-#include <regex>
 #include <android_native_app_glue.h>
 #include <android/asset_manager.h>
 #include "yourgame_internal/file.h"
@@ -81,31 +80,20 @@ namespace yourgame
 
     int readFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        static std::regex reFilenameAsset("^a\\/\\/(.+)$");
-        static std::regex reFilenameSavefile("^s\\/\\/(.+)$");
-        static std::regex reFilenameProjectFile("^p\\/\\/(.+)$");
+        if (filename.length() > 3 && filename.compare(1, 2, "//") == 0)
+        {
+            switch (filename[0])
+            {
+            case 'a':
+                return readAssetFile(filename.substr(3, std::string::npos), dst);
+            case 's':
+                return readSaveFile(filename.substr(3, std::string::npos), dst);
+            case 'p':
+                return readProjectFile(filename.substr(3, std::string::npos), dst);
+            }
+        }
 
-        std::smatch reMatch;
-
-        if (std::regex_match(filename, reMatch, reFilenameAsset) && reMatch.size() == 2)
-        {
-            // match 0: full string, 1: filepath after a//
-            return readAssetFile(reMatch[1].str(), dst);
-        }
-        else if (std::regex_match(filename, reMatch, reFilenameSavefile) && reMatch.size() == 2)
-        {
-            // match 0: full string, 1: filepath after s//
-            return readSaveFile(reMatch[1].str(), dst);
-        }
-        else if (std::regex_match(filename, reMatch, reFilenameProjectFile) && reMatch.size() == 2)
-        {
-            // match 0: full string, 1: filepath after p//
-            return readProjectFile(reMatch[1].str(), dst);
-        }
-        else
-        {
-            return yourgame_internal::readFile(filename, dst);
-        }
+        return yourgame_internal::readFile(filename, dst);
     }
 
     int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
