@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['savefilepath',['saveFilePath',['../namespaceyourgame.html#ae3e218a134072d670ce40f5ce9115847',1,'yourgame']]],
   ['scatteroninit',['scatterOnInit',['../structyourgame_1_1Particles_1_1Config.html#adb4ff89ab952ebea175b153c59c4773b',1,'yourgame::Particles::Config']]],
   ['scatteronspawn',['scatterOnSpawn',['../structyourgame_1_1Particles_1_1Config.html#a8546b737348051f60cd0752d3fa59b96',1,'yourgame::Particles::Config']]],
   ['seed',['seed',['../structyourgame_1_1Particles_1_1Config.html#adea4d3d1c4ab3690b1c8e14684685ccd',1,'yourgame::Particles::Config']]],
@@ -16,6 +15,7 @@ var searchData=
   ['setperspective',['setPerspective',['../classyourgame_1_1Camera.html#af349ddcc517e926c54bf761d33711a75',1,'yourgame::Camera']]],
   ['setposition',['setPosition',['../classyourgame_1_1GLLightsource.html#abe6f756a1f2ca3bbd5a1da5470384165',1,'yourgame::GLLightsource']]],
   ['setprojection',['setProjection',['../classyourgame_1_1Camera.html#a42f35c62c23d6fffb0169874bc2978ac',1,'yourgame::Camera']]],
+  ['setprojectpath',['setProjectPath',['../namespaceyourgame.html#a7c3c6c6ecce71db30eb5d890ac430528',1,'yourgame']]],
   ['setrotation',['setRotation',['../classyourgame_1_1Trafo.html#ae78093cea0fac447fb686c785c1b08e9',1,'yourgame::Trafo']]],
   ['setscalelocal',['setScaleLocal',['../classyourgame_1_1Trafo.html#ab8c0e17e1b50f1e6243d889629926853',1,'yourgame::Trafo::setScaleLocal(glm::vec3 const &amp;scale)'],['../classyourgame_1_1Trafo.html#aba330ad28b274ff07190e5163a5c55d5',1,'yourgame::Trafo::setScaleLocal(float scale)']]],
   ['setshapeelardescr',['setShapeElArDescr',['../classyourgame_1_1GLGeometry.html#ae3afb46bebc716438e9f15187c361be5',1,'yourgame::GLGeometry']]],
