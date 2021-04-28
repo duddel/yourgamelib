@@ -20,8 +20,13 @@ freely, subject to the following restrictions:
 #include <algorithm> // std::replace()
 #include <string>
 #include <vector>
+#include <regex>
 #ifndef __EMSCRIPTEN__
 #include "whereami.h"
+#endif
+// todo dirent might work with emscripten. disabled for now
+#ifdef YOURGAME_PLATFORM_DESKTOP
+#include "dirent.h"
 #endif
 #include "yourgame/logging.h"
 #include "yourgame_internal/file.h"
@@ -30,32 +35,46 @@ namespace yourgame_internal_desktop
 {
     namespace
     {
-#ifdef __EMSCRIPTEN__
-        std::string basePath = "/";
-        std::vector<std::string> assetPaths = {"assets/"};
-        std::string saveFilesPath = "home/web_user/";
-        std::string projectPath = saveFilesPath;
-#else
-        std::string basePath = "";
-        std::vector<std::string> assetPaths = {"assets/", "../assets/", "../../assets/"};
-        std::string saveFilesPath = "savefiles/";
-        std::string projectPath = saveFilesPath;
-#endif
+        std::string assetPathAbs;
+        std::string saveFilesPathAbs;
+        std::string projectPathAbs;
     } // namespace
 
     void initFileIO()
     {
-#ifndef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
+        assetPathAbs = "/assets/";
+        saveFilesPathAbs = "/home/web_user/";
+        projectPathAbs = saveFilesPathAbs;
+#else
         int exeBasePathLength;
         int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
         char *path = (char *)malloc(exePathLength + 1);
         wai_getExecutablePath(path, exePathLength, &exeBasePathLength);
         path[exeBasePathLength + 1] = '\0';
-        basePath = path;
+        std::string basePath(path);
         free(path);
         std::replace(basePath.begin(), basePath.end(), '\\', '/');
+
+        // check existing (via dirent openable) asset directories
+        for (const auto &a : {"assets/", "../assets/", "../../assets/"})
+        {
+            assetPathAbs = basePath + a;
+            DIR *dir = opendir(assetPathAbs.c_str());
+            if (dir)
+            {
+                closedir(dir);
+                break;
+            }
+        }
+
+        saveFilesPathAbs = basePath + "savefiles/";
+        projectPathAbs = saveFilesPathAbs;
 #endif
-        yourgame::logi("File IO basePath: %v", basePath);
+
+        yourgame::logi("File IO assets:     %v", assetPathAbs);
+        yourgame::logi("File IO save files: %v", saveFilesPathAbs);
+        yourgame::logi("File IO project:    %v", projectPathAbs);
     }
 } // namespace yourgame_internal_desktop
 
@@ -63,41 +82,28 @@ namespace yourgame
 {
     int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        int readFileRet = -1;
-        for (const auto &aP : yourgame_internal_desktop::assetPaths)
-        {
-            auto assetFilePath = (yourgame_internal_desktop::basePath + aP + filename);
-            if ((readFileRet = yourgame_internal::readFile(assetFilePath, dst)) == 0)
-            {
-                yourgame::logd("asset file %v, found here: %v", filename, assetFilePath);
-                return readFileRet;
-            }
-        }
-        yourgame::logd("asset file %v, not found", filename);
-        return readFileRet;
+        return yourgame_internal::readFile(yourgame_internal_desktop::assetPathAbs + filename, dst);
     }
 
     int readSaveFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile(
-            yourgame_internal_desktop::basePath + yourgame_internal_desktop::saveFilesPath + filename, dst);
+        return yourgame_internal::readFile(yourgame_internal_desktop::saveFilesPathAbs + filename, dst);
     }
 
     int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile(
-            yourgame_internal_desktop::projectPath + filename, dst);
+        return yourgame_internal::readFile(yourgame_internal_desktop::projectPathAbs + filename, dst);
     }
 
     void setProjectPath(const std::string &path)
     {
-        yourgame_internal_desktop::projectPath = path;
-        std::replace(yourgame_internal_desktop::projectPath.begin(), yourgame_internal_desktop::projectPath.end(), '\\', '/');
-        if (yourgame_internal_desktop::projectPath.back() != '/')
+        yourgame_internal_desktop::projectPathAbs = path;
+        std::replace(yourgame_internal_desktop::projectPathAbs.begin(), yourgame_internal_desktop::projectPathAbs.end(), '\\', '/');
+        if (yourgame_internal_desktop::projectPathAbs.back() != '/')
         {
-            yourgame_internal_desktop::projectPath += "/";
+            yourgame_internal_desktop::projectPathAbs += "/";
         }
-        yourgame::logd("File IO new projectPath: %v", yourgame_internal_desktop::projectPath);
+        yourgame::logd("File IO project: %v", yourgame_internal_desktop::projectPathAbs);
     }
 
     int readFile(const std::string &filename, std::vector<uint8_t> &dst)
@@ -120,13 +126,85 @@ namespace yourgame
 
     int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
     {
-        return yourgame_internal::writeFile(
-            yourgame_internal_desktop::basePath + yourgame_internal_desktop::saveFilesPath + filename, data, numBytes);
+        return yourgame_internal::writeFile(yourgame_internal_desktop::saveFilesPathAbs + filename, data, numBytes);
     }
 
     int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
     {
-        return yourgame_internal::writeFile(
-            yourgame_internal_desktop::projectPath + filename, data, numBytes);
+        return yourgame_internal::writeFile(yourgame_internal_desktop::projectPathAbs + filename, data, numBytes);
+    }
+
+    std::vector<std::string> ls(const std::string &pattern)
+    {
+        std::vector<std::string> ret;
+
+// todo dirent might work with emscripten. disabled for now
+#ifndef __EMSCRIPTEN__
+        std::string lsPath = pattern;
+        if (lsPath.length() >= 3 && lsPath.compare(1, 2, "//") == 0)
+        {
+            switch (lsPath[0])
+            {
+            case 'a':
+                // substr() returns empty string if pos == length.
+                lsPath = (yourgame_internal_desktop::assetPathAbs + lsPath.substr(3, std::string::npos));
+                break;
+            case 's':
+                // substr() returns empty string if pos == length.
+                lsPath = (yourgame_internal_desktop::saveFilesPathAbs + lsPath.substr(3, std::string::npos));
+                break;
+            case 'p':
+                // substr() returns empty string if pos == length.
+                lsPath = (yourgame_internal_desktop::projectPathAbs + lsPath.substr(3, std::string::npos));
+                break;
+            }
+        }
+
+        static std::regex reLsPattern("(.*\\/|^)(.*\\*[^\\/\\n]*)$");
+        std::regex reFilePattern("^.*$");
+        std::smatch reMatch;
+        if (std::regex_match(lsPath, reMatch, reLsPattern) && reMatch.size() == 3)
+        {
+            // match 0: full string, 1: beginning until last /, 2: everything after last /
+            lsPath = reMatch[1].str();
+            std::string filePattern = std::regex_replace(reMatch[2].str(), std::regex("\\*"), ".*");
+            // todo ensure filePattern is a valid regex
+            reFilePattern = std::regex(std::string("^") + filePattern + "$");
+        }
+
+        DIR *dir = opendir(lsPath.c_str());
+        if (!dir)
+        {
+            yourgame::loge("can not open directory: %v", lsPath);
+        }
+        else
+        {
+            struct dirent *ent;
+            while ((ent = readdir(dir)) != NULL)
+            {
+                if (std::regex_match(ent->d_name, reFilePattern))
+                {
+                    switch (ent->d_type)
+                    {
+                    case DT_REG:
+                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen));
+                        break;
+                    case DT_DIR:
+                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen) + "/");
+                        break;
+                    case DT_LNK:
+                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen) + "@");
+                        break;
+                    default:
+                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen) + "*");
+                    }
+                }
+            }
+
+            closedir(dir);
+        }
+#endif
+
+        return ret;
     }
 } // namespace yourgame

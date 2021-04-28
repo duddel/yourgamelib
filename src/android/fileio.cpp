@@ -107,4 +107,11 @@ namespace yourgame
         return yourgame_internal::writeFile(
             yourgame_internal_android::projectPath + filename, data, numBytes);
     }
+
+    std::vector<std::string> ls(const std::string &pattern)
+    {
+        // todo not implemented. dirent might work with android.
+        std::vector<std::string> ret;
+        return ret;
+    }
 } // namespace yourgame

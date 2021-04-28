@@ -369,6 +369,7 @@ namespace mygame
         static bool showSpriteGrid = false;
         static bool showQu3e = false;
         static bool showGamepadInput = false;
+        static bool showLs = false;
 
         // Main Menu Bar
         if (ImGui::BeginMainMenuBar())
@@ -433,6 +434,10 @@ namespace mygame
                 if (ImGui::MenuItem("Gamepad input", "", &showGamepadInput))
                 {
                     showGamepadInput = true;
+                }
+                if (ImGui::MenuItem("ls", "", &showLs))
+                {
+                    showLs = true;
                 }
                 ImGui::EndMenu();
             }
@@ -1087,6 +1092,23 @@ namespace mygame
                 ImGui::SliderFloat("RIGHT_TRIGGER_1", &axis5, -1.0f, 1.0f);
             }
             ImGui::EndGroup();
+            ImGui::End();
+        }
+
+        if (showLs)
+        {
+            ImGui::Begin("ls", &showLs, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
+            static char lsBuf[256] = "a//*.png";
+            ImGui::InputText("ls pattern", lsBuf, 256);
+            if (ImGui::Button("call ls()"))
+            {
+                yg::logi("ls(\"%v\")...", lsBuf);
+                for (const auto &s : yg::ls(lsBuf))
+                {
+                    // todo display ls() result via imgui
+                    yg::logi("%v", s);
+                }
+            }
             ImGui::End();
         }
 

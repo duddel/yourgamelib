@@ -57,6 +57,10 @@ namespace yourgame
     /** \brief writes numBytes bytes from data to a file called filename in the project file location.
         overwrites the file if it exists */
     int writeProjectFile(const std::string &filename, const void *data, size_t numBytes);
+
+    /** \brief returns list of directory content. accepts prefixes like readFile() does. accepts wildcard "*" for
+        files (after last / in pattern) */
+    std::vector<std::string> ls(const std::string &pattern);
 } // namespace yourgame
 
 #endif
