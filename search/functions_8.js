@@ -11,5 +11,6 @@ var searchData=
   ['loge',['loge',['../namespaceyourgame.html#a389e47f66fb1ab81f132fd48c0fa73cb',1,'yourgame::loge(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a1249e887a2994cd7aaf6ad968f5ccd49',1,'yourgame::loge(const T &amp;value)']]],
   ['logi',['logi',['../namespaceyourgame.html#a0f67421bf076411d33636b98d6a6a84a',1,'yourgame::logi(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a3acfaf5bf5d8db218fdf3ec6138c449c',1,'yourgame::logi(const T &amp;value)']]],
   ['logw',['logw',['../namespaceyourgame.html#acbaf01185bb8023afd3920fa615a5fb5',1,'yourgame::logw(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#ab1428256b7d8aa6c99ad601f780f9f08',1,'yourgame::logw(const T &amp;value)']]],
-  ['lookat',['lookAt',['../classyourgame_1_1Trafo.html#ac75cc92de811ebe7e6987c1a80ec3792',1,'yourgame::Trafo']]]
+  ['lookat',['lookAt',['../classyourgame_1_1Trafo.html#ac75cc92de811ebe7e6987c1a80ec3792',1,'yourgame::Trafo']]],
+  ['ls',['ls',['../namespaceyourgame.html#a6f4ca4b7b4d4f7eba9332ed57db24ac2',1,'yourgame']]]
 ];
