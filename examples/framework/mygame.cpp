@@ -1114,7 +1114,7 @@ namespace mygame
                     lsResultText += (s + "\n");
                 }
             }
-            ImGui::Text(lsResultText.c_str());
+            ImGui::Text("%s", lsResultText.c_str());
             ImGui::End();
         }
 
