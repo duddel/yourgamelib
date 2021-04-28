@@ -19,6 +19,7 @@ freely, subject to the following restrictions:
 */
 #include <string>
 #include <vector>
+#include "dirent.h" // todo preparation for ls()
 #include <android_native_app_glue.h>
 #include <android/asset_manager.h>
 #include "yourgame_internal/file.h"

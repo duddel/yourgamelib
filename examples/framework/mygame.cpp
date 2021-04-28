@@ -1097,18 +1097,24 @@ namespace mygame
 
         if (showLs)
         {
+            static char lsPattern[256] = "a//*.png";
+            static std::string lsResultText("");
+
             ImGui::Begin("ls", &showLs, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-            static char lsBuf[256] = "a//*.png";
-            ImGui::InputText("ls pattern", lsBuf, 256);
+            ImGui::InputText("ls pattern", lsPattern, 256);
             if (ImGui::Button("call ls()"))
             {
-                yg::logi("ls(\"%v\")...", lsBuf);
-                for (const auto &s : yg::ls(lsBuf))
+                lsResultText.clear();
+                auto lsResult = yg::ls(lsPattern);
+                yg::logi("ls(\"%v\"): %v results:", lsPattern, lsResult.size());
+
+                for (const auto &s : lsResult)
                 {
-                    // todo display ls() result via imgui
                     yg::logi("%v", s);
+                    lsResultText += (s + "\n");
                 }
             }
+            ImGui::Text(lsResultText.c_str());
             ImGui::End();
         }
 

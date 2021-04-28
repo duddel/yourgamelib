@@ -21,10 +21,10 @@ freely, subject to the following restrictions:
 #include <string>
 #include <vector>
 #include <regex>
+#include "dirent.h"
 #ifndef __EMSCRIPTEN__
 #include "whereami.h"
 #endif
-#include "dirent.h"
 #include "yourgame/logging.h"
 #include "yourgame_internal/file.h"
 
@@ -155,14 +155,25 @@ namespace yourgame
             }
         }
 
+        // match 0: full string, 1: beginning until last /, 2: everything after last /
         static std::regex reLsPattern("(.*\\/|^)(.*\\*[^\\/\\n]*)$");
-        std::regex reFilePattern("^.*$");
         std::smatch reMatch;
-        if (std::regex_match(lsPath, reMatch, reLsPattern) && reMatch.size() == 3)
+        auto reMatched = std::regex_match(lsPath, reMatch, reLsPattern);
+
+        yourgame::logd("ls(): lsPath matched: %v, matches: %v:", reMatched, reMatch.size());
+        for (unsigned i = 0; i < reMatch.size(); i++)
         {
-            // match 0: full string, 1: beginning until last /, 2: everything after last /
+            yourgame::logd("ls(): match %v: %v", i, reMatch[i].str());
+        }
+
+        std::regex reFilePattern("^.*$");
+        if (reMatched && reMatch.size() == 3)
+        {
             lsPath = reMatch[1].str();
-            std::string filePattern = std::regex_replace(reMatch[2].str(), std::regex("\\*"), ".*");
+            std::string filePattern = reMatch[2].str();
+            filePattern = std::regex_replace(filePattern, std::regex("\\."), "\\.");
+            filePattern = std::regex_replace(filePattern, std::regex("\\*"), ".*");
+            yourgame::logd("ls(): filePattern regex: %v", filePattern);
             // todo ensure filePattern is a valid regex
             reFilePattern = std::regex(std::string("^") + filePattern + "$");
         }
@@ -170,7 +181,7 @@ namespace yourgame
         DIR *dir = opendir(lsPath.c_str());
         if (!dir)
         {
-            yourgame::loge("can not open directory: %v", lsPath);
+            yourgame::loge("ls(): failed to open directory: %v", lsPath);
         }
         else
         {
