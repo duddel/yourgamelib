@@ -24,10 +24,7 @@ freely, subject to the following restrictions:
 #ifndef __EMSCRIPTEN__
 #include "whereami.h"
 #endif
-// todo dirent might work with emscripten. disabled for now
-#ifdef YOURGAME_PLATFORM_DESKTOP
 #include "dirent.h"
-#endif
 #include "yourgame/logging.h"
 #include "yourgame_internal/file.h"
 
@@ -138,8 +135,6 @@ namespace yourgame
     {
         std::vector<std::string> ret;
 
-// todo dirent might work with emscripten. disabled for now
-#ifndef __EMSCRIPTEN__
         std::string lsPath = pattern;
         if (lsPath.length() >= 3 && lsPath.compare(1, 2, "//") == 0)
         {
@@ -187,23 +182,22 @@ namespace yourgame
                     switch (ent->d_type)
                     {
                     case DT_REG:
-                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen));
+                        ret.emplace_back(std::string(ent->d_name));
                         break;
                     case DT_DIR:
-                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen) + "/");
+                        ret.emplace_back(std::string(ent->d_name) + "/");
                         break;
                     case DT_LNK:
-                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen) + "@");
+                        ret.emplace_back(std::string(ent->d_name) + "@");
                         break;
                     default:
-                        ret.emplace_back(std::string(ent->d_name).substr(0, ent->d_namlen) + "*");
+                        ret.emplace_back(std::string(ent->d_name) + "*");
                     }
                 }
             }
 
             closedir(dir);
         }
-#endif
 
         return ret;
     }
