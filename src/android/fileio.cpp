@@ -43,6 +43,16 @@ namespace yourgame_internal_android
 
 namespace yourgame
 {
+    std::string getSaveFilePath(const std::string &filename)
+    {
+        return yourgame_internal_android::saveFilesPath + filename;
+    }
+
+    std::string getProjectFilePath(const std::string &filename)
+    {
+        return yourgame_internal_android::projectPath + filename;
+    }
+
     int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
         AAsset *assDesc = AAssetManager_open(yourgame_internal_android::assMan,

@@ -26,6 +26,12 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
+    /** \brief returns the full (absolut) path to a file called filename in the save file location */
+    std::string getSaveFilePath(const std::string &filename = "");
+
+    /** \brief returns the full (absolut) path to a file called filename in the project file location */
+    std::string getProjectFilePath(const std::string &filename = "");
+
     /** \brief reads an entire file (from asset file location) and returns it as a vector of bytes */
     int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst);
 

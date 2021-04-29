@@ -77,6 +77,16 @@ namespace yourgame_internal_desktop
 
 namespace yourgame
 {
+    std::string getSaveFilePath(const std::string &filename)
+    {
+        return yourgame_internal_desktop::saveFilesPathAbs + filename;
+    }
+
+    std::string getProjectFilePath(const std::string &filename)
+    {
+        return yourgame_internal_desktop::projectPathAbs + filename;
+    }
+
     int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
         return yourgame_internal::readFile(yourgame_internal_desktop::assetPathAbs + filename, dst);
