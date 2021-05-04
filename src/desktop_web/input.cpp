@@ -227,6 +227,12 @@ namespace yourgame_internal_desktop
             }
         }
 
+        void scrollCallback(GLFWwindow *window, double xoffset, double yoffset)
+        {
+            set(yourgame::InputSource::YOURGAME_SCROLL_OFFSET_X, (float)xoffset);
+            set(yourgame::InputSource::YOURGAME_SCROLL_OFFSET_Y, (float)yoffset);
+        }
+
         void joystickCallback(int jid, int event)
         {
             auto mapping = gamepadConnectedApiMapping.find(jid);
@@ -245,6 +251,7 @@ namespace yourgame_internal_desktop
         glfwSetKeyCallback(window, keyCallback);
         glfwSetCursorPosCallback(window, cursorPositionCallback);
         glfwSetMouseButtonCallback(window, mouseButtonCallback);
+        glfwSetScrollCallback(window, scrollCallback);
         glfwSetJoystickCallback(joystickCallback);
 
 // todo: mapped gamepad input available since glfw v3.3,
@@ -265,6 +272,12 @@ namespace yourgame_internal_desktop
         {
             i.second.valLast = i.second.val;
         }
+
+        // reset certain inputs before new input:
+        // these are "events" that might occur during a _single_ frame,
+        // like an offset of a mouse scroll wheel
+        set(yourgame::InputSource::YOURGAME_SCROLL_OFFSET_X, 0.0f);
+        set(yourgame::InputSource::YOURGAME_SCROLL_OFFSET_Y, 0.0f);
 
 // todo: mapped gamepad input available since glfw v3.3,
 // emscripten implements glfw v3.2 API only (2020-12-12)
