@@ -50,7 +50,8 @@ namespace yourgame
     GLTexture2D *loadTexture(const std::string &filename,
                              GLenum unit,
                              const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                             bool generateMipmap);
+                             bool generateMipmap,
+                             bool premultiplyAlpha = true);
 
     /**
     \brief loads images and generates cubemap texture

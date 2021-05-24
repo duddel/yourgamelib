@@ -74,7 +74,8 @@ namespace yourgame
     GLTexture2D *loadTexture(const std::string &filename,
                              GLenum unit,
                              const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                             bool generateMipmap)
+                             bool generateMipmap,
+                             bool premultiplyAlpha)
     {
         int width;
         int height;
@@ -86,6 +87,22 @@ namespace yourgame
         if (img)
         {
             yourgame::logd("loaded %v: %vx%vx%v", filename, width, height, numChannels);
+
+            // premultiply alpha if available (numChannels == 4 -> RGBA)
+            if (premultiplyAlpha && numChannels == 4)
+            {
+                for (unsigned int i = 0; i < (width * height); i++)
+                {
+                    auto rIdx = i * 4;
+                    auto gIdx = i * 4 + 1;
+                    auto bIdx = i * 4 + 2;
+                    auto alpha = img[rIdx + 3];
+                    img[rIdx] = (img[rIdx] * alpha) / 255;
+                    img[gIdx] = (img[gIdx] * alpha) / 255;
+                    img[bIdx] = (img[bIdx] * alpha) / 255;
+                }
+            }
+
             GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_2D, unit, parameteri);
             texture->updateData(GL_TEXTURE_2D,
                                 0,
