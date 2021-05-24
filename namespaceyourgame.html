@@ -530,8 +530,8 @@ Functions</h2></td></tr>
 <tr class="separator:acd33bc1b35a71452e7eec7c8fc49c791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d128998f0a52203b4433ff578ed2994"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTextureAtlas.html">GLTextureAtlas</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a6d128998f0a52203b4433ff578ed2994">loadTextureAtlasGrid</a> (const std::string &amp;filename, int tilesWidth, int tilesHeight, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)</td></tr>
 <tr class="separator:a6d128998f0a52203b4433ff578ed2994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc4e32ea36a1c12980df47b4a745325a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#afc4e32ea36a1c12980df47b4a745325a">loadTexture</a> (const std::string &amp;filename, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)</td></tr>
-<tr class="separator:afc4e32ea36a1c12980df47b4a745325a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af121cbce7faa3e366d8467f5c670a249"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#af121cbce7faa3e366d8467f5c670a249">loadTexture</a> (const std::string &amp;filename, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap, bool premultiplyAlpha=true)</td></tr>
+<tr class="separator:af121cbce7faa3e366d8467f5c670a249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76839d5898369be9583b5c62fc606b91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLTexture2D.html">GLTexture2D</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a76839d5898369be9583b5c62fc606b91">loadCubemap</a> (const std::vector&lt; std::string &gt; &amp;filenames, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)</td></tr>
 <tr class="memdesc:a76839d5898369be9583b5c62fc606b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads images and generates cubemap texture  <a href="#a76839d5898369be9583b5c62fc606b91">More...</a><br /></td></tr>
 <tr class="separator:a76839d5898369be9583b5c62fc606b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1460,8 +1460,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="afc4e32ea36a1c12980df47b4a745325a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc4e32ea36a1c12980df47b4a745325a">&#9670;&nbsp;</a></span>loadTexture() <span class="overload">[2/2]</span></h2>
+<a id="af121cbce7faa3e366d8467f5c670a249"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af121cbce7faa3e366d8467f5c670a249">&#9670;&nbsp;</a></span>loadTexture() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1488,7 +1488,13 @@ Variables</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>generateMipmap</em>&#160;</td>
+          <td class="paramname"><em>generateMipmap</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>premultiplyAlpha</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
