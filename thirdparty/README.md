@@ -28,16 +28,17 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Optional libraries
 
-| Alias                       | Name        | Desktop            | Android            | Web                |
-| --------------------------- | ----------- | ------------------ | ------------------ | ------------------ |
-| [box2d](#box2d)             | Box2D       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [bullet](#bullet)           | Bullet      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [choreograph](#choreograph) | Choreograph | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [flecs](#flecs)             | Flecs       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [fsm](#fsm)                 | fsm         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [lua](#lua)                 | Lua         | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [miniaudio](#miniaudio)     | miniaudio   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [qu3e](#qu3e)               | qu3e        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| Alias                                  | Name                  | Desktop            | Android            | Web                |
+| -------------------------------------- | --------------------- | ------------------ | ------------------ | ------------------ |
+| [box2d](#box2d)                        | Box2D                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [bullet](#bullet)                      | Bullet                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [choreograph](#choreograph)            | Choreograph           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [file-dialogs](#portable-file-dialogs) | Portable File Dialogs | :heavy_check_mark: |                    |                    |
+| [flecs](#flecs)                        | Flecs                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [fsm](#fsm)                            | fsm                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [lua](#lua)                            | Lua                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [miniaudio](#miniaudio)                | miniaudio             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [qu3e](#qu3e)                          | qu3e                  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 * * *
 
@@ -103,6 +104,14 @@ These libraries are integrated if the project has been initialized with default 
 -   extracted from origin:
     -   LICENSE, easylogging++.{h,cc}
 -   license: [easyloggingpp/LICENSE](easyloggingpp/LICENSE)
+
+## Portable File Dialogs
+
+-   version: **11d7b4f (master)**
+-   origin: <https://github.com/samhocevar/portable-file-dialogs/tree/11d7b4f28698d5fc27e1618e934753374bd4d174>
+-   extracted from origin:
+    -   COPYING, portable-file-dialogs.h
+-   license: [portable-file-dialogs/COPYING](portable-file-dialogs/COPYING)
 
 ## Flecs
 
