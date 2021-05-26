@@ -62,7 +62,11 @@ namespace mygame
         g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "a//default_instanced.vert"},
                                                             {GL_FRAGMENT_SHADER, "a//diffusetex.frag"}}));
 
-        g_assets.insert("texCube", yg::loadTexture("a//cube.png", yg::textureUnitDiffuse, GL_NEAREST, false));
+        {
+            yg::TextureConfig cfg;
+            cfg.minMagFilter = GL_NEAREST;
+            g_assets.insert("texCube", yg::loadTexture("a//cube.png", cfg));
+        }
 
         // for instanced drawing of the cube, add and configure a buffer for per-cube (per draw instance) matrixes:
         GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));

@@ -30,7 +30,11 @@ namespace mygame
         }
 
         // atlas
-        g_assets.insert("atlas", yg::loadTextureAtlasCrunch("a//sprites.json", yg::textureUnitDiffuse, GL_NEAREST));
+        {
+            yg::TextureConfig cfg;
+            cfg.minMagFilter = GL_NEAREST;
+            g_assets.insert("atlas", yg::loadTextureAtlasCrunch("a//sprites.json", cfg));
+        }
 
         // geometry
         g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj"));

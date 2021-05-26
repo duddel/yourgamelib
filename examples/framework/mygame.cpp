@@ -103,15 +103,16 @@ namespace mygame
         g_skyboxCamera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 2.0f);
 
         // Skybox texture
-        g_assets.insert("skybox", yg::loadCubemap(
-                                      {"a//sky_right.png", "a//sky_left.png", "a//sky_top.png", "a//sky_bottom.png", "a//sky_front.png", "a//sky_back.png"},
-                                      yg::textureUnitSky,
-                                      {{GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR},
-                                       {GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR},
-                                       {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
-                                       {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE},
-                                       {GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE}},
-                                      true));
+        {
+            yg::TextureConfig cfg;
+            cfg.unit = yg::textureUnitSky;
+            cfg.minMagFilter = GL_LINEAR_MIPMAP_LINEAR;
+            cfg.wrapMode = GL_CLAMP_TO_EDGE;
+            cfg.generateMipmap = true;
+            cfg.premultiplyAlpha = false;
+            g_assets.insert("skybox", yg::loadCubemap({"a//sky_right.png", "a//sky_left.png", "a//sky_top.png", "a//sky_bottom.png", "a//sky_front.png", "a//sky_back.png"},
+                                                      cfg));
+        }
 
         // Skybox shader
         g_assets.insert("shaderSkybox", yg::loadShader(
@@ -850,12 +851,12 @@ namespace mygame
             static const int maxNumTiles = tilesWide * tilesHigh;
             if (!spriteGridInitialized)
             {
+                yg::TextureConfig cfg;
+                cfg.minMagFilter = GL_NEAREST;
                 spriteGridAtlas = yg::loadTextureAtlasGrid("a//kenney_1bitpack_colored_packed.png",
                                                            tilesWide,
                                                            tilesHigh,
-                                                           yg::textureUnitDiffuse,
-                                                           GL_NEAREST,
-                                                           false);
+                                                           cfg);
                 spriteGrid = new yg::GLSpriteGrid();
                 spriteGridTrafo = new yg::Trafo();
                 spriteGridInitialized = true;

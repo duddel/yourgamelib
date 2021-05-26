@@ -32,50 +32,27 @@ freely, subject to the following restrictions:
 
 using json = nlohmann::json;
 
+namespace
+{
+    void premultiplyAlphaRGBA(stbi_uc *data, unsigned int numPixels)
+    {
+        for (unsigned int i = 0; i < numPixels; i++)
+        {
+            auto rIdx = i * 4;
+            auto gIdx = i * 4 + 1;
+            auto bIdx = i * 4 + 2;
+            auto alpha = data[rIdx + 3];
+            data[rIdx] = (data[rIdx] * alpha) / 255;
+            data[gIdx] = (data[gIdx] * alpha) / 255;
+            data[bIdx] = (data[bIdx] * alpha) / 255;
+        }
+    }
+}
+
 namespace yourgame
 {
     GLTexture2D *loadTexture(const std::string &filename,
-                             GLenum unit,
-                             GLint minMaxFilter,
-                             bool generateMipmap)
-    {
-        return loadTexture(filename,
-                           unit,
-                           {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}},
-                           generateMipmap);
-    }
-
-    GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
-                                           GLenum unit,
-                                           GLint minMaxFilter,
-                                           bool generateMipmap)
-    {
-        return loadTextureAtlasCrunch(filename,
-                                      unit,
-                                      {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}},
-                                      generateMipmap);
-    }
-
-    GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
-                                         int tilesWidth,
-                                         int tilesHeight,
-                                         GLenum unit,
-                                         GLint minMaxFilter,
-                                         bool generateMipmap)
-    {
-        return loadTextureAtlasGrid(filename,
-                                    tilesWidth,
-                                    tilesHeight,
-                                    unit,
-                                    {{GL_TEXTURE_MIN_FILTER, minMaxFilter}, {GL_TEXTURE_MAG_FILTER, minMaxFilter}},
-                                    generateMipmap);
-    }
-
-    GLTexture2D *loadTexture(const std::string &filename,
-                             GLenum unit,
-                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                             bool generateMipmap,
-                             bool premultiplyAlpha)
+                             const yourgame::TextureConfig &cfg)
     {
         int width;
         int height;
@@ -89,21 +66,18 @@ namespace yourgame
             yourgame::logd("loaded %v: %vx%vx%v", filename, width, height, numChannels);
 
             // premultiply alpha if available (numChannels == 4 -> RGBA)
-            if (premultiplyAlpha && numChannels == 4)
+            if (cfg.premultiplyAlpha && numChannels == 4)
             {
-                for (unsigned int i = 0; i < (width * height); i++)
-                {
-                    auto rIdx = i * 4;
-                    auto gIdx = i * 4 + 1;
-                    auto bIdx = i * 4 + 2;
-                    auto alpha = img[rIdx + 3];
-                    img[rIdx] = (img[rIdx] * alpha) / 255;
-                    img[gIdx] = (img[gIdx] * alpha) / 255;
-                    img[bIdx] = (img[bIdx] * alpha) / 255;
-                }
+                premultiplyAlphaRGBA(img, width * height);
             }
 
-            GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_2D, unit, parameteri);
+            std::vector<std::pair<GLenum, GLint>> texParamI = {{GL_TEXTURE_MIN_FILTER, cfg.minMagFilter},
+                                                               {GL_TEXTURE_MAG_FILTER, cfg.minMagFilter},
+                                                               {GL_TEXTURE_WRAP_S, cfg.wrapMode},
+                                                               {GL_TEXTURE_WRAP_T, cfg.wrapMode}};
+            texParamI.insert(texParamI.end(), cfg.parameteri.begin(), cfg.parameteri.end());
+
+            GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_2D, cfg.unit, texParamI);
             texture->updateData(GL_TEXTURE_2D,
                                 0,
                                 GL_RGBA8,
@@ -113,7 +87,7 @@ namespace yourgame
                                 GL_RGBA,
                                 GL_UNSIGNED_BYTE,
                                 img,
-                                generateMipmap);
+                                cfg.generateMipmap);
             stbi_image_free(img);
             return texture;
         }
@@ -124,59 +98,8 @@ namespace yourgame
         }
     }
 
-    GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
-                             GLenum unit,
-                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                             bool generateMipmap)
-    {
-        GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_CUBE_MAP, unit, parameteri);
-
-        for (int i = 0; i < filenames.size(); i++)
-        {
-            auto f = filenames[i];
-            int width;
-            int height;
-            int numChannels;
-            std::vector<uint8_t> imgData;
-            yourgame::readFile(f, imgData);
-            // assuming "flip vertically on load" is true, disable it here because
-            // opengl expects cubemap textures "unflipped"...
-            stbi_set_flip_vertically_on_load(false);
-            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
-            // todo: we should check the state of "flip vertically on load" before and
-            // restore it afterwards
-            stbi_set_flip_vertically_on_load(true);
-
-            if (img)
-            {
-                yourgame::logd("loaded %v: %vx%vx%v", f, width, height, numChannels);
-                texture->updateData(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                                    0,
-                                    GL_RGBA8,
-                                    width,
-                                    height,
-                                    0,
-                                    GL_RGBA,
-                                    GL_UNSIGNED_BYTE,
-                                    img,
-                                    generateMipmap);
-                stbi_image_free(img);
-            }
-            else
-            {
-                yourgame::logw("image %v failed to load", f);
-                delete texture;
-                return nullptr;
-            }
-        }
-
-        return texture;
-    }
-
     GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
-                                           GLenum unit,
-                                           const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                                           bool generateMipmap)
+                                           const yourgame::TextureConfig &cfg)
     {
         std::vector<uint8_t> atlasFile;
         if (yourgame::readFile(filename, atlasFile))
@@ -200,10 +123,14 @@ namespace yourgame
 
         for (auto &jTex : jAtlas["textures"])
         {
+            // load texture by name (from crunch json)
+            // look for .png file in the same location as the json
             // todo: always assume .png for crunch atlasses?
-            std::string texFileName = jTex["name"].get<std::string>() + ".png";
+            std::string texFileName = yourgame::getFileLocation(filename) +
+                                      jTex["name"].get<std::string>() +
+                                      ".png";
 
-            auto newTex = yourgame::loadTexture(texFileName, unit, parameteri, generateMipmap);
+            auto newTex = yourgame::loadTexture(texFileName, cfg);
             if (newTex)
             {
                 newAtlas->pushTexture(newTex);
@@ -231,11 +158,9 @@ namespace yourgame
     GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
                                          int tilesWidth,
                                          int tilesHeight,
-                                         GLenum unit,
-                                         const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                                         bool generateMipmap)
+                                         const yourgame::TextureConfig &cfg)
     {
-        auto newTex = yourgame::loadTexture(filename, unit, parameteri, generateMipmap);
+        auto newTex = yourgame::loadTexture(filename, cfg);
         if (!newTex)
         {
             return nullptr;
@@ -257,6 +182,67 @@ namespace yourgame
         }
 
         return newAtlas;
+    }
+
+    GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
+                             const yourgame::TextureConfig &cfg)
+    {
+        std::vector<std::pair<GLenum, GLint>> texParamI = {{GL_TEXTURE_MIN_FILTER, cfg.minMagFilter},
+                                                           {GL_TEXTURE_MAG_FILTER, cfg.minMagFilter},
+                                                           {GL_TEXTURE_WRAP_S, cfg.wrapMode},
+                                                           {GL_TEXTURE_WRAP_T, cfg.wrapMode},
+                                                           {GL_TEXTURE_WRAP_R, cfg.wrapMode}};
+        texParamI.insert(texParamI.end(), cfg.parameteri.begin(), cfg.parameteri.end());
+
+        GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_CUBE_MAP, cfg.unit, texParamI);
+
+        for (int i = 0; i < filenames.size(); i++)
+        {
+            auto f = filenames[i];
+            int width;
+            int height;
+            int numChannels;
+            std::vector<uint8_t> imgData;
+            yourgame::readFile(f, imgData);
+            // assuming "flip vertically on load" is true, disable it here because
+            // opengl expects cubemap textures "unflipped"...
+            stbi_set_flip_vertically_on_load(false);
+            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
+            // todo: we should check the state of "flip vertically on load" before and
+            // restore it afterwards
+            stbi_set_flip_vertically_on_load(true);
+
+            if (img)
+            {
+                yourgame::logd("loaded %v: %vx%vx%v", f, width, height, numChannels);
+
+                // premultiply alpha if available (numChannels == 4 -> RGBA)
+                if (cfg.premultiplyAlpha && numChannels == 4)
+                {
+                    premultiplyAlphaRGBA(img, width * height);
+                }
+
+                texture->updateData(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                                    0,
+                                    GL_RGBA8,
+                                    width,
+                                    height,
+                                    0,
+                                    GL_RGBA,
+                                    GL_UNSIGNED_BYTE,
+                                    img,
+                                    cfg.generateMipmap);
+                stbi_image_free(img);
+            }
+            else
+            {
+                yourgame::logw("image %v failed to load", f);
+                delete texture;
+                return nullptr;
+            }
+        }
+
+        return texture;
     }
 
     GLShader *loadShader(const std::vector<std::pair<GLenum, std::string>> &shaderFilenames,

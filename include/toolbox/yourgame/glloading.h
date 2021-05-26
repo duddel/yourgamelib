@@ -27,31 +27,30 @@ freely, subject to the following restrictions:
 #include "yourgame/glshader.h"
 #include "yourgame/gltexture2d.h"
 #include "yourgame/gltextureatlas.h"
+#include "yourgame/glconventions.h"
 
 namespace yourgame
 {
+    struct TextureConfig
+    {
+        GLenum unit = yourgame::textureUnitDiffuse;
+        GLint minMagFilter = GL_LINEAR;
+        GLint wrapMode = GL_REPEAT;
+        bool generateMipmap = false;
+        bool premultiplyAlpha = true;
+        std::vector<std::pair<GLenum, GLint>> parameteri = {};
+    };
+
     GLTexture2D *loadTexture(const std::string &filename,
-                             GLenum unit,
-                             GLint minMaxFilter = GL_LINEAR,
-                             bool generateMipmap = false);
+                             const yourgame::TextureConfig &cfg);
 
     GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
-                                           GLenum unit,
-                                           GLint minMaxFilter = GL_LINEAR,
-                                           bool generateMipmap = false);
+                                           const yourgame::TextureConfig &cfg);
 
     GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
                                          int tilesWidth,
                                          int tilesHeight,
-                                         GLenum unit,
-                                         GLint minMaxFilter = GL_LINEAR,
-                                         bool generateMipmap = false);
-
-    GLTexture2D *loadTexture(const std::string &filename,
-                             GLenum unit,
-                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                             bool generateMipmap,
-                             bool premultiplyAlpha = true);
+                                         const yourgame::TextureConfig &cfg);
 
     /**
     \brief loads images and generates cubemap texture
@@ -59,21 +58,7 @@ namespace yourgame
     \param filenames this order: POSITIVE_X, NEGATIVE_X, POSITIVE_Y, NEGATIVE_Y, POSITIVE_Z, NEGATIVE_Z
     */
     GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
-                             GLenum unit,
-                             const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                             bool generateMipmap);
-
-    GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
-                                           GLenum unit,
-                                           const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                                           bool generateMipmap);
-
-    GLTextureAtlas *loadTextureAtlasGrid(const std::string &filename,
-                                         int tilesWidth,
-                                         int tilesHeight,
-                                         GLenum unit,
-                                         const std::vector<std::pair<GLenum, GLint>> &parameteri,
-                                         bool generateMipmap);
+                             const yourgame::TextureConfig &cfg);
 
     GLShader *loadShader(const std::vector<std::pair<GLenum, std::string>> &shaderFilenames,
                          const std::vector<std::pair<GLuint, std::string>> &attrLocs = {},
