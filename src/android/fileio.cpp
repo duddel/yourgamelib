@@ -19,6 +19,7 @@ freely, subject to the following restrictions:
 */
 #include <string>
 #include <vector>
+#include <regex>
 #include "dirent.h" // todo preparation for ls()
 #include <android_native_app_glue.h>
 #include <android/asset_manager.h>
@@ -105,6 +106,25 @@ namespace yourgame
         }
 
         return yourgame_internal::readFile(filename, dst);
+    }
+
+    std::string getFileLocation(const std::string filepath)
+    {
+        // return location prefix (a// etc.)
+        if (filepath.length() > 3 && filepath.compare(1, 2, "//") == 0)
+        {
+            return filepath.substr(0, 3);
+        }
+
+        // return beginning until last /
+        static std::regex reFilePath(".*\\/|^");
+        std::smatch reMatch;
+        if (std::regex_match(filepath, reMatch, reFilePath) && reMatch.size() == 1)
+        {
+            return reMatch[0].str();
+        }
+
+        return "";
     }
 
     int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
