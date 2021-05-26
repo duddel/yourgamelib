@@ -3,6 +3,7 @@ var searchData=
   ['texture',['texture',['../classyourgame_1_1GLTextureAtlas.html#a0dc37ce23bb1881e7fee4eb41e8adfea',1,'yourgame::GLTextureAtlas']]],
   ['textureattachdescr',['TextureAttachDescr',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html',1,'yourgame::GLFramebuffer']]],
   ['textureattachment',['textureAttachment',['../classyourgame_1_1GLFramebuffer.html#a95315cd4ffa594f6c446443cccb850f0',1,'yourgame::GLFramebuffer']]],
+  ['textureconfig',['TextureConfig',['../structyourgame_1_1TextureConfig.html',1,'yourgame']]],
   ['textures',['textures',['../structyourgame_1_1DrawConfig.html#a73652bd74e43ba3a31e94ba2c52eac53',1,'yourgame::DrawConfig']]],
   ['textureunitdiffuse',['textureUnitDiffuse',['../namespaceyourgame.html#af9c1a4c6c56649d6bc198103e0c0520f',1,'yourgame']]],
   ['textureunitsky',['textureUnitSky',['../namespaceyourgame.html#a5ce0ebf34ae7c3c0cab18bcb3d996642',1,'yourgame']]],

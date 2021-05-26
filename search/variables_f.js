@@ -1,4 +1,20 @@
 var searchData=
 [
-  ['vsyncenabled',['vsyncEnabled',['../structyourgame_1_1context.html#a0577ab33c63e66c6e394a070379c4842',1,'yourgame::context']]]
+  ['unifnamecameraposition',['unifNameCameraPosition',['../namespaceyourgame.html#ae1db8789c09ec427fa24a00e762c66a8',1,'yourgame']]],
+  ['unifnamecameratrafo',['unifNameCameraTrafo',['../namespaceyourgame.html#a5f2ade11ae306769d9bc2e465867e7a5',1,'yourgame']]],
+  ['unifnamelightambient',['unifNameLightAmbient',['../namespaceyourgame.html#a05b242fc5a4f74bc45a57eeb2e2a46af',1,'yourgame']]],
+  ['unifnamelightdiffuse',['unifNameLightDiffuse',['../namespaceyourgame.html#a2d99f4f90d2c5971da577a882c507907',1,'yourgame']]],
+  ['unifnamelightposition',['unifNameLightPosition',['../namespaceyourgame.html#a9ef18f593f8779169a2d1123bfa166d8',1,'yourgame']]],
+  ['unifnamelightspecular',['unifNameLightSpecular',['../namespaceyourgame.html#abce3dcb0a1b5d1858c2ae5b769325793',1,'yourgame']]],
+  ['unifnamemodelmatrix',['unifNameModelMatrix',['../namespaceyourgame.html#a279c209c0420169510bae3a3e56fc0b7',1,'yourgame']]],
+  ['unifnamemvpmatrix',['unifNameMvpMatrix',['../namespaceyourgame.html#a9d277cc2294828592d34e13fde329983',1,'yourgame']]],
+  ['unifnamenormalmatrix',['unifNameNormalMatrix',['../namespaceyourgame.html#a3bf2c1e650e39fe4c2ffb6016fbb063e',1,'yourgame']]],
+  ['unifnameskyrotationinv',['unifNameSkyRotationInv',['../namespaceyourgame.html#a11d5556309923a4b73be46e8576547f1',1,'yourgame']]],
+  ['unifnamesubtexture',['unifNameSubtexture',['../namespaceyourgame.html#aa6455c658220facc291aa7b29a44b7e5',1,'yourgame']]],
+  ['unifnametexturediffuse',['unifNameTextureDiffuse',['../namespaceyourgame.html#acaaf7d5562c8fd69853bc7775ca62963',1,'yourgame']]],
+  ['unifnametexturesky',['unifNameTextureSky',['../namespaceyourgame.html#ad4e9aa889f4404e7c6717853d9a65b62',1,'yourgame']]],
+  ['unifnamevpmatrix',['unifNameVpMatrix',['../namespaceyourgame.html#a52a8b80d616a12ef6c2f7c4df1fc3c4b',1,'yourgame']]],
+  ['unifvaluetexturediffuse',['unifValueTextureDiffuse',['../namespaceyourgame.html#a6bdef5ba2d62f0174350cbae7d9f0da4',1,'yourgame']]],
+  ['unifvaluetexturesky',['unifValueTextureSky',['../namespaceyourgame.html#a927953a48cb4a98f50ac700f650eda37',1,'yourgame']]],
+  ['unit',['unit',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html#a0633133bea9d02eb35dde6e7e3dab81d',1,'yourgame::GLFramebuffer::TextureAttachDescr::unit()'],['../structyourgame_1_1TextureConfig.html#a4db21a60baa7f8a7a52792fd2f52ee9e',1,'yourgame::TextureConfig::unit()']]]
 ];

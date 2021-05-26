@@ -64,6 +64,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -77,6 +78,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="glshader_8h_source.html">yourgame/glshader.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gltexture2d_8h_source.html">yourgame/gltexture2d.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gltextureatlas_8h_source.html">yourgame/gltextureatlas.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="glconventions_8h_source.html">yourgame/glconventions.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for glloading.h:</div>
 <div class="dyncontent">
@@ -92,6 +94,11 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="glloading_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structyourgame_1_1TextureConfig.html">yourgame::TextureConfig</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceyourgame"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html">yourgame</a></td></tr>
@@ -99,21 +106,15 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac175ab25a3852482e7042c5aa84a3f0d"><td class="memItemLeft" align="right" valign="top">GLTexture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ac175ab25a3852482e7042c5aa84a3f0d">yourgame::loadTexture</a> (const std::string &amp;filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)</td></tr>
-<tr class="separator:ac175ab25a3852482e7042c5aa84a3f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd33bc1b35a71452e7eec7c8fc49c791"><td class="memItemLeft" align="right" valign="top">GLTextureAtlas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#acd33bc1b35a71452e7eec7c8fc49c791">yourgame::loadTextureAtlasCrunch</a> (const std::string &amp;filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)</td></tr>
-<tr class="separator:acd33bc1b35a71452e7eec7c8fc49c791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d128998f0a52203b4433ff578ed2994"><td class="memItemLeft" align="right" valign="top">GLTextureAtlas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a6d128998f0a52203b4433ff578ed2994">yourgame::loadTextureAtlasGrid</a> (const std::string &amp;filename, int tilesWidth, int tilesHeight, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)</td></tr>
-<tr class="separator:a6d128998f0a52203b4433ff578ed2994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af121cbce7faa3e366d8467f5c670a249"><td class="memItemLeft" align="right" valign="top">GLTexture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#af121cbce7faa3e366d8467f5c670a249">yourgame::loadTexture</a> (const std::string &amp;filename, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap, bool premultiplyAlpha=true)</td></tr>
-<tr class="separator:af121cbce7faa3e366d8467f5c670a249"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76839d5898369be9583b5c62fc606b91"><td class="memItemLeft" align="right" valign="top">GLTexture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a76839d5898369be9583b5c62fc606b91">yourgame::loadCubemap</a> (const std::vector&lt; std::string &gt; &amp;filenames, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)</td></tr>
-<tr class="memdesc:a76839d5898369be9583b5c62fc606b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads images and generates cubemap texture  <a href="namespaceyourgame.html#a76839d5898369be9583b5c62fc606b91">More...</a><br /></td></tr>
-<tr class="separator:a76839d5898369be9583b5c62fc606b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a187b3edc71c95d9386abe201c785476e"><td class="memItemLeft" align="right" valign="top">GLTextureAtlas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a187b3edc71c95d9386abe201c785476e">yourgame::loadTextureAtlasCrunch</a> (const std::string &amp;filename, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)</td></tr>
-<tr class="separator:a187b3edc71c95d9386abe201c785476e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a513773439a292e0b54e1308924bf53ec"><td class="memItemLeft" align="right" valign="top">GLTextureAtlas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a513773439a292e0b54e1308924bf53ec">yourgame::loadTextureAtlasGrid</a> (const std::string &amp;filename, int tilesWidth, int tilesHeight, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)</td></tr>
-<tr class="separator:a513773439a292e0b54e1308924bf53ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37bd4325743373e8c3b29d0667c9eafe"><td class="memItemLeft" align="right" valign="top">GLTexture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a37bd4325743373e8c3b29d0667c9eafe">yourgame::loadTexture</a> (const std::string &amp;filename, const <a class="el" href="structyourgame_1_1TextureConfig.html">yourgame::TextureConfig</a> &amp;cfg)</td></tr>
+<tr class="separator:a37bd4325743373e8c3b29d0667c9eafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90e847f8ffdaac6347e0d295123a3066"><td class="memItemLeft" align="right" valign="top">GLTextureAtlas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a90e847f8ffdaac6347e0d295123a3066">yourgame::loadTextureAtlasCrunch</a> (const std::string &amp;filename, const <a class="el" href="structyourgame_1_1TextureConfig.html">yourgame::TextureConfig</a> &amp;cfg)</td></tr>
+<tr class="separator:a90e847f8ffdaac6347e0d295123a3066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43de560a330f967d1313bb6493d1a10b"><td class="memItemLeft" align="right" valign="top">GLTextureAtlas *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a43de560a330f967d1313bb6493d1a10b">yourgame::loadTextureAtlasGrid</a> (const std::string &amp;filename, int tilesWidth, int tilesHeight, const <a class="el" href="structyourgame_1_1TextureConfig.html">yourgame::TextureConfig</a> &amp;cfg)</td></tr>
+<tr class="separator:a43de560a330f967d1313bb6493d1a10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a445129e212036a94c078765b1d16343b"><td class="memItemLeft" align="right" valign="top">GLTexture2D *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a445129e212036a94c078765b1d16343b">yourgame::loadCubemap</a> (const std::vector&lt; std::string &gt; &amp;filenames, const <a class="el" href="structyourgame_1_1TextureConfig.html">yourgame::TextureConfig</a> &amp;cfg)</td></tr>
+<tr class="memdesc:a445129e212036a94c078765b1d16343b"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads images and generates cubemap texture  <a href="namespaceyourgame.html#a445129e212036a94c078765b1d16343b">More...</a><br /></td></tr>
+<tr class="separator:a445129e212036a94c078765b1d16343b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab339c3759fc85c0cabfaef2c4857ab67"><td class="memItemLeft" align="right" valign="top">GLShader *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ab339c3759fc85c0cabfaef2c4857ab67">yourgame::loadShader</a> (const std::vector&lt; std::pair&lt; GLenum, std::string &gt;&gt; &amp;shaderFilenames, const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;attrLocs={}, const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;fragDataLocs={})</td></tr>
 <tr class="separator:ab339c3759fc85c0cabfaef2c4857ab67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35474bba1bcadd3ed06ca72b8e19ea62"><td class="memItemLeft" align="right" valign="top">GLGeometry *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a35474bba1bcadd3ed06ca72b8e19ea62">yourgame::loadGeometry</a> (const std::string &amp;objFilename, const std::string &amp;mtlFilename=&quot;&quot;)</td></tr>

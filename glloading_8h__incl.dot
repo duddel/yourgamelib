@@ -57,4 +57,7 @@ digraph "/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/gllo
   Node17 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
   Node17 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="yourgame/glconventions.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$glconventions_8h.html"];
+  Node18 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
 }

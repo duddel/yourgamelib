@@ -1,12 +1,12 @@
 var searchData=
 [
   ['lerp',['lerp',['../classyourgame_1_1Trafo.html#a229afdcb62a19d89f96bbe5e885de5c3',1,'yourgame::Trafo']]],
-  ['loadcubemap',['loadCubemap',['../namespaceyourgame.html#a76839d5898369be9583b5c62fc606b91',1,'yourgame']]],
+  ['loadcubemap',['loadCubemap',['../namespaceyourgame.html#a445129e212036a94c078765b1d16343b',1,'yourgame']]],
   ['loadgeometry',['loadGeometry',['../namespaceyourgame.html#a35474bba1bcadd3ed06ca72b8e19ea62',1,'yourgame']]],
   ['loadshader',['loadShader',['../namespaceyourgame.html#ab339c3759fc85c0cabfaef2c4857ab67',1,'yourgame']]],
-  ['loadtexture',['loadTexture',['../namespaceyourgame.html#ac175ab25a3852482e7042c5aa84a3f0d',1,'yourgame::loadTexture(const std::string &amp;filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#af121cbce7faa3e366d8467f5c670a249',1,'yourgame::loadTexture(const std::string &amp;filename, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap, bool premultiplyAlpha=true)']]],
-  ['loadtextureatlascrunch',['loadTextureAtlasCrunch',['../namespaceyourgame.html#acd33bc1b35a71452e7eec7c8fc49c791',1,'yourgame::loadTextureAtlasCrunch(const std::string &amp;filename, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#a187b3edc71c95d9386abe201c785476e',1,'yourgame::loadTextureAtlasCrunch(const std::string &amp;filename, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)']]],
-  ['loadtextureatlasgrid',['loadTextureAtlasGrid',['../namespaceyourgame.html#a6d128998f0a52203b4433ff578ed2994',1,'yourgame::loadTextureAtlasGrid(const std::string &amp;filename, int tilesWidth, int tilesHeight, GLenum unit, GLint minMaxFilter=GL_LINEAR, bool generateMipmap=false)'],['../namespaceyourgame.html#a513773439a292e0b54e1308924bf53ec',1,'yourgame::loadTextureAtlasGrid(const std::string &amp;filename, int tilesWidth, int tilesHeight, GLenum unit, const std::vector&lt; std::pair&lt; GLenum, GLint &gt;&gt; &amp;parameteri, bool generateMipmap)']]],
+  ['loadtexture',['loadTexture',['../namespaceyourgame.html#a37bd4325743373e8c3b29d0667c9eafe',1,'yourgame']]],
+  ['loadtextureatlascrunch',['loadTextureAtlasCrunch',['../namespaceyourgame.html#a90e847f8ffdaac6347e0d295123a3066',1,'yourgame']]],
+  ['loadtextureatlasgrid',['loadTextureAtlasGrid',['../namespaceyourgame.html#a43de560a330f967d1313bb6493d1a10b',1,'yourgame']]],
   ['logd',['logd',['../namespaceyourgame.html#aa018299735de2685349d3bfdbc86645b',1,'yourgame::logd(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a5e70120e1d5ceb992552dbcaaff069cd',1,'yourgame::logd(const T &amp;value)']]],
   ['loge',['loge',['../namespaceyourgame.html#a389e47f66fb1ab81f132fd48c0fa73cb',1,'yourgame::loge(const char *s, const T &amp;value, const Args &amp;... args)'],['../namespaceyourgame.html#a1249e887a2994cd7aaf6ad968f5ccd49',1,'yourgame::loge(const T &amp;value)']]],
   ['logging_2eh',['logging.h',['../logging_8h.html',1,'']]],

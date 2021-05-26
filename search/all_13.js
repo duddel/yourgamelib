@@ -5,6 +5,7 @@ var searchData=
   ['winheight',['winHeight',['../structyourgame_1_1context.html#af9b67275352f324372a54dd5f522e1f3',1,'yourgame::context']]],
   ['winisfullscreen',['winIsFullscreen',['../structyourgame_1_1context.html#acbd529ace5f87cf61bcc4b92df362bd2',1,'yourgame::context']]],
   ['winwidth',['winWidth',['../structyourgame_1_1context.html#a1ae71ea5d9cbb5a250ea9f1e9b7401af',1,'yourgame::context']]],
+  ['wrapmode',['wrapMode',['../structyourgame_1_1TextureConfig.html#aef0eb803e31056636d49d21828cbfe55',1,'yourgame::TextureConfig']]],
   ['writeprojectfile',['writeProjectFile',['../namespaceyourgame.html#ad2163bcde0b558221e91381cdd2af28d',1,'yourgame']]],
   ['writesavefile',['writeSaveFile',['../namespaceyourgame.html#a6bf8f8c5f693d418d7369df5995446a3',1,'yourgame']]]
 ];

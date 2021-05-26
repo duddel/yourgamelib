@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['textures',['textures',['../structyourgame_1_1DrawConfig.html#a73652bd74e43ba3a31e94ba2c52eac53',1,'yourgame::DrawConfig']]],
-  ['textureunitdiffuse',['textureUnitDiffuse',['../namespaceyourgame.html#af9c1a4c6c56649d6bc198103e0c0520f',1,'yourgame']]],
-  ['textureunitsky',['textureUnitSky',['../namespaceyourgame.html#a5ce0ebf34ae7c3c0cab18bcb3d996642',1,'yourgame']]],
-  ['type',['type',['../structyourgame_1_1GLFramebuffer_1_1TextureAttachDescr.html#ab33c072812ef08ba75fe66bf6ae6c8a2',1,'yourgame::GLFramebuffer::TextureAttachDescr::type()'],['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a681d679dd29a73ec736190cd2954a29d',1,'yourgame::GLShape::ArrBufferDescr::type()'],['../structyourgame_1_1GLShape_1_1ElemArrBufferDescr.html#aa0614dd636066df5880667da8f38d531',1,'yourgame::GLShape::ElemArrBufferDescr::type()']]]
+  ['scatteroninit',['scatterOnInit',['../structyourgame_1_1Particles_1_1Config.html#adb4ff89ab952ebea175b153c59c4773b',1,'yourgame::Particles::Config']]],
+  ['scatteronspawn',['scatterOnSpawn',['../structyourgame_1_1Particles_1_1Config.html#a8546b737348051f60cd0752d3fa59b96',1,'yourgame::Particles::Config']]],
+  ['seed',['seed',['../structyourgame_1_1Particles_1_1Config.html#adea4d3d1c4ab3690b1c8e14684685ccd',1,'yourgame::Particles::Config']]],
+  ['shader',['shader',['../structyourgame_1_1DrawConfig.html#a158fee9f64969ea8d56ed655ee14227f',1,'yourgame::DrawConfig']]],
+  ['size',['size',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6ad7ce4efc47f00b28665e5a82aabbd3',1,'yourgame::GLShape::ArrBufferDescr']]],
+  ['stride',['stride',['../structyourgame_1_1GLShape_1_1ArrBufferDescr.html#a6af383d1956c20ed1a3e19c706d52f4f',1,'yourgame::GLShape::ArrBufferDescr']]],
+  ['subtex',['subtex',['../structyourgame_1_1DrawConfig.html#ad4d1e93436a347b716c69aca29dc2a8f',1,'yourgame::DrawConfig']]]
 ];
