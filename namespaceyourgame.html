@@ -451,6 +451,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0836b568774cccfd65b5eef2183631cc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a0836b568774cccfd65b5eef2183631cc">readFile</a> (const std::string &amp;filename, std::vector&lt; uint8_t &gt; &amp;dst)</td></tr>
 <tr class="memdesc:a0836b568774cccfd65b5eef2183631cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an entire file and returns it as a vector of bytes  <a href="#a0836b568774cccfd65b5eef2183631cc">More...</a><br /></td></tr>
 <tr class="separator:a0836b568774cccfd65b5eef2183631cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba1842bb6f9bdebcda216c81c0f93eba"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#aba1842bb6f9bdebcda216c81c0f93eba">getFileLocation</a> (const std::string filepath)</td></tr>
+<tr class="memdesc:aba1842bb6f9bdebcda216c81c0f93eba"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the location (path or prefix, such as a//) of a file, filepath points to  <a href="#aba1842bb6f9bdebcda216c81c0f93eba">More...</a><br /></td></tr>
+<tr class="separator:aba1842bb6f9bdebcda216c81c0f93eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf8f8c5f693d418d7369df5995446a3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a6bf8f8c5f693d418d7369df5995446a3">writeSaveFile</a> (const std::string &amp;filename, const void *data, size_t numBytes)</td></tr>
 <tr class="memdesc:a6bf8f8c5f693d418d7369df5995446a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes numBytes bytes from data to a file called filename in the save file location. overwrites the file if it exists  <a href="#a6bf8f8c5f693d418d7369df5995446a3">More...</a><br /></td></tr>
 <tr class="separator:a6bf8f8c5f693d418d7369df5995446a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1189,6 +1192,31 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>returns the current context </p>
+
+</div>
+</div>
+<a id="aba1842bb6f9bdebcda216c81c0f93eba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba1842bb6f9bdebcda216c81c0f93eba">&#9670;&nbsp;</a></span>getFileLocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string yourgame::getFileLocation </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>filepath</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns the location (path or prefix, such as a//) of a file, filepath points to </p>
+<ul>
+<li>example: "file1.bin" returns ""</li>
+<li>example: "a//file2.bin" returns "a//"</li>
+<li>example: "/home/user/file3.bin" returns "/home/user/" </li>
+</ul>
 
 </div>
 </div>
