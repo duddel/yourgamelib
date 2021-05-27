@@ -139,12 +139,12 @@ namespace yourgame
             return filepath.substr(0, 3);
         }
 
-        // return beginning until last /
-        static std::regex reFilePath(".*\\/|^");
-        std::smatch reMatch;
-        if (std::regex_match(filepath, reMatch, reFilePath) && reMatch.size() == 1)
+        // match 1: beginning until last "/"
+        static std::regex reFilePath(R"((.*\/|^).*$)");
+        std::smatch reMatches;
+        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 2)
         {
-            return reMatch[0].str();
+            return reMatches[1].str();
         }
 
         return "";
@@ -163,61 +163,61 @@ namespace yourgame
     std::vector<std::string> ls(const std::string &pattern)
     {
         std::vector<std::string> ret;
+        std::string pathToOpen = pattern;
 
-        std::string lsPath = pattern;
-        if (lsPath.length() >= 3 && lsPath.compare(1, 2, "//") == 0)
+        // step 1: if pattern has a file location prefix (like a//),
+        // replace it with the appropriate absolut path
+        if (pathToOpen.length() >= 3 && pathToOpen.compare(1, 2, "//") == 0)
         {
-            switch (lsPath[0])
+            switch (pathToOpen[0])
             {
             case 'a':
                 // substr() returns empty string if pos == length.
-                lsPath = (yourgame_internal_desktop::assetPathAbs + lsPath.substr(3, std::string::npos));
+                pathToOpen = (yourgame_internal_desktop::assetPathAbs + pathToOpen.substr(3, std::string::npos));
                 break;
             case 's':
                 // substr() returns empty string if pos == length.
-                lsPath = (yourgame_internal_desktop::saveFilesPathAbs + lsPath.substr(3, std::string::npos));
+                pathToOpen = (yourgame_internal_desktop::saveFilesPathAbs + pathToOpen.substr(3, std::string::npos));
                 break;
             case 'p':
                 // substr() returns empty string if pos == length.
-                lsPath = (yourgame_internal_desktop::projectPathAbs + lsPath.substr(3, std::string::npos));
+                pathToOpen = (yourgame_internal_desktop::projectPathAbs + pathToOpen.substr(3, std::string::npos));
                 break;
             }
         }
 
-        // match 0: full string, 1: beginning until last /, 2: everything after last /
-        static std::regex reLsPattern("(.*\\/|^)(.*\\*[^\\/\\n]*)$");
-        std::smatch reMatch;
-        auto reMatched = std::regex_match(lsPath, reMatch, reLsPattern);
+        std::regex reFileFilter("^.*$");
 
-        yourgame::logd("ls(): lsPath matched: %v, matches: %v:", reMatched, reMatch.size());
-        for (unsigned i = 0; i < reMatch.size(); i++)
+        // step 2: check if pathToOpen has one or more "*" after the last "/".
+        //   if so, use that last part as a file filter, and everything until the last "/" as the actual path to open.
+        //   otherwise, leave pathToOpen unchanged.
+        static std::regex reLsPattern(R"((.*\/|^)(.*\*[^\/\n]*)$)"); // match 0: full string,
+                                                                     // 1: beginning until last "/",
+                                                                     // 2: everything after last "/" (if it contains one or more "*")
+        std::smatch reMatches;
+        std::string tmp = pathToOpen;
+        if (std::regex_match(tmp, reMatches, reLsPattern) && reMatches.size() == 3)
         {
-            yourgame::logd("ls(): match %v: %v", i, reMatch[i].str());
-        }
-
-        std::regex reFilePattern("^.*$");
-        if (reMatched && reMatch.size() == 3)
-        {
-            lsPath = reMatch[1].str();
-            std::string filePattern = reMatch[2].str();
+            pathToOpen = reMatches[1].str();
+            std::string filePattern = reMatches[2].str();
             filePattern = std::regex_replace(filePattern, std::regex("\\."), "\\.");
             filePattern = std::regex_replace(filePattern, std::regex("\\*"), ".*");
-            yourgame::logd("ls(): filePattern regex: %v", filePattern);
             // todo ensure filePattern is a valid regex
-            reFilePattern = std::regex(std::string("^") + filePattern + "$");
+            reFileFilter = std::regex(std::string("^") + filePattern + "$");
         }
 
-        DIR *dir = opendir(lsPath.c_str());
+        // try to open the path
+        DIR *dir = opendir(pathToOpen.c_str());
         if (!dir)
         {
-            yourgame::loge("ls(): failed to open directory: %v", lsPath);
+            yourgame::loge("ls(): failed to open directory: %v", pathToOpen);
         }
         else
         {
             struct dirent *ent;
             while ((ent = readdir(dir)) != NULL)
             {
-                if (std::regex_match(ent->d_name, reFilePattern))
+                if (std::regex_match(ent->d_name, reFileFilter))
                 {
                     switch (ent->d_type)
                     {

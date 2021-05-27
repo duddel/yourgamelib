@@ -116,12 +116,12 @@ namespace yourgame
             return filepath.substr(0, 3);
         }
 
-        // return beginning until last /
-        static std::regex reFilePath(".*\\/|^");
-        std::smatch reMatch;
-        if (std::regex_match(filepath, reMatch, reFilePath) && reMatch.size() == 1)
+        // match 1: beginning until last "/"
+        static std::regex reFilePath(R"((.*\/|^).*$)");
+        std::smatch reMatches;
+        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 2)
         {
-            return reMatch[0].str();
+            return reMatches[1].str();
         }
 
         return "";
