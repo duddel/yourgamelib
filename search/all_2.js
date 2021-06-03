@@ -2,6 +2,7 @@ var searchData=
 [
   ['camera',['Camera',['../classyourgame_1_1Camera.html',1,'yourgame::Camera'],['../structyourgame_1_1DrawConfig.html#ab3ddd3ac97be06bae87305bc7f74e8fa',1,'yourgame::DrawConfig::camera()']]],
   ['camera_2eh',['camera.h',['../camera_8h.html',1,'']]],
+  ['castray',['castRay',['../classyourgame_1_1Camera.html#a36f4aa802673628945466377e27d8391',1,'yourgame::Camera']]],
   ['catchmouse',['catchMouse',['../namespaceyourgame.html#ad6bb93482b4a8bd5767faaeabb952395',1,'yourgame']]],
   ['clear',['clear',['../classyourgame_1_1AssetManager.html#a108c5c49f3d14bf4a29cf86f8dccbcfe',1,'yourgame::AssetManager']]],
   ['config',['Config',['../structyourgame_1_1Particles_1_1Config.html',1,'yourgame::Particles']]],
