@@ -462,10 +462,18 @@ namespace mygame
                 }
                 ImGui::EndMenu();
             }
-            ImGui::Text("| fps: %f, mouse delta: %f,%f",
+            // camera ray casting
+            glm::vec3 org, dir;
+            g_camera.castRay(yg::getInput(yg::InputSource::YOURGAME_MOUSE_X) / ctx.winWidth,
+                             yg::getInput(yg::InputSource::YOURGAME_MOUSE_Y) / ctx.winHeight,
+                             org, dir);
+
+            ImGui::Text("| fps: %f, mouse delta: %f,%f | camera ray: (%3f,%3f,%3f)->(%3f,%3f,%3f)",
                         (float)(1.0 / ctx.deltaTimeS),
                         yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X),
-                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y));
+                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y),
+                        org.x, org.y, org.z, dir.x, dir.y, dir.z);
+
             ImGui::EndMainMenuBar();
         }
 
@@ -717,17 +725,19 @@ namespace mygame
                 flecsWorld->component<flecsVelocity>();
 
                 // add movement system
-                flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel) {
-                    float newS = dist.s + vel.v * e.delta_time();
-                    dist.s = newS > 10.0f ? newS - 10.0f : newS;
-                });
+                flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel)
+                                                                        {
+                                                                            float newS = dist.s + vel.v * e.delta_time();
+                                                                            dist.s = newS > 10.0f ? newS - 10.0f : newS;
+                                                                        });
 
                 // add drawing system
-                flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist) {
-                    // indicate entity components via sliders
-                    float entityVal = dist.s;
-                    ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f);
-                });
+                flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist)
+                                                         {
+                                                             // indicate entity components via sliders
+                                                             float entityVal = dist.s;
+                                                             ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f);
+                                                         });
 
                 // add some entities
                 for (int i = 1; i < 11; i++)

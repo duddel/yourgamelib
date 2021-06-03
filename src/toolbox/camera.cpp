@@ -110,6 +110,30 @@ namespace yourgame
         m_pMatInvalidated = true;
     }
 
+    void Camera::castRay(float viewportX, float viewportY, glm::vec3 &dstOrg, glm::vec3 &dstDir)
+    {
+        float viewX = ((viewportX * 2.0f) - 1.0f);
+        float viewY = (1.0f - (viewportY * 2.0f));
+
+        if (m_proj == PROJECTION::PERSPECTIVE)
+        {
+            float tanFovyHalf = std::tan(m_fovy * 0.00872664625f); // pi/180/2 = 0.00872664625
+            float dirX = tanFovyHalf * viewX * m_aspect;
+            float dirY = tanFovyHalf * viewY;
+            float dirZ = -1.0f;
+            dstDir = glm::normalize(glm::vec3(m_trafo.mat() * glm::vec4(dirX, dirY, dirZ, 0.0f)));
+            dstOrg = m_trafo.getEye();
+        }
+        else
+        {
+            float orgX = viewX * m_height * 0.5f * m_aspect;
+            float orgY = viewY * m_height * 0.5f;
+            float orgZ = 0.0f;
+            dstOrg = glm::normalize(glm::vec3(m_trafo.mat() * glm::vec4(orgX, orgY, orgZ, 1.0f)));
+            dstDir = -m_trafo.getAxisLocal(yourgame::Trafo::AXIS::Z);
+        }
+    }
+
     void Camera::updateVMatIfInvalidated()
     {
         if (m_vMatInvalidated)

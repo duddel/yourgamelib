@@ -48,6 +48,8 @@ namespace yourgame
         void setAspect(float aspect);
         void setZNear(float zNear);
         void setZFar(float zFar);
+        /** \brief viewportX,viewportY in [0.0,1.0] */
+        void castRay(float viewportX, float viewportY, glm::vec3 &dstOrg, glm::vec3 &dstDir);
 
     private:
         Trafo m_trafo;
