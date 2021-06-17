@@ -63,6 +63,13 @@ namespace yourgame
     */
     std::string getFileLocation(const std::string filepath);
 
+    /** \brief returns the actual file name of a file, filepath points to
+    - example: "file1.bin" returns "file1.bin"
+    - example: "a//file2.bin" returns "file2.bin"
+    - example: "/home/user/file3.bin" returns "file3.bin"
+    */
+    std::string getFileName(const std::string filepath);
+
     /** \brief writes numBytes bytes from data to a file called filename in the save file location.
         overwrites the file if it exists */
     int writeSaveFile(const std::string &filename, const void *data, size_t numBytes);

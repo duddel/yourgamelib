@@ -127,6 +127,19 @@ namespace yourgame
         return "";
     }
 
+    std::string getFileName(const std::string filepath)
+    {
+        // match 2: everything after last "/"
+        static std::regex reFilePath(R"((.*\/|^)(.*)$)");
+        std::smatch reMatches;
+        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 3)
+        {
+            return reMatches[2].str();
+        }
+
+        return "";
+    }
+
     int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
     {
         return yourgame_internal::writeFile(
