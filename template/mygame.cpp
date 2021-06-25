@@ -1,6 +1,7 @@
 #include "yourgame/yourgame.h"
 #include "yourgame/toolbox.h"
 #include "yourgame/gl_include.h"
+#include "mygame_version.h"
 
 namespace yg = yourgame; // convenience
 
@@ -15,6 +16,9 @@ namespace mygame
     {
         auto ctx = yg::getCtx();
 
+        yg::logi("project: %v (%v)", mygame::version::PROJECT_NAME, mygame::version::git_commit);
+        yg::logi("based on: %v (%v)", yg::version::PROJECT_NAME, yg::version::git_commit);
+
         g_camera.trafo()->lookAt(glm::vec3(7.35889f, 4.95831f, 6.92579f),
                                  glm::vec3(0.0f, 0.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
@@ -23,8 +27,8 @@ namespace mygame
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_light.setDiffuse({1.0f, 1.0f, 1.0f});
 
-        g_assets.insert("geoCube", yg::loadGeometry("a//cube.obj", nullptr));
-        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj", nullptr));
+        g_assets.insert("geoCube", yg::loadGeometry("a//cube.obj"));
+        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj"));
 
         g_assets.insert("shaderDiffuseColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
                                                               {GL_FRAGMENT_SHADER, "a//diffusecolor.frag"}}));

@@ -11,6 +11,26 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# get git commit sha
+execute_process(COMMAND
+  "${GIT_EXECUTABLE}" describe --always --abbrev=40 --dirty
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  OUTPUT_VARIABLE MYGAME_GIT_COMMIT
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# get the date of the git commit
+execute_process(COMMAND
+  "${GIT_EXECUTABLE}" log -1 --format=%ad --date=iso8601
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  OUTPUT_VARIABLE MYGAME_GIT_DATE
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# generate source file with version information
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp" @ONLY
+)
+
 # external projects
 list(APPEND YOURGAME_EXT_PROJ_LIST
 {%- for EXT_PROJ in YOURGAME_EXT_PROJ %}
@@ -60,6 +80,9 @@ add_subdirectory(
 )
 
 # sources
+list(APPEND MYGAME_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp # generated above
+)
 list(APPEND MYGAME_SRC_FILES
 {%- for MY_SRC in YOURGAME_MY_SOURCES %}
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ MY_SRC }}

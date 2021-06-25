@@ -1,33 +1,14 @@
-/*
-Copyright (c) 2019-2021 Alexander Scholz
+#include "mygame_version.h"
 
-This software is provided 'as-is', without any express or implied
-warranty. In no event will the authors be held liable for any damages
-arising from the use of this software.
-
-Permission is granted to anyone to use this software for any purpose,
-including commercial applications, and to alter it and redistribute it
-freely, subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not
-   claim that you wrote the original software. If you use this software
-   in a product, an acknowledgment in the product documentation would be
-   appreciated but is not required.
-2. Altered source versions must be plainly marked as such, and must not be
-   misrepresented as being the original software.
-3. This notice may not be removed or altered from any source distribution.
-*/
-#include "yourgame/version.h"
-
-namespace yourgame
+namespace mygame
 {
     namespace version
     {
         const int major = @PROJECT_VERSION_MAJOR@;
         const int minor = @PROJECT_VERSION_MINOR@;
         const int patch = @PROJECT_VERSION_PATCH@;
-        const std::string git_commit = "@YOURGAME_GIT_COMMIT_ACTUAL@";
-        const std::string git_date = "@YOURGAME_GIT_DATE@";
+        const std::string git_commit = "@MYGAME_GIT_COMMIT@";
+        const std::string git_date = "@MYGAME_GIT_DATE@";
         const std::string PROJECT_NAME = "@PROJECT_NAME@";
         const std::string CMAKE_SYSTEM = "@CMAKE_SYSTEM@";
         const std::string CMAKE_SYSTEM_PROCESSOR = "@CMAKE_SYSTEM_PROCESSOR@";
@@ -41,4 +22,4 @@ namespace yourgame
         const std::string CMAKE_GENERATOR_PLATFORM = "@CMAKE_GENERATOR_PLATFORM@";
         const int CMAKE_SIZEOF_VOID_P = @CMAKE_SIZEOF_VOID_P@;
     }
-} // namespace yourgame
+} // namespace mygame

@@ -31,6 +31,7 @@ namespace yourgame
         extern const int patch;
         extern const std::string git_commit;
         extern const std::string git_date;
+        extern const std::string PROJECT_NAME;
         extern const std::string CMAKE_SYSTEM;
         extern const std::string CMAKE_SYSTEM_PROCESSOR;
         extern const std::string CMAKE_HOST_SYSTEM;
