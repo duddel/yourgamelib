@@ -79,7 +79,7 @@ jEnv = Environment(loader=ldr)
 dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")] # todo: extend source file pattern
 templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
-    YOURGAME_COMMIT_SHA_INIT=gitSha,
+    YOURGAME_GIT_COMMIT_INIT=gitSha,
     YOURGAME_ROOT=ygRootRel,
     YOURGAME_PROJECT_NAME=newProjName,
     YOURGAME_BARE=args.bare,

@@ -25,6 +25,7 @@ freely, subject to the following restrictions:
 #include "yourgame/fileio.h"
 #include "yourgame/input.h"
 #include "yourgame/logging.h"
+#include "yourgame/version.h"
 
 namespace yourgame
 {

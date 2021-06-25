@@ -1,5 +1,5 @@
 # initialized from yourgamelib commit:
-# {{ YOURGAME_COMMIT_SHA_INIT }}
+# {{ YOURGAME_GIT_COMMIT_INIT }}
 
 cmake_minimum_required(VERSION 3.6)
 find_package(Git)
@@ -23,10 +23,10 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 set(YOURGAME_BARE TRUE)
 {%- endif %}
 
-# the initial value of YOURGAME_COMMIT_SHA_REQUESTED is the commit of yourgamelib
+# the initial value of YOURGAME_GIT_COMMIT_REQUESTED is the commit of yourgamelib
 # during initialization of this project.
 # it should be adjusted if another (newer) version of yourgamelib is supported.
-set(YOURGAME_COMMIT_SHA_REQUESTED {{ YOURGAME_COMMIT_SHA_INIT }})
+set(YOURGAME_GIT_COMMIT_REQUESTED {{ YOURGAME_GIT_COMMIT_INIT }})
 
 # determine the source location of the yourgame library code:
 # changing the following line to
@@ -42,7 +42,7 @@ if(NO)
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     )
     # reset yourgame clone to the requested commit
-    execute_process( COMMAND "${GIT_EXECUTABLE}" reset "${YOURGAME_COMMIT_SHA_REQUESTED}" --hard
+    execute_process( COMMAND "${GIT_EXECUTABLE}" reset "${YOURGAME_GIT_COMMIT_REQUESTED}" --hard
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib"
     )
   endif()

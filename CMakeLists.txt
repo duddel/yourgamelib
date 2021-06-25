@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.6)
 find_package(Git)
 
+# yourgame library project + version
+project(yourgame VERSION 0.0.0)
+
 # enforce C++11 and disable extensions
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,19 +17,32 @@ set(YOURGAME_GLES_MINOR 0)
 
 # get git commit sha and test it against the requested commit of the project
 execute_process(COMMAND
-  "${GIT_EXECUTABLE}" rev-parse HEAD
+  "${GIT_EXECUTABLE}" describe --always --abbrev=40 --dirty
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-  OUTPUT_VARIABLE YOURGAME_COMMIT_SHA_ACTUAL
+  OUTPUT_VARIABLE YOURGAME_GIT_COMMIT_ACTUAL
   OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-if(YOURGAME_COMMIT_SHA_REQUESTED STREQUAL YOURGAME_COMMIT_SHA_ACTUAL)
-  message("The requested yourgamelib commit ${YOURGAME_COMMIT_SHA_REQUESTED} \
+if(YOURGAME_GIT_COMMIT_REQUESTED STREQUAL YOURGAME_GIT_COMMIT_ACTUAL)
+  message("The requested yourgamelib commit ${YOURGAME_GIT_COMMIT_REQUESTED} \
   matches yourgamelib in ${CMAKE_CURRENT_SOURCE_DIR}")
 else()
-  message(WARNING "The requested yourgamelib commit ${YOURGAME_COMMIT_SHA_REQUESTED} \
+  message(WARNING "The requested yourgamelib commit ${YOURGAME_GIT_COMMIT_REQUESTED} \
   does NOT MATCH yourgamelib in ${CMAKE_CURRENT_SOURCE_DIR} \
-  YOURGAME_COMMIT_SHA_ACTUAL: ${YOURGAME_COMMIT_SHA_ACTUAL}")  
+  YOURGAME_GIT_COMMIT_ACTUAL: ${YOURGAME_GIT_COMMIT_ACTUAL}")  
 endif()
+
+# get the date of the git commit
+execute_process(COMMAND
+  "${GIT_EXECUTABLE}" log -1 --format=%ad --date=iso8601
+  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  OUTPUT_VARIABLE YOURGAME_GIT_DATE
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# generate source file with version information
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/version.cpp.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/version.cpp" @ONLY
+)
 
 # toolbox
 if(NOT DEFINED YOURGAME_BARE)
@@ -36,6 +52,7 @@ endif()
 # sources
 list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/file.cpp
+  ${CMAKE_CURRENT_BINARY_DIR}/version.cpp # generated above
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "web")
   list(APPEND YOURGAME_SRC_FILES
