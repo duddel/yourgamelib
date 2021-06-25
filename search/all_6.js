@@ -21,6 +21,8 @@ var searchData=
   ['getsequencenames',['getSequenceNames',['../classyourgame_1_1GLTextureAtlas.html#ae4b72909efad1fdb47f07d55573465f5',1,'yourgame::GLTextureAtlas']]],
   ['gettime',['getTime',['../namespaceyourgame.html#a23ae9bf87b5b661f9191e8a601f7d4bd',1,'yourgame']]],
   ['getuniformlocation',['getUniformLocation',['../classyourgame_1_1GLShader.html#aaab851d49c40b0259132da0f076c3f99',1,'yourgame::GLShader']]],
+  ['git_5fcommit',['git_commit',['../namespaceyourgame_1_1version.html#ad525dc89ea2f858a141d6fdd560b351c',1,'yourgame::version']]],
+  ['git_5fdate',['git_date',['../namespaceyourgame_1_1version.html#a64c06e31adccb495242934c5c8d9999f',1,'yourgame::version']]],
   ['gl_5finclude_2eh',['gl_include.h',['../gl__include_8h.html',1,'']]],
   ['glbuffer',['GLBuffer',['../classyourgame_1_1GLBuffer.html',1,'yourgame::GLBuffer'],['../classyourgame_1_1GLBuffer.html#a4b78ff11bede1772f3d62222a0a2a793',1,'yourgame::GLBuffer::GLBuffer()']]],
   ['glbuffer_2eh',['glbuffer.h',['../glbuffer_8h.html',1,'']]],
