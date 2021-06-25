@@ -217,19 +217,19 @@ endif()
 include(${CMAKE_CURRENT_BINARY_DIR}/thirdparty/yourgame_ext_proj.cmake)
 
 # add the yourgame library target
-add_library(yourgame
+add_library(${PROJECT_NAME}
   ${YOURGAME_SRC_FILES}
 )
 
-target_include_directories(yourgame
+target_include_directories(${PROJECT_NAME}
   PRIVATE ${YOURGAME_INC_DIRS_PRIVATE}
   PUBLIC ${YOURGAME_INC_DIRS}
 )
 
-target_link_libraries(yourgame PUBLIC
+target_link_libraries(${PROJECT_NAME} PUBLIC
   ${YOURGAME_LIBS}
 )
 
-target_compile_definitions(yourgame PUBLIC
+target_compile_definitions(${PROJECT_NAME} PUBLIC
   ${YOURGAME_COMPILE_DEFS}
 )

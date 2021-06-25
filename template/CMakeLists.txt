@@ -11,6 +11,11 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# the initial value of YOURGAME_GIT_COMMIT_REQUESTED is the commit of yourgamelib
+# during initialization of this project.
+# it should be adjusted if another (newer) version of yourgamelib is supported.
+set(YOURGAME_GIT_COMMIT_REQUESTED {{ YOURGAME_GIT_COMMIT_INIT }})
+
 # get git commit sha
 execute_process(COMMAND
   "${GIT_EXECUTABLE}" describe --always --abbrev=40 --dirty
@@ -28,7 +33,7 @@ execute_process(COMMAND
 # generate source file with version information
 configure_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp.in"
-  "${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp" @ONLY
+  "${CMAKE_CURRENT_BINARY_DIR}/mygame_version.cpp" @ONLY
 )
 
 # external projects
@@ -42,11 +47,6 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 # bare
 set(YOURGAME_BARE TRUE)
 {%- endif %}
-
-# the initial value of YOURGAME_GIT_COMMIT_REQUESTED is the commit of yourgamelib
-# during initialization of this project.
-# it should be adjusted if another (newer) version of yourgamelib is supported.
-set(YOURGAME_GIT_COMMIT_REQUESTED {{ YOURGAME_GIT_COMMIT_INIT }})
 
 # determine the source location of the yourgame library code:
 # changing the following line to
@@ -81,12 +81,17 @@ add_subdirectory(
 
 # sources
 list(APPEND MYGAME_SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp # generated above
+  ${CMAKE_CURRENT_BINARY_DIR}/mygame_version.cpp # generated above
 )
 list(APPEND MYGAME_SRC_FILES
 {%- for MY_SRC in YOURGAME_MY_SOURCES %}
   ${CMAKE_CURRENT_SOURCE_DIR}/{{ MY_SRC }}
 {%- endfor -%}
+)
+
+# inc dirs (internal)
+list(APPEND MYGAME_INC_DIRS_PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 if(YOURGAME_PLATFORM STREQUAL "android")
@@ -171,6 +176,10 @@ if(YOURGAME_PLATFORM STREQUAL "web")
     include(CPack)
   endif()
 endif()
+
+target_include_directories(${CMAKE_PROJECT_NAME}
+  PRIVATE ${MYGAME_INC_DIRS_PRIVATE}
+)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
   yourgame
