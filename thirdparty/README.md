@@ -107,8 +107,8 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Portable File Dialogs
 
--   version: **11d7b4f (master)**
--   origin: <https://github.com/samhocevar/portable-file-dialogs/tree/11d7b4f28698d5fc27e1618e934753374bd4d174>
+-   version: **7a7a9f5 (master)**
+-   origin: <https://github.com/samhocevar/portable-file-dialogs/tree/7a7a9f5fa800b28331672742c0e774d46186e34f>
 -   extracted from origin:
     -   COPYING, portable-file-dialogs.h
 -   license: [portable-file-dialogs/COPYING](portable-file-dialogs/COPYING)
