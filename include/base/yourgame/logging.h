@@ -29,24 +29,29 @@ namespace yourgame
 
     /** \brief log debug */
     template <typename T, typename... Args>
-    inline void logd(const char *s, const T &value, const Args &... args)
+    inline void logd(const char *s, const T &value, const Args &...args)
     {
+#ifndef NDEBUG
         el::Logger *logr = yourgame::getLogr();
         if (logr != nullptr)
             logr->debug(s, value, args...);
+#endif
     }
+
     /** \brief log debug */
     template <typename T>
     inline void logd(const T &value)
     {
+#ifndef NDEBUG
         el::Logger *logr = yourgame::getLogr();
         if (logr != nullptr)
             logr->debug(value);
+#endif
     }
 
     /** \brief log info */
     template <typename T, typename... Args>
-    inline void logi(const char *s, const T &value, const Args &... args)
+    inline void logi(const char *s, const T &value, const Args &...args)
     {
         el::Logger *logr = yourgame::getLogr();
         if (logr != nullptr)
@@ -64,7 +69,7 @@ namespace yourgame
 
     /** \brief log warning */
     template <typename T, typename... Args>
-    inline void logw(const char *s, const T &value, const Args &... args)
+    inline void logw(const char *s, const T &value, const Args &...args)
     {
         el::Logger *logr = yourgame::getLogr();
         if (logr != nullptr)
@@ -82,7 +87,7 @@ namespace yourgame
 
     /** \brief log error */
     template <typename T, typename... Args>
-    inline void loge(const char *s, const T &value, const Args &... args)
+    inline void loge(const char *s, const T &value, const Args &...args)
     {
         el::Logger *logr = yourgame::getLogr();
         if (logr != nullptr)
