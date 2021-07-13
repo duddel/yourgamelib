@@ -260,6 +260,13 @@ namespace yourgame
             shaderCodes.push_back(std::make_pair(shdrFile.first, shdrStr));
         }
 
+        return loadShaderFromStrings(shaderCodes, attrLocs, fragDataLocs);
+    }
+
+    GLShader *loadShaderFromStrings(const std::vector<std::pair<GLenum, std::string>> &shaderCodes,
+                                    const std::vector<std::pair<GLuint, std::string>> &attrLocs,
+                                    const std::vector<std::pair<GLuint, std::string>> &fragDataLocs)
+    {
         std::string shaderErrLog;
         GLShader *newShader = GLShader::make(shaderCodes, attrLocs, fragDataLocs, shaderErrLog);
 

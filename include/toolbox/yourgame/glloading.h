@@ -64,6 +64,10 @@ namespace yourgame
                          const std::vector<std::pair<GLuint, std::string>> &attrLocs = {},
                          const std::vector<std::pair<GLuint, std::string>> &fragDataLocs = {});
 
+    GLShader *loadShaderFromStrings(const std::vector<std::pair<GLenum, std::string>> &shaderCodes,
+                                    const std::vector<std::pair<GLuint, std::string>> &attrLocs = {},
+                                    const std::vector<std::pair<GLuint, std::string>> &fragDataLocs = {});
+
     GLGeometry *loadGeometry(const std::string &objFilename,
                              const std::string &mtlFilename = "");
 } // namespace yourgame
