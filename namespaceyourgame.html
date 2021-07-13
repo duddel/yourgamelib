@@ -549,6 +549,8 @@ Functions</h2></td></tr>
 <tr class="separator:a445129e212036a94c078765b1d16343b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab339c3759fc85c0cabfaef2c4857ab67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLShader.html">GLShader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ab339c3759fc85c0cabfaef2c4857ab67">loadShader</a> (const std::vector&lt; std::pair&lt; GLenum, std::string &gt;&gt; &amp;shaderFilenames, const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;attrLocs={}, const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;fragDataLocs={})</td></tr>
 <tr class="separator:ab339c3759fc85c0cabfaef2c4857ab67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a05e7988cf00754ce432f791bc856c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLShader.html">GLShader</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a5a05e7988cf00754ce432f791bc856c5">loadShaderFromStrings</a> (const std::vector&lt; std::pair&lt; GLenum, std::string &gt;&gt; &amp;shaderCodes, const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;attrLocs={}, const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;fragDataLocs={})</td></tr>
+<tr class="separator:a5a05e7988cf00754ce432f791bc856c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35474bba1bcadd3ed06ca72b8e19ea62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1GLGeometry.html">GLGeometry</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#a35474bba1bcadd3ed06ca72b8e19ea62">loadGeometry</a> (const std::string &amp;objFilename, const std::string &amp;mtlFilename=&quot;&quot;)</td></tr>
 <tr class="separator:a35474bba1bcadd3ed06ca72b8e19ea62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae48236e308602407c18ea8e5a9279c0f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame.html#ae48236e308602407c18ea8e5a9279c0f">audioInit</a> (ma_uint32 numChannels, ma_uint32 sampleRate, int numSources)</td></tr>
@@ -1443,6 +1445,40 @@ Variables</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; std::pair&lt; GLenum, std::string &gt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>shaderFilenames</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>attrLocs</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; GLuint, std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>fragDataLocs</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a05e7988cf00754ce432f791bc856c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a05e7988cf00754ce432f791bc856c5">&#9670;&nbsp;</a></span>loadShaderFromStrings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classyourgame_1_1GLShader.html">GLShader</a>* yourgame::loadShaderFromStrings </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; std::pair&lt; GLenum, std::string &gt;&gt; &amp;&#160;</td>
+          <td class="paramname"><em>shaderCodes</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

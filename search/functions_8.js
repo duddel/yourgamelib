@@ -4,6 +4,7 @@ var searchData=
   ['loadcubemap',['loadCubemap',['../namespaceyourgame.html#a445129e212036a94c078765b1d16343b',1,'yourgame']]],
   ['loadgeometry',['loadGeometry',['../namespaceyourgame.html#a35474bba1bcadd3ed06ca72b8e19ea62',1,'yourgame']]],
   ['loadshader',['loadShader',['../namespaceyourgame.html#ab339c3759fc85c0cabfaef2c4857ab67',1,'yourgame']]],
+  ['loadshaderfromstrings',['loadShaderFromStrings',['../namespaceyourgame.html#a5a05e7988cf00754ce432f791bc856c5',1,'yourgame']]],
   ['loadtexture',['loadTexture',['../namespaceyourgame.html#a37bd4325743373e8c3b29d0667c9eafe',1,'yourgame']]],
   ['loadtextureatlascrunch',['loadTextureAtlasCrunch',['../namespaceyourgame.html#a90e847f8ffdaac6347e0d295123a3066',1,'yourgame']]],
   ['loadtextureatlasgrid',['loadTextureAtlasGrid',['../namespaceyourgame.html#a43de560a330f967d1313bb6493d1a10b',1,'yourgame']]],
