@@ -17,7 +17,7 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <algorithm> // std::replace()
+#include <algorithm> // std::replace(), std::sort()
 #include <string>
 #include <vector>
 #include <regex>
@@ -252,6 +252,7 @@ namespace yourgame
             closedir(dir);
         }
 
+        std::sort(ret.begin(), ret.end());
         return ret;
     }
 } // namespace yourgame
