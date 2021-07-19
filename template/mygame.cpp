@@ -12,7 +12,7 @@ namespace mygame
     yg::Trafo g_modelTrafo;
     yg::GLLightsource g_light;
 
-    void init()
+    void init(int argc, char *argv[])
     {
         auto ctx = yg::getCtx();
 

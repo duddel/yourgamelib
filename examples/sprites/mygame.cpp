@@ -12,7 +12,7 @@ namespace mygame
     yg::AssetManager g_assets;
     yg::Camera g_camera;
 
-    void init()
+    void init(int argc, char *argv[])
     {
         auto ctx = yg::getCtx();
 

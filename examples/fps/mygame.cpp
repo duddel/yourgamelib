@@ -30,7 +30,7 @@ namespace mygame
     std::vector<Box> g_boxes;
     yg::GLLightsource g_light;
 
-    void init()
+    void init(int argc, char *argv[])
     {
         auto ctx = yg::getCtx();
 

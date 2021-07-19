@@ -219,7 +219,8 @@ namespace yourgame_internal_android
         stbi_flip_vertically_on_write(true);
 #endif
 
-        mygame::init();
+        char *initArgv = nullptr;
+        mygame::init(0, &initArgv);
 
         _initialized = true;
 

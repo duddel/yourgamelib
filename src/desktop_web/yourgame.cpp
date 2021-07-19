@@ -193,7 +193,7 @@ namespace yourgame_internal_desktop
         stbi_flip_vertically_on_write(true);
 #endif
 
-        mygame::init();
+        mygame::init(argc, argv);
 
         // initialize timing:
         // get the initial time point just before tick() starts, which will

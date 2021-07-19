@@ -27,7 +27,7 @@ within the yourgame library
 
 namespace mygame
 {
-    extern void init();
+    extern void init(int argc, char *argv[]);
     extern void tick();
     extern void shutdown();
 } // namespace mygame

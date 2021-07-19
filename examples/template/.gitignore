@@ -1,4 +1,9 @@
 *
+!assets/
+!assets/*
 !.gitignore
+!*.cpp
+!*.h
+mygame_version.h
 !init.bash
 !init.cmd

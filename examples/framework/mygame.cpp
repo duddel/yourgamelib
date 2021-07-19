@@ -77,7 +77,7 @@ namespace mygame
     int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
     yg::AssetManager g_assets;
 
-    void init()
+    void init(int argc, char *argv[])
     {
         auto ctx = yg::getCtx();
 

@@ -5,7 +5,7 @@ namespace yg = yourgame; // convenience
 
 namespace mygame
 {
-    void init()
+    void init(int argc, char *argv[])
     {
         glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
     }
