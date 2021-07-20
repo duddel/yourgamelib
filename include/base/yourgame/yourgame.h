@@ -29,20 +29,14 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    struct context
-    {
-        double deltaTimeS = 0.0;
-        uint64_t deltaTimeUs = 0U;
-        uint32_t winWidth = 0U;
-        uint32_t winHeight = 0U;
-        float winAspectRatio = 1.0f;
-        bool winIsFullscreen = false;
-        bool vsyncEnabled = false;
-        bool mouseCatched = false;
-    };
-
-    /** \brief returns the current context */
-    yourgame::context getCtx();
+    extern double deltaTimeS;
+    extern uint64_t deltaTimeUs;
+    extern uint32_t winWidth;
+    extern uint32_t winHeight;
+    extern float winAspectRatio;
+    extern bool winIsFullscreen;
+    extern bool vsyncEnabled;
+    extern bool mouseCatched;
 
     /** \brief returns (monotonic) time duration [seconds] since init */
     double getTime();

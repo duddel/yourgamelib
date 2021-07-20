@@ -68,7 +68,6 @@ namespace yourgame_internal_android
         };
 
         el::Logger *logger = nullptr;
-        yourgame::context _context;
         std::chrono::steady_clock::time_point lastNowTime;
         std::chrono::steady_clock::time_point initTime;
         bool _initialized = false;
@@ -82,14 +81,14 @@ namespace yourgame_internal_android
         /* todo: this is called every frame, but actually only required
         if the screen size changed. however, the app command
         APP_CMD_WINDOW_RESIZED is not invoked reliable.*/
-        void updateContextWinSize()
+        void updateWinSize()
         {
             EGLint width, height;
             eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
             eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
-            _context.winWidth = width;
-            _context.winHeight = height;
-            _context.winAspectRatio = (float)width / (float)height;
+            yourgame::winWidth = width;
+            yourgame::winHeight = height;
+            yourgame::winAspectRatio = (float)width / (float)height;
         }
     } // namespace
 
@@ -194,8 +193,8 @@ namespace yourgame_internal_android
         _surface = eglCreateWindowSurface(_display, config, _win, NULL);
         eglMakeCurrent(_display, _surface, _surface, _eglContext);
 
-        // update window size in yourgame context
-        updateContextWinSize();
+        // update window size in yourgame
+        updateWinSize();
 
         yourgame::logi("GL_VERSION: %v", glGetString(GL_VERSION));
         yourgame::logi("GL_VENDOR: %v", glGetString(GL_VENDOR));
@@ -238,12 +237,12 @@ namespace yourgame_internal_android
         auto now = std::chrono::steady_clock::now();
         std::chrono::duration<double> duration = now - lastNowTime;
         lastNowTime = now;
-        _context.deltaTimeS = (duration.count());
+        yourgame::deltaTimeS = (duration.count());
 
         if (_display != EGL_NO_DISPLAY)
         {
-            // update window size in yourgame context
-            updateContextWinSize();
+            // update window size in yourgame
+            updateWinSize();
 
 #ifdef YOURGAME_EXTPROJ_imgui
             ImGui_ImplOpenGL3_NewFrame();
@@ -303,10 +302,14 @@ namespace yourgame_internal_android
 
 namespace yourgame
 {
-    yourgame::context getCtx()
-    {
-        return yourgame_internal_android::_context;
-    }
+    double deltaTimeS = 0.0;
+    uint64_t deltaTimeUs = 0U;
+    uint32_t winWidth = 0U;
+    uint32_t winHeight = 0U;
+    float winAspectRatio = 1.0f;
+    bool winIsFullscreen = false;
+    bool vsyncEnabled = false;
+    bool mouseCatched = false;
 
     double getTime()
     {

@@ -79,8 +79,6 @@ namespace mygame
 
     void init(int argc, char *argv[])
     {
-        auto ctx = yg::getCtx();
-
         // load license info file
         {
 #if defined(YOURGAME_PLATFORM_DESKTOP)
@@ -99,8 +97,8 @@ namespace mygame
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-        g_camera.setPerspective(75.0f, ctx.winAspectRatio, 1.0f, 10.0f);
-        g_skyboxCamera.setPerspective(75.0f, ctx.winAspectRatio, 0.1f, 2.0f);
+        g_camera.setPerspective(75.0f, yg::winAspectRatio, 1.0f, 10.0f);
+        g_skyboxCamera.setPerspective(75.0f, yg::winAspectRatio, 0.1f, 2.0f);
 
         // Skybox texture
         {
@@ -164,7 +162,7 @@ namespace mygame
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
         // texture parameters (GL_NEAREST, GL_CLAMP_TO_EDGE) may be required to do so
         g_assets.insert("framebuf",
-                        yg::GLFramebuffer::make(ctx.winWidth, ctx.winHeight,
+                        yg::GLFramebuffer::make(yg::winWidth, yg::winHeight,
                                                 {{GL_RGBA8,
                                                   GL_RGBA,
                                                   GL_UNSIGNED_BYTE,
@@ -196,8 +194,6 @@ namespace mygame
 
     void tick()
     {
-        auto ctx = yg::getCtx();
-
         g_modelTrafo.setScaleLocal(g_modelScale);
         if (g_rotationOn)
         {
@@ -211,11 +207,11 @@ namespace mygame
 
         if (yg::inputDelta(yg::INPUT::KEY_ESCAPE) > 0.0f)
         {
-            yg::catchMouse(!ctx.mouseCatched);
+            yg::catchMouse(!yg::mouseCatched);
         }
 
         // first-person camera
-        if (ctx.mouseCatched)
+        if (yg::mouseCatched)
         {
             g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
             g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
@@ -225,8 +221,8 @@ namespace mygame
             g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
         }
 
-        g_camera.setAspect(ctx.winAspectRatio);
-        g_skyboxCamera.setAspect(ctx.winAspectRatio);
+        g_camera.setAspect(yg::winAspectRatio);
+        g_skyboxCamera.setAspect(yg::winAspectRatio);
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
@@ -248,12 +244,12 @@ namespace mygame
         {
             static uint32_t lastWinWidth = 0;
             static uint32_t lastWinHeight = 0;
-            if (lastWinWidth != ctx.winWidth || lastWinHeight != ctx.winHeight)
+            if (lastWinWidth != yg::winWidth || lastWinHeight != yg::winHeight)
             {
-                g_assets.get<yg::GLFramebuffer>("framebuf")->resize(ctx.winWidth, ctx.winHeight);
-                yg::logi("framebuffer resized to %v,%v", ctx.winWidth, ctx.winHeight);
-                lastWinWidth = ctx.winWidth;
-                lastWinHeight = ctx.winHeight;
+                g_assets.get<yg::GLFramebuffer>("framebuf")->resize(yg::winWidth, yg::winHeight);
+                yg::logi("framebuffer resized to %v,%v", yg::winWidth, yg::winHeight);
+                lastWinWidth = yg::winWidth;
+                lastWinHeight = yg::winHeight;
             }
             g_assets.get<yg::GLFramebuffer>("framebuf")->bind();
         }
@@ -261,7 +257,7 @@ namespace mygame
         // the actual drawing
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+        glViewport(0, 0, yg::winWidth, yg::winHeight);
 
         // draw skybox
         if (g_drawSkybox)
@@ -317,7 +313,7 @@ namespace mygame
         {
             g_assets.get<yg::GLFramebuffer>("framebuf")->unbindTarget();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+            glViewport(0, 0, yg::winWidth, yg::winHeight);
 
             // simple orthographic projection that matches the quad geometry
             auto pMat = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, 1.0f, -1.0f);
@@ -340,7 +336,7 @@ namespace mygame
 
         // if mouse is catched, first-person camera movement is enabled
         // (see above), and imgui menu drawing is not desired
-        if (!ctx.mouseCatched)
+        if (!yg::mouseCatched)
         {
             updateImgui();
         }
@@ -356,8 +352,6 @@ namespace mygame
 
     void updateImgui()
     {
-        auto ctx = yg::getCtx();
-
         static bool showDemoAudio = false;
         static bool showDemoGl = true;
         static bool showLicense = false;
@@ -444,13 +438,13 @@ namespace mygame
             }
             if (ImGui::BeginMenu("Options"))
             {
-                if (ImGui::MenuItem("Fullscreen", "", ctx.winIsFullscreen))
+                if (ImGui::MenuItem("Fullscreen", "", yg::winIsFullscreen))
                 {
-                    yg::enableFullscreen(!ctx.winIsFullscreen);
+                    yg::enableFullscreen(!yg::winIsFullscreen);
                 }
-                if (ImGui::MenuItem("VSync", "", ctx.vsyncEnabled))
+                if (ImGui::MenuItem("VSync", "", yg::vsyncEnabled))
                 {
-                    yg::enableVSync(!ctx.vsyncEnabled);
+                    yg::enableVSync(!yg::vsyncEnabled);
                 }
                 ImGui::EndMenu();
             }
@@ -464,12 +458,12 @@ namespace mygame
             }
             // camera ray casting
             glm::vec3 org, dir;
-            g_camera.castRay(yg::input(yg::INPUT::MOUSE_X) / ctx.winWidth,
-                             yg::input(yg::INPUT::MOUSE_Y) / ctx.winHeight,
+            g_camera.castRay(yg::input(yg::INPUT::MOUSE_X) / yg::winWidth,
+                             yg::input(yg::INPUT::MOUSE_Y) / yg::winHeight,
                              org, dir);
 
             ImGui::Text("| fps: %f, mouse delta: %f,%f | camera ray: (%3f,%3f,%3f)->(%3f,%3f,%3f)",
-                        (float)(1.0 / ctx.deltaTimeS),
+                        (float)(1.0 / yg::deltaTimeS),
                         yg::inputDelta(yg::INPUT::MOUSE_X),
                         yg::inputDelta(yg::INPUT::MOUSE_Y),
                         org.x, org.y, org.z, dir.x, dir.y, dir.z);
@@ -545,8 +539,8 @@ namespace mygame
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
                 ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
-                g_camera.setPerspective(f1, ctx.winAspectRatio, f2, f3);
-                g_skyboxCamera.setPerspective(f1, ctx.winAspectRatio, 0.1f, 2.0f);
+                g_camera.setPerspective(f1, yg::winAspectRatio, f2, f3);
+                g_skyboxCamera.setPerspective(f1, yg::winAspectRatio, 0.1f, 2.0f);
             }
             else
             {
@@ -555,7 +549,7 @@ namespace mygame
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
                 ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
-                g_camera.setOrthographic(f1, ctx.winAspectRatio, f2, f3);
+                g_camera.setOrthographic(f1, yg::winAspectRatio, f2, f3);
                 // skybox camera always perspective (see above)
             }
 
@@ -694,7 +688,7 @@ namespace mygame
             }
 
             // simulate Box2D world
-            box2dWorld->Step(ctx.deltaTimeS, 6, 2);
+            box2dWorld->Step(yg::deltaTimeS, 6, 2);
 
             // the vertical slider gets updated with box2dTestHeight every frame,
             // indicating the height of the dropping Box2D body
@@ -832,7 +826,7 @@ namespace mygame
                 choreographInitialized = true;
             }
 
-            choreoTimeline->step(ctx.deltaTimeS);
+            choreoTimeline->step(yg::deltaTimeS);
 
             ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
             ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);
@@ -907,10 +901,10 @@ namespace mygame
             spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
 
             // gl drawing
-            spriteGridTrafo->pointTo({0.0f + xOffset, (float)ctx.winHeight + yOffset, 0.0f},
-                                     {0.0f + xOffset, (float)ctx.winHeight + yOffset, 1.0f},
+            spriteGridTrafo->pointTo({0.0f + xOffset, (float)yg::winHeight + yOffset, 0.0f},
+                                     {0.0f + xOffset, (float)yg::winHeight + yOffset, 1.0f},
                                      {0.0f, 1.0f, 0.0f});
-            auto pMat = glm::ortho(0.0f, (float)ctx.winWidth, 0.0f, (float)ctx.winHeight, 1.0f, -1.0f);
+            auto pMat = glm::ortho(0.0f, (float)yg::winWidth, 0.0f, (float)yg::winHeight, 1.0f, -1.0f);
             auto mvp = pMat * spriteGridTrafo->mat();
             g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
             glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
@@ -1132,10 +1126,10 @@ namespace mygame
         // license window
         if (showLicense)
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
-                                                       (float)(ctx.winHeight) * 0.5f),
-                                                ImVec2((float)(ctx.winWidth),
-                                                       (float)(ctx.winHeight)));
+            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(yg::winWidth) * 0.5f,
+                                                       (float)(yg::winHeight) * 0.5f),
+                                                ImVec2((float)(yg::winWidth),
+                                                       (float)(yg::winHeight)));
             ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
                 whereas ImGui::TextWrapped() has a size limit and cuts the content. */

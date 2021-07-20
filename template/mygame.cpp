@@ -14,15 +14,13 @@ namespace mygame
 
     void init(int argc, char *argv[])
     {
-        auto ctx = yg::getCtx();
-
         yg::logi("project: %v (%v)", mygame::version::PROJECT_NAME, mygame::version::git_commit);
         yg::logi("based on: %v (%v)", yg::version::PROJECT_NAME, yg::version::git_commit);
 
         g_camera.trafo()->lookAt(glm::vec3(7.35889f, 4.95831f, 6.92579f),
                                  glm::vec3(0.0f, 0.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-        g_camera.setPerspective(40.0f, ctx.winAspectRatio, 1.0f, 100.0f);
+        g_camera.setPerspective(40.0f, yg::winAspectRatio, 1.0f, 100.0f);
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_light.setDiffuse({1.0f, 1.0f, 1.0f});
@@ -45,10 +43,8 @@ namespace mygame
 
     void tick()
     {
-        auto ctx = yg::getCtx();
-
-        g_camera.setAspect(ctx.winAspectRatio);
-        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+        g_camera.setAspect(yg::winAspectRatio);
+        glViewport(0, 0, yg::winWidth, yg::winHeight);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (yg::input(yg::INPUT::KEY_ESCAPE))
@@ -57,20 +53,20 @@ namespace mygame
         }
 
         // first-person camera
-        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * 0.75f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * -0.75f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * 0.75f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -0.75f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
-        g_camera.trafo()->translateLocal(static_cast<float>(ctx.deltaTimeS) * -5.0f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
-        g_camera.trafo()->translateLocal(static_cast<float>(ctx.deltaTimeS) * 5.0f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
-        g_camera.trafo()->translateLocal(static_cast<float>(ctx.deltaTimeS) * 5.0f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
-        g_camera.trafo()->translateLocal(static_cast<float>(ctx.deltaTimeS) * -5.0f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * 0.75f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * -0.75f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * 0.75f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * -0.75f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * -5.0f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * 5.0f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * 5.0f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * -5.0f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
 
         // fade light
         static float lightT = 0.0f;
         float light = std::cos(lightT) * 0.5f + 0.5f;
         g_light.setDiffuse({light, light, light});
-        lightT += (static_cast<float>(ctx.deltaTimeS) * 0.65f);
+        lightT += (static_cast<float>(yg::deltaTimeS) * 0.65f);
 
         // draw cube
         {

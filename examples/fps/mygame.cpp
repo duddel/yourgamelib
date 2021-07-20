@@ -32,13 +32,11 @@ namespace mygame
 
     void init(int argc, char *argv[])
     {
-        auto ctx = yg::getCtx();
-
         yg::audioInit(2, 44100, 5);
         yg::audioStoreFile("a//laserSmall_000.ogg");
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
-        g_camera.setPerspective(65.0f, ctx.winAspectRatio, 0.2f, 100.0f);
+        g_camera.setPerspective(65.0f, yg::winAspectRatio, 0.2f, 100.0f);
 
         // load license info file
         {
@@ -145,10 +143,8 @@ namespace mygame
 
     void tick()
     {
-        auto ctx = yg::getCtx();
-
         // tick bullet world
-        g_bullet.m_dynamicsWorld->stepSimulation(ctx.deltaTimeS, 10);
+        g_bullet.m_dynamicsWorld->stepSimulation(yg::deltaTimeS, 10);
 
         // set camera trafo from bullet player body
         btTransform trans;
@@ -210,7 +206,7 @@ namespace mygame
         // lock/release mouse
         if (yg::inputDelta(yg::INPUT::KEY_M) > 0.0f)
         {
-            yg::catchMouse(!ctx.mouseCatched);
+            yg::catchMouse(!yg::mouseCatched);
         }
 
         // exit
@@ -219,8 +215,8 @@ namespace mygame
             yg::notifyShutdown();
         }
 
-        g_camera.setAspect(ctx.winAspectRatio);
-        glViewport(0, 0, ctx.winWidth, ctx.winHeight);
+        g_camera.setAspect(yg::winAspectRatio);
+        glViewport(0, 0, yg::winWidth, yg::winHeight);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         static bool showLicenseWindow = false;
@@ -239,16 +235,16 @@ namespace mygame
                         yg::inputDelta(yg::INPUT::MOUSE_X),
                         yg::inputDelta(yg::INPUT::MOUSE_Y),
                         g_player.body->getLinearVelocity().length(),
-                        (float)(1.0 / ctx.deltaTimeS));
+                        (float)(1.0 / yg::deltaTimeS));
             ImGui::EndMainMenuBar();
         }
 
         if (showLicenseWindow)
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(ctx.winWidth) * 0.5f,
-                                                       (float)(ctx.winHeight) * 0.5f),
-                                                ImVec2((float)(ctx.winWidth) * 0.8f,
-                                                       (float)(ctx.winHeight) * 0.8f));
+            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(yg::winWidth) * 0.5f,
+                                                       (float)(yg::winHeight) * 0.5f),
+                                                ImVec2((float)(yg::winWidth) * 0.8f,
+                                                       (float)(yg::winHeight) * 0.8f));
             ImGui::Begin("License", &showLicenseWindow, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
                whereas ImGui::TextWrapped() has a size limit and cuts the content. */
@@ -263,10 +259,10 @@ namespace mygame
         g_camera.trafo()->rotateLocal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
         g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_X), yg::Trafo::AXIS::Y);
         g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_Y), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
 
         // prepare diffuse color shader
         auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
@@ -308,7 +304,7 @@ namespace mygame
             shdrDiffCol->useProgram();
 
             // filter camera trafo over time for blaster "displacement"
-            g_camTrafoFltr.lerp(static_cast<float>(ctx.deltaTimeS) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
+            g_camTrafoFltr.lerp(static_cast<float>(yg::deltaTimeS) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
             // filter rotation only, reset translation to camera eye:
             g_camTrafoFltr.setTranslation(g_camera.trafo()->getEye());
 
@@ -337,8 +333,8 @@ namespace mygame
 
             // crosshair
             static const float crossOrthoScale = 50.0f;
-            auto crossMvp = glm::ortho(-crossOrthoScale * ctx.winAspectRatio,
-                                       crossOrthoScale * ctx.winAspectRatio,
+            auto crossMvp = glm::ortho(-crossOrthoScale * yg::winAspectRatio,
+                                       crossOrthoScale * yg::winAspectRatio,
                                        -crossOrthoScale,
                                        crossOrthoScale);
             cfg.camera = nullptr;

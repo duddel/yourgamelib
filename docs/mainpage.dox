@@ -3,7 +3,7 @@
 
 To link the yourgame library to your code and make it executable, the functions declared in the \ref mygame "mygame" namespace must be implemented:
 
-- \ref mygame::init() - \copydoc mygame::init()
+- \ref mygame::init(int argc, char *argv[]) - \copydoc mygame::init()
 - \ref mygame::tick() - \copybrief mygame::tick()
 - \ref mygame::shutdown() - \copybrief mygame::shutdown()
 
@@ -13,9 +13,9 @@ This is minimal example code, that compiles and links against the yourgame libra
 #include "yourgame/yourgame.h"
 namespace mygame
 {
-    void init(const yourgame::context &ctx) {}
-    void tick(const yourgame::context &ctx) {}
-    void shutdown(const yourgame::context &ctx) {}
+    void init(int argc, char *argv[]) {}
+    void tick() {}
+    void shutdown() {}
 }
 \endcode
 
