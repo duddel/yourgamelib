@@ -17,10 +17,10 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <map>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include "yourgame/input.h"
+#include "yourgame_internal/input.h"
 
 namespace yourgame_internal_desktop
 {
@@ -171,48 +171,22 @@ namespace yourgame_internal_desktop
              {GLFW_JOYSTICK_3, {yourgame::INPUT::GAMEPAD_2_BUTTON_A, yourgame::INPUT::GAMEPAD_2_AXIS_LEFT_X}},
              {GLFW_JOYSTICK_4, {yourgame::INPUT::GAMEPAD_3_BUTTON_A, yourgame::INPUT::GAMEPAD_3_AXIS_LEFT_X}}};
 
-        struct InputValue
-        {
-            InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
-            float val;
-            float valLast;
-        };
-
-        std::map<yourgame::INPUT, InputValue> _inputStates;
-
-        // used for buttons/keys. if first input of source occurs, valLast
-        // is defaulted to 0.0f (via default ctor), resulting in positive
-        // value delta, if first input of source is "key down".
-        void set(yourgame::INPUT source, float value)
-        {
-            _inputStates[source].val = value;
-        }
-
-        // used for positions/axes or other "continuous" signals.
-        // if first input of source occurs, valLast is set = value,
-        // resulting in zero value delta after first input.
-        void set2(yourgame::INPUT source, float value)
-        {
-            auto emret = _inputStates.emplace(source, value);
-            emret.first->second.val = value;
-        }
-
         void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
         {
             auto mapping = keyApiMapping.find(key);
             if (mapping != keyApiMapping.end())
             {
                 if (action == GLFW_PRESS)
-                    set(mapping->second, 1.0f);
+                    yourgame_internal::setInput(mapping->second, 1.0f);
                 else if (action == GLFW_RELEASE)
-                    set(mapping->second, 0.0f);
+                    yourgame_internal::setInput(mapping->second, 0.0f);
             }
         }
 
         static void cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
         {
-            set2(yourgame::INPUT::MOUSE_X, (float)xpos);
-            set2(yourgame::INPUT::MOUSE_Y, (float)ypos);
+            yourgame_internal::setInput2(yourgame::INPUT::MOUSE_X, (float)xpos);
+            yourgame_internal::setInput2(yourgame::INPUT::MOUSE_Y, (float)ypos);
         }
 
         void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
@@ -221,16 +195,16 @@ namespace yourgame_internal_desktop
             if (mapping != mouseButtonApiMapping.end())
             {
                 if (action == GLFW_PRESS)
-                    set(mapping->second, 1.0f);
+                    yourgame_internal::setInput(mapping->second, 1.0f);
                 else if (action == GLFW_RELEASE)
-                    set(mapping->second, 0.0f);
+                    yourgame_internal::setInput(mapping->second, 0.0f);
             }
         }
 
         void scrollCallback(GLFWwindow *window, double xoffset, double yoffset)
         {
-            set(yourgame::INPUT::SCROLL_OFFSET_X, (float)xoffset);
-            set(yourgame::INPUT::SCROLL_OFFSET_Y, (float)yoffset);
+            yourgame_internal::setInput(yourgame::INPUT::SCROLL_OFFSET_X, (float)xoffset);
+            yourgame_internal::setInput(yourgame::INPUT::SCROLL_OFFSET_Y, (float)yoffset);
         }
 
         void joystickCallback(int jid, int event)
@@ -239,9 +213,9 @@ namespace yourgame_internal_desktop
             if (mapping != gamepadConnectedApiMapping.end())
             {
                 if (event == GLFW_CONNECTED)
-                    set(mapping->second, 1.0f);
+                    yourgame_internal::setInput(mapping->second, 1.0f);
                 else if (event == GLFW_DISCONNECTED)
-                    set(mapping->second, 0.0f);
+                    yourgame_internal::setInput(mapping->second, 0.0f);
             }
         }
     } // namespace
@@ -260,7 +234,7 @@ namespace yourgame_internal_desktop
         // poll and set gamepads, that are already connected during init
         for (const auto &p : gamepadConnectedApiMapping)
         {
-            set(p.second, glfwJoystickIsGamepad(p.first) == GLFW_TRUE ? 1.0f : 0.0f);
+            yourgame_internal::setInput(p.second, glfwJoystickIsGamepad(p.first) == GLFW_TRUE ? 1.0f : 0.0f);
         }
 #endif
     }
@@ -268,7 +242,7 @@ namespace yourgame_internal_desktop
     void tickInput()
     {
         // prepare for new input: shift all "current" values to "last" values
-        for (auto &i : _inputStates)
+        for (auto &i : yourgame_internal::inputStates)
         {
             i.second.valLast = i.second.val;
         }
@@ -276,8 +250,8 @@ namespace yourgame_internal_desktop
         // reset certain inputs before new input:
         // these are "events" that might occur during a _single_ frame,
         // like an offset of a mouse scroll wheel
-        set(yourgame::INPUT::SCROLL_OFFSET_X, 0.0f);
-        set(yourgame::INPUT::SCROLL_OFFSET_Y, 0.0f);
+        yourgame_internal::setInput(yourgame::INPUT::SCROLL_OFFSET_X, 0.0f);
+        yourgame_internal::setInput(yourgame::INPUT::SCROLL_OFFSET_Y, 0.0f);
 
 // todo: mapped gamepad input available since glfw v3.3,
 // emscripten implements glfw v3.2 API only (2020-12-12)
@@ -288,45 +262,30 @@ namespace yourgame_internal_desktop
             if (glfwGetGamepadState(pad.first, &state))
             {
                 int buttonWriteIdx = static_cast<int>(pad.second.first);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_A] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_X] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_Y] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_BACK] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_START] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_GUIDE] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_LEFT_THUMB] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_THUMB] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN] == GLFW_PRESS ? 1.0f : 0.0f);
-                set(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_A] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_B] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_X] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_Y] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_LEFT_BUMPER] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_BUMPER] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_BACK] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_START] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_GUIDE] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_LEFT_THUMB] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_RIGHT_THUMB] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_UP] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_RIGHT] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_DOWN] == GLFW_PRESS ? 1.0f : 0.0f);
+                yourgame_internal::setInput(static_cast<yourgame::INPUT>(buttonWriteIdx++), state.buttons[GLFW_GAMEPAD_BUTTON_DPAD_LEFT] == GLFW_PRESS ? 1.0f : 0.0f);
                 int axisWriteIdx = static_cast<int>(pad.second.second);
-                set2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_X]);
-                set2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]);
-                set2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]);
-                set2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]);
-                set2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER]);
-                set2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER]);
+                yourgame_internal::setInput2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_X]);
+                yourgame_internal::setInput2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_Y]);
+                yourgame_internal::setInput2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_X]);
+                yourgame_internal::setInput2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_Y]);
+                yourgame_internal::setInput2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER]);
+                yourgame_internal::setInput2(static_cast<yourgame::INPUT>(axisWriteIdx++), state.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER]);
             }
         }
 #endif
     }
 } // namespace yourgame_internal_desktop
-
-namespace yourgame
-{
-    float input(yourgame::INPUT source)
-    {
-        auto i = yourgame_internal_desktop::_inputStates.find(source);
-        return (i == yourgame_internal_desktop::_inputStates.end()) ? 0.0f : (i->second).val;
-    }
-
-    float inputDelta(yourgame::INPUT source)
-    {
-        auto i = yourgame_internal_desktop::_inputStates.find(source);
-        return (i == yourgame_internal_desktop::_inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;
-    }
-} // namespace yourgame

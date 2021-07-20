@@ -17,43 +17,14 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <map>
 #include <android_native_app_glue.h>
 #include <android/input.h>
 #include <android/keycodes.h>
 #include "yourgame/input.h"
+#include "yourgame_internal/input.h"
 
 namespace yourgame_internal_android
 {
-    namespace
-    {
-        struct InputValue
-        {
-            InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
-            float val;
-            float valLast;
-        };
-
-        std::map<yourgame::INPUT, InputValue> _inputStates;
-
-        // used for buttons/keys. if first input of source occurs, valLast
-        // is defaulted to 0.0f (via default ctor), resulting in positive
-        // value delta, if first input of source is "key down".
-        void set(yourgame::INPUT source, float value)
-        {
-            _inputStates[source].val = value;
-        }
-
-        // used for positions/axes or other "continuous" signals.
-        // if first input of source occurs, valLast is set = value,
-        // resulting in zero value delta after first input.
-        void set2(yourgame::INPUT source, float value)
-        {
-            auto emret = _inputStates.emplace(source, value);
-            emret.first->second.val = value;
-        }
-    } // namespace
-
     int32_t handleInputEvent(AInputEvent *inputEvent)
     {
         static const yourgame::INPUT srcsTouchDown[10] = {yourgame::INPUT::TOUCH_0_DOWN,
@@ -118,13 +89,13 @@ namespace yourgame_internal_android
             {
                 if (evPointerId >= 0 && evPointerId < sizeof(srcsTouchDown) / sizeof(srcsTouchDown[0]))
                 {
-                    set(srcsTouchDown[evPointerId], ((evAction == AMOTION_EVENT_ACTION_DOWN ||
-                                                      evAction == AMOTION_EVENT_ACTION_POINTER_DOWN)
-                                                         ? 1.0f
-                                                         : 0.0f));
+                    yourgame_internal::setInput(srcsTouchDown[evPointerId], ((evAction == AMOTION_EVENT_ACTION_DOWN ||
+                                                                              evAction == AMOTION_EVENT_ACTION_POINTER_DOWN)
+                                                                                 ? 1.0f
+                                                                                 : 0.0f));
                     // set initial location
-                    set2(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
-                    set2(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
+                    yourgame_internal::setInput2(srcsTouchX[evPointerId], (float)AMotionEvent_getX(inputEvent, evPointerIndex));
+                    yourgame_internal::setInput2(srcsTouchY[evPointerId], (float)AMotionEvent_getY(inputEvent, evPointerIndex));
                 }
             }
             break;
@@ -134,8 +105,8 @@ namespace yourgame_internal_android
                 for (auto i = 0; i < evNumPtr; i++)
                 {
                     int32_t pointerId = AMotionEvent_getPointerId(inputEvent, i);
-                    set2(srcsTouchX[pointerId], (float)AMotionEvent_getX(inputEvent, i));
-                    set2(srcsTouchY[pointerId], (float)AMotionEvent_getY(inputEvent, i));
+                    yourgame_internal::setInput2(srcsTouchX[pointerId], (float)AMotionEvent_getX(inputEvent, i));
+                    yourgame_internal::setInput2(srcsTouchY[pointerId], (float)AMotionEvent_getY(inputEvent, i));
                 }
             }
             break;
@@ -155,24 +126,9 @@ namespace yourgame_internal_android
     void tickInput()
     {
         // prepare for new input: shift all "current" values to "last" values
-        for (auto &i : _inputStates)
+        for (auto &i : yourgame_internal::inputStates)
         {
             i.second.valLast = i.second.val;
         }
     }
 } // namespace yourgame_internal_android
-
-namespace yourgame
-{
-    float input(yourgame::INPUT source)
-    {
-        auto i = yourgame_internal_android::_inputStates.find(source);
-        return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f : (i->second).val;
-    }
-
-    float inputDelta(yourgame::INPUT source)
-    {
-        auto i = yourgame_internal_android::_inputStates.find(source);
-        return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;
-    }
-} // namespace yourgame
