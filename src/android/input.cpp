@@ -34,12 +34,12 @@ namespace yourgame_internal_android
             float valLast;
         };
 
-        std::map<yourgame::InputSource, InputValue> _inputStates;
+        std::map<yourgame::INPUT, InputValue> _inputStates;
 
         // used for buttons/keys. if first input of source occurs, valLast
         // is defaulted to 0.0f (via default ctor), resulting in positive
         // value delta, if first input of source is "key down".
-        void set(yourgame::InputSource source, float value)
+        void set(yourgame::INPUT source, float value)
         {
             _inputStates[source].val = value;
         }
@@ -47,7 +47,7 @@ namespace yourgame_internal_android
         // used for positions/axes or other "continuous" signals.
         // if first input of source occurs, valLast is set = value,
         // resulting in zero value delta after first input.
-        void set2(yourgame::InputSource source, float value)
+        void set2(yourgame::INPUT source, float value)
         {
             auto emret = _inputStates.emplace(source, value);
             emret.first->second.val = value;
@@ -56,38 +56,38 @@ namespace yourgame_internal_android
 
     int32_t handleInputEvent(AInputEvent *inputEvent)
     {
-        static const yourgame::InputSource srcsTouchDown[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_1_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_2_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_3_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_4_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_5_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_6_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_7_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_8_DOWN,
-                                                                yourgame::InputSource::YOURGAME_TOUCH_9_DOWN};
+        static const yourgame::INPUT srcsTouchDown[10] = {yourgame::INPUT::TOUCH_0_DOWN,
+                                                          yourgame::INPUT::TOUCH_1_DOWN,
+                                                          yourgame::INPUT::TOUCH_2_DOWN,
+                                                          yourgame::INPUT::TOUCH_3_DOWN,
+                                                          yourgame::INPUT::TOUCH_4_DOWN,
+                                                          yourgame::INPUT::TOUCH_5_DOWN,
+                                                          yourgame::INPUT::TOUCH_6_DOWN,
+                                                          yourgame::INPUT::TOUCH_7_DOWN,
+                                                          yourgame::INPUT::TOUCH_8_DOWN,
+                                                          yourgame::INPUT::TOUCH_9_DOWN};
 
-        static const yourgame::InputSource srcsTouchX[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_1_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_2_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_3_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_4_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_5_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_6_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_7_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_8_X,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_9_X};
+        static const yourgame::INPUT srcsTouchX[10] = {yourgame::INPUT::TOUCH_0_X,
+                                                       yourgame::INPUT::TOUCH_1_X,
+                                                       yourgame::INPUT::TOUCH_2_X,
+                                                       yourgame::INPUT::TOUCH_3_X,
+                                                       yourgame::INPUT::TOUCH_4_X,
+                                                       yourgame::INPUT::TOUCH_5_X,
+                                                       yourgame::INPUT::TOUCH_6_X,
+                                                       yourgame::INPUT::TOUCH_7_X,
+                                                       yourgame::INPUT::TOUCH_8_X,
+                                                       yourgame::INPUT::TOUCH_9_X};
 
-        static const yourgame::InputSource srcsTouchY[10] = {yourgame::InputSource::YOURGAME_TOUCH_0_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_1_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_2_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_3_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_4_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_5_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_6_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_7_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_8_Y,
-                                                             yourgame::InputSource::YOURGAME_TOUCH_9_Y};
+        static const yourgame::INPUT srcsTouchY[10] = {yourgame::INPUT::TOUCH_0_Y,
+                                                       yourgame::INPUT::TOUCH_1_Y,
+                                                       yourgame::INPUT::TOUCH_2_Y,
+                                                       yourgame::INPUT::TOUCH_3_Y,
+                                                       yourgame::INPUT::TOUCH_4_Y,
+                                                       yourgame::INPUT::TOUCH_5_Y,
+                                                       yourgame::INPUT::TOUCH_6_Y,
+                                                       yourgame::INPUT::TOUCH_7_Y,
+                                                       yourgame::INPUT::TOUCH_8_Y,
+                                                       yourgame::INPUT::TOUCH_9_Y};
 
         int32_t evType = AInputEvent_getType(inputEvent);
         switch (evType)
@@ -164,13 +164,13 @@ namespace yourgame_internal_android
 
 namespace yourgame
 {
-    float getInput(yourgame::InputSource source)
+    float input(yourgame::INPUT source)
     {
         auto i = yourgame_internal_android::_inputStates.find(source);
         return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f : (i->second).val;
     }
 
-    float getInputDelta(yourgame::InputSource source)
+    float inputDelta(yourgame::INPUT source)
     {
         auto i = yourgame_internal_android::_inputStates.find(source);
         return (i == yourgame_internal_android::_inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;

@@ -209,7 +209,7 @@ namespace mygame
             g_skyboxTrafo.rotateLocal(g_skyboxRotation, yg::Trafo::AXIS::Y);
         }
 
-        if (yg::getInputDelta(yg::InputSource::YOURGAME_KEY_ESCAPE) > 0.0f)
+        if (yg::inputDelta(yg::INPUT::KEY_ESCAPE) > 0.0f)
         {
             yg::catchMouse(!ctx.mouseCatched);
         }
@@ -217,12 +217,12 @@ namespace mygame
         // first-person camera
         if (ctx.mouseCatched)
         {
-            g_camera.trafo()->rotateGlobal(-0.001f * yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X), yg::Trafo::AXIS::Y);
-            g_camera.trafo()->rotateLocal(-0.001f * yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y), yg::Trafo::AXIS::X);
-            g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_W), yg::Trafo::AXIS::Z);
-            g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_S), yg::Trafo::AXIS::Z);
-            g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_D), yg::Trafo::AXIS::X);
-            g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_A), yg::Trafo::AXIS::X);
+            g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
+            g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
+            g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
+            g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
+            g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
+            g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
         }
 
         g_camera.setAspect(ctx.winAspectRatio);
@@ -464,14 +464,14 @@ namespace mygame
             }
             // camera ray casting
             glm::vec3 org, dir;
-            g_camera.castRay(yg::getInput(yg::InputSource::YOURGAME_MOUSE_X) / ctx.winWidth,
-                             yg::getInput(yg::InputSource::YOURGAME_MOUSE_Y) / ctx.winHeight,
+            g_camera.castRay(yg::input(yg::INPUT::MOUSE_X) / ctx.winWidth,
+                             yg::input(yg::INPUT::MOUSE_Y) / ctx.winHeight,
                              org, dir);
 
             ImGui::Text("| fps: %f, mouse delta: %f,%f | camera ray: (%3f,%3f,%3f)->(%3f,%3f,%3f)",
                         (float)(1.0 / ctx.deltaTimeS),
-                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X),
-                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y),
+                        yg::inputDelta(yg::INPUT::MOUSE_X),
+                        yg::inputDelta(yg::INPUT::MOUSE_Y),
                         org.x, org.y, org.z, dir.x, dir.y, dir.z);
 
             ImGui::EndMainMenuBar();
@@ -1007,28 +1007,28 @@ namespace mygame
             ImGui::BeginGroup();
             ImGui::Text("GAMEPAD_0");
             {
-                bool connected = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_CONNECTED);
-                bool button0 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_A);
-                bool button1 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_B);
-                bool button2 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_X);
-                bool button3 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_Y);
-                bool button4 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_LEFT_BUMPER);
-                bool button5 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_RIGHT_BUMPER);
-                bool button6 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_BACK);
-                bool button7 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_START);
-                bool button8 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_GUIDE);
-                bool button9 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_LEFT_THUMB);
-                bool button10 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_RIGHT_THUMB);
-                bool button11 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_UP);
-                bool button12 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_RIGHT);
-                bool button13 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_DOWN);
-                bool button14 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_BUTTON_DPAD_LEFT);
-                float axis0 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_X);
-                float axis1 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_Y);
-                float axis2 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_X);
-                float axis3 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_Y);
-                float axis4 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_AXIS_LEFT_TRIGGER);
-                float axis5 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_0_AXIS_RIGHT_TRIGGER);
+                bool connected = yg::input(yg::INPUT::GAMEPAD_0_CONNECTED);
+                bool button0 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_A);
+                bool button1 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_B);
+                bool button2 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_X);
+                bool button3 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_Y);
+                bool button4 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_LEFT_BUMPER);
+                bool button5 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_RIGHT_BUMPER);
+                bool button6 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_BACK);
+                bool button7 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_START);
+                bool button8 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_GUIDE);
+                bool button9 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_LEFT_THUMB);
+                bool button10 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_RIGHT_THUMB);
+                bool button11 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_UP);
+                bool button12 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_RIGHT);
+                bool button13 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_DOWN);
+                bool button14 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_LEFT);
+                float axis0 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_LEFT_X);
+                float axis1 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_LEFT_Y);
+                float axis2 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_RIGHT_X);
+                float axis3 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_RIGHT_Y);
+                float axis4 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_LEFT_TRIGGER);
+                float axis5 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_RIGHT_TRIGGER);
                 ImGui::Checkbox("CONNECTED_0", &connected);
                 ImGui::Checkbox("A_0", &button0);
                 ImGui::Checkbox("B_0", &button1);
@@ -1057,28 +1057,28 @@ namespace mygame
             ImGui::BeginGroup();
             ImGui::Text("GAMEPAD_1");
             {
-                bool connected = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_CONNECTED);
-                bool button0 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_A);
-                bool button1 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_B);
-                bool button2 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_X);
-                bool button3 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_Y);
-                bool button4 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_LEFT_BUMPER);
-                bool button5 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_RIGHT_BUMPER);
-                bool button6 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_BACK);
-                bool button7 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_START);
-                bool button8 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_GUIDE);
-                bool button9 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_LEFT_THUMB);
-                bool button10 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_RIGHT_THUMB);
-                bool button11 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_UP);
-                bool button12 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_RIGHT);
-                bool button13 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_DOWN);
-                bool button14 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_BUTTON_DPAD_LEFT);
-                float axis0 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_X);
-                float axis1 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_Y);
-                float axis2 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_X);
-                float axis3 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_Y);
-                float axis4 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_AXIS_LEFT_TRIGGER);
-                float axis5 = yg::getInput(yg::InputSource::YOURGAME_GAMEPAD_1_AXIS_RIGHT_TRIGGER);
+                bool connected = yg::input(yg::INPUT::GAMEPAD_1_CONNECTED);
+                bool button0 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_A);
+                bool button1 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_B);
+                bool button2 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_X);
+                bool button3 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_Y);
+                bool button4 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_LEFT_BUMPER);
+                bool button5 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_RIGHT_BUMPER);
+                bool button6 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_BACK);
+                bool button7 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_START);
+                bool button8 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_GUIDE);
+                bool button9 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_LEFT_THUMB);
+                bool button10 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_RIGHT_THUMB);
+                bool button11 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_UP);
+                bool button12 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_RIGHT);
+                bool button13 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_DOWN);
+                bool button14 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_LEFT);
+                float axis0 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_LEFT_X);
+                float axis1 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_LEFT_Y);
+                float axis2 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_RIGHT_X);
+                float axis3 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_RIGHT_Y);
+                float axis4 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_LEFT_TRIGGER);
+                float axis5 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_RIGHT_TRIGGER);
                 ImGui::Checkbox("CONNECTED_1", &connected);
                 ImGui::Checkbox("A_1", &button0);
                 ImGui::Checkbox("B_1", &button1);

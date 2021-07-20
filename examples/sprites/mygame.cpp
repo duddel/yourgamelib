@@ -61,13 +61,13 @@ namespace mygame
         auto ctx = yg::getCtx();
 
         // lock/release mouse
-        if (yg::getInputDelta(yg::InputSource::YOURGAME_KEY_M) > 0.0f)
+        if (yg::inputDelta(yg::INPUT::KEY_M) > 0.0f)
         {
             yg::catchMouse(!ctx.mouseCatched);
         }
 
         // exit
-        if (yg::getInput(yg::InputSource::YOURGAME_KEY_ESCAPE))
+        if (yg::input(yg::INPUT::KEY_ESCAPE))
         {
             yg::notifyShutdown();
         }
@@ -89,8 +89,8 @@ namespace mygame
             }
 
             ImGui::Text("| mouse delta: %f,%f, fps: %f",
-                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X),
-                        yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y),
+                        yg::inputDelta(yg::INPUT::MOUSE_X),
+                        yg::inputDelta(yg::INPUT::MOUSE_Y),
                         (float)(1.0 / ctx.deltaTimeS));
             ImGui::EndMainMenuBar();
         }
@@ -113,19 +113,19 @@ namespace mygame
         // first-person camera
         if (ctx.mouseCatched)
         {
-            g_camera.trafo()->rotateGlobal(-0.002f * yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_X), yg::Trafo::AXIS::Y);
-            g_camera.trafo()->rotateLocal(-0.002f * yg::getInputDelta(yg::InputSource::YOURGAME_MOUSE_Y), yg::Trafo::AXIS::X);
-            g_camera.trafo()->rotateGlobal(-0.001f * yg::getInputDelta(yg::InputSource::YOURGAME_TOUCH_0_X), yg::Trafo::AXIS::Y);
-            g_camera.trafo()->rotateLocal(-0.001f * yg::getInputDelta(yg::InputSource::YOURGAME_TOUCH_0_Y), yg::Trafo::AXIS::X);
+            g_camera.trafo()->rotateGlobal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
+            g_camera.trafo()->rotateLocal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
+            g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_X), yg::Trafo::AXIS::Y);
+            g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_Y), yg::Trafo::AXIS::X);
         }
-        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::getInput(yg::InputSource::YOURGAME_KEY_DOWN), yg::Trafo::AXIS::X);
-        g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_W), yg::Trafo::AXIS::Z);
-        g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_S), yg::Trafo::AXIS::Z);
-        g_camera.trafo()->translateLocal(0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_D), yg::Trafo::AXIS::X);
-        g_camera.trafo()->translateLocal(-0.01f * yg::getInput(yg::InputSource::YOURGAME_KEY_A), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(ctx.deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
 
         auto atlas = g_assets.get<yg::GLTextureAtlas>("atlas");
         static int frameIdx = 0;
