@@ -36,7 +36,7 @@ namespace mygame
         yg::audioStoreFile("a//laserSmall_000.ogg");
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
-        g_camera.setPerspective(65.0f, yg::winAspectRatio, 0.2f, 100.0f);
+        g_camera.setPerspective(65.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 0.2f, 100.0f);
 
         // load license info file
         {
@@ -215,8 +215,8 @@ namespace mygame
             yg::notifyShutdown();
         }
 
-        g_camera.setAspect(yg::winAspectRatio);
-        glViewport(0, 0, yg::winWidth, yg::winHeight);
+        g_camera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
+        glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         static bool showLicenseWindow = false;
@@ -241,10 +241,10 @@ namespace mygame
 
         if (showLicenseWindow)
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(yg::winWidth) * 0.5f,
-                                                       (float)(yg::winHeight) * 0.5f),
-                                                ImVec2((float)(yg::winWidth) * 0.8f,
-                                                       (float)(yg::winHeight) * 0.8f));
+            ImGui::SetNextWindowSizeConstraints(ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH) * 0.5f,
+                                                       yg::input(yg::INPUT::WINDOW_HEIGHT) * 0.5f),
+                                                ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH) * 0.8f,
+                                                       yg::input(yg::INPUT::WINDOW_HEIGHT) * 0.8f));
             ImGui::Begin("License", &showLicenseWindow, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
                whereas ImGui::TextWrapped() has a size limit and cuts the content. */
@@ -333,8 +333,8 @@ namespace mygame
 
             // crosshair
             static const float crossOrthoScale = 50.0f;
-            auto crossMvp = glm::ortho(-crossOrthoScale * yg::winAspectRatio,
-                                       crossOrthoScale * yg::winAspectRatio,
+            auto crossMvp = glm::ortho(-crossOrthoScale * yg::input(yg::INPUT::WINDOW_ASPECT_RATIO),
+                                       crossOrthoScale * yg::input(yg::INPUT::WINDOW_ASPECT_RATIO),
                                        -crossOrthoScale,
                                        crossOrthoScale);
             cfg.camera = nullptr;

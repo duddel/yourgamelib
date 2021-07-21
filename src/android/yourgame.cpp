@@ -36,6 +36,7 @@ freely, subject to the following restrictions:
 #include "yourgame/gl_include.h"
 #include "yourgame_internal/yourgame_internal_android.h"
 #include "yourgame_internal/mygame_external.h"
+#include "yourgame_internal/input.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -86,9 +87,10 @@ namespace yourgame_internal_android
             EGLint width, height;
             eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
             eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
-            yourgame::winWidth = width;
-            yourgame::winHeight = height;
-            yourgame::winAspectRatio = (float)width / (float)height;
+            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_WIDTH, static_cast<float>(width));
+            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_HEIGHT, static_cast<float>(height));
+            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_ASPECT_RATIO,
+                                         static_cast<float>(width) / static_cast<float>(height));
         }
     } // namespace
 
@@ -304,9 +306,6 @@ namespace yourgame
 {
     double deltaTimeS = 0.0;
     uint64_t deltaTimeUs = 0U;
-    uint32_t winWidth = 0U;
-    uint32_t winHeight = 0U;
-    float winAspectRatio = 1.0f;
     bool winIsFullscreen = false;
     bool vsyncEnabled = false;
     bool mouseCatched = false;

@@ -36,6 +36,7 @@ freely, subject to the following restrictions:
 #include "yourgame/yourgame.h"
 #include "yourgame_internal/yourgame_internal_desktop.h"
 #include "yourgame_internal/mygame_external.h"
+#include "yourgame_internal/input.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -51,9 +52,10 @@ namespace yourgame_internal_desktop
         GLFWwindow *_window = NULL;
         void framebufferSizeCallback(GLFWwindow *window, int width, int height)
         {
-            yourgame::winWidth = width;
-            yourgame::winHeight = height;
-            yourgame::winAspectRatio = (float)width / (float)height;
+            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_WIDTH, static_cast<float>(width));
+            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_HEIGHT, static_cast<float>(height));
+            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_ASPECT_RATIO,
+                                         static_cast<float>(width) / static_cast<float>(height));
         }
     } // namespace
 
@@ -223,7 +225,9 @@ namespace yourgame_internal_desktop
             auto ret = emscripten_get_element_css_size("#canvas", &widthD, &heightD);
             int width = static_cast<int>(widthD);
             int height = static_cast<int>(heightD);
-            if (ret == EMSCRIPTEN_RESULT_SUCCESS && (yourgame::winWidth != width || yourgame::winHeight != height))
+            if (ret == EMSCRIPTEN_RESULT_SUCCESS &&
+                (yourgame::inputi(yourgame::INPUT::WINDOW_WIDTH) != width ||
+                 yourgame::inputi(yourgame::INPUT::WINDOW_HEIGHT) != height))
             {
                 glfwSetWindowSize(_window, width, height);
             }
@@ -277,9 +281,6 @@ namespace yourgame
 {
     double deltaTimeS = 0.0;
     uint64_t deltaTimeUs = 0U;
-    uint32_t winWidth = 0U;
-    uint32_t winHeight = 0U;
-    float winAspectRatio = 1.0f;
     bool winIsFullscreen = false;
     bool vsyncEnabled = false;
     bool mouseCatched = false;

@@ -18,6 +18,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
+#include <cmath>
 #include "yourgame/input.h"
 #include "yourgame_internal/input.h"
 
@@ -43,6 +44,11 @@ namespace yourgame
     {
         auto i = yourgame_internal::inputStates.find(source);
         return (i == yourgame_internal::inputStates.end()) ? 0.0f : (i->second).val;
+    }
+
+    int inputi(yourgame::INPUT source)
+    {
+        return static_cast<int>(std::lround(input(source)));
     }
 
     float inputDelta(yourgame::INPUT source)

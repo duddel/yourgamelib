@@ -20,7 +20,7 @@ namespace mygame
         g_camera.trafo()->lookAt(glm::vec3(7.35889f, 4.95831f, 6.92579f),
                                  glm::vec3(0.0f, 0.0f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-        g_camera.setPerspective(40.0f, yg::winAspectRatio, 1.0f, 100.0f);
+        g_camera.setPerspective(40.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 1.0f, 100.0f);
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_light.setDiffuse({1.0f, 1.0f, 1.0f});
@@ -43,8 +43,8 @@ namespace mygame
 
     void tick()
     {
-        g_camera.setAspect(yg::winAspectRatio);
-        glViewport(0, 0, yg::winWidth, yg::winHeight);
+        g_camera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
+        glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (yg::input(yg::INPUT::KEY_ESCAPE))

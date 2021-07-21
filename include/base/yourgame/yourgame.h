@@ -31,9 +31,6 @@ namespace yourgame
 {
     extern double deltaTimeS;
     extern uint64_t deltaTimeUs;
-    extern uint32_t winWidth;
-    extern uint32_t winHeight;
-    extern float winAspectRatio;
     extern bool winIsFullscreen;
     extern bool vsyncEnabled;
     extern bool mouseCatched;

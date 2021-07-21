@@ -275,14 +275,23 @@ namespace yourgame
         GAMEPAD_3_AXIS_RIGHT_X,
         GAMEPAD_3_AXIS_RIGHT_Y,
         GAMEPAD_3_AXIS_LEFT_TRIGGER,
-        GAMEPAD_3_AXIS_RIGHT_TRIGGER
+        GAMEPAD_3_AXIS_RIGHT_TRIGGER,
+        WINDOW_WIDTH,
+        WINDOW_HEIGHT,
+        WINDOW_ASPECT_RATIO,
+        WINDOW_FULLSCREEN,
+        VSYNC_ON,
+        MOUSE_CATCHED
     };
 
     /** \brief returns the current value of the input source \p source */
-    float input(INPUT source);
+    float input(yourgame::INPUT source);
+
+    /** \brief returns the current value of the input source \p source, rounded to int */
+    int inputi(yourgame::INPUT source);
 
     /** \brief returns the value delta (current minus last frame value) of the input source \p source */
-    float inputDelta(INPUT source);
+    float inputDelta(yourgame::INPUT source);
 } // namespace yourgame
 
 #endif

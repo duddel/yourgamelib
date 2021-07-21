@@ -97,8 +97,8 @@ namespace mygame
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-        g_camera.setPerspective(75.0f, yg::winAspectRatio, 1.0f, 10.0f);
-        g_skyboxCamera.setPerspective(75.0f, yg::winAspectRatio, 0.1f, 2.0f);
+        g_camera.setPerspective(75.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 1.0f, 10.0f);
+        g_skyboxCamera.setPerspective(75.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
 
         // Skybox texture
         {
@@ -162,7 +162,8 @@ namespace mygame
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
         // texture parameters (GL_NEAREST, GL_CLAMP_TO_EDGE) may be required to do so
         g_assets.insert("framebuf",
-                        yg::GLFramebuffer::make(yg::winWidth, yg::winHeight,
+                        yg::GLFramebuffer::make(yg::inputi(yg::INPUT::WINDOW_WIDTH),
+                                                yg::inputi(yg::INPUT::WINDOW_HEIGHT),
                                                 {{GL_RGBA8,
                                                   GL_RGBA,
                                                   GL_UNSIGNED_BYTE,
@@ -221,8 +222,8 @@ namespace mygame
             g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
         }
 
-        g_camera.setAspect(yg::winAspectRatio);
-        g_skyboxCamera.setAspect(yg::winAspectRatio);
+        g_camera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
+        g_skyboxCamera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
@@ -244,12 +245,14 @@ namespace mygame
         {
             static uint32_t lastWinWidth = 0;
             static uint32_t lastWinHeight = 0;
-            if (lastWinWidth != yg::winWidth || lastWinHeight != yg::winHeight)
+            if (lastWinWidth != yg::inputi(yg::INPUT::WINDOW_WIDTH) ||
+                lastWinHeight != yg::inputi(yg::INPUT::WINDOW_HEIGHT))
             {
-                g_assets.get<yg::GLFramebuffer>("framebuf")->resize(yg::winWidth, yg::winHeight);
-                yg::logi("framebuffer resized to %v,%v", yg::winWidth, yg::winHeight);
-                lastWinWidth = yg::winWidth;
-                lastWinHeight = yg::winHeight;
+                g_assets.get<yg::GLFramebuffer>("framebuf")
+                    ->resize(yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
+                yg::logi("framebuffer resized to %v,%v", yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
+                lastWinWidth = yg::inputi(yg::INPUT::WINDOW_WIDTH);
+                lastWinHeight = yg::inputi(yg::INPUT::WINDOW_HEIGHT);
             }
             g_assets.get<yg::GLFramebuffer>("framebuf")->bind();
         }
@@ -257,7 +260,7 @@ namespace mygame
         // the actual drawing
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, yg::winWidth, yg::winHeight);
+        glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
 
         // draw skybox
         if (g_drawSkybox)
@@ -313,7 +316,7 @@ namespace mygame
         {
             g_assets.get<yg::GLFramebuffer>("framebuf")->unbindTarget();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glViewport(0, 0, yg::winWidth, yg::winHeight);
+            glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
 
             // simple orthographic projection that matches the quad geometry
             auto pMat = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, 1.0f, -1.0f);
@@ -458,8 +461,8 @@ namespace mygame
             }
             // camera ray casting
             glm::vec3 org, dir;
-            g_camera.castRay(yg::input(yg::INPUT::MOUSE_X) / yg::winWidth,
-                             yg::input(yg::INPUT::MOUSE_Y) / yg::winHeight,
+            g_camera.castRay(yg::input(yg::INPUT::MOUSE_X) / yg::input(yg::INPUT::WINDOW_WIDTH),
+                             yg::input(yg::INPUT::MOUSE_Y) / yg::input(yg::INPUT::WINDOW_HEIGHT),
                              org, dir);
 
             ImGui::Text("| fps: %f, mouse delta: %f,%f | camera ray: (%3f,%3f,%3f)->(%3f,%3f,%3f)",
@@ -539,8 +542,8 @@ namespace mygame
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
                 ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
-                g_camera.setPerspective(f1, yg::winAspectRatio, f2, f3);
-                g_skyboxCamera.setPerspective(f1, yg::winAspectRatio, 0.1f, 2.0f);
+                g_camera.setPerspective(f1, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), f2, f3);
+                g_skyboxCamera.setPerspective(f1, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
             }
             else
             {
@@ -549,7 +552,7 @@ namespace mygame
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
                 ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
-                g_camera.setOrthographic(f1, yg::winAspectRatio, f2, f3);
+                g_camera.setOrthographic(f1, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), f2, f3);
                 // skybox camera always perspective (see above)
             }
 
@@ -901,10 +904,10 @@ namespace mygame
             spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
 
             // gl drawing
-            spriteGridTrafo->pointTo({0.0f + xOffset, (float)yg::winHeight + yOffset, 0.0f},
-                                     {0.0f + xOffset, (float)yg::winHeight + yOffset, 1.0f},
+            spriteGridTrafo->pointTo({0.0f + xOffset, yg::input(yg::INPUT::WINDOW_HEIGHT) + yOffset, 0.0f},
+                                     {0.0f + xOffset, yg::input(yg::INPUT::WINDOW_HEIGHT) + yOffset, 1.0f},
                                      {0.0f, 1.0f, 0.0f});
-            auto pMat = glm::ortho(0.0f, (float)yg::winWidth, 0.0f, (float)yg::winHeight, 1.0f, -1.0f);
+            auto pMat = glm::ortho(0.0f, yg::input(yg::INPUT::WINDOW_WIDTH), 0.0f, yg::input(yg::INPUT::WINDOW_HEIGHT), 1.0f, -1.0f);
             auto mvp = pMat * spriteGridTrafo->mat();
             g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
             glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
@@ -1126,10 +1129,10 @@ namespace mygame
         // license window
         if (showLicense)
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2((float)(yg::winWidth) * 0.5f,
-                                                       (float)(yg::winHeight) * 0.5f),
-                                                ImVec2((float)(yg::winWidth),
-                                                       (float)(yg::winHeight)));
+            ImGui::SetNextWindowSizeConstraints(ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH) * 0.5f,
+                                                       yg::input(yg::INPUT::WINDOW_HEIGHT) * 0.5f),
+                                                ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH),
+                                                       yg::input(yg::INPUT::WINDOW_HEIGHT)));
             ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
                 whereas ImGui::TextWrapped() has a size limit and cuts the content. */
