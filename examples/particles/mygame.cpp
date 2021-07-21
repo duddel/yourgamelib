@@ -167,7 +167,7 @@ namespace mygame
         // lock/release mouse
         if (yg::inputDelta(yg::INPUT::KEY_M) > 0.0f)
         {
-            yg::catchMouse(!yg::mouseCatched);
+            yg::catchMouse(!yg::inputi(yg::INPUT::MOUSE_CATCHED));
         }
 
         // exit
@@ -215,7 +215,7 @@ namespace mygame
         }
 
         // first-person camera
-        if (yg::mouseCatched)
+        if (yg::inputi(yg::INPUT::MOUSE_CATCHED))
         {
             g_camera.trafo()->rotateGlobal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
             g_camera.trafo()->rotateLocal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);

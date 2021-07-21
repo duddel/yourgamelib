@@ -208,11 +208,11 @@ namespace mygame
 
         if (yg::inputDelta(yg::INPUT::KEY_ESCAPE) > 0.0f)
         {
-            yg::catchMouse(!yg::mouseCatched);
+            yg::catchMouse(!yg::inputi(yg::INPUT::MOUSE_CATCHED));
         }
 
         // first-person camera
-        if (yg::mouseCatched)
+        if (yg::inputi(yg::INPUT::MOUSE_CATCHED))
         {
             g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
             g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
@@ -339,7 +339,7 @@ namespace mygame
 
         // if mouse is catched, first-person camera movement is enabled
         // (see above), and imgui menu drawing is not desired
-        if (!yg::mouseCatched)
+        if (!yg::inputi(yg::INPUT::MOUSE_CATCHED))
         {
             updateImgui();
         }
@@ -441,13 +441,13 @@ namespace mygame
             }
             if (ImGui::BeginMenu("Options"))
             {
-                if (ImGui::MenuItem("Fullscreen", "", yg::winIsFullscreen))
+                if (ImGui::MenuItem("Fullscreen", "", yg::inputi(yg::INPUT::WINDOW_FULLSCREEN)))
                 {
-                    yg::enableFullscreen(!yg::winIsFullscreen);
+                    yg::enableFullscreen(!yg::inputi(yg::INPUT::WINDOW_FULLSCREEN));
                 }
-                if (ImGui::MenuItem("VSync", "", yg::vsyncEnabled))
+                if (ImGui::MenuItem("VSync", "", yg::inputi(yg::INPUT::VSYNC_ON)))
                 {
-                    yg::enableVSync(!yg::vsyncEnabled);
+                    yg::enableVSync(!yg::inputi(yg::INPUT::VSYNC_ON));
                 }
                 ImGui::EndMenu();
             }

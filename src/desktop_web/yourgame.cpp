@@ -119,7 +119,7 @@ namespace yourgame_internal_desktop
         glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
         glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
         glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-        if (yourgame::winIsFullscreen)
+        if (yourgame::input(yourgame::INPUT::WINDOW_FULLSCREEN))
         {
             // create fullscreen window
             _window = glfwCreateWindow(mode->width, mode->height, "", glfwGetPrimaryMonitor(), NULL);
@@ -163,7 +163,7 @@ namespace yourgame_internal_desktop
         yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
         yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-        glfwSwapInterval(yourgame::vsyncEnabled ? 1 : 0);
+        glfwSwapInterval(yourgame::inputi(yourgame::INPUT::VSYNC_ON) ? 1 : 0);
 
         // enable raw mouse input if supported. affects catched mouse mode, see catchMouse()
 // todo: raw mouse motion available since glfw v3.3,
@@ -281,9 +281,6 @@ namespace yourgame
 {
     double deltaTimeS = 0.0;
     uint64_t deltaTimeUs = 0U;
-    bool winIsFullscreen = false;
-    bool vsyncEnabled = false;
-    bool mouseCatched = false;
 
     double getTime()
     {
@@ -324,22 +321,22 @@ namespace yourgame
             glfwSetWindowMonitor(yourgame_internal_desktop::_window, NULL, 0, 0, (mode->width * 8) / 10, (mode->height * 8) / 10, mode->refreshRate);
             glfwSetWindowPos(yourgame_internal_desktop::_window, mode->width / 10, mode->height / 10);
         }
-        yourgame::winIsFullscreen = enable;
+        yourgame_internal::setInput2(yourgame::INPUT::WINDOW_FULLSCREEN, enable ? 1.0f : 0.0f);
         // todo: glfwSwapInterval() is required to be called again after
         // window mode changed: https://github.com/glfw/glfw/issues/1072
-        glfwSwapInterval(yourgame::vsyncEnabled ? 1 : 0);
+        glfwSwapInterval(yourgame::inputi(yourgame::INPUT::VSYNC_ON) ? 1 : 0);
 #endif
     }
 
     void enableVSync(bool enable)
     {
         glfwSwapInterval(enable ? 1 : 0);
-        yourgame::vsyncEnabled = enable;
+        yourgame_internal::setInput2(yourgame::INPUT::VSYNC_ON, enable ? 1.0f : 0.0f);
     }
 
     void catchMouse(bool enable)
     {
         glfwSetInputMode(yourgame_internal_desktop::_window, GLFW_CURSOR, enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
-        yourgame::mouseCatched = enable;
+        yourgame_internal::setInput2(yourgame::INPUT::MOUSE_CATCHED, enable ? 1.0f : 0.0f);
     }
 } // namespace yourgame

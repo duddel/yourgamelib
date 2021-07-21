@@ -31,9 +31,6 @@ namespace yourgame
 {
     extern double deltaTimeS;
     extern uint64_t deltaTimeUs;
-    extern bool winIsFullscreen;
-    extern bool vsyncEnabled;
-    extern bool mouseCatched;
 
     /** \brief returns (monotonic) time duration [seconds] since init */
     double getTime();

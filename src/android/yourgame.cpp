@@ -306,9 +306,6 @@ namespace yourgame
 {
     double deltaTimeS = 0.0;
     uint64_t deltaTimeUs = 0U;
-    bool winIsFullscreen = false;
-    bool vsyncEnabled = false;
-    bool mouseCatched = false;
 
     double getTime()
     {

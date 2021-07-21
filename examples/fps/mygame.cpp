@@ -206,7 +206,7 @@ namespace mygame
         // lock/release mouse
         if (yg::inputDelta(yg::INPUT::KEY_M) > 0.0f)
         {
-            yg::catchMouse(!yg::mouseCatched);
+            yg::catchMouse(!yg::inputi(yg::INPUT::MOUSE_CATCHED));
         }
 
         // exit
