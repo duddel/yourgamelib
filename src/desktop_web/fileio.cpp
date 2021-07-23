@@ -26,23 +26,21 @@ freely, subject to the following restrictions:
 #include "whereami.h"
 #endif
 #include "yourgame/logging.h"
-#include "yourgame_internal/file.h"
+#include "yourgame_internal/fileio.h"
 
 namespace yourgame_internal_desktop
 {
     namespace
     {
         std::string assetPathAbs;
-        std::string saveFilesPathAbs;
-        std::string projectPathAbs;
     } // namespace
 
     void initFileIO()
     {
 #ifdef __EMSCRIPTEN__
         assetPathAbs = "/assets/";
-        saveFilesPathAbs = "/home/web_user/";
-        projectPathAbs = saveFilesPathAbs;
+        yourgame_internal::saveFilesPathAbs = "/home/web_user/";
+        yourgame_internal::projectPathAbs = yourgame_internal::saveFilesPathAbs;
 #else
         int exeBasePathLength;
         int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
@@ -65,112 +63,17 @@ namespace yourgame_internal_desktop
             }
         }
 
-        saveFilesPathAbs = basePath + "savefiles/";
-        projectPathAbs = saveFilesPathAbs;
+        yourgame_internal::saveFilesPathAbs = basePath + "savefiles/";
+        yourgame_internal::projectPathAbs = yourgame_internal::saveFilesPathAbs;
 #endif
-
-        yourgame::logi("File IO assets:     %v", assetPathAbs);
-        yourgame::logi("File IO save files: %v", saveFilesPathAbs);
-        yourgame::logi("File IO project:    %v", projectPathAbs);
     }
 } // namespace yourgame_internal_desktop
 
 namespace yourgame
 {
-    std::string getSaveFilePath(const std::string &filename)
-    {
-        return yourgame_internal_desktop::saveFilesPathAbs + filename;
-    }
-
-    std::string getProjectFilePath(const std::string &filename)
-    {
-        return yourgame_internal_desktop::projectPathAbs + filename;
-    }
-
     int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
-        return yourgame_internal::readFile(yourgame_internal_desktop::assetPathAbs + filename, dst);
-    }
-
-    int readSaveFile(const std::string &filename, std::vector<uint8_t> &dst)
-    {
-        return yourgame_internal::readFile(yourgame_internal_desktop::saveFilesPathAbs + filename, dst);
-    }
-
-    int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
-    {
-        return yourgame_internal::readFile(yourgame_internal_desktop::projectPathAbs + filename, dst);
-    }
-
-    void setProjectPath(const std::string &path)
-    {
-        yourgame_internal_desktop::projectPathAbs = path;
-        std::replace(yourgame_internal_desktop::projectPathAbs.begin(), yourgame_internal_desktop::projectPathAbs.end(), '\\', '/');
-        if (yourgame_internal_desktop::projectPathAbs.back() != '/')
-        {
-            yourgame_internal_desktop::projectPathAbs += "/";
-        }
-        yourgame::logd("File IO project: %v", yourgame_internal_desktop::projectPathAbs);
-    }
-
-    int readFile(const std::string &filename, std::vector<uint8_t> &dst)
-    {
-        if (filename.length() > 3 && filename.compare(1, 2, "//") == 0)
-        {
-            switch (filename[0])
-            {
-            case 'a':
-                return readAssetFile(filename.substr(3, std::string::npos), dst);
-            case 's':
-                return readSaveFile(filename.substr(3, std::string::npos), dst);
-            case 'p':
-                return readProjectFile(filename.substr(3, std::string::npos), dst);
-            }
-        }
-
-        return yourgame_internal::readFile(filename, dst);
-    }
-
-    std::string getFileLocation(const std::string filepath)
-    {
-        // return location prefix (a// etc.)
-        if (filepath.length() > 3 && filepath.compare(1, 2, "//") == 0)
-        {
-            return filepath.substr(0, 3);
-        }
-
-        // match 1: beginning until last "/"
-        static std::regex reFilePath(R"((.*\/|^).*$)");
-        std::smatch reMatches;
-        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 2)
-        {
-            return reMatches[1].str();
-        }
-
-        return "";
-    }
-
-    std::string getFileName(const std::string filepath)
-    {
-        // match 2: everything after last "/"
-        static std::regex reFilePath(R"((.*\/|^)(.*)$)");
-        std::smatch reMatches;
-        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 3)
-        {
-            return reMatches[2].str();
-        }
-
-        return "";
-    }
-
-    int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
-    {
-        return yourgame_internal::writeFile(yourgame_internal_desktop::saveFilesPathAbs + filename, data, numBytes);
-    }
-
-    int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
-    {
-        return yourgame_internal::writeFile(yourgame_internal_desktop::projectPathAbs + filename, data, numBytes);
+        return yourgame_internal::readFileFromPath(yourgame_internal_desktop::assetPathAbs + filename, dst);
     }
 
     std::vector<std::string> ls(const std::string &pattern)
@@ -190,11 +93,11 @@ namespace yourgame
                 break;
             case 's':
                 // substr() returns empty string if pos == length.
-                pathToOpen = (yourgame_internal_desktop::saveFilesPathAbs + pathToOpen.substr(3, std::string::npos));
+                pathToOpen = (yourgame_internal::saveFilesPathAbs + pathToOpen.substr(3, std::string::npos));
                 break;
             case 'p':
                 // substr() returns empty string if pos == length.
-                pathToOpen = (yourgame_internal_desktop::projectPathAbs + pathToOpen.substr(3, std::string::npos));
+                pathToOpen = (yourgame_internal::projectPathAbs + pathToOpen.substr(3, std::string::npos));
                 break;
             }
         }

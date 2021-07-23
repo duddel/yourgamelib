@@ -17,39 +17,20 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#ifndef YOURGAME_INTERNAL_FILEIO_H
+#define YOURGAME_INTERNAL_FILEIO_H
+
 #include <cstdint>
-#include <cstdio>
 #include <vector>
 #include <string>
 
 namespace yourgame_internal
 {
-    int readFile(const std::string &filepath, std::vector<uint8_t> &dst)
-    {
-        std::FILE *f = std::fopen(filepath.c_str(), "rb");
-        if (f)
-        {
-            std::fseek(f, 0, SEEK_END);
-            auto nBytes = std::ftell(f);
-            dst.resize(nBytes);
-            std::rewind(f);
-            std::fread(&dst[0], 1, dst.size(), f);
-            std::fclose(f);
-            return 0;
-        }
-        return -1;
-    }
+    extern std::string saveFilesPathAbs;
+    extern std::string projectPathAbs;
 
-    int writeFile(const std::string &filepath, const void *data, size_t numBytes)
-    {
-        int ret = -1;
-        std::FILE *f = std::fopen(filepath.c_str(), "wb");
-        if (f)
-        {
-            std::fwrite(data, 1, numBytes, f);
-            ret = std::ferror(f);
-            std::fclose(f);
-        }
-        return ret;
-    }
+    int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst);
+    int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes);
 } // namespace yourgame_internal
+
+#endif

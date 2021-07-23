@@ -51,7 +51,7 @@ endif()
 
 # sources
 list(APPEND YOURGAME_SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/file.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/fileio.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/input.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/version.cpp # generated above
 )

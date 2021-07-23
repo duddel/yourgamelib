@@ -19,41 +19,28 @@ freely, subject to the following restrictions:
 */
 #include <string>
 #include <vector>
-#include <regex>
 #include "dirent.h" // todo preparation for ls()
 #include <android_native_app_glue.h>
 #include <android/asset_manager.h>
-#include "yourgame_internal/file.h"
+#include "yourgame_internal/fileio.h"
 
 namespace yourgame_internal_android
 {
     namespace
     {
         AAssetManager *assMan;
-        std::string saveFilesPath = "";
-        std::string projectPath = "";
     } // namespace
 
     void initFileIO(struct android_app *app)
     {
         assMan = app->activity->assetManager;
-        saveFilesPath = std::string(app->activity->internalDataPath);
-        projectPath = saveFilesPath;
+        yourgame_internal::saveFilesPathAbs = std::string(app->activity->internalDataPath);
+        yourgame_internal::projectPathAbs = yourgame_internal::saveFilesPathAbs;
     }
 } // namespace yourgame_internal_android
 
 namespace yourgame
 {
-    std::string getSaveFilePath(const std::string &filename)
-    {
-        return yourgame_internal_android::saveFilesPath + filename;
-    }
-
-    std::string getProjectFilePath(const std::string &filename)
-    {
-        return yourgame_internal_android::projectPath + filename;
-    }
-
     int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
     {
         AAsset *assDesc = AAssetManager_open(yourgame_internal_android::assMan,
@@ -69,87 +56,6 @@ namespace yourgame
         }
         // todo: check dst.size() against nBytesRead and handle error case
         return -1;
-    }
-
-    int readSaveFile(const std::string &filename, std::vector<uint8_t> &dst)
-    {
-        return yourgame_internal::readFile(yourgame_internal_android::saveFilesPath + filename, dst);
-    }
-
-    int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
-    {
-        return yourgame_internal::readFile(yourgame_internal_android::projectPath + filename, dst);
-    }
-
-    void setProjectPath(const std::string &path)
-    {
-        yourgame_internal_android::projectPath = path;
-        if (yourgame_internal_android::projectPath.back() != '/')
-        {
-            yourgame_internal_android::projectPath += "/";
-        }
-    }
-
-    int readFile(const std::string &filename, std::vector<uint8_t> &dst)
-    {
-        if (filename.length() > 3 && filename.compare(1, 2, "//") == 0)
-        {
-            switch (filename[0])
-            {
-            case 'a':
-                return readAssetFile(filename.substr(3, std::string::npos), dst);
-            case 's':
-                return readSaveFile(filename.substr(3, std::string::npos), dst);
-            case 'p':
-                return readProjectFile(filename.substr(3, std::string::npos), dst);
-            }
-        }
-
-        return yourgame_internal::readFile(filename, dst);
-    }
-
-    std::string getFileLocation(const std::string filepath)
-    {
-        // return location prefix (a// etc.)
-        if (filepath.length() > 3 && filepath.compare(1, 2, "//") == 0)
-        {
-            return filepath.substr(0, 3);
-        }
-
-        // match 1: beginning until last "/"
-        static std::regex reFilePath(R"((.*\/|^).*$)");
-        std::smatch reMatches;
-        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 2)
-        {
-            return reMatches[1].str();
-        }
-
-        return "";
-    }
-
-    std::string getFileName(const std::string filepath)
-    {
-        // match 2: everything after last "/"
-        static std::regex reFilePath(R"((.*\/|^)(.*)$)");
-        std::smatch reMatches;
-        if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 3)
-        {
-            return reMatches[2].str();
-        }
-
-        return "";
-    }
-
-    int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
-    {
-        return yourgame_internal::writeFile(
-            yourgame_internal_android::saveFilesPath + filename, data, numBytes);
-    }
-
-    int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
-    {
-        return yourgame_internal::writeFile(
-            yourgame_internal_android::projectPath + filename, data, numBytes);
     }
 
     std::vector<std::string> ls(const std::string &pattern)
