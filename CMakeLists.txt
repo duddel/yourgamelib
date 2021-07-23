@@ -59,17 +59,17 @@ list(APPEND YOURGAME_SRC_FILES
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "web")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/fileio.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/input.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/desktop_web/yourgame.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/fileio.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/input.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/yourgame.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/fileio.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/input.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/android/yourgame.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/fileio.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/input.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/yourgame.cpp
   )
 endif()
 
