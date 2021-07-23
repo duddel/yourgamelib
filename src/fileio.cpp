@@ -110,7 +110,7 @@ namespace yourgame
         return yourgame_internal::readFileFromPath(filename, dst);
     }
 
-    std::string getFileLocation(const std::string filepath)
+    std::string getFileLocation(const std::string &filepath)
     {
         // return location prefix (a// etc.)
         if (filepath.length() > 3 && filepath.compare(1, 2, "//") == 0)
@@ -129,7 +129,7 @@ namespace yourgame
         return "";
     }
 
-    std::string getFileName(const std::string filepath)
+    std::string getFileName(const std::string &filepath)
     {
         // match 2: everything after last "/"
         static std::regex reFilePath(R"((.*\/|^)(.*)$)");
