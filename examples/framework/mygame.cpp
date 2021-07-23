@@ -466,7 +466,7 @@ namespace mygame
                              org, dir);
 
             ImGui::Text("| fps: %f, mouse delta: %f,%f | camera ray: (%3f,%3f,%3f)->(%3f,%3f,%3f)",
-                        (float)(1.0 / yg::deltaTimeS),
+                        (float)(1.0 / yg::timeDelta()),
                         yg::inputDelta(yg::INPUT::MOUSE_X),
                         yg::inputDelta(yg::INPUT::MOUSE_Y),
                         org.x, org.y, org.z, dir.x, dir.y, dir.z);
@@ -691,7 +691,7 @@ namespace mygame
             }
 
             // simulate Box2D world
-            box2dWorld->Step(yg::deltaTimeS, 6, 2);
+            box2dWorld->Step(yg::timeDelta(), 6, 2);
 
             // the vertical slider gets updated with box2dTestHeight every frame,
             // indicating the height of the dropping Box2D body
@@ -829,7 +829,7 @@ namespace mygame
                 choreographInitialized = true;
             }
 
-            choreoTimeline->step(yg::deltaTimeS);
+            choreoTimeline->step(yg::timeDelta());
 
             ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
             ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);

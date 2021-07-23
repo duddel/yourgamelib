@@ -17,33 +17,19 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_YOURGAME_H
-#define YOURGAME_YOURGAME_H
-
-// the following includes are part of the yourgame (base) API
-#include "yourgame/fileio.h"
-#include "yourgame/input.h"
-#include "yourgame/logging.h"
-#include "yourgame/timing.h"
-#include "yourgame/version.h"
+#ifndef YOURGAME_TIMING_H
+#define YOURGAME_TIMING_H
 
 namespace yourgame
 {
-    /** \brief triggers the application to exit after the cycle this function was called in */
-    void notifyShutdown();
+    /** \brief returns time clock period [seconds] (clock precision) */
+    double getClockPeriod();
 
-    /** \brief sends a (user-defined) command to the application host environment */
-    int sendCmdToEnv(int cmdId, int data0, int data1, int data2);
+    /** \brief returns time delta [seconds] since last cycle */
+    double timeDelta();
 
-    /** \brief request fullscreen */
-    void enableFullscreen(bool enable);
-
-    /** \brief request vertical sync
-    \attention if this works reliable depends on gpu/driver */
-    void enableVSync(bool enable);
-
-    /** \brief disable mouse cursor, infinite movement */
-    void catchMouse(bool enable);
+    /** \brief returns (monotonic) time duration [seconds] since init */
+    double measureTime();
 } // namespace yourgame
 
 #endif

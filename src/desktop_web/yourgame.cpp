@@ -17,7 +17,6 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <chrono>
 #ifdef __EMSCRIPTEN__
 #include <emscripten/html5.h>
 #endif
@@ -37,6 +36,7 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/yourgame_internal_desktop.h"
 #include "yourgame_internal/mygame_external.h"
 #include "yourgame_internal/input.h"
+#include "yourgame_internal/timing.h"
 
 INITIALIZE_EASYLOGGINGPP
 
@@ -45,8 +45,6 @@ namespace yourgame_internal_desktop
     namespace
     {
         el::Logger *logger = nullptr;
-        std::chrono::steady_clock::time_point lastNowTime;
-        std::chrono::steady_clock::time_point initTime;
         bool _pendingShutdown = false;
 
         GLFWwindow *_window = NULL;
@@ -69,11 +67,6 @@ namespace yourgame_internal_desktop
         // initialize logging
         START_EASYLOGGINGPP(argc, argv);
         logger = el::Loggers::getLogger("default");
-
-        // check clock period
-        double clockPeriod = (double)std::chrono::steady_clock::period::num /
-                             (double)std::chrono::steady_clock::period::den;
-        yourgame::logi("steady_clock precision: %vs (%vns)", clockPeriod, clockPeriod * 1.0e+9);
 
         // initialize asset loading
         yourgame_internal_desktop::initFileIO();
@@ -200,8 +193,8 @@ namespace yourgame_internal_desktop
         // get the initial time point just before tick() starts, which will
         // result in a small time delta in the first tick() cycle.
         // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
-        lastNowTime = std::chrono::steady_clock::now();
-        initTime = lastNowTime;
+        yourgame_internal::initTiming();
+        yourgame::logi("steady_clock precision: %vs (%vns)", yourgame::getClockPeriod(), yourgame::getClockPeriod() * 1.0e+9);
 
         return 0;
     }
@@ -209,10 +202,7 @@ namespace yourgame_internal_desktop
     void tick()
     {
         // timing
-        auto now = std::chrono::steady_clock::now();
-        std::chrono::duration<double> duration = now - lastNowTime;
-        lastNowTime = now;
-        yourgame::deltaTimeS = (duration.count());
+        yourgame_internal::tickTiming();
 
 #ifdef __EMSCRIPTEN__
         {
@@ -279,16 +269,6 @@ namespace yourgame_internal_desktop
 
 namespace yourgame
 {
-    double deltaTimeS = 0.0;
-    uint64_t deltaTimeUs = 0U;
-
-    double getTime()
-    {
-        auto now = std::chrono::steady_clock::now();
-        std::chrono::duration<double> duration = now - yourgame_internal_desktop::initTime;
-        return duration.count();
-    }
-
     el::Logger *getLogr()
     {
         return yourgame_internal_desktop::logger;

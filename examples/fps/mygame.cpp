@@ -144,7 +144,7 @@ namespace mygame
     void tick()
     {
         // tick bullet world
-        g_bullet.m_dynamicsWorld->stepSimulation(yg::deltaTimeS, 10);
+        g_bullet.m_dynamicsWorld->stepSimulation(yg::timeDelta(), 10);
 
         // set camera trafo from bullet player body
         btTransform trans;
@@ -235,7 +235,7 @@ namespace mygame
                         yg::inputDelta(yg::INPUT::MOUSE_X),
                         yg::inputDelta(yg::INPUT::MOUSE_Y),
                         g_player.body->getLinearVelocity().length(),
-                        (float)(1.0 / yg::deltaTimeS));
+                        (float)(1.0 / yg::timeDelta()));
             ImGui::EndMainMenuBar();
         }
 
@@ -259,10 +259,10 @@ namespace mygame
         g_camera.trafo()->rotateLocal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
         g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_X), yg::Trafo::AXIS::Y);
         g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_Y), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
 
         // prepare diffuse color shader
         auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
@@ -304,7 +304,7 @@ namespace mygame
             shdrDiffCol->useProgram();
 
             // filter camera trafo over time for blaster "displacement"
-            g_camTrafoFltr.lerp(static_cast<float>(yg::deltaTimeS) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
+            g_camTrafoFltr.lerp(static_cast<float>(yg::timeDelta()) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
             // filter rotation only, reset translation to camera eye:
             g_camTrafoFltr.setTranslation(g_camera.trafo()->getEye());
 

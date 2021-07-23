@@ -195,7 +195,7 @@ namespace mygame
             ImGui::Text("| mouse delta: %f,%f, fps: %f",
                         yg::inputDelta(yg::INPUT::MOUSE_X),
                         yg::inputDelta(yg::INPUT::MOUSE_Y),
-                        (float)(1.0 / yg::deltaTimeS));
+                        (float)(1.0 / yg::timeDelta()));
             ImGui::EndMainMenuBar();
         }
 
@@ -222,10 +222,10 @@ namespace mygame
             g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_X), yg::Trafo::AXIS::Y);
             g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_Y), yg::Trafo::AXIS::X);
         }
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
         g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
         g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
         g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
@@ -245,7 +245,7 @@ namespace mygame
         // draw particles
         {
             yg::GLParticles *parts = g_assets.get<yg::GLParticles>("particles");
-            parts->tick(static_cast<float>(yg::deltaTimeS) * particlesTickRate);
+            parts->tick(static_cast<float>(yg::timeDelta()) * particlesTickRate);
             // model matrix: scaling and billboard-like rotation (from camera trafo)
             auto modelMat = glm::mat4(glm::mat3(g_camera.trafo()->mat()) * glm::mat3(glm::scale(glm::vec3(0.04f))));
             auto shdrPartsColorFade = g_assets.get<yg::GLShader>("shaderParticleColorFade");

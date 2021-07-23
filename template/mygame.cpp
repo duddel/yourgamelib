@@ -53,20 +53,20 @@ namespace mygame
         }
 
         // first-person camera
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * 0.75f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::deltaTimeS) * -0.75f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * 0.75f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::deltaTimeS) * -0.75f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
-        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * -5.0f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
-        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * 5.0f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
-        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * 5.0f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
-        g_camera.trafo()->translateLocal(static_cast<float>(yg::deltaTimeS) * -5.0f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * 0.75f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * -0.75f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * 0.75f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * -0.75f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::timeDelta()) * -5.0f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::timeDelta()) * 5.0f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::timeDelta()) * 5.0f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
+        g_camera.trafo()->translateLocal(static_cast<float>(yg::timeDelta()) * -5.0f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
 
         // fade light
         static float lightT = 0.0f;
         float light = std::cos(lightT) * 0.5f + 0.5f;
         g_light.setDiffuse({light, light, light});
-        lightT += (static_cast<float>(yg::deltaTimeS) * 0.65f);
+        lightT += (static_cast<float>(yg::timeDelta()) * 0.65f);
 
         // draw cube
         {
