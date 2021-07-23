@@ -36,15 +36,13 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/yourgame_internal_desktop.h"
 #include "yourgame_internal/mygame_external.h"
 #include "yourgame_internal/input.h"
+#include "yourgame_internal/logging.h"
 #include "yourgame_internal/timing.h"
-
-INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame_internal_desktop
 {
     namespace
     {
-        el::Logger *logger = nullptr;
         bool _pendingShutdown = false;
 
         GLFWwindow *_window = NULL;
@@ -65,10 +63,9 @@ namespace yourgame_internal_desktop
     int init(int argc, char *argv[])
     {
         // initialize logging
-        START_EASYLOGGINGPP(argc, argv);
-        logger = el::Loggers::getLogger("default");
+        yourgame_internal::initLogging(argc, argv);
 
-        // initialize asset loading
+        // initialize file io
         yourgame_internal_desktop::initFileIO();
 
         // initialize glfw, gl
@@ -269,11 +266,6 @@ namespace yourgame_internal_desktop
 
 namespace yourgame
 {
-    el::Logger *getLogr()
-    {
-        return yourgame_internal_desktop::logger;
-    }
-
     void notifyShutdown()
     {
         yourgame_internal_desktop::_pendingShutdown = true;

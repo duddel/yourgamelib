@@ -24,15 +24,12 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    /** \brief returns the default logger instance */
-    el::Logger *getLogr();
-
     /** \brief log debug */
     template <typename T, typename... Args>
     inline void logd(const char *s, const T &value, const Args &...args)
     {
 #ifndef NDEBUG
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->debug(s, value, args...);
 #endif
@@ -43,7 +40,7 @@ namespace yourgame
     inline void logd(const T &value)
     {
 #ifndef NDEBUG
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->debug(value);
 #endif
@@ -53,7 +50,7 @@ namespace yourgame
     template <typename T, typename... Args>
     inline void logi(const char *s, const T &value, const Args &...args)
     {
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->info(s, value, args...);
     }
@@ -62,7 +59,7 @@ namespace yourgame
     template <typename T>
     inline void logi(const T &value)
     {
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->info(value);
     }
@@ -71,7 +68,7 @@ namespace yourgame
     template <typename T, typename... Args>
     inline void logw(const char *s, const T &value, const Args &...args)
     {
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->warn(s, value, args...);
     }
@@ -80,7 +77,7 @@ namespace yourgame
     template <typename T>
     inline void logw(const T &value)
     {
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->warn(value);
     }
@@ -89,7 +86,7 @@ namespace yourgame
     template <typename T, typename... Args>
     inline void loge(const char *s, const T &value, const Args &...args)
     {
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->error(s, value, args...);
     }
@@ -98,7 +95,7 @@ namespace yourgame
     template <typename T>
     inline void loge(const T &value)
     {
-        el::Logger *logr = yourgame::getLogr();
+        el::Logger *logr = el::Loggers::getLogger("default");
         if (logr != nullptr)
             logr->error(value);
     }

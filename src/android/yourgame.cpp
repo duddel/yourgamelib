@@ -19,7 +19,6 @@ freely, subject to the following restrictions:
 */
 #include <android/native_window.h>
 #include <android_native_app_glue.h>
-#include <android/log.h>
 #include <jni.h>
 #include <EGL/egl.h>
 #ifdef YOURGAME_EXTPROJ_imgui
@@ -36,39 +35,13 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/yourgame_internal_android.h"
 #include "yourgame_internal/mygame_external.h"
 #include "yourgame_internal/input.h"
+#include "yourgame_internal/logging.h"
 #include "yourgame_internal/timing.h"
-
-INITIALIZE_EASYLOGGINGPP
 
 namespace yourgame_internal_android
 {
     namespace
     {
-        class elAndroidDispatcher : public el::LogDispatchCallback
-        {
-        protected:
-            void handle(const el::LogDispatchData *data) noexcept override
-            {
-                auto logMsg = data->logMessage();
-                switch (logMsg->level())
-                {
-                case el::Level::Debug:
-                    __android_log_print(ANDROID_LOG_DEBUG, "yourgame_app", "%s", logMsg->message().c_str());
-                    break;
-                case el::Level::Info:
-                    __android_log_print(ANDROID_LOG_INFO, "yourgame_app", "%s", logMsg->message().c_str());
-                    break;
-                case el::Level::Warning:
-                    __android_log_print(ANDROID_LOG_WARN, "yourgame_app", "%s", logMsg->message().c_str());
-                    break;
-                case el::Level::Error:
-                    __android_log_print(ANDROID_LOG_ERROR, "yourgame_app", "%s", logMsg->message().c_str());
-                    break;
-                }
-            }
-        };
-
-        el::Logger *logger = nullptr;
         bool _initialized = false;
 
         EGLDisplay _display = EGL_NO_DISPLAY;
@@ -120,11 +93,8 @@ namespace yourgame_internal_android
         yourgame_internal_android::initFileIO(_app);
 
         // initialize logging
-        logger = el::Loggers::getLogger("default");
-        el::Helpers::installLogDispatchCallback<elAndroidDispatcher>("AndroidDispatcher");
-        el::Helpers::uninstallLogDispatchCallback<el::base::DefaultLogDispatchCallback>("DefaultLogDispatchCallback");
-        elAndroidDispatcher *dispatcher = el::Helpers::logDispatchCallback<elAndroidDispatcher>("AndroidDispatcher");
-        dispatcher->setEnabled(true);
+        char *initLogArgv = nullptr;
+        yourgame_internal::initLogging(0, &initLogArgv);
 
         // initialize EGL
         _display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
@@ -294,11 +264,6 @@ namespace yourgame_internal_android
 
 namespace yourgame
 {
-    el::Logger *getLogr()
-    {
-        return yourgame_internal_android::logger;
-    }
-
     void notifyShutdown()
     {
         ANativeActivity_finish(yourgame_internal_android::_app->activity);
