@@ -24,7 +24,7 @@ freely, subject to the following restrictions:
 #include <map>
 #include <array>
 #include <string>
-#include "yourgame/gltexture2d.h"
+#include "yourgame/gltexture.h"
 
 namespace yourgame
 {
@@ -40,14 +40,14 @@ namespace yourgame
 
         ~GLTextureAtlas();
 
-        void pushTexture(yourgame::GLTexture2D *newTex);
+        void pushTexture(yourgame::GLTexture *newTex);
         void pushCoords(std::string name, float uMin, float uMax, float vMin, float vMax);
 
-        std::pair<yourgame::GLTexture2D *, std::array<float, 4>> getCoords(std::string name) const;
-        std::pair<yourgame::GLTexture2D *, std::array<float, 4>> getCoords(std::string seqName, int seqFrame) const;
+        std::pair<yourgame::GLTexture *, std::array<float, 4>> getCoords(std::string name) const;
+        std::pair<yourgame::GLTexture *, std::array<float, 4>> getCoords(std::string seqName, int seqFrame) const;
         int getSeqFrames(std::string seqName) const;
         std::vector<std::string> getSequenceNames() const;
-        yourgame::GLTexture2D *texture(int idx) const;
+        yourgame::GLTexture *texture(int idx) const;
 
     private:
         struct Coords
@@ -56,7 +56,7 @@ namespace yourgame
             float uMax;
             float vMin;
             float vMax;
-            yourgame::GLTexture2D *tex;
+            yourgame::GLTexture *tex;
         };
 
         struct Sequence
@@ -65,7 +65,7 @@ namespace yourgame
             std::map<int, std::string> seqIdxMap;
         };
 
-        std::vector<yourgame::GLTexture2D *> m_textures;
+        std::vector<yourgame::GLTexture *> m_textures;
         std::map<std::string, Coords> m_coords;
         std::map<std::string, Sequence> m_sequences;
     };

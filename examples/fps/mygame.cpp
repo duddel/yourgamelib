@@ -293,7 +293,7 @@ namespace mygame
             geoCube->bufferData("instModelMat", trafos.size() * sizeof(trafos[0]), trafos.data());
             yg::DrawConfig cfg;
             cfg.shader = shdrTex;
-            cfg.textures = {g_assets.get<yg::GLTexture2D>("texCube")};
+            cfg.textures = {g_assets.get<yg::GLTexture>("texCube")};
             cfg.camera = &g_camera;
             cfg.instancecount = g_boxes.size();
             yg::drawGeo(geoCube, cfg);

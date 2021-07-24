@@ -30,7 +30,7 @@ namespace yourgame
         }
     }
 
-    void GLTextureAtlas::pushTexture(yourgame::GLTexture2D *newTex)
+    void GLTextureAtlas::pushTexture(yourgame::GLTexture *newTex)
     {
         m_textures.push_back(newTex);
     }
@@ -51,9 +51,9 @@ namespace yourgame
         }
     }
 
-    std::pair<yourgame::GLTexture2D *, std::array<float, 4>> GLTextureAtlas::getCoords(std::string name) const
+    std::pair<yourgame::GLTexture *, std::array<float, 4>> GLTextureAtlas::getCoords(std::string name) const
     {
-        std::pair<yourgame::GLTexture2D *, std::array<float, 4>> ret;
+        std::pair<yourgame::GLTexture *, std::array<float, 4>> ret;
 
         auto it = m_coords.find(name);
         if (it == m_coords.end())
@@ -72,12 +72,12 @@ namespace yourgame
         return ret;
     }
 
-    std::pair<yourgame::GLTexture2D *, std::array<float, 4>> GLTextureAtlas::getCoords(std::string seqName, int seqFrame) const
+    std::pair<yourgame::GLTexture *, std::array<float, 4>> GLTextureAtlas::getCoords(std::string seqName, int seqFrame) const
     {
         auto it = m_sequences.find(seqName);
         if (it == m_sequences.end())
         {
-            std::pair<yourgame::GLTexture2D *, std::array<float, 4>> ret;
+            std::pair<yourgame::GLTexture *, std::array<float, 4>> ret;
             ret.first = nullptr;
             return ret;
         }
@@ -103,7 +103,7 @@ namespace yourgame
         return seqNames;
     }
 
-    yourgame::GLTexture2D *GLTextureAtlas::texture(int idx) const
+    yourgame::GLTexture *GLTextureAtlas::texture(int idx) const
     {
         try
         {

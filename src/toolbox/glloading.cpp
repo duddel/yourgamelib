@@ -51,7 +51,7 @@ namespace
 
 namespace yourgame
 {
-    GLTexture2D *loadTexture(const std::string &filename,
+    GLTexture *loadTexture(const std::string &filename,
                              const yourgame::TextureConfig &cfg)
     {
         int width;
@@ -77,7 +77,7 @@ namespace yourgame
                                                                {GL_TEXTURE_WRAP_T, cfg.wrapMode}};
             texParamI.insert(texParamI.end(), cfg.parameteri.begin(), cfg.parameteri.end());
 
-            GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_2D, cfg.unit, texParamI);
+            GLTexture *texture = GLTexture::make(GL_TEXTURE_2D, cfg.unit, texParamI);
             texture->updateData(GL_TEXTURE_2D,
                                 0,
                                 GL_RGBA8,
@@ -184,7 +184,7 @@ namespace yourgame
         return newAtlas;
     }
 
-    GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
+    GLTexture *loadCubemap(const std::vector<std::string> &filenames,
                              const yourgame::TextureConfig &cfg)
     {
         std::vector<std::pair<GLenum, GLint>> texParamI = {{GL_TEXTURE_MIN_FILTER, cfg.minMagFilter},
@@ -194,7 +194,7 @@ namespace yourgame
                                                            {GL_TEXTURE_WRAP_R, cfg.wrapMode}};
         texParamI.insert(texParamI.end(), cfg.parameteri.begin(), cfg.parameteri.end());
 
-        GLTexture2D *texture = GLTexture2D::make(GL_TEXTURE_CUBE_MAP, cfg.unit, texParamI);
+        GLTexture *texture = GLTexture::make(GL_TEXTURE_CUBE_MAP, cfg.unit, texParamI);
 
         for (int i = 0; i < filenames.size(); i++)
         {

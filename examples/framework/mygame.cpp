@@ -270,7 +270,7 @@ namespace mygame
                           glm::mat4(glm::mat3(g_camera.vMat())) *    // rotation part of main camera view matrix
                           glm::mat4(glm::mat3(g_skyboxTrafo.mat())); // rotation part of skybox transformation
             glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderSkybox")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvpSky));
-            g_assets.get<yg::GLTexture2D>("skybox")->bind();
+            g_assets.get<yg::GLTexture>("skybox")->bind();
             glDepthMask(GL_FALSE);
             g_assets.get<yg::GLGeometry>("cube")->drawAll();
             glDepthMask(GL_TRUE);
@@ -306,7 +306,7 @@ namespace mygame
         }
 
         // bind skybox texture
-        g_assets.get<yg::GLTexture2D>("skybox")->bind();
+        g_assets.get<yg::GLTexture>("skybox")->bind();
 
         // draw object
         g_geos[g_geoName]->drawAll();

@@ -17,8 +17,8 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_GLTEXTURE2D_H
-#define YOURGAME_GLTEXTURE2D_H
+#ifndef YOURGAME_GLTEXTURE_H
+#define YOURGAME_GLTEXTURE_H
 
 #include <vector>
 #include <utility> // pair
@@ -26,19 +26,19 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-    class GLTexture2D
+    class GLTexture
     {
     public:
-        static GLTexture2D *make(GLenum target,
+        static GLTexture *make(GLenum target,
                                  GLenum unit,
                                  const std::vector<std::pair<GLenum, GLint>> &parameteri);
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */
-        GLTexture2D(GLTexture2D const &) = delete;
-        GLTexture2D &operator=(GLTexture2D const &) = delete;
+        GLTexture(GLTexture const &) = delete;
+        GLTexture &operator=(GLTexture const &) = delete;
 
-        ~GLTexture2D();
+        ~GLTexture();
         void bind() const;
         void unbindTarget() const;
 
@@ -58,7 +58,7 @@ namespace yourgame
         GLuint handle() const { return m_handle; }
 
     private:
-        GLTexture2D() {}
+        GLTexture() {}
         GLuint m_handle;
         GLenum m_target;
         GLenum m_unit;

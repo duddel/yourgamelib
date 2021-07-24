@@ -32,7 +32,7 @@ namespace yourgame
 
         for (const auto &ta : texAttachDescrs)
         {
-            GLTexture2D *newTex = GLTexture2D::make(GL_TEXTURE_2D, ta.unit, ta.parameteri);
+            GLTexture *newTex = GLTexture::make(GL_TEXTURE_2D, ta.unit, ta.parameteri);
             newTex->updateData(GL_TEXTURE_2D,
                                0,
                                ta.internalformat,
@@ -98,7 +98,7 @@ namespace yourgame
         }
     }
 
-    yourgame::GLTexture2D *GLFramebuffer::textureAttachment(int idx)
+    yourgame::GLTexture *GLFramebuffer::textureAttachment(int idx)
     {
         try
         {

@@ -34,7 +34,7 @@ freely, subject to the following restrictions:
 #include "yourgame/glshader.h"
 #include "yourgame/glshape.h"
 #include "yourgame/glspritegrid.h"
-#include "yourgame/gltexture2d.h"
+#include "yourgame/gltexture.h"
 #include "yourgame/gltextureatlas.h"
 #include "yourgame/particles.h"
 #include "yourgame/trafo.h"

@@ -22,7 +22,7 @@ freely, subject to the following restrictions:
 
 #include <vector>
 #include "yourgame/gl_include.h"
-#include "yourgame/gltexture2d.h"
+#include "yourgame/gltexture.h"
 
 namespace yourgame
 {
@@ -46,7 +46,7 @@ namespace yourgame
         void bind();
         void unbindTarget();
         void resize(GLsizei width, GLsizei height);
-        yourgame::GLTexture2D *textureAttachment(int idx);
+        yourgame::GLTexture *textureAttachment(int idx);
 
         /* deleting the copy constructor and the copy assignment operator
         prevents copying (and moving) of the object. */
@@ -56,7 +56,7 @@ namespace yourgame
     private:
         GLFramebuffer() {}
         GLuint m_handle;
-        std::vector<yourgame::GLTexture2D *> m_textureAttachments;
+        std::vector<yourgame::GLTexture *> m_textureAttachments;
         std::vector<TextureAttachDescr> m_texAttachDescrs;
     };
 } // namespace yourgame

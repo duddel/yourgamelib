@@ -25,7 +25,7 @@ freely, subject to the following restrictions:
 #include "yourgame/gl_include.h"
 #include "yourgame/glgeometry.h"
 #include "yourgame/glshader.h"
-#include "yourgame/gltexture2d.h"
+#include "yourgame/gltexture.h"
 #include "yourgame/gltextureatlas.h"
 #include "yourgame/glconventions.h"
 
@@ -41,7 +41,7 @@ namespace yourgame
         std::vector<std::pair<GLenum, GLint>> parameteri = {};
     };
 
-    GLTexture2D *loadTexture(const std::string &filename,
+    GLTexture *loadTexture(const std::string &filename,
                              const yourgame::TextureConfig &cfg);
 
     GLTextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
@@ -57,7 +57,7 @@ namespace yourgame
 
     \param filenames this order: POSITIVE_X, NEGATIVE_X, POSITIVE_Y, NEGATIVE_Y, POSITIVE_Z, NEGATIVE_Z
     */
-    GLTexture2D *loadCubemap(const std::vector<std::string> &filenames,
+    GLTexture *loadCubemap(const std::vector<std::string> &filenames,
                              const yourgame::TextureConfig &cfg);
 
     GLShader *loadShader(const std::vector<std::pair<GLenum, std::string>> &shaderFilenames,

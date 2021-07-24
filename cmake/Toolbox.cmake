@@ -19,7 +19,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshader.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshape.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glspritegrid.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gltexture2d.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gltexture.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gltextureatlas.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/headerlibs.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/particles.cpp
