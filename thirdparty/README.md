@@ -21,7 +21,6 @@ These libraries are integrated if the project has been initialized with default 
 | ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
 | [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-|                                 | ImGuiFileDialog     | :heavy_check_mark: |                    |                    |
 | [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
@@ -174,17 +173,6 @@ These libraries are integrated if the project has been initialized with default 
     -   [imstb_rectpack.h](imgui/imstb_rectpack.h)
     -   [imstb_textedit.h](imgui/imstb_textedit.h)
     -   [imstb_truetype.h](imgui/imstb_truetype.h)
-
-### ImGuiFileDialog
-
--   version: **0.5.5**
--   origin: <https://github.com/aiekick/ImGuiFileDialog/tree/96d4d58c7d3a8bab31794738b8a8496d1013d4af>
--   extracted from origin:
-    -   ImGuiFileDialog.{h,cpp}
-    -   ImGuiFileDialogConfig.h
-    -   LICENSE
--   modifications are marked with `YOURGAME_MODIFICATION`
--   license: [imgui/filedialog/LICENSE](imgui/filedialog/LICENSE)
 
 ## JSON for Modern C++
 

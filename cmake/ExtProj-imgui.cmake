@@ -16,18 +16,9 @@ list(APPEND YOURGAME_SRC_FILES
 )
 ") # file()
 
-if(YOURGAME_PLATFORM STREQUAL "desktop")
-file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
-"list(APPEND YOURGAME_INC_DIRS
-  ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/filedialog
-)
-list(APPEND YOURGAME_SRC_FILES
-  ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/filedialog/ImGuiFileDialog.cpp
-)
-") # file()
-
 # on windows, imgui uses functions from imm.h, but imm32 library is not linked by mingw.
 # ...or consider defining IMGUI_DISABLE_WIN32_DEFAULT_IME_FUNCTIONS in imconfig.h
+if(YOURGAME_PLATFORM STREQUAL "desktop")
 file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
 "if(MINGW)
   list(APPEND YOURGAME_LIBS
