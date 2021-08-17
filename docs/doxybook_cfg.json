@@ -1,0 +1,19 @@
+{
+    "baseUrl": "/yourgamelib/",
+    "linkSuffix": "/",
+    "indexInFolders": true,
+    "foldersToGenerate": [
+        "modules",
+        "classes",
+        "files",
+        "pages",
+        "namespaces"
+    ],
+    "mainPageName": "doxyMainPage",
+    "indexClassesName": "index",
+    "indexFilesName": "index",
+    "indexGroupsName": "index",
+    "indexNamespacesName": "index",
+    "indexRelatedPagesName": "index",
+    "indexExamplesName": "index"
+}

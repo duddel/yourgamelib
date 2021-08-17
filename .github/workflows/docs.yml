@@ -1,33 +1,44 @@
 name: docs
-
-on:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
   docs:
     name: build and deploy docs
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.9"
       - name: install deps
         run: |
           sudo apt update
           sudo apt install doxygen
-      - name: build docs
+          python -m pip install --upgrade pip
+          pip install mike mkdocs-material
+          wget https://github.com/matusnovak/doxybook2/releases/download/v1.3.6/doxybook2-linux-amd64-v1.3.6.zip
+          unzip doxybook2-linux-amd64-v1.3.6.zip -d _doxybook2
+      - name: run doxygen
         run: |
           cd docs
           doxygen
-      - name: prepare deploy
+      - name: run doxybook2
         run: |
-          mkdir _deploy
-          cd _deploy
-          mv ../docs/_doxyout/html/* ./
-      - name: deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: _deploy
+          cd docs
+          # append the branch/tag name to the baseUrl for doxybook2, becuase the docs
+          # are later moved there by mike (see below). ${GITHUB_REF##*/} is the actual
+          # branch/tag name. double quotes (") around the sed substitute argument are
+          # required for expanding ${GITHUB_REF##*/} before sed is executed.
+          sed -i -E "s/(\"baseUrl\":\s*\".*)\"/\1${GITHUB_REF##*/}\/\"/g" doxybook_cfg.json
+          ../_doxybook2/bin/doxybook2 --input _doxyout/xml/ --output ./md_sites --config ./doxybook_cfg.json
+      - name: run mike
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git pull origin gh-pages --allow-unrelated-histories
+          cd docs
+          mike deploy ${GITHUB_REF##*/}
+          cd ..
+          git push origin gh-pages

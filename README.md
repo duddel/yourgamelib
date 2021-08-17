@@ -8,53 +8,32 @@
 
 -   Kick-start cross-platform OpenGL projects written in C++11
 -   Automated integration of common third-party libraries
+-   Make use of provided Toolbox and Utilities
 
 ## Kick-start
 
-Clone this repository and run the Python script `init.py` from an arbitrary location, like so:
+Check out the docs for getting started: <https://duddel.github.io/yourgamelib/>
 
-    python <path_to_yourgamelib>/init.py MyGame
+This is your project:
 
-To integrate additional [third-party libraries](thirdparty/README.md), use the `--extProj` option, like so:
+```cpp
+#include "yourgame/yourgame.h"
+namespace mygame
+{
+    void init(int argc, char *argv[]) {
+        /* your init code here */
+    }
 
-    python <path_to_yourgamelib>/init.py MyGame --extProj box2d lua
+    void tick() {
+        /* your game logic here */
+        /* your gl code here */
+    }
 
-This creates the directory `./MyGame/` and initializes a new project called `MyGame`.
-
-:zap: The minimum example can be build for all available platforms using the `build_[..]` scripts (see requirements below). See the [API documentation](https://duddel.github.io/yourgamelib/) and the [examples/](examples/) on how to create something ontop of the template.
-
-:zap: All files placed in `assets/` will be packed and made available to be loaded by the application at runtime.
-
-:zap: `yourgamelib` is pulled into `MyGame` via CMake `add_subdirectory()`. This path needs to be adjusted in `CMakeLists.txt` if the projects are moved around. Alternatively, `MyGame` can be configured to clone `yourgamelib` by itself to make it independent of the original `yourgamelib` location. See [template/CMakeLists.txt](template/CMakeLists.txt) on how to do this.
-
-## Requirements
-
-To initialize a new project, you need:
-
--   `Git 1.7.0+`
-
--   `Python 3.5+` with
-    -   `Jinja2`
-    -   `gitpython`
-
-To build for target `desktop`, you need:
-
--   `CMake 3.6+`
--   A common C/C++ compiler capable of C++11
-
-To build for target `android`, you need:
-
--   The Android SDK
-    -   check yourgame template [build.gradle](template/android/app/build.gradle)...
-        -   ...and install the requested **NDK** version (`ndkVersion`) via **sdkmanager**, or change suitable
-        -   ...do the same for other Android SDK components, if they are not installed automatically
--   Gradle (tested version 6.8.3), **or...**
--   ...use Android Studio. It generates a Gradle Wrapper for the project, not requiring a separate Gradle installation
-
-To build for target `web`, you need:
-
--   Emscripten
--   Make sure the environment variable `EMSDK` is set and points to the emsdk root directory.
+    void shutdown() {
+        /* your shutdown code here */
+    }
+}
+```
 
 ## License
 

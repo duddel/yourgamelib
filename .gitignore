@@ -1,4 +1,5 @@
 **/_build*
 *.log
 docs/_doxyout
+docs/site
 .vscode/

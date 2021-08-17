@@ -7,18 +7,6 @@ To link the yourgame library to your code and make it executable, the functions 
 - \ref mygame::tick() - \copybrief mygame::tick()
 - \ref mygame::shutdown() - \copybrief mygame::shutdown()
 
-\section sec_minimal_example Minimal Example
-This is minimal example code, that compiles and links against the yourgame library:
-\code{.cpp}
-#include "yourgame/yourgame.h"
-namespace mygame
-{
-    void init(int argc, char *argv[]) {}
-    void tick() {}
-    void shutdown() {}
-}
-\endcode
-
 \section sec_guide Guide
 See the \ref yourgame "yourgame" namespace on how to access the functionality of the yourgame library.
 

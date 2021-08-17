@@ -1,0 +1,40 @@
+site_name: YourGameLib
+docs_dir: md_sites
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: indigo
+      toggle:
+        icon: material/lightbulb-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/lightbulb
+        name: Switch to light mode
+extra:
+  version:
+    provider: mike
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+repo_url: https://github.com/duddel/yourgamelib
+repo_name: duddel/yourgamelib
+edit_uri: ""
+nav:
+  - Getting Started: index.md
+  - Manual: Manual.md
+  - "Examples":
+      - Sprites: Examples/Sprites.md
+  - API Overview: doxyMainPage.md
+  - "API":
+      - base: Namespaces/namespaceyourgame.md
+      - file: Namespaces/namespaceyourgame.md
+      - gfx: Namespaces/namespaceyourgame.md
+      - audio: Namespaces/namespaceyourgame.md
