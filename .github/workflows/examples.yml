@@ -1,6 +1,9 @@
 name: examples
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build_examples_desktop:
@@ -10,54 +13,53 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
-        example_name: [framework,bare,template,fps,particles,sprites]
+        example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.5'
-    - name: install python deps
-      run: |
-        python -m pip install --upgrade pip
-        pip install Jinja2 gitpython
-    - name: install deps
-      run: |
-        sudo apt update
-        sudo apt install libgl1-mesa-dev xorg-dev
-      if: startsWith(matrix.os, 'ubuntu')
-    # ubuntu: init, configure, build ...
-    - name: initialize (ubuntu)
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./init.bash
-      if: startsWith(matrix.os, 'ubuntu')
-    - name: configure/build (ubuntu)
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./build_desktop_debug.bash
-      if: startsWith(matrix.os, 'ubuntu')
-    # windows: init, configure, build ...
-    - name: initialize (windows)
-      run: |
-        cd examples/${{ matrix.example_name }}
-        init.cmd
-      if: startsWith(matrix.os, 'windows')
-      shell: cmd
-    - name: configure/build (win32)
-      run: |
-        cd examples/${{ matrix.example_name }}
-        build_desktop_debug_win32.cmd
-      if: startsWith(matrix.os, 'windows')
-      shell: cmd
-    - name: configure/build (win64)
-      run: |
-        cd examples/${{ matrix.example_name }}
-        build_desktop_debug_win64.cmd
-      if: startsWith(matrix.os, 'windows')
-      shell: cmd
-
+      - uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.5"
+      - name: install python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install Jinja2 gitpython
+      - name: install deps
+        run: |
+          sudo apt update
+          sudo apt install libgl1-mesa-dev xorg-dev
+        if: startsWith(matrix.os, 'ubuntu')
+      # ubuntu: init, configure, build ...
+      - name: initialize (ubuntu)
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./init.bash
+        if: startsWith(matrix.os, 'ubuntu')
+      - name: configure/build (ubuntu)
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./build_desktop_debug.bash
+        if: startsWith(matrix.os, 'ubuntu')
+      # windows: init, configure, build ...
+      - name: initialize (windows)
+        run: |
+          cd examples/${{ matrix.example_name }}
+          init.cmd
+        if: startsWith(matrix.os, 'windows')
+        shell: cmd
+      - name: configure/build (win32)
+        run: |
+          cd examples/${{ matrix.example_name }}
+          build_desktop_debug_win32.cmd
+        if: startsWith(matrix.os, 'windows')
+        shell: cmd
+      - name: configure/build (win64)
+        run: |
+          cd examples/${{ matrix.example_name }}
+          build_desktop_debug_win64.cmd
+        if: startsWith(matrix.os, 'windows')
+        shell: cmd
 
   build_examples_web:
     name: web
@@ -65,37 +67,36 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        example_name: [framework,bare,template,fps,particles,sprites]
+        example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.6'
-    - name: install python deps
-      run: |
-        python -m pip install --upgrade pip
-        pip install Jinja2 gitpython
-    - name: install emsdk
-      run: |
-        git clone https://github.com/emscripten-core/emsdk.git
-        cd emsdk
-        ./emsdk install latest
-        ./emsdk activate latest
-    - name: initialize
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./init.bash
-    - name: configure/build
-      # build_web_debug.bash needs to know the emsdk location
-      # in order to call: source $EMSDK/emsdk_env.sh:
-      env:
-        EMSDK: ${{ github.workspace }}/emsdk
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./build_web_debug.bash
-
+      - uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.6"
+      - name: install python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install Jinja2 gitpython
+      - name: install emsdk
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+      - name: initialize
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./init.bash
+      - name: configure/build
+        # build_web_debug.bash needs to know the emsdk location
+        # in order to call: source $EMSDK/emsdk_env.sh:
+        env:
+          EMSDK: ${{ github.workspace }}/emsdk
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./build_web_debug.bash
 
   build_examples_android:
     name: android
@@ -103,23 +104,23 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        example_name: [framework,bare,template,fps,particles,sprites]
+        example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: setup python
-      uses: actions/setup-python@v1
-      with:
-        python-version: '3.5'
-    - name: install python deps
-      run: |
-        python -m pip install --upgrade pip
-        pip install Jinja2 gitpython
-    - name: initialize
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./init.bash
-    - name: assemble
-      run: |
-        cd examples/${{ matrix.example_name }}
-        ./build_android_debug.bash
+      - uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.5"
+      - name: install python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install Jinja2 gitpython
+      - name: initialize
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./init.bash
+      - name: assemble
+        run: |
+          cd examples/${{ matrix.example_name }}
+          ./build_android_debug.bash

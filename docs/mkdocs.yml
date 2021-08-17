@@ -1,0 +1,25 @@
+site_name: YourGameLib
+docs_dir: md_sites
+theme:
+  name: material
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    primary: teal
+extra:
+  version:
+    provider: mike
+markdown_extensions:
+  - admonition
+repo_url: https://github.com/duddel/yourgamelib
+repo_name: duddel/yourgamelib
+edit_uri: ""
+nav:
+  - Getting Started: index.md
+  - Examples: Examples.md
+  - API Overview: doxyMainPage.md
+  - "API":
+      - base: Namespaces/namespaceyourgame.md
+      - file: Namespaces/namespaceyourgame.md
+      - gfx: Namespaces/namespaceyourgame.md
+      - audio: Namespaces/namespaceyourgame.md
