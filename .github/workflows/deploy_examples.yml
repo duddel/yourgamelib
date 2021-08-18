@@ -166,4 +166,4 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages
         FOLDER: _artifact/_deploy
-        TARGET_FOLDER: examples
+        TARGET_FOLDER: yg_examples
