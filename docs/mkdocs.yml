@@ -16,7 +16,8 @@ repo_name: duddel/yourgamelib
 edit_uri: ""
 nav:
   - Getting Started: index.md
-  - Examples: Examples.md
+  - "Examples":
+      - Sprites: Examples/Sprites.md
   - API Overview: doxyMainPage.md
   - "API":
       - base: Namespaces/namespaceyourgame.md
