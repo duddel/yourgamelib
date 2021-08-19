@@ -1,5 +1,4 @@
 name: tests
-
 on: push
 
 jobs:
@@ -12,20 +11,20 @@ jobs:
         os: [ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: configure
-      run: |
-        cd test
-        mkdir _build
-        cd _build
-        cmake ..
-    - name: build
-      run: |
-        cd test/_build
-        cmake --build .
-    - name: run
-      run: |
-        cd test/_build
-        # -C Debug: chose "Debug" if multiple build configs available,
-        # like in Visual Studio Solutions, -V: verbose output
-        ctest -C Debug -V
+      - uses: actions/checkout@v2
+      - name: configure
+        run: |
+          cd test
+          mkdir _build
+          cd _build
+          cmake ..
+      - name: build
+        run: |
+          cd test/_build
+          cmake --build .
+      - name: run
+        run: |
+          cd test/_build
+          # -C Debug: chose "Debug" if multiple build configs available,
+          # like in Visual Studio Solutions, -V: verbose output
+          ctest -C Debug -V

@@ -6,3 +6,5 @@ RECURSIVE               = YES
 OUTPUT_DIRECTORY        = ./_doxyout
 PROJECT_NAME            = "YourGameLib API"
 HTML_EXTRA_STYLESHEET   = ./customdoxy.css
+GENERATE_XML            = YES
+XML_OUTPUT              = xml
