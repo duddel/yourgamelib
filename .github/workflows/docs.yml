@@ -1,8 +1,6 @@
 name: docs
-on:
-  push:
-    branches:
-      - dev_docs
+on: push
+
 jobs:
   docs:
     name: build and deploy docs

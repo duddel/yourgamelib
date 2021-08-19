@@ -1,9 +1,8 @@
 name: deploy examples
-
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy_examples_desktop:
@@ -143,25 +142,25 @@ jobs:
     needs:
       [deploy_examples_desktop, deploy_examples_web, deploy_examples_android]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v2
-      with:
-        name: artifact # default name (by not giving any name to actions/upload-artifact@v2)
-        path: _artifact
-    - name: unzip web examples
-      run: |
-        cd _artifact && mkdir _deploy && cd _deploy
-        for filename in ../*Emscripten.zip
-        do
-          # sed regex matches: "../project-version-Emscripten.zip" and replaces
-          # it with the sole project name (match group \1)
-          projname=$(echo $filename | sed -E 's/.*\/(.+)-(.+)-(.+)\.zip/\1/')
-          unzip $filename -d $projname
-        done
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: _artifact/_deploy
-        TARGET_FOLDER: yg_examples
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact # default name (by not giving any name to actions/upload-artifact@v2)
+          path: _artifact
+      - name: unzip web examples
+        run: |
+          cd _artifact && mkdir _deploy && cd _deploy
+          for filename in ../*Emscripten.zip
+          do
+            # sed regex matches: "../project-version-Emscripten.zip" and replaces
+            # it with the sole project name (match group \1)
+            projname=$(echo $filename | sed -E 's/.*\/(.+)-(.+)-(.+)\.zip/\1/')
+            unzip $filename -d $projname
+          done
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: _artifact/_deploy
+          TARGET_FOLDER: yg_examples
