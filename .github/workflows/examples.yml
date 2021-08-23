@@ -23,7 +23,7 @@ jobs:
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install Jinja2 gitpython
+          pip install -r requirements.txt
       - name: install deps
         run: |
           sudo apt update
@@ -77,7 +77,7 @@ jobs:
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install Jinja2 gitpython
+          pip install -r requirements.txt
       - name: install emsdk
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
@@ -114,7 +114,7 @@ jobs:
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install Jinja2 gitpython
+          pip install -r requirements.txt
       - name: initialize
         run: |
           cd examples/${{ matrix.example_name }}

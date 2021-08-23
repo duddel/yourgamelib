@@ -1,0 +1,3 @@
+# Python requirements for initializing user projects
+Jinja2
+gitpython
