@@ -15,9 +15,12 @@ set(YOURGAME_GL_MINOR 3)
 set(YOURGAME_GLES_MAJOR 3)
 set(YOURGAME_GLES_MINOR 0)
 
-# get git commit sha and test it against the requested commit of the project
+# get git commit sha and test it against the requested commit of the project:
+# git describe usually returns the name of an annotated tag, but with --match="",
+# no tag names match, falling back (--always) to 40 digit sha (--abbrev=40),
+# appended by -dirty, if the working copy has modifications (--dirty).
 execute_process(COMMAND
-  "${GIT_EXECUTABLE}" describe --always --abbrev=40 --dirty
+  "${GIT_EXECUTABLE}" describe --match=\"\" --always --abbrev=40 --dirty
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   OUTPUT_VARIABLE YOURGAME_GIT_COMMIT_ACTUAL
   OUTPUT_STRIP_TRAILING_WHITESPACE)
