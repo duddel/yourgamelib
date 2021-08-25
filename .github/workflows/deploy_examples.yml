@@ -158,9 +158,9 @@ jobs:
             unzip $filename -d $projname
           done
       - name: deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: _artifact/_deploy
-          TARGET_FOLDER: yg_examples
+          branch: gh-pages
+          folder: _artifact/_deploy
+          target-folder: yg_examples
+          clean: true

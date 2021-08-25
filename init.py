@@ -21,6 +21,8 @@ def copy_file_items(items, src, dst):
 aPars = argparse.ArgumentParser(
     description="Initialize a new YourGameLib project from template")
 aPars.add_argument("name", type=str, help='name of the new project')
+aPars.add_argument('--clone', action='store_true',
+                   help='init stand-alone project that clones YourGameLib itself')
 aPars.add_argument('--noStub', action='store_true',
                    help='do not copy source files and assets/ from template')
 aPars.add_argument('--bare', action='store_true',
@@ -81,6 +83,7 @@ templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_GIT_COMMIT_INIT=gitSha,
     YOURGAME_ROOT=ygRootRel,
+    YOURGAME_CLONE=("YES" if args.clone else "NO"),
     YOURGAME_PROJECT_NAME=newProjName,
     YOURGAME_BARE=args.bare,
     YOURGAME_MY_SOURCES=dstSources,
