@@ -64,8 +64,8 @@ if(NO)
     execute_process(COMMAND "${GIT_EXECUTABLE}" clone https://github.com/duddel/yourgamelib
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     )
-    # reset yourgame clone to the requested commit
-    execute_process( COMMAND "${GIT_EXECUTABLE}" reset "${YOURGAME_GIT_COMMIT_REQUESTED}" --hard
+    # checkout the requested yourgamelib commit
+    execute_process(COMMAND "${GIT_EXECUTABLE}" checkout "${YOURGAME_GIT_COMMIT_REQUESTED}"
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib"
     )
   endif()
