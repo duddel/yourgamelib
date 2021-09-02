@@ -52,7 +52,7 @@ namespace
 namespace yourgame
 {
     GLTexture *loadTexture(const std::string &filename,
-                             const yourgame::TextureConfig &cfg)
+                           const yourgame::TextureConfig &cfg)
     {
         int width;
         int height;
@@ -185,7 +185,7 @@ namespace yourgame
     }
 
     GLTexture *loadCubemap(const std::vector<std::string> &filenames,
-                             const yourgame::TextureConfig &cfg)
+                           const yourgame::TextureConfig &cfg)
     {
         std::vector<std::pair<GLenum, GLint>> texParamI = {{GL_TEXTURE_MIN_FILTER, cfg.minMagFilter},
                                                            {GL_TEXTURE_MAG_FILTER, cfg.minMagFilter},
@@ -255,8 +255,7 @@ namespace yourgame
         {
             std::vector<uint8_t> shdrCode;
             yourgame::readFile(shdrFile.second, shdrCode);
-            std::string shdrStr = std::string(YOURGAME_GLSL_VERSION_STRING) + "\n" +
-                                  std::string(shdrCode.begin(), shdrCode.end());
+            std::string shdrStr = std::string(shdrCode.begin(), shdrCode.end());
             shaderCodes.push_back(std::make_pair(shdrFile.first, shdrStr));
         }
 
@@ -268,7 +267,14 @@ namespace yourgame
                                     const std::vector<std::pair<GLuint, std::string>> &fragDataLocs)
     {
         std::string shaderErrLog;
-        GLShader *newShader = GLShader::make(shaderCodes, attrLocs, fragDataLocs, shaderErrLog);
+
+        auto shaderCodesWithVersion = shaderCodes;
+        for (auto &shaderCode : shaderCodesWithVersion)
+        {
+            shaderCode.second = std::string(YOURGAME_GLSL_VERSION_STRING) + "\n" + shaderCode.second;
+        }
+
+        GLShader *newShader = GLShader::make(shaderCodesWithVersion, attrLocs, fragDataLocs, shaderErrLog);
 
         if (!newShader)
         {
