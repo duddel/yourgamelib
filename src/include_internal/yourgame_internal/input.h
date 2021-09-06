@@ -32,19 +32,19 @@ namespace yourgame_internal
         float valLast;
     };
 
-    extern std::map<yourgame::INPUT, InputValue> inputStates;
+    extern std::map<yourgame::input::Source, InputValue> inputStates;
 
     /** \brief set input value. used for buttons/keys
     if first input of source occurs, the last (previous) value is set to 0.0,
     resulting in positive value delta, if first input of source is "key down"
     */
-    void setInput(yourgame::INPUT source, float value);
+    void setInput(yourgame::input::Source source, float value);
 
     /** \brief set input value. used for positions/axes or other "continuous" signals
     if first input of source occurs, the last (previous) value is set to value,
     resulting in zero value delta after first input.
     */
-    void setInput2(yourgame::INPUT source, float value);
+    void setInput2(yourgame::input::Source source, float value);
 } // namespace yourgame_internal
 
 #endif

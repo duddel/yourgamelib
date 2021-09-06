@@ -21,10 +21,7 @@ freely, subject to the following restrictions:
 #include <string>
 #include <vector>
 #include <map>
-#include "yourgame/gl_include.h"
 #include "yourgame/yourgame.h"
-#include "yourgame/toolbox.h"
-#include "yourgame/audioplayer.h"
 #include "imgui.h"
 #include "box2d/box2d.h"
 #include "flecs.h"
@@ -63,16 +60,16 @@ namespace mygame
     bool g_drawSkybox = true;
     float g_skyboxRotation = 0.001f;
     bool g_skyboxRotationOn = true;
-    yg::Trafo g_modelTrafo;
-    yg::Trafo g_skyboxTrafo;
-    yg::Camera g_camera;
-    yg::Camera g_skyboxCamera;
-    std::map<std::string, yg::GLGeometry *> g_geos;
+    yg::math::Trafo g_modelTrafo;
+    yg::math::Trafo g_skyboxTrafo;
+    yg::math::Camera g_camera;
+    yg::math::Camera g_skyboxCamera;
+    std::map<std::string, yg::gl::Geometry *> g_geos;
     std::string g_geoName = "ship_dark";
     float g_shaderColorMix = 0.5f;
     int g_shaderToUse = 0;     // 0: color shader, 1: normal shader
     int g_framebufDisplay = 0; // 0: default color, 1: framebuffer color 0, framebuffer depth
-    yg::AssetManager g_assets;
+    yg::util::AssetManager g_assets;
 
     void init(int argc, char *argv[])
     {
@@ -86,7 +83,7 @@ namespace mygame
             static const std::string licFilename("a//LICENSE_web.txt");
 #endif
             std::vector<uint8_t> licFileData;
-            yg::readFile(licFilename, licFileData);
+            yg::file::readFile(licFilename, licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
@@ -94,94 +91,94 @@ namespace mygame
         g_camera.trafo()->lookAt(glm::vec3(0.0f, 2.0f, 3.0f),
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
-        g_camera.setPerspective(75.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 1.0f, 10.0f);
-        g_skyboxCamera.setPerspective(75.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
+        g_camera.setPerspective(75.0f, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 1.0f, 10.0f);
+        g_skyboxCamera.setPerspective(75.0f, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
 
         // Skybox texture
         {
-            yg::TextureConfig cfg;
-            cfg.unit = yg::textureUnitSky;
+            yg::gl::TextureConfig cfg;
+            cfg.unit = yg::gl::textureUnitSky;
             cfg.minMagFilter = GL_LINEAR_MIPMAP_LINEAR;
             cfg.wrapMode = GL_CLAMP_TO_EDGE;
             cfg.generateMipmap = true;
             cfg.premultiplyAlpha = false;
-            g_assets.insert("skybox", yg::loadCubemap({"a//sky_right.png", "a//sky_left.png", "a//sky_top.png", "a//sky_bottom.png", "a//sky_front.png", "a//sky_back.png"},
-                                                      cfg));
+            g_assets.insert("skybox", yg::gl::loadCubemap({"a//sky_right.png", "a//sky_left.png", "a//sky_top.png", "a//sky_bottom.png", "a//sky_front.png", "a//sky_back.png"},
+                                                          cfg));
         }
 
         // Skybox shader
-        g_assets.insert("shaderSkybox", yg::loadShader(
+        g_assets.insert("shaderSkybox", yg::gl::loadShader(
                                             {{GL_VERTEX_SHADER, "a//skybox.vert"},
                                              {GL_FRAGMENT_SHADER, "a//skybox.frag"}},
                                             {}, {}));
-        g_assets.get<yg::GLShader>("shaderSkybox")->useProgram();
-        glUniform1i(g_assets.get<yg::GLShader>("shaderSkybox")->getUniformLocation(yg::unifNameTextureSky),
-                    yg::unifValueTextureSky);
+        g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
+        glUniform1i(g_assets.get<yg::gl::Shader>("shaderSkybox")->getUniformLocation(yg::gl::unifNameTextureSky),
+                    yg::gl::unifValueTextureSky);
 
         // Normal shader
-        g_assets.insert("shaderNormal", yg::loadShader(
+        g_assets.insert("shaderNormal", yg::gl::loadShader(
                                             {{GL_VERTEX_SHADER, "a//simple.vert"},
                                              {GL_FRAGMENT_SHADER, "a//simplenormal.frag"}},
                                             {}, {}));
 
         // Color shader
-        g_assets.insert("shaderColor", yg::loadShader(
+        g_assets.insert("shaderColor", yg::gl::loadShader(
                                            {{GL_VERTEX_SHADER, "a//simple.vert"},
                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}},
                                            {}, {}));
-        g_assets.get<yg::GLShader>("shaderColor")->useProgram();
-        glUniform1i(g_assets.get<yg::GLShader>("shaderColor")->getUniformLocation(yg::unifNameTextureSky),
-                    yg::unifValueTextureSky);
+        g_assets.get<yg::gl::Shader>("shaderColor")->useProgram();
+        glUniform1i(g_assets.get<yg::gl::Shader>("shaderColor")->getUniformLocation(yg::gl::unifNameTextureSky),
+                    yg::gl::unifValueTextureSky);
 
         // Texture shader
-        g_assets.insert("shaderTexture", yg::loadShader(
+        g_assets.insert("shaderTexture", yg::gl::loadShader(
                                              {{GL_VERTEX_SHADER, "a//simple.vert"},
                                               {GL_FRAGMENT_SHADER, "a//simpletex.frag"}},
                                              {}, {}));
-        g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
-        glUniform1i(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameTextureDiffuse),
-                    yg::unifValueTextureDiffuse);
+        g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
+        glUniform1i(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameTextureDiffuse),
+                    yg::gl::unifValueTextureDiffuse);
 
         // Depth Texture shader
-        g_assets.insert("shaderTextureDepth", yg::loadShader(
+        g_assets.insert("shaderTextureDepth", yg::gl::loadShader(
                                                   {{GL_VERTEX_SHADER, "a//simple.vert"},
                                                    {GL_FRAGMENT_SHADER, "a//simpletexdepth.frag"}},
                                                   {}, {}));
-        g_assets.get<yg::GLShader>("shaderTextureDepth")->useProgram();
-        glUniform1i(g_assets.get<yg::GLShader>("shaderTextureDepth")->getUniformLocation(yg::unifNameTextureDiffuse),
-                    yg::unifValueTextureDiffuse);
+        g_assets.get<yg::gl::Shader>("shaderTextureDepth")->useProgram();
+        glUniform1i(g_assets.get<yg::gl::Shader>("shaderTextureDepth")->getUniformLocation(yg::gl::unifNameTextureDiffuse),
+                    yg::gl::unifValueTextureDiffuse);
 
         // geometry
-        g_assets.insert("quadGeo", yg::loadGeometry("a//quad.obj"));
-        g_assets.insert("cube", yg::loadGeometry("a//cube.obj"));
+        g_assets.insert("quadGeo", yg::gl::loadGeometry("a//quad.obj"));
+        g_assets.insert("cube", yg::gl::loadGeometry("a//cube.obj"));
 
         // framebuffer
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
         // texture parameters (GL_NEAREST, GL_CLAMP_TO_EDGE) may be required to do so
         g_assets.insert("framebuf",
-                        yg::GLFramebuffer::make(yg::inputi(yg::INPUT::WINDOW_WIDTH),
-                                                yg::inputi(yg::INPUT::WINDOW_HEIGHT),
-                                                {{GL_RGBA8,
-                                                  GL_RGBA,
-                                                  GL_UNSIGNED_BYTE,
-                                                  yg::textureUnitDiffuse,
-                                                  {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
-                                                   {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
-                                                   {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
-                                                   {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
-                                                  GL_COLOR_ATTACHMENT0},
-                                                 {GL_DEPTH_COMPONENT16,
-                                                  GL_DEPTH_COMPONENT,
-                                                  GL_UNSIGNED_SHORT,
-                                                  yg::textureUnitDiffuse,
-                                                  {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
-                                                   {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
-                                                   {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
-                                                   {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
-                                                  GL_DEPTH_ATTACHMENT}}));
+                        yg::gl::Framebuffer::make(yg::input::geti(yg::input::WINDOW_WIDTH),
+                                                  yg::input::geti(yg::input::WINDOW_HEIGHT),
+                                                  {{GL_RGBA8,
+                                                    GL_RGBA,
+                                                    GL_UNSIGNED_BYTE,
+                                                    yg::gl::textureUnitDiffuse,
+                                                    {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
+                                                     {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
+                                                     {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                                     {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
+                                                    GL_COLOR_ATTACHMENT0},
+                                                   {GL_DEPTH_COMPONENT16,
+                                                    GL_DEPTH_COMPONENT,
+                                                    GL_UNSIGNED_SHORT,
+                                                    yg::gl::textureUnitDiffuse,
+                                                    {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
+                                                     {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
+                                                     {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
+                                                     {GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE}},
+                                                    GL_DEPTH_ATTACHMENT}}));
 
         // arbitrary test command
-        yg::sendCmdToEnv(1, 10, 1024, -15);
+        yg::control::sendCmdToEnv(1, 10, 1024, -15);
 
 #ifdef YOURGAME_PLATFORM_ANDROID
         // arbitrary scale-up on android,
@@ -195,32 +192,32 @@ namespace mygame
         g_modelTrafo.setScaleLocal(g_modelScale);
         if (g_rotationOn)
         {
-            g_modelTrafo.rotateLocal(g_rotation, yg::Trafo::AXIS::Y);
+            g_modelTrafo.rotateLocal(g_rotation, yg::math::Axis::Y);
         }
 
         if (g_skyboxRotationOn)
         {
-            g_skyboxTrafo.rotateLocal(g_skyboxRotation, yg::Trafo::AXIS::Y);
+            g_skyboxTrafo.rotateLocal(g_skyboxRotation, yg::math::Axis::Y);
         }
 
-        if (yg::inputDelta(yg::INPUT::KEY_ESCAPE) > 0.0f)
+        if (yg::input::getDelta(yg::input::KEY_ESCAPE) > 0.0f)
         {
-            yg::catchMouse(!yg::inputi(yg::INPUT::MOUSE_CATCHED));
+            yg::control::catchMouse(!yg::input::geti(yg::input::MOUSE_CATCHED));
         }
 
         // first-person camera
-        if (yg::inputi(yg::INPUT::MOUSE_CATCHED))
+        if (yg::input::geti(yg::input::MOUSE_CATCHED))
         {
-            g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
-            g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
-            g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_W), yg::Trafo::AXIS::Z);
-            g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_S), yg::Trafo::AXIS::Z);
-            g_camera.trafo()->translateLocal(0.01f * yg::input(yg::INPUT::KEY_D), yg::Trafo::AXIS::X);
-            g_camera.trafo()->translateLocal(-0.01f * yg::input(yg::INPUT::KEY_A), yg::Trafo::AXIS::X);
+            g_camera.trafo()->rotateGlobal(-0.001f * yg::input::getDelta(yg::input::MOUSE_X), yg::math::Axis::Y);
+            g_camera.trafo()->rotateLocal(-0.001f * yg::input::getDelta(yg::input::MOUSE_Y), yg::math::Axis::X);
+            g_camera.trafo()->translateLocal(-0.01f * yg::input::get(yg::input::KEY_W), yg::math::Axis::Z);
+            g_camera.trafo()->translateLocal(0.01f * yg::input::get(yg::input::KEY_S), yg::math::Axis::Z);
+            g_camera.trafo()->translateLocal(0.01f * yg::input::get(yg::input::KEY_D), yg::math::Axis::X);
+            g_camera.trafo()->translateLocal(-0.01f * yg::input::get(yg::input::KEY_A), yg::math::Axis::X);
         }
 
-        g_camera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
-        g_skyboxCamera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
+        g_camera.setAspect(yg::input::get(yg::input::WINDOW_ASPECT_RATIO));
+        g_skyboxCamera.setAspect(yg::input::get(yg::input::WINDOW_ASPECT_RATIO));
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
@@ -230,90 +227,90 @@ namespace mygame
         // load geometry on demand
         if (g_geos.find(g_geoName) == g_geos.end())
         {
-            g_geos[g_geoName] = yg::loadGeometry(std::string("a//") + g_geoName + ".obj",
-                                                 std::string("a//") + g_geoName + ".mtl");
+            g_geos[g_geoName] = yg::gl::loadGeometry(std::string("a//") + g_geoName + ".obj",
+                                                     std::string("a//") + g_geoName + ".mtl");
         }
 
         // drawing
         glEnable(GL_DEPTH_TEST);
 
         // prepare and bind framebuffer, if requested
-        if (g_assets.get<yg::GLFramebuffer>("framebuf") && (g_framebufDisplay != 0))
+        if (g_assets.get<yg::gl::Framebuffer>("framebuf") && (g_framebufDisplay != 0))
         {
             static uint32_t lastWinWidth = 0;
             static uint32_t lastWinHeight = 0;
-            if (lastWinWidth != yg::inputi(yg::INPUT::WINDOW_WIDTH) ||
-                lastWinHeight != yg::inputi(yg::INPUT::WINDOW_HEIGHT))
+            if (lastWinWidth != yg::input::geti(yg::input::WINDOW_WIDTH) ||
+                lastWinHeight != yg::input::geti(yg::input::WINDOW_HEIGHT))
             {
-                g_assets.get<yg::GLFramebuffer>("framebuf")
-                    ->resize(yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
-                yg::logi("framebuffer resized to %v,%v", yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
-                lastWinWidth = yg::inputi(yg::INPUT::WINDOW_WIDTH);
-                lastWinHeight = yg::inputi(yg::INPUT::WINDOW_HEIGHT);
+                g_assets.get<yg::gl::Framebuffer>("framebuf")
+                    ->resize(yg::input::geti(yg::input::WINDOW_WIDTH), yg::input::geti(yg::input::WINDOW_HEIGHT));
+                yg::log::info("framebuffer resized to %v,%v", yg::input::geti(yg::input::WINDOW_WIDTH), yg::input::geti(yg::input::WINDOW_HEIGHT));
+                lastWinWidth = yg::input::geti(yg::input::WINDOW_WIDTH);
+                lastWinHeight = yg::input::geti(yg::input::WINDOW_HEIGHT);
             }
-            g_assets.get<yg::GLFramebuffer>("framebuf")->bind();
+            g_assets.get<yg::gl::Framebuffer>("framebuf")->bind();
         }
 
         // the actual drawing
         glClearColor(g_clearColor.x, g_clearColor.y, g_clearColor.z, g_clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
+        glViewport(0, 0, yg::input::geti(yg::input::WINDOW_WIDTH), yg::input::geti(yg::input::WINDOW_HEIGHT));
 
         // draw skybox
         if (g_drawSkybox)
         {
-            g_assets.get<yg::GLShader>("shaderSkybox")->useProgram();
+            g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
             auto mvpSky = g_skyboxCamera.pMat() *                    // skybox camera projection
                           glm::mat4(glm::mat3(g_camera.vMat())) *    // rotation part of main camera view matrix
                           glm::mat4(glm::mat3(g_skyboxTrafo.mat())); // rotation part of skybox transformation
-            glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderSkybox")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvpSky));
-            g_assets.get<yg::GLTexture>("skybox")->bind();
+            glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderSkybox")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvpSky));
+            g_assets.get<yg::gl::Texture>("skybox")->bind();
             glDepthMask(GL_FALSE);
-            g_assets.get<yg::GLGeometry>("cube")->drawAll();
+            g_assets.get<yg::gl::Geometry>("cube")->drawAll();
             glDepthMask(GL_TRUE);
         }
 
         // set selected shader
         if (g_shaderToUse == 0)
         {
-            auto shaderColor = g_assets.get<yg::GLShader>("shaderColor");
+            auto shaderColor = g_assets.get<yg::gl::Shader>("shaderColor");
             if (shaderColor)
             {
                 shaderColor->useProgram();
-                glUniformMatrix4fv(shaderColor->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(shaderColor->getUniformLocation(yg::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(shaderColor->getUniformLocation(yg::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+                glUniformMatrix4fv(shaderColor->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(shaderColor->getUniformLocation(yg::gl::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(shaderColor->getUniformLocation(yg::gl::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
                 glm::vec3 camEye = glm::vec3(g_camera.trafo()->mat()[3]);
-                glUniform3fv(shaderColor->getUniformLocation(yg::unifNameCameraPosition), 1, glm::value_ptr(camEye));
+                glUniform3fv(shaderColor->getUniformLocation(yg::gl::unifNameCameraPosition), 1, glm::value_ptr(camEye));
                 auto skyRotInv = glm::transpose((glm::mat3(g_skyboxTrafo.mat())));
-                glUniformMatrix3fv(shaderColor->getUniformLocation(yg::unifNameSkyRotationInv), 1, GL_FALSE, glm::value_ptr(skyRotInv));
-                glUniform3fv(shaderColor->getUniformLocation(yg::unifNameCameraPosition), 1, glm::value_ptr(camEye));
+                glUniformMatrix3fv(shaderColor->getUniformLocation(yg::gl::unifNameSkyRotationInv), 1, GL_FALSE, glm::value_ptr(skyRotInv));
+                glUniform3fv(shaderColor->getUniformLocation(yg::gl::unifNameCameraPosition), 1, glm::value_ptr(camEye));
                 glUniform1f(shaderColor->getUniformLocation("colorMix"), g_shaderColorMix);
             }
         }
         else
         {
-            if (g_assets.get<yg::GLShader>("shaderNormal"))
+            if (g_assets.get<yg::gl::Shader>("shaderNormal"))
             {
-                g_assets.get<yg::GLShader>("shaderNormal")->useProgram();
-                glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderNormal")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-                glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderNormal")->getUniformLocation(yg::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
-                glUniformMatrix3fv(g_assets.get<yg::GLShader>("shaderNormal")->getUniformLocation(yg::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
+                g_assets.get<yg::gl::Shader>("shaderNormal")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderNormal")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+                glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderNormal")->getUniformLocation(yg::gl::unifNameModelMatrix), 1, GL_FALSE, glm::value_ptr(modelMat));
+                glUniformMatrix3fv(g_assets.get<yg::gl::Shader>("shaderNormal")->getUniformLocation(yg::gl::unifNameNormalMatrix), 1, GL_FALSE, glm::value_ptr(normalMat));
             }
         }
 
         // bind skybox texture
-        g_assets.get<yg::GLTexture>("skybox")->bind();
+        g_assets.get<yg::gl::Texture>("skybox")->bind();
 
         // draw object
         g_geos[g_geoName]->drawAll();
 
         // unbind framebuffer and draw framebuffer color or depth texture attachment, if requested
-        if (g_assets.get<yg::GLFramebuffer>("framebuf") && (g_framebufDisplay != 0))
+        if (g_assets.get<yg::gl::Framebuffer>("framebuf") && (g_framebufDisplay != 0))
         {
-            g_assets.get<yg::GLFramebuffer>("framebuf")->unbindTarget();
+            g_assets.get<yg::gl::Framebuffer>("framebuf")->unbindTarget();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
+            glViewport(0, 0, yg::input::geti(yg::input::WINDOW_WIDTH), yg::input::geti(yg::input::WINDOW_HEIGHT));
 
             // simple orthographic projection that matches the quad geometry
             auto pMat = glm::ortho(-0.5f, 0.5f, -0.5f, 0.5f, 1.0f, -1.0f);
@@ -321,22 +318,22 @@ namespace mygame
             // render color- or depth texture attachment of the framebuffer to a quad
             if (g_framebufDisplay == 1) // color
             {
-                g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
-                glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
-                g_assets.get<yg::GLFramebuffer>("framebuf")->textureAttachment(0)->bind();
+                g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_assets.get<yg::gl::Framebuffer>("framebuf")->textureAttachment(0)->bind();
             }
             else if (g_framebufDisplay == 2) // depth
             {
-                g_assets.get<yg::GLShader>("shaderTextureDepth")->useProgram();
-                glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderTextureDepth")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
-                g_assets.get<yg::GLFramebuffer>("framebuf")->textureAttachment(1)->bind();
+                g_assets.get<yg::gl::Shader>("shaderTextureDepth")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTextureDepth")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_assets.get<yg::gl::Framebuffer>("framebuf")->textureAttachment(1)->bind();
             }
-            g_assets.get<yg::GLGeometry>("quadGeo")->drawAll();
+            g_assets.get<yg::gl::Geometry>("quadGeo")->drawAll();
         }
 
         // if mouse is catched, first-person camera movement is enabled
         // (see above), and imgui menu drawing is not desired
-        if (!yg::inputi(yg::INPUT::MOUSE_CATCHED))
+        if (!yg::input::geti(yg::input::MOUSE_CATCHED))
         {
             updateImgui();
         }
@@ -344,9 +341,9 @@ namespace mygame
 
     void shutdown()
     {
-        if (yg::audioIsInitialized())
+        if (yg::audio::isInitialized())
         {
-            yg::audioShutdown();
+            yg::audio::shutdown();
         }
     }
 
@@ -376,7 +373,7 @@ namespace mygame
                 }
                 if (ImGui::MenuItem("Exit"))
                 {
-                    yg::notifyShutdown();
+                    yg::control::notifyShutdown();
                 }
                 ImGui::EndMenu();
             }
@@ -434,13 +431,13 @@ namespace mygame
             }
             if (ImGui::BeginMenu("Options"))
             {
-                if (ImGui::MenuItem("Fullscreen", "", yg::inputi(yg::INPUT::WINDOW_FULLSCREEN)))
+                if (ImGui::MenuItem("Fullscreen", "", yg::input::geti(yg::input::WINDOW_FULLSCREEN)))
                 {
-                    yg::enableFullscreen(!yg::inputi(yg::INPUT::WINDOW_FULLSCREEN));
+                    yg::control::enableFullscreen(!yg::input::geti(yg::input::WINDOW_FULLSCREEN));
                 }
-                if (ImGui::MenuItem("VSync", "", yg::inputi(yg::INPUT::VSYNC_ON)))
+                if (ImGui::MenuItem("VSync", "", yg::input::geti(yg::input::VSYNC_ON)))
                 {
-                    yg::enableVSync(!yg::inputi(yg::INPUT::VSYNC_ON));
+                    yg::control::enableVSync(!yg::input::geti(yg::input::VSYNC_ON));
                 }
                 ImGui::EndMenu();
             }
@@ -454,14 +451,14 @@ namespace mygame
             }
             // camera ray casting
             glm::vec3 org, dir;
-            g_camera.castRay(yg::input(yg::INPUT::MOUSE_X) / yg::input(yg::INPUT::WINDOW_WIDTH),
-                             yg::input(yg::INPUT::MOUSE_Y) / yg::input(yg::INPUT::WINDOW_HEIGHT),
+            g_camera.castRay(yg::input::get(yg::input::MOUSE_X) / yg::input::get(yg::input::WINDOW_WIDTH),
+                             yg::input::get(yg::input::MOUSE_Y) / yg::input::get(yg::input::WINDOW_HEIGHT),
                              org, dir);
 
             ImGui::Text("| fps: %f, mouse delta: %f,%f | camera ray: (%3f,%3f,%3f)->(%3f,%3f,%3f)",
-                        (float)(1.0 / yg::timeDelta()),
-                        yg::inputDelta(yg::INPUT::MOUSE_X),
-                        yg::inputDelta(yg::INPUT::MOUSE_Y),
+                        (float)(1.0 / yg::time::getDelta()),
+                        yg::input::getDelta(yg::input::MOUSE_X),
+                        yg::input::getDelta(yg::input::MOUSE_Y),
                         org.x, org.y, org.z, dir.x, dir.y, dir.z);
 
             ImGui::EndMainMenuBar();
@@ -517,8 +514,8 @@ namespace mygame
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
                 ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
-                g_camera.setPerspective(f1, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), f2, f3);
-                g_skyboxCamera.setPerspective(f1, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
+                g_camera.setPerspective(f1, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), f2, f3);
+                g_skyboxCamera.setPerspective(f1, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
             }
             else
             {
@@ -527,7 +524,7 @@ namespace mygame
                 static float f3 = 10.0f;
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
                 ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
-                g_camera.setOrthographic(f1, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), f2, f3);
+                g_camera.setOrthographic(f1, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), f2, f3);
                 // skybox camera always perspective (see above)
             }
 
@@ -553,23 +550,23 @@ namespace mygame
             {
                 const int numAudioSources = 5;
 
-                if (!yg::audioIsInitialized())
+                if (!yg::audio::isInitialized())
                 {
-                    yg::audioInit(2, 44100, numAudioSources);
-                    yg::audioStoreFile("a//jingles_SAX07_mono_11025.ogg");
-                    yg::audioStoreFile("a//jingles_PIZZI00.ogg");
+                    yg::audio::init(2, 44100, numAudioSources);
+                    yg::audio::storeFile("a//jingles_SAX07_mono_11025.ogg");
+                    yg::audio::storeFile("a//jingles_PIZZI00.ogg");
                 }
 
                 ImGui::Begin("Audio", &showDemoAudio, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
                 if (ImGui::Button("Play"))
                 {
-                    yg::audioPlay("a//jingles_PIZZI00.ogg");
+                    yg::audio::play("a//jingles_PIZZI00.ogg");
                 }
                 ImGui::SameLine();
 
                 if (ImGui::Button("Play Loop"))
                 {
-                    yg::audioPlay("a//jingles_SAX07_mono_11025.ogg", true);
+                    yg::audio::play("a//jingles_SAX07_mono_11025.ogg", true);
                 }
 
                 static float audioBalance[numAudioSources] = {0.0f};
@@ -579,28 +576,28 @@ namespace mygame
                 {
                     // gain slider
                     ImGui::SliderFloat(("balance " + std::to_string(i)).c_str(), &audioBalance[i], -1.0f, 1.0f);
-                    yg::audioSetChannelGains(i,
-                                             {std::fmin(1.0f - audioBalance[i], 1.0f),
-                                              std::fmin(1.0f + audioBalance[i], 1.0f)});
+                    yg::audio::setChannelGains(i,
+                                               {std::fmin(1.0f - audioBalance[i], 1.0f),
+                                                std::fmin(1.0f + audioBalance[i], 1.0f)});
                     ImGui::SameLine();
 
                     // pause/unpause
                     ImGui::Checkbox(("pause " + std::to_string(i)).c_str(), &audioPause[i]);
-                    yg::audioPause(i, audioPause[i]);
+                    yg::audio::pause(i, audioPause[i]);
                     ImGui::SameLine();
 
                     // stop
                     if (ImGui::Button(("stop " + std::to_string(i)).c_str()))
                     {
-                        yg::audioStop(i);
+                        yg::audio::stop(i);
                     }
                 }
 
                 ImGui::End();
             }
-            else if (yg::audioIsInitialized())
+            else if (yg::audio::isInitialized())
             {
-                yg::audioShutdown();
+                yg::audio::shutdown();
             }
         }
 
@@ -614,7 +611,7 @@ namespace mygame
             {
                 std::vector<uint8_t> fileData;
                 // try to read save file
-                if (!yg::readFile("s//testValue.bin", fileData))
+                if (!yg::file::readFile("s//testValue.bin", fileData))
                 {
                     testValue = *((int *)fileData.data());
                 }
@@ -623,7 +620,7 @@ namespace mygame
 
             if (ImGui::Button("save"))
             {
-                yg::writeSaveFile("testValue.bin", &testValue, sizeof(testValue));
+                yg::file::writeSaveFile("testValue.bin", &testValue, sizeof(testValue));
             }
 
             ImGui::SliderInt("persistent integer", &testValue, -100, 100);
@@ -666,7 +663,7 @@ namespace mygame
             }
 
             // simulate Box2D world
-            box2dWorld->Step(yg::timeDelta(), 6, 2);
+            box2dWorld->Step(yg::time::getDelta(), 6, 2);
 
             // the vertical slider gets updated with box2dTestHeight every frame,
             // indicating the height of the dropping Box2D body
@@ -804,7 +801,7 @@ namespace mygame
                 choreographInitialized = true;
             }
 
-            choreoTimeline->step(yg::timeDelta());
+            choreoTimeline->step(yg::time::getDelta());
 
             ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
             ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);
@@ -823,9 +820,9 @@ namespace mygame
 
         // SpriteGrid demo window
         static bool spriteGridInitialized = false;
-        static yg::GLTextureAtlas *spriteGridAtlas;
-        static yg::GLSpriteGrid *spriteGrid;
-        static yg::Trafo *spriteGridTrafo;
+        static yg::gl::TextureAtlas *spriteGridAtlas;
+        static yg::gl::SpriteGrid *spriteGrid;
+        static yg::math::Trafo *spriteGridTrafo;
         if (showSpriteGrid)
         {
             static const int tilesWide = 48; // match kenney_1bitpack_colored_packed.png
@@ -833,14 +830,14 @@ namespace mygame
             static const int maxNumTiles = tilesWide * tilesHigh;
             if (!spriteGridInitialized)
             {
-                yg::TextureConfig cfg;
+                yg::gl::TextureConfig cfg;
                 cfg.minMagFilter = GL_NEAREST;
-                spriteGridAtlas = yg::loadTextureAtlasGrid("a//kenney_1bitpack_colored_packed.png",
-                                                           tilesWide,
-                                                           tilesHigh,
-                                                           cfg);
-                spriteGrid = new yg::GLSpriteGrid();
-                spriteGridTrafo = new yg::Trafo();
+                spriteGridAtlas = yg::gl::loadTextureAtlasGrid("a//kenney_1bitpack_colored_packed.png",
+                                                               tilesWide,
+                                                               tilesHigh,
+                                                               cfg);
+                spriteGrid = new yg::gl::SpriteGrid();
+                spriteGridTrafo = new yg::math::Trafo();
                 spriteGridInitialized = true;
             }
 
@@ -879,13 +876,13 @@ namespace mygame
             spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
 
             // gl drawing
-            spriteGridTrafo->pointTo({0.0f + xOffset, yg::input(yg::INPUT::WINDOW_HEIGHT) + yOffset, 0.0f},
-                                     {0.0f + xOffset, yg::input(yg::INPUT::WINDOW_HEIGHT) + yOffset, 1.0f},
+            spriteGridTrafo->pointTo({0.0f + xOffset, yg::input::get(yg::input::WINDOW_HEIGHT) + yOffset, 0.0f},
+                                     {0.0f + xOffset, yg::input::get(yg::input::WINDOW_HEIGHT) + yOffset, 1.0f},
                                      {0.0f, 1.0f, 0.0f});
-            auto pMat = glm::ortho(0.0f, yg::input(yg::INPUT::WINDOW_WIDTH), 0.0f, yg::input(yg::INPUT::WINDOW_HEIGHT), 1.0f, -1.0f);
+            auto pMat = glm::ortho(0.0f, yg::input::get(yg::input::WINDOW_WIDTH), 0.0f, yg::input::get(yg::input::WINDOW_HEIGHT), 1.0f, -1.0f);
             auto mvp = pMat * spriteGridTrafo->mat();
-            g_assets.get<yg::GLShader>("shaderTexture")->useProgram();
-            glUniformMatrix4fv(g_assets.get<yg::GLShader>("shaderTexture")->getUniformLocation(yg::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
+            g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
+            glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
             spriteGridAtlas->texture(0)->bind();
             if (texFilter != texFilterLast) // change texture mode filter if requested
             {
@@ -979,28 +976,28 @@ namespace mygame
             ImGui::BeginGroup();
             ImGui::Text("GAMEPAD_0");
             {
-                bool connected = yg::input(yg::INPUT::GAMEPAD_0_CONNECTED);
-                bool button0 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_A);
-                bool button1 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_B);
-                bool button2 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_X);
-                bool button3 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_Y);
-                bool button4 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_LEFT_BUMPER);
-                bool button5 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_RIGHT_BUMPER);
-                bool button6 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_BACK);
-                bool button7 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_START);
-                bool button8 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_GUIDE);
-                bool button9 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_LEFT_THUMB);
-                bool button10 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_RIGHT_THUMB);
-                bool button11 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_UP);
-                bool button12 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_RIGHT);
-                bool button13 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_DOWN);
-                bool button14 = yg::input(yg::INPUT::GAMEPAD_0_BUTTON_DPAD_LEFT);
-                float axis0 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_LEFT_X);
-                float axis1 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_LEFT_Y);
-                float axis2 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_RIGHT_X);
-                float axis3 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_RIGHT_Y);
-                float axis4 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_LEFT_TRIGGER);
-                float axis5 = yg::input(yg::INPUT::GAMEPAD_0_AXIS_RIGHT_TRIGGER);
+                bool connected = yg::input::get(yg::input::GAMEPAD_0_CONNECTED);
+                bool button0 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_A);
+                bool button1 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_B);
+                bool button2 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_X);
+                bool button3 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_Y);
+                bool button4 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_LEFT_BUMPER);
+                bool button5 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_RIGHT_BUMPER);
+                bool button6 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_BACK);
+                bool button7 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_START);
+                bool button8 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_GUIDE);
+                bool button9 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_LEFT_THUMB);
+                bool button10 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_RIGHT_THUMB);
+                bool button11 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_DPAD_UP);
+                bool button12 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_DPAD_RIGHT);
+                bool button13 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_DPAD_DOWN);
+                bool button14 = yg::input::get(yg::input::GAMEPAD_0_BUTTON_DPAD_LEFT);
+                float axis0 = yg::input::get(yg::input::GAMEPAD_0_AXIS_LEFT_X);
+                float axis1 = yg::input::get(yg::input::GAMEPAD_0_AXIS_LEFT_Y);
+                float axis2 = yg::input::get(yg::input::GAMEPAD_0_AXIS_RIGHT_X);
+                float axis3 = yg::input::get(yg::input::GAMEPAD_0_AXIS_RIGHT_Y);
+                float axis4 = yg::input::get(yg::input::GAMEPAD_0_AXIS_LEFT_TRIGGER);
+                float axis5 = yg::input::get(yg::input::GAMEPAD_0_AXIS_RIGHT_TRIGGER);
                 ImGui::Checkbox("CONNECTED_0", &connected);
                 ImGui::Checkbox("A_0", &button0);
                 ImGui::Checkbox("B_0", &button1);
@@ -1029,28 +1026,28 @@ namespace mygame
             ImGui::BeginGroup();
             ImGui::Text("GAMEPAD_1");
             {
-                bool connected = yg::input(yg::INPUT::GAMEPAD_1_CONNECTED);
-                bool button0 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_A);
-                bool button1 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_B);
-                bool button2 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_X);
-                bool button3 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_Y);
-                bool button4 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_LEFT_BUMPER);
-                bool button5 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_RIGHT_BUMPER);
-                bool button6 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_BACK);
-                bool button7 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_START);
-                bool button8 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_GUIDE);
-                bool button9 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_LEFT_THUMB);
-                bool button10 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_RIGHT_THUMB);
-                bool button11 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_UP);
-                bool button12 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_RIGHT);
-                bool button13 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_DOWN);
-                bool button14 = yg::input(yg::INPUT::GAMEPAD_1_BUTTON_DPAD_LEFT);
-                float axis0 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_LEFT_X);
-                float axis1 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_LEFT_Y);
-                float axis2 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_RIGHT_X);
-                float axis3 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_RIGHT_Y);
-                float axis4 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_LEFT_TRIGGER);
-                float axis5 = yg::input(yg::INPUT::GAMEPAD_1_AXIS_RIGHT_TRIGGER);
+                bool connected = yg::input::get(yg::input::GAMEPAD_1_CONNECTED);
+                bool button0 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_A);
+                bool button1 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_B);
+                bool button2 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_X);
+                bool button3 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_Y);
+                bool button4 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_LEFT_BUMPER);
+                bool button5 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_RIGHT_BUMPER);
+                bool button6 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_BACK);
+                bool button7 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_START);
+                bool button8 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_GUIDE);
+                bool button9 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_LEFT_THUMB);
+                bool button10 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_RIGHT_THUMB);
+                bool button11 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_DPAD_UP);
+                bool button12 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_DPAD_RIGHT);
+                bool button13 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_DPAD_DOWN);
+                bool button14 = yg::input::get(yg::input::GAMEPAD_1_BUTTON_DPAD_LEFT);
+                float axis0 = yg::input::get(yg::input::GAMEPAD_1_AXIS_LEFT_X);
+                float axis1 = yg::input::get(yg::input::GAMEPAD_1_AXIS_LEFT_Y);
+                float axis2 = yg::input::get(yg::input::GAMEPAD_1_AXIS_RIGHT_X);
+                float axis3 = yg::input::get(yg::input::GAMEPAD_1_AXIS_RIGHT_Y);
+                float axis4 = yg::input::get(yg::input::GAMEPAD_1_AXIS_LEFT_TRIGGER);
+                float axis5 = yg::input::get(yg::input::GAMEPAD_1_AXIS_RIGHT_TRIGGER);
                 ImGui::Checkbox("CONNECTED_1", &connected);
                 ImGui::Checkbox("A_1", &button0);
                 ImGui::Checkbox("B_1", &button1);
@@ -1088,12 +1085,12 @@ namespace mygame
             if (ImGui::Button("call ls()"))
             {
                 lsResultText.clear();
-                auto lsResult = yg::ls(lsPattern);
-                yg::logi("ls(\"%v\"): %v results:", lsPattern, lsResult.size());
+                auto lsResult = yg::file::ls(lsPattern);
+                yg::log::info("ls(\"%v\"): %v results:", lsPattern, lsResult.size());
 
                 for (const auto &s : lsResult)
                 {
-                    yg::logi("%v", s);
+                    yg::log::info("%v", s);
                     lsResultText += (s + "\n");
                 }
             }
@@ -1104,10 +1101,10 @@ namespace mygame
         // license window
         if (showLicense)
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH) * 0.5f,
-                                                       yg::input(yg::INPUT::WINDOW_HEIGHT) * 0.5f),
-                                                ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH),
-                                                       yg::input(yg::INPUT::WINDOW_HEIGHT)));
+            ImGui::SetNextWindowSizeConstraints(ImVec2(yg::input::get(yg::input::WINDOW_WIDTH) * 0.5f,
+                                                       yg::input::get(yg::input::WINDOW_HEIGHT) * 0.5f),
+                                                ImVec2(yg::input::get(yg::input::WINDOW_WIDTH),
+                                                       yg::input::get(yg::input::WINDOW_HEIGHT)));
             ImGui::Begin("License", &showLicense, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
                 whereas ImGui::TextWrapped() has a size limit and cuts the content. */

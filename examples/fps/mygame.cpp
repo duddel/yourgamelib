@@ -3,9 +3,6 @@
 #include <vector>
 #include "btBulletDynamicsCommon.h"
 #include "yourgame/yourgame.h"
-#include "yourgame/toolbox.h"
-#include "yourgame/bulletenv.h"
-#include "yourgame/audioplayer.h"
 #include "imgui.h"
 
 namespace yg = yourgame; // convenience
@@ -22,67 +19,67 @@ namespace mygame
         btRigidBody *body;
     };
 
-    yg::AssetManager g_assets;
-    yg::BulletEnv g_bullet;
-    yg::Camera g_camera;
-    yg::Trafo g_camTrafoFltr;
+    yg::util::AssetManager g_assets;
+    yg::util::BulletEnv g_bullet;
+    yg::math::Camera g_camera;
+    yg::math::Trafo g_camTrafoFltr;
     Player g_player;
     std::vector<Box> g_boxes;
-    yg::GLLightsource g_light;
+    yg::gl::Lightsource g_light;
 
     void init(int argc, char *argv[])
     {
-        yg::audioInit(2, 44100, 5);
-        yg::audioStoreFile("a//laserSmall_000.ogg");
+        yg::audio::init(2, 44100, 5);
+        yg::audio::storeFile("a//laserSmall_000.ogg");
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
-        g_camera.setPerspective(65.0f, yg::input(yg::INPUT::WINDOW_ASPECT_RATIO), 0.2f, 100.0f);
+        g_camera.setPerspective(65.0f, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 0.2f, 100.0f);
 
         // load license info file
         {
             std::vector<uint8_t> licFileData;
-            yg::readFile("a//LICENSE_web.txt", licFileData);
+            yg::file::readFile("a//LICENSE_web.txt", licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
 
-        g_assets.insert("geoCube", yg::loadGeometry("a//cube.obj"));
-        g_assets.insert("geoGrid", yg::loadGeometry("a//grid.obj"));
-        g_assets.insert("geoCross", yg::loadGeometry("a//cross.obj"));
-        g_assets.insert("geoBlaster", yg::loadGeometry("a//blasterD.obj", "a//blasterD.mtl"));
+        g_assets.insert("geoCube", yg::gl::loadGeometry("a//cube.obj"));
+        g_assets.insert("geoGrid", yg::gl::loadGeometry("a//grid.obj"));
+        g_assets.insert("geoCross", yg::gl::loadGeometry("a//cross.obj"));
+        g_assets.insert("geoBlaster", yg::gl::loadGeometry("a//blasterD.obj", "a//blasterD.mtl"));
 
-        g_assets.insert("shaderDiffuseColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
-                                                              {GL_FRAGMENT_SHADER, "a//diffusecolor.frag"}}));
+        g_assets.insert("shaderDiffuseColor", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                                  {GL_FRAGMENT_SHADER, "a//diffusecolor.frag"}}));
 
-        g_assets.insert("shaderSimpleColor", yg::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
-                                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
+        g_assets.insert("shaderSimpleColor", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
+                                                                 {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
 
-        g_assets.insert("shaderDiffuseTex", yg::loadShader({{GL_VERTEX_SHADER, "a//default_instanced.vert"},
-                                                            {GL_FRAGMENT_SHADER, "a//diffusetex.frag"}}));
+        g_assets.insert("shaderDiffuseTex", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default_instanced.vert"},
+                                                                {GL_FRAGMENT_SHADER, "a//diffusetex.frag"}}));
 
         {
-            yg::TextureConfig cfg;
+            yg::gl::TextureConfig cfg;
             cfg.minMagFilter = GL_NEAREST;
-            g_assets.insert("texCube", yg::loadTexture("a//cube.png", cfg));
+            g_assets.insert("texCube", yg::gl::loadTexture("a//cube.png", cfg));
         }
 
         // for instanced drawing of the cube, add and configure a buffer for per-cube (per draw instance) matrixes:
         GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
-        g_assets.get<yg::GLGeometry>("geoCube")->addBuffer("instModelMat", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
-        g_assets.get<yg::GLGeometry>("geoCube")
+        g_assets.get<yg::gl::Geometry>("geoCube")->addBuffer("instModelMat", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+        g_assets.get<yg::gl::Geometry>("geoCube")
             ->addBufferToShape("main",
-                               {{yg::attrLocInstModelMatCol0, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)0, 1},
-                                {yg::attrLocInstModelMatCol1, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(vec4Size), 1},
-                                {yg::attrLocInstModelMatCol2, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(2 * vec4Size), 1},
-                                {yg::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(3 * vec4Size), 1}},
+                               {{yg::gl::attrLocInstModelMatCol0, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)0, 1},
+                                {yg::gl::attrLocInstModelMatCol1, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(vec4Size), 1},
+                                {yg::gl::attrLocInstModelMatCol2, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(2 * vec4Size), 1},
+                                {yg::gl::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, 4 * vec4Size, (void *)(3 * vec4Size), 1}},
                                "instModelMat");
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
-        //yg::enableVSync(true);
-        //yg::enableFullscreen(true);
+        //yg::control::enableVSync(true);
+        //yg::control::enableFullscreen(true);
 #ifndef __EMSCRIPTEN__ // todo: we can not initially catch the mouse if the viewport does not have focus (web)
-        yg::catchMouse(true);
+        yg::control::catchMouse(true);
 #endif
 
         g_bullet.m_dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
@@ -144,7 +141,7 @@ namespace mygame
     void tick()
     {
         // tick bullet world
-        g_bullet.m_dynamicsWorld->stepSimulation(yg::timeDelta(), 10);
+        g_bullet.m_dynamicsWorld->stepSimulation(yg::time::getDelta(), 10);
 
         // set camera trafo from bullet player body
         btTransform trans;
@@ -152,12 +149,12 @@ namespace mygame
         g_camera.trafo()->setTranslation({trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()});
 
         // assemble force vector from WASD movement keys
-        glm::vec3 forceX = g_camera.trafo()->getAxisLocal(yg::Trafo::AXIS::X);
-        glm::vec3 forceZ = g_camera.trafo()->getAxisLocal(yg::Trafo::AXIS::Z);
+        glm::vec3 forceX = g_camera.trafo()->getAxisLocal(yg::math::Axis::X);
+        glm::vec3 forceZ = g_camera.trafo()->getAxisLocal(yg::math::Axis::Z);
         forceX[1] = 0.0f;
         forceZ[1] = 0.0f;
-        forceX *= (yg::input(yg::INPUT::KEY_D) - yg::input(yg::INPUT::KEY_A));
-        forceZ *= (yg::input(yg::INPUT::KEY_S) - yg::input(yg::INPUT::KEY_W));
+        forceX *= (yg::input::get(yg::input::KEY_D) - yg::input::get(yg::input::KEY_A));
+        forceZ *= (yg::input::get(yg::input::KEY_S) - yg::input::get(yg::input::KEY_W));
 
         glm::vec3 force = forceX + forceZ;
 
@@ -170,21 +167,21 @@ namespace mygame
         }
 
         // jump
-        if (yg::inputDelta(yg::INPUT::KEY_SPACE) > 0.0f)
+        if (yg::input::getDelta(yg::input::KEY_SPACE) > 0.0f)
         {
             g_player.body->applyCentralImpulse({0, 400, 0});
         }
 
         // fire
-        if (yg::inputDelta(yg::INPUT::MOUSE_BUTTON_1) > 0.0f ||
-            yg::inputDelta(yg::INPUT::KEY_E) > 0.0f)
+        if (yg::input::getDelta(yg::input::MOUSE_BUTTON_1) > 0.0f ||
+            yg::input::getDelta(yg::input::KEY_E) > 0.0f)
         {
-            yg::audioPlay("a//laserSmall_000.ogg");
+            yg::audio::play("a//laserSmall_000.ogg");
 
             // cast ray from camera into scene and test what it hits
             static const float rayLength = 100.0f;
             auto eye = g_camera.trafo()->getEye();
-            auto dir = -g_camera.trafo()->getAxisLocal(yg::Trafo::AXIS::Z);
+            auto dir = -g_camera.trafo()->getAxisLocal(yg::math::Axis::Z);
             auto to = eye + (rayLength * dir);
             btVector3 btFrom(eye.x, eye.y, eye.z);
             btVector3 btTo(to.x, to.y, to.z);
@@ -204,19 +201,19 @@ namespace mygame
         }
 
         // lock/release mouse
-        if (yg::inputDelta(yg::INPUT::KEY_M) > 0.0f)
+        if (yg::input::getDelta(yg::input::KEY_M) > 0.0f)
         {
-            yg::catchMouse(!yg::inputi(yg::INPUT::MOUSE_CATCHED));
+            yg::control::catchMouse(!yg::input::geti(yg::input::MOUSE_CATCHED));
         }
 
         // exit
-        if (yg::input(yg::INPUT::KEY_ESCAPE))
+        if (yg::input::get(yg::input::KEY_ESCAPE))
         {
-            yg::notifyShutdown();
+            yg::control::notifyShutdown();
         }
 
-        g_camera.setAspect(yg::input(yg::INPUT::WINDOW_ASPECT_RATIO));
-        glViewport(0, 0, yg::inputi(yg::INPUT::WINDOW_WIDTH), yg::inputi(yg::INPUT::WINDOW_HEIGHT));
+        g_camera.setAspect(yg::input::get(yg::input::WINDOW_ASPECT_RATIO));
+        glViewport(0, 0, yg::input::geti(yg::input::WINDOW_WIDTH), yg::input::geti(yg::input::WINDOW_HEIGHT));
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         static bool showLicenseWindow = false;
@@ -232,19 +229,19 @@ namespace mygame
             }
 
             ImGui::Text("| mouse delta: %f,%f, player velocity: %f, fps: %f",
-                        yg::inputDelta(yg::INPUT::MOUSE_X),
-                        yg::inputDelta(yg::INPUT::MOUSE_Y),
+                        yg::input::getDelta(yg::input::MOUSE_X),
+                        yg::input::getDelta(yg::input::MOUSE_Y),
                         g_player.body->getLinearVelocity().length(),
-                        (float)(1.0 / yg::timeDelta()));
+                        (float)(1.0 / yg::time::getDelta()));
             ImGui::EndMainMenuBar();
         }
 
         if (showLicenseWindow)
         {
-            ImGui::SetNextWindowSizeConstraints(ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH) * 0.5f,
-                                                       yg::input(yg::INPUT::WINDOW_HEIGHT) * 0.5f),
-                                                ImVec2(yg::input(yg::INPUT::WINDOW_WIDTH) * 0.8f,
-                                                       yg::input(yg::INPUT::WINDOW_HEIGHT) * 0.8f));
+            ImGui::SetNextWindowSizeConstraints(ImVec2(yg::input::get(yg::input::WINDOW_WIDTH) * 0.5f,
+                                                       yg::input::get(yg::input::WINDOW_HEIGHT) * 0.5f),
+                                                ImVec2(yg::input::get(yg::input::WINDOW_WIDTH) * 0.8f,
+                                                       yg::input::get(yg::input::WINDOW_HEIGHT) * 0.8f));
             ImGui::Begin("License", &showLicenseWindow, (ImGuiWindowFlags_NoCollapse));
             /* The following procedure allows displaying long wrapped text,
                whereas ImGui::TextWrapped() has a size limit and cuts the content. */
@@ -255,21 +252,21 @@ namespace mygame
         }
 
         // first-person camera
-        g_camera.trafo()->rotateGlobal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_X), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(-0.002f * yg::inputDelta(yg::INPUT::MOUSE_Y), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateGlobal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_X), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(-0.001f * yg::inputDelta(yg::INPUT::TOUCH_0_Y), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * 1.0f * yg::input(yg::INPUT::KEY_LEFT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::timeDelta()) * -1.0f * yg::input(yg::INPUT::KEY_RIGHT), yg::Trafo::AXIS::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * 1.0f * yg::input(yg::INPUT::KEY_UP), yg::Trafo::AXIS::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::timeDelta()) * -1.0f * yg::input(yg::INPUT::KEY_DOWN), yg::Trafo::AXIS::X);
+        g_camera.trafo()->rotateGlobal(-0.002f * yg::input::getDelta(yg::input::MOUSE_X), yg::math::Axis::Y);
+        g_camera.trafo()->rotateLocal(-0.002f * yg::input::getDelta(yg::input::MOUSE_Y), yg::math::Axis::X);
+        g_camera.trafo()->rotateGlobal(-0.001f * yg::input::getDelta(yg::input::TOUCH_0_X), yg::math::Axis::Y);
+        g_camera.trafo()->rotateLocal(-0.001f * yg::input::getDelta(yg::input::TOUCH_0_Y), yg::math::Axis::X);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::time::getDelta()) * 1.0f * yg::input::get(yg::input::KEY_LEFT), yg::math::Axis::Y);
+        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::time::getDelta()) * -1.0f * yg::input::get(yg::input::KEY_RIGHT), yg::math::Axis::Y);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::time::getDelta()) * 1.0f * yg::input::get(yg::input::KEY_UP), yg::math::Axis::X);
+        g_camera.trafo()->rotateLocal(static_cast<float>(yg::time::getDelta()) * -1.0f * yg::input::get(yg::input::KEY_DOWN), yg::math::Axis::X);
 
         // prepare diffuse color shader
-        auto shdrDiffCol = g_assets.get<yg::GLShader>("shaderDiffuseColor");
+        auto shdrDiffCol = g_assets.get<yg::gl::Shader>("shaderDiffuseColor");
         shdrDiffCol->useProgram(&g_light);
 
         // texture shader
-        auto shdrTex = g_assets.get<yg::GLShader>("shaderDiffuseTex");
+        auto shdrTex = g_assets.get<yg::gl::Shader>("shaderDiffuseTex");
         shdrTex->useProgram(&g_light, &g_camera);
 
         // draw boxes
@@ -277,7 +274,7 @@ namespace mygame
             std::vector<glm::mat4> trafos;
             for (const auto &b : g_boxes)
             {
-                yg::Trafo modelTrafo;
+                yg::math::Trafo modelTrafo;
                 // get box data from bullet
                 btTransform trans;
                 b.body->getMotionState()->getWorldTransform(trans);
@@ -289,14 +286,14 @@ namespace mygame
                 modelTrafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
                 trafos.push_back(modelTrafo.mat());
             }
-            auto geoCube = g_assets.get<yg::GLGeometry>("geoCube");
+            auto geoCube = g_assets.get<yg::gl::Geometry>("geoCube");
             geoCube->bufferData("instModelMat", trafos.size() * sizeof(trafos[0]), trafos.data());
-            yg::DrawConfig cfg;
+            yg::gl::DrawConfig cfg;
             cfg.shader = shdrTex;
-            cfg.textures = {g_assets.get<yg::GLTexture>("texCube")};
+            cfg.textures = {g_assets.get<yg::gl::Texture>("texCube")};
             cfg.camera = &g_camera;
             cfg.instancecount = g_boxes.size();
-            yg::drawGeo(geoCube, cfg);
+            yg::gl::drawGeo(geoCube, cfg);
         }
 
         // draw blaster
@@ -304,48 +301,48 @@ namespace mygame
             shdrDiffCol->useProgram();
 
             // filter camera trafo over time for blaster "displacement"
-            g_camTrafoFltr.lerp(static_cast<float>(yg::timeDelta()) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
+            g_camTrafoFltr.lerp(static_cast<float>(yg::time::getDelta()) * 30.0f, *g_camera.trafo(), &g_camTrafoFltr);
             // filter rotation only, reset translation to camera eye:
             g_camTrafoFltr.setTranslation(g_camera.trafo()->getEye());
 
             // blaster Trafo: filtered camera trafo, followed by manual displacement and scale
-            yg::Trafo blasterTrafo = g_camTrafoFltr;
+            yg::math::Trafo blasterTrafo = g_camTrafoFltr;
             blasterTrafo.translateLocal({0.275f, -0.35f, -0.7f});
             blasterTrafo.setScaleLocal(1.25f);
 
-            yg::DrawConfig cfg;
+            yg::gl::DrawConfig cfg;
             cfg.shader = shdrDiffCol;
             cfg.modelMat = blasterTrafo.mat();
             cfg.camera = &g_camera;
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoBlaster"), cfg);
+            yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("geoBlaster"), cfg);
         }
 
         // draw grid + crosshair
         {
-            auto shdrSimpCol = g_assets.get<yg::GLShader>("shaderSimpleColor");
+            auto shdrSimpCol = g_assets.get<yg::gl::Shader>("shaderSimpleColor");
             shdrSimpCol->useProgram();
 
             // grid
-            yg::DrawConfig cfg;
+            yg::gl::DrawConfig cfg;
             cfg.shader = shdrSimpCol;
             cfg.camera = &g_camera;
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoGrid"), cfg);
+            yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("geoGrid"), cfg);
 
             // crosshair
             static const float crossOrthoScale = 50.0f;
-            auto crossMvp = glm::ortho(-crossOrthoScale * yg::input(yg::INPUT::WINDOW_ASPECT_RATIO),
-                                       crossOrthoScale * yg::input(yg::INPUT::WINDOW_ASPECT_RATIO),
+            auto crossMvp = glm::ortho(-crossOrthoScale * yg::input::get(yg::input::WINDOW_ASPECT_RATIO),
+                                       crossOrthoScale * yg::input::get(yg::input::WINDOW_ASPECT_RATIO),
                                        -crossOrthoScale,
                                        crossOrthoScale);
             cfg.camera = nullptr;
             cfg.modelMat = crossMvp;
-            yg::drawGeo(g_assets.get<yg::GLGeometry>("geoCross"), cfg);
+            yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("geoCross"), cfg);
         }
     }
 
     void shutdown()
     {
-        yg::audioShutdown();
+        yg::audio::shutdown();
         g_assets.clear();
     }
 } // namespace mygame

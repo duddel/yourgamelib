@@ -27,38 +27,38 @@ namespace yourgame_internal_android
 {
     int32_t handleInputEvent(AInputEvent *inputEvent)
     {
-        static const yourgame::INPUT srcsTouchDown[10] = {yourgame::INPUT::TOUCH_0_DOWN,
-                                                          yourgame::INPUT::TOUCH_1_DOWN,
-                                                          yourgame::INPUT::TOUCH_2_DOWN,
-                                                          yourgame::INPUT::TOUCH_3_DOWN,
-                                                          yourgame::INPUT::TOUCH_4_DOWN,
-                                                          yourgame::INPUT::TOUCH_5_DOWN,
-                                                          yourgame::INPUT::TOUCH_6_DOWN,
-                                                          yourgame::INPUT::TOUCH_7_DOWN,
-                                                          yourgame::INPUT::TOUCH_8_DOWN,
-                                                          yourgame::INPUT::TOUCH_9_DOWN};
+        static const yourgame::input::Source srcsTouchDown[10] = {yourgame::input::TOUCH_0_DOWN,
+                                                                  yourgame::input::TOUCH_1_DOWN,
+                                                                  yourgame::input::TOUCH_2_DOWN,
+                                                                  yourgame::input::TOUCH_3_DOWN,
+                                                                  yourgame::input::TOUCH_4_DOWN,
+                                                                  yourgame::input::TOUCH_5_DOWN,
+                                                                  yourgame::input::TOUCH_6_DOWN,
+                                                                  yourgame::input::TOUCH_7_DOWN,
+                                                                  yourgame::input::TOUCH_8_DOWN,
+                                                                  yourgame::input::TOUCH_9_DOWN};
 
-        static const yourgame::INPUT srcsTouchX[10] = {yourgame::INPUT::TOUCH_0_X,
-                                                       yourgame::INPUT::TOUCH_1_X,
-                                                       yourgame::INPUT::TOUCH_2_X,
-                                                       yourgame::INPUT::TOUCH_3_X,
-                                                       yourgame::INPUT::TOUCH_4_X,
-                                                       yourgame::INPUT::TOUCH_5_X,
-                                                       yourgame::INPUT::TOUCH_6_X,
-                                                       yourgame::INPUT::TOUCH_7_X,
-                                                       yourgame::INPUT::TOUCH_8_X,
-                                                       yourgame::INPUT::TOUCH_9_X};
+        static const yourgame::input::Source srcsTouchX[10] = {yourgame::input::TOUCH_0_X,
+                                                               yourgame::input::TOUCH_1_X,
+                                                               yourgame::input::TOUCH_2_X,
+                                                               yourgame::input::TOUCH_3_X,
+                                                               yourgame::input::TOUCH_4_X,
+                                                               yourgame::input::TOUCH_5_X,
+                                                               yourgame::input::TOUCH_6_X,
+                                                               yourgame::input::TOUCH_7_X,
+                                                               yourgame::input::TOUCH_8_X,
+                                                               yourgame::input::TOUCH_9_X};
 
-        static const yourgame::INPUT srcsTouchY[10] = {yourgame::INPUT::TOUCH_0_Y,
-                                                       yourgame::INPUT::TOUCH_1_Y,
-                                                       yourgame::INPUT::TOUCH_2_Y,
-                                                       yourgame::INPUT::TOUCH_3_Y,
-                                                       yourgame::INPUT::TOUCH_4_Y,
-                                                       yourgame::INPUT::TOUCH_5_Y,
-                                                       yourgame::INPUT::TOUCH_6_Y,
-                                                       yourgame::INPUT::TOUCH_7_Y,
-                                                       yourgame::INPUT::TOUCH_8_Y,
-                                                       yourgame::INPUT::TOUCH_9_Y};
+        static const yourgame::input::Source srcsTouchY[10] = {yourgame::input::TOUCH_0_Y,
+                                                               yourgame::input::TOUCH_1_Y,
+                                                               yourgame::input::TOUCH_2_Y,
+                                                               yourgame::input::TOUCH_3_Y,
+                                                               yourgame::input::TOUCH_4_Y,
+                                                               yourgame::input::TOUCH_5_Y,
+                                                               yourgame::input::TOUCH_6_Y,
+                                                               yourgame::input::TOUCH_7_Y,
+                                                               yourgame::input::TOUCH_8_Y,
+                                                               yourgame::input::TOUCH_9_Y};
 
         int32_t evType = AInputEvent_getType(inputEvent);
         switch (evType)

@@ -19,37 +19,37 @@ freely, subject to the following restrictions:
 */
 #include <android_native_app_glue.h>
 #include "yourgame_internal/yourgame_internal_android.h"
-#include "yourgame/logging.h"
+#include "yourgame/log.h"
 
 static void handleAppCmd(struct android_app *app, int32_t appCmd)
 {
     // logging works after yourgame_internal_android::init() was called
-    // todo: split initLogging() from init()?
+    // todo: split log::init() from init()?
 
     switch (appCmd)
     {
     case APP_CMD_INIT_WINDOW:
         yourgame_internal_android::init(app);
-        yourgame::logd("APP_CMD_INIT_WINDOW");
+        yourgame::log::debug("APP_CMD_INIT_WINDOW");
         break;
     case APP_CMD_TERM_WINDOW:
         yourgame_internal_android::shutdown();
-        yourgame::logd("APP_CMD_TERM_WINDOW");
+        yourgame::log::debug("APP_CMD_TERM_WINDOW");
         break;
     case APP_CMD_GAINED_FOCUS:
-        yourgame::logd("APP_CMD_GAINED_FOCUS");
+        yourgame::log::debug("APP_CMD_GAINED_FOCUS");
         break;
     case APP_CMD_LOST_FOCUS:
-        yourgame::logd("APP_CMD_LOST_FOCUS");
+        yourgame::log::debug("APP_CMD_LOST_FOCUS");
         break;
     case APP_CMD_SAVE_STATE:
-        yourgame::logd("APP_CMD_SAVE_STATE");
+        yourgame::log::debug("APP_CMD_SAVE_STATE");
         break;
     case APP_CMD_DESTROY:
-        yourgame::logd("APP_CMD_DESTROY");
+        yourgame::log::debug("APP_CMD_DESTROY");
         break;
     case APP_CMD_STOP:
-        yourgame::logd("APP_CMD_STOP");
+        yourgame::log::debug("APP_CMD_STOP");
         break;
     }
 }

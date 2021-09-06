@@ -78,7 +78,8 @@ ldr = FileSystemLoader(tgtDir)
 jEnv = Environment(loader=ldr)
 
 # process CMakeLists.txt
-dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")] # todo: extend source file pattern
+# todo: extend source file pattern
+dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")]
 templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_GIT_COMMIT_INIT=gitSha,
@@ -105,5 +106,6 @@ templ.stream(
 # process README.md
 templ = jEnv.get_template("README.md")
 templ.stream(
-    YOURGAME_PROJECT_NAME=newProjName
+    YOURGAME_PROJECT_NAME=newProjName,
+    YOURGAME_GIT_COMMIT_INIT=gitSha
 ).dump(os.path.join(tgtDir, "README.md"))

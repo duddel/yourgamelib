@@ -30,7 +30,7 @@ namespace yourgame_internal_android
     void tick();
     void shutdown();
     void tickInput();
-    void initFileIO(struct android_app *app);
+    void initFile(struct android_app *app);
 } // namespace yourgame_internal_android
 
 #endif

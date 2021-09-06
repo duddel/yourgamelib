@@ -7,25 +7,30 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 )
 
 list(APPEND YOURGAME_SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/camera.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glbuffer.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glconventions.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gldrawing.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glframebuffer.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glgeometry.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gllightsource.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glloading.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glparticles.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshader.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glshape.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/glspritegrid.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gltexture.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gltextureatlas.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/buffer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/conventions.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/drawing.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/framebuffer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/geometry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/lightsource.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/loading.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/particles.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/shader.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/shape.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/spritegrid.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/texture.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/textureatlas.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/camera.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/particles.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/trafo.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/bulletenv.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/headerlibs.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/particles.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/trafo.cpp
 )
 
 list(APPEND YOURGAME_INC_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox
+)
+
+list(APPEND YOURGAME_COMPILE_DEFS
+  YOURGAME_TOOLBOX
 )

@@ -18,17 +18,41 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*
-these functions must be defined in the user code. they get called from
-within the yourgame library
-*/
 #ifndef MYGAME_EXTERNAL_H
 #define MYGAME_EXTERNAL_H
 
+/**
+\brief User functions that are linked to and called by the yourgame library framework
+
+The yourgame library expects the functions in the \ref mygame "mygame" namespace to be implemented.
+They are called by the yourgame library framework at specific moments.
+The underlying application logic (main function) is provided by the framework.
+Implementing these functions is mandatory and makes the user project executable together with the yourgame library.
+*/
 namespace mygame
 {
+    /**
+    \brief user project initialization
+    
+    called by the yourgame framework after it has been initialized
+    
+    \param argc number of arguments
+    \param argv arguments, forwarded from main() (C style application args)
+    */
     extern void init(int argc, char *argv[]);
+
+    /**
+    \brief user project update/draw (once pre frame)
+    
+    called by the yourgame framework once per frame
+    */
     extern void tick();
+
+    /**
+    \brief user project clean-up
+
+    called by the yourgame framework before it is shut down
+    */
     extern void shutdown();
 } // namespace mygame
 

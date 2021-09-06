@@ -35,8 +35,8 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/yourgame_internal_android.h"
 #include "yourgame_internal/mygame_external.h"
 #include "yourgame_internal/input.h"
-#include "yourgame_internal/logging.h"
-#include "yourgame_internal/timing.h"
+#include "yourgame_internal/log.h"
+#include "yourgame_internal/time.h"
 
 namespace yourgame_internal_android
 {
@@ -58,9 +58,9 @@ namespace yourgame_internal_android
             EGLint width, height;
             eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
             eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
-            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_WIDTH, static_cast<float>(width));
-            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_HEIGHT, static_cast<float>(height));
-            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_ASPECT_RATIO,
+            yourgame_internal::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO,
                                          static_cast<float>(width) / static_cast<float>(height));
         }
     } // namespace
@@ -90,22 +90,22 @@ namespace yourgame_internal_android
         _app = app;
 
         _app->onInputEvent = onInputEvent;
-        yourgame_internal_android::initFileIO(_app);
+        yourgame_internal_android::initFile(_app);
 
         // initialize logging
         char *initLogArgv = nullptr;
-        yourgame_internal::initLogging(0, &initLogArgv);
+        yourgame_internal::log::init(0, &initLogArgv);
 
         // initialize EGL
         _display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
         if (_display == EGL_NO_DISPLAY)
         {
-            yourgame::loge("eglGetDisplay(EGL_DEFAULT_DISPLAY) returned EGL_NO_DISPLAY");
+            yourgame::log::error("eglGetDisplay(EGL_DEFAULT_DISPLAY) returned EGL_NO_DISPLAY");
         }
 
         if (eglInitialize(_display, 0, 0) != EGL_TRUE)
         {
-            yourgame::loge("eglInitialize(..) returned with an error");
+            yourgame::log::error("eglInitialize(..) returned with an error");
         }
 
         // use these attributes to choose a matching EGL frame buffer config
@@ -120,19 +120,19 @@ namespace yourgame_internal_android
         EGLint numConfigs = 0;
         if (eglChooseConfig(_display, eglAttribs, nullptr, 0, &numConfigs) != EGL_TRUE)
         {
-            yourgame::loge("eglChooseConfig(..) returned with an error");
+            yourgame::log::error("eglChooseConfig(..) returned with an error");
         }
 
         if (numConfigs == 0)
         {
-            yourgame::loge("eglChooseConfig(..) returned 0 matching configs");
+            yourgame::log::error("eglChooseConfig(..) returned 0 matching configs");
         }
 
         /* the first returned config matches the desired attributes "best",
         but might not be the ideal choice. we take in anyway.
         todo: we could check attributes of the matching configs and choose
         a suitable config by some criteria (with eglGetConfigAttrib(..)) */
-        yourgame::logi("choosing the first egl config (of %v total configs)", numConfigs);
+        yourgame::log::info("choosing the first egl config (of %v total configs)", numConfigs);
 
         // get the actual (first) matching config
         EGLConfig config;
@@ -143,7 +143,7 @@ namespace yourgame_internal_android
         appropriately (via ANativeWindow_setBuffersGeometry(..)) */
         EGLint format;
         eglGetConfigAttrib(_display, config, EGL_NATIVE_VISUAL_ID, &format);
-        yourgame::logi("calling ANativeWindow_setBuffersGeometry(..) with format %v", format);
+        yourgame::log::info("calling ANativeWindow_setBuffersGeometry(..) with format %v", format);
         ANativeWindow_setBuffersGeometry(_win, 0, 0, format);
 
         // create context, surface and make the context current
@@ -153,7 +153,7 @@ namespace yourgame_internal_android
         _eglContext = eglCreateContext(_display, config, EGL_NO_CONTEXT, contextAttribs);
         if (_eglContext == EGL_NO_CONTEXT)
         {
-            yourgame::loge("eglCreateContext(..) returned EGL_NO_CONTEXT");
+            yourgame::log::error("eglCreateContext(..) returned EGL_NO_CONTEXT");
         }
         _surface = eglCreateWindowSurface(_display, config, _win, NULL);
         eglMakeCurrent(_display, _surface, _surface, _eglContext);
@@ -161,10 +161,10 @@ namespace yourgame_internal_android
         // update window size in yourgame
         updateWinSize();
 
-        yourgame::logi("GL_VERSION: %v", glGetString(GL_VERSION));
-        yourgame::logi("GL_VENDOR: %v", glGetString(GL_VENDOR));
-        yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
-        yourgame::logi("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
+        yourgame::log::info("GL_VERSION: %v", glGetString(GL_VERSION));
+        yourgame::log::info("GL_VENDOR: %v", glGetString(GL_VENDOR));
+        yourgame::log::info("GL_RENDERER: %v", glGetString(GL_RENDERER));
+        yourgame::log::info("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
 
 #ifdef YOURGAME_EXTPROJ_imgui
         IMGUI_CHECKVERSION();
@@ -192,14 +192,14 @@ namespace yourgame_internal_android
         // get the initial time point just before tick() starts, which will
         // result in a small time delta in the first tick() cycle.
         // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
-        yourgame_internal::initTiming();
-        yourgame::logi("steady_clock precision: %vs (%vns)", yourgame::getClockPeriod(), yourgame::getClockPeriod() * 1.0e+9);
+        yourgame_internal::time::init();
+        yourgame::log::info("steady_clock precision: %vs (%vns)", yourgame::time::getClockPeriod(), yourgame::time::getClockPeriod() * 1.0e+9);
     }
 
     void tick()
     {
         // timing
-        yourgame_internal::tickTiming();
+        yourgame_internal::time::tick();
 
         if (_display != EGL_NO_DISPLAY)
         {
@@ -264,63 +264,65 @@ namespace yourgame_internal_android
 
 namespace yourgame
 {
-    void notifyShutdown()
+    namespace control
     {
-        ANativeActivity_finish(yourgame_internal_android::_app->activity);
+        void notifyShutdown()
+        {
+            ANativeActivity_finish(yourgame_internal_android::_app->activity);
+        }
+
+        int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
+        {
+            // the whole procedure (get environment, etc.) is done every time to
+            // not risk inconsistencies with global references to JNI objects.
+
+            JavaVM *jVM = yourgame_internal_android::_app->activity->vm;
+            JNIEnv *jEnv = NULL;
+
+            // todo: clearify JNI version to request
+            jint jniRet = jVM->GetEnv((void **)&jEnv, JNI_VERSION_1_6);
+            if (jniRet == JNI_ERR)
+            {
+                return -1;
+            }
+
+            jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
+            if (jniRet != JNI_OK)
+            {
+                return -2;
+            }
+
+            jclass natActClazz = jEnv->GetObjectClass(yourgame_internal_android::_app->activity->clazz);
+            if (natActClazz == NULL)
+            {
+                return -3;
+            }
+
+            // get the "method ID"
+            jmethodID methodID = jEnv->GetMethodID(natActClazz, "receiveCmd", "(IIII)I");
+            if (methodID == NULL)
+            {
+                return -4;
+            }
+
+            // call the actual method
+            jint methodRet = jEnv->CallIntMethod(yourgame_internal_android::_app->activity->clazz, methodID, cmdId, data0, data1, data2);
+            if (methodRet != 0)
+            {
+                return -10;
+            }
+
+            jniRet = jVM->DetachCurrentThread();
+            if (jniRet != JNI_OK)
+            {
+                return -5;
+            }
+
+            return 0;
+        }
+
+        void enableFullscreen(bool enable) {}
+        void enableVSync(bool enable) {}
+        void catchMouse(bool enable) {}
     }
-
-    int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
-    {
-        // the whole procedure (get environment, etc.) is done every time to
-        // not risk inconsistencies with global references to JNI objects.
-
-        JavaVM *jVM = yourgame_internal_android::_app->activity->vm;
-        JNIEnv *jEnv = NULL;
-
-        // todo: clearify JNI version to request
-        jint jniRet = jVM->GetEnv((void **)&jEnv, JNI_VERSION_1_6);
-        if (jniRet == JNI_ERR)
-        {
-            return -1;
-        }
-
-        jniRet = jVM->AttachCurrentThread(&jEnv, NULL);
-        if (jniRet != JNI_OK)
-        {
-            return -2;
-        }
-
-        jclass natActClazz = jEnv->GetObjectClass(yourgame_internal_android::_app->activity->clazz);
-        if (natActClazz == NULL)
-        {
-            return -3;
-        }
-
-        // get the "method ID"
-        jmethodID methodID = jEnv->GetMethodID(natActClazz, "receiveCmd", "(IIII)I");
-        if (methodID == NULL)
-        {
-            return -4;
-        }
-
-        // call the actual method
-        jint methodRet = jEnv->CallIntMethod(yourgame_internal_android::_app->activity->clazz, methodID, cmdId, data0, data1, data2);
-        if (methodRet != 0)
-        {
-            return -10;
-        }
-
-        jniRet = jVM->DetachCurrentThread();
-        if (jniRet != JNI_OK)
-        {
-            return -5;
-        }
-
-        return 0;
-    }
-
-    void enableFullscreen(bool enable) {}
-    void enableVSync(bool enable) {}
-    void catchMouse(bool enable) {}
-
 } // namespace yourgame

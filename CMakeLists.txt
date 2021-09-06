@@ -54,22 +54,23 @@ endif()
 
 # sources
 list(APPEND YOURGAME_SRC_FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/fileio.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/audio.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/file.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/input.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/logging.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/timing.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/log.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/time.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/version.cpp # generated above
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop" OR YOURGAME_PLATFORM STREQUAL "web")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/fileio.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/file.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_desktop_web/yourgame.cpp
   )
 elseif(YOURGAME_PLATFORM STREQUAL "android")
   list(APPEND YOURGAME_SRC_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/fileio.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/file.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platform_android/yourgame.cpp
@@ -198,8 +199,6 @@ execute_process(
   "-DYOURGAME_EXT_PROJ_LIST=${YOURGAME_EXT_PROJ_LIST}"
   "-DYOURGAME_EXT_PROJ_MODULE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/cmake"
   "-DYOURGAME_EXT_PROJ_CODE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/thirdparty"
-  "-DYOURGAME_EXT_PROJ_UTILS_SRC_DIR=${CMAKE_CURRENT_SOURCE_DIR}/src/utils"
-  "-DYOURGAME_EXT_PROJ_UTILS_INC_DIR=${CMAKE_CURRENT_SOURCE_DIR}/include/utils"
   "-DYOURGAME_EXT_PROJ_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/thirdparty/yourgame_ext_proj.cmake"
   "-DYOURGAME_PLATFORM=${YOURGAME_PLATFORM}"
   RESULT_VARIABLE extProjResult

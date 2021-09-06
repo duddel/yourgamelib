@@ -24,17 +24,31 @@ markdown_extensions:
   - admonition
   - pymdownx.highlight
   - pymdownx.superfences
+  - plantuml_markdown
 repo_url: https://github.com/duddel/yourgamelib
 repo_name: duddel/yourgamelib
 edit_uri: ""
 nav:
   - Getting Started: index.md
-  - Manual: Manual.md
-  - "Examples":
+  - Template Example: Pages/Template_01Example.md
+  - "More Examples":
+      - Bare: Examples/Bare.md
+      - Fps: Examples/Fps.md
+      - Framework: Examples/Framework.md
+      - Particles: Examples/Particles.md
       - Sprites: Examples/Sprites.md
-  - API Overview: doxyMainPage.md
+  - Manual: Manual.md
   - "API":
-      - base: Namespaces/namespaceyourgame.md
-      - file: Namespaces/namespaceyourgame.md
-      - gfx: Namespaces/namespaceyourgame.md
-      - audio: Namespaces/namespaceyourgame.md
+      - Fundamentals: Fundamentals.md
+      - mygame (User Code): Namespaces/namespacemygame.md
+      - yourgame: Namespaces/namespaceyourgame.md
+      - yourgame::audio: Namespaces/namespaceyourgame_1_1audio.md
+      - yourgame::control: Namespaces/namespaceyourgame_1_1control.md
+      - yourgame::file: Namespaces/namespaceyourgame_1_1file.md
+      - yourgame::gl: Namespaces/namespaceyourgame_1_1gl.md
+      - yourgame::input: Namespaces/namespaceyourgame_1_1input.md
+      - yourgame::log: Namespaces/namespaceyourgame_1_1log.md
+      - yourgame::math: Namespaces/namespaceyourgame_1_1math.md
+      - yourgame::time: Namespaces/namespaceyourgame_1_1time.md
+      - yourgame::util: Namespaces/namespaceyourgame_1_1util.md
+      - yourgame::version: Namespaces/namespaceyourgame_1_1version.md

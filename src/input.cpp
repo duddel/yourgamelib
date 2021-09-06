@@ -23,14 +23,14 @@ freely, subject to the following restrictions:
 
 namespace yourgame_internal
 {
-    std::map<yourgame::INPUT, InputValue> inputStates;
+    std::map<yourgame::input::Source, InputValue> inputStates;
 
-    void setInput(yourgame::INPUT source, float value)
+    void setInput(yourgame::input::Source source, float value)
     {
         inputStates[source].val = value;
     }
 
-    void setInput2(yourgame::INPUT source, float value)
+    void setInput2(yourgame::input::Source source, float value)
     {
         auto emret = inputStates.emplace(source, value);
         emret.first->second.val = value;
@@ -39,20 +39,23 @@ namespace yourgame_internal
 
 namespace yourgame
 {
-    float input(yourgame::INPUT source)
+    namespace input
     {
-        auto i = yourgame_internal::inputStates.find(source);
-        return (i == yourgame_internal::inputStates.end()) ? 0.0f : (i->second).val;
-    }
+        float get(yourgame::input::Source source)
+        {
+            auto i = yourgame_internal::inputStates.find(source);
+            return (i == yourgame_internal::inputStates.end()) ? 0.0f : (i->second).val;
+        }
 
-    int inputi(yourgame::INPUT source)
-    {
-        return static_cast<int>(std::lround(input(source)));
-    }
+        int geti(yourgame::input::Source source)
+        {
+            return static_cast<int>(std::lround(yourgame::input::get(source)));
+        }
 
-    float inputDelta(yourgame::INPUT source)
-    {
-        auto i = yourgame_internal::inputStates.find(source);
-        return (i == yourgame_internal::inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;
+        float getDelta(yourgame::input::Source source)
+        {
+            auto i = yourgame_internal::inputStates.find(source);
+            return (i == yourgame_internal::inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;
+        }
     }
 } // namespace yourgame

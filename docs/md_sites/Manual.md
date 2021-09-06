@@ -1,6 +1,6 @@
 # Manual
 
-This guide ...
+> **NOTE:** This site is UNDER CONSTRUCTION!
 
 ## Init Script
 
@@ -23,8 +23,6 @@ All files placed in `assets/` will be packed and made available to be loaded by 
 ## YourGame API and Namespaces
 
 ## Toolbox
-
-## Utils
 
 ## Third-party libraries
 

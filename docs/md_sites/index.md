@@ -2,9 +2,18 @@
 
 This guide explains how to get YourGameLib, create a user project and run it.
 
+## TL;DR
+
+If you are in a hurry, grab the pre-initialized template [YourGameProject.zip](YourGameProject.zip) and jump to [Build the project](#build-the-project). You need `Git`, `CMake` and a `C/C++ compiler`, as mentioned below.
+
+-   **Pro:** Fast, easy, `Python` **not** required
+-   **Con:** Manually rename "YourGameProject" across multiple files
+
+The recommended way for initializing a new project is following this guide, though.
+
 ## Requirements
 
-The list of requirements for getting started is kept short, but this is what we need now:
+The list of requirements for getting started:
 
 -   `Git 1.7.0+`
 -   `Python 3.5+` with

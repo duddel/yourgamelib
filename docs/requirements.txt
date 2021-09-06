@@ -1,3 +1,4 @@
 # Python requirements for building the docs
 mike                # depends on mkdocs
 mkdocs-material
+plantuml_markdown

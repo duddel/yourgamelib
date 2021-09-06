@@ -23,3 +23,10 @@ freely, subject to the following restrictions:
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
+
+#ifdef YOURGAME_EXTPROJ_miniaudio
+  #define STB_VORBIS_HEADER_ONLY
+  #include "stb_vorbis.c"
+  #define MINIAUDIO_IMPLEMENTATION
+  #include "miniaudio.h"
+#endif

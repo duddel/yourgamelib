@@ -1,13 +1,44 @@
 /**
 \mainpage
+YourGameLib Doxygen Mainpage
+*/
 
-To link the yourgame library to your code and make it executable, the functions declared in the \ref mygame "mygame" namespace must be implemented:
+/** \namespace yourgame::audio
+\brief audio playback related functions
+*/
 
-- \ref mygame::init(int argc, char *argv[]) - \copydoc mygame::init()
-- \ref mygame::tick() - \copybrief mygame::tick()
-- \ref mygame::shutdown() - \copybrief mygame::shutdown()
+/** \namespace yourgame::control
+\brief framework control functions
+*/
 
-\section sec_guide Guide
-See the \ref yourgame "yourgame" namespace on how to access the functionality of the yourgame library.
+/** \namespace yourgame::file
+\brief file and path related functions
+*/
 
+/** \namespace yourgame::gl
+\brief gl classes and functions
+*/
+
+/** \namespace yourgame::input
+\brief input functions
+*/
+
+/** \namespace yourgame::log
+\brief logging functions
+*/
+
+/** \namespace yourgame::math
+\brief math related classes
+*/
+
+/** \namespace yourgame::time
+\brief time measure related functions
+*/
+
+/** \namespace yourgame::util
+\brief utility classes
+*/
+
+/** \namespace yourgame::version
+\brief version related constants
 */

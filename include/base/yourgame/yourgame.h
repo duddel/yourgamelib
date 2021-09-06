@@ -20,30 +20,22 @@ freely, subject to the following restrictions:
 #ifndef YOURGAME_YOURGAME_H
 #define YOURGAME_YOURGAME_H
 
+// include the actual gl api for the target platform
+#include "yourgame/gl_include.h"
+
 // the following includes are part of the yourgame (base) API
-#include "yourgame/fileio.h"
+#include "yourgame/audio.h"
+#include "yourgame/control.h"
+#include "yourgame/file.h"
 #include "yourgame/input.h"
-#include "yourgame/logging.h"
-#include "yourgame/timing.h"
+#include "yourgame/log.h"
+#include "yourgame/math.h"
+#include "yourgame/time.h"
 #include "yourgame/version.h"
 
-namespace yourgame
-{
-    /** \brief triggers the application to exit after the cycle this function was called in */
-    void notifyShutdown();
-
-    /** \brief sends a (user-defined) command to the application host environment */
-    int sendCmdToEnv(int cmdId, int data0, int data1, int data2);
-
-    /** \brief request fullscreen */
-    void enableFullscreen(bool enable);
-
-    /** \brief request vertical sync
-    \attention if this works reliable depends on gpu/driver */
-    void enableVSync(bool enable);
-
-    /** \brief disable mouse cursor, infinite movement */
-    void catchMouse(bool enable);
-} // namespace yourgame
+// provide the toolbox is requested (YOURGAME_TOOLBOX is defined via Toolbox.cmake)
+#ifdef YOURGAME_TOOLBOX
+#include "yourgame/toolbox.h"
+#endif
 
 #endif

@@ -1,10 +1,12 @@
 INPUT                   = ../include \
                           ../docs \
                           ../src/include_internal/yourgame_internal/mygame_external.h
+EXAMPLE_PATH            = ../template/mygame.cpp
 EXTRACT_ALL             = YES
 RECURSIVE               = YES
 OUTPUT_DIRECTORY        = ./_doxyout
-PROJECT_NAME            = "YourGameLib API"
+PROJECT_NAME            = "YourGameLib"
 HTML_EXTRA_STYLESHEET   = ./customdoxy.css
 GENERATE_XML            = YES
 XML_OUTPUT              = xml
+PREDEFINED              = YG_DOXYGEN

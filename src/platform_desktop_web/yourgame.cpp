@@ -36,8 +36,8 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/yourgame_internal_desktop.h"
 #include "yourgame_internal/mygame_external.h"
 #include "yourgame_internal/input.h"
-#include "yourgame_internal/logging.h"
-#include "yourgame_internal/timing.h"
+#include "yourgame_internal/log.h"
+#include "yourgame_internal/time.h"
 
 namespace yourgame_internal_desktop
 {
@@ -48,9 +48,9 @@ namespace yourgame_internal_desktop
         GLFWwindow *_window = NULL;
         void framebufferSizeCallback(GLFWwindow *window, int width, int height)
         {
-            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_WIDTH, static_cast<float>(width));
-            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_HEIGHT, static_cast<float>(height));
-            yourgame_internal::setInput2(yourgame::INPUT::WINDOW_ASPECT_RATIO,
+            yourgame_internal::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO,
                                          static_cast<float>(width) / static_cast<float>(height));
         }
     } // namespace
@@ -63,16 +63,16 @@ namespace yourgame_internal_desktop
     int init(int argc, char *argv[])
     {
         // initialize logging
-        yourgame_internal::initLogging(argc, argv);
+        yourgame_internal::log::init(argc, argv);
 
         // initialize file io
-        yourgame_internal_desktop::initFileIO();
+        yourgame_internal_desktop::initFile();
 
         // initialize glfw, gl
-        yourgame::logi("glfwInit()...");
+        yourgame::log::info("glfwInit()...");
         if (!glfwInit())
         {
-            yourgame::loge("glfwInit() failed");
+            yourgame::log::error("glfwInit() failed");
             return -1;
         }
 
@@ -109,7 +109,7 @@ namespace yourgame_internal_desktop
         glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
         glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
         glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-        if (yourgame::input(yourgame::INPUT::WINDOW_FULLSCREEN))
+        if (yourgame::input::geti(yourgame::input::WINDOW_FULLSCREEN))
         {
             // create fullscreen window
             _window = glfwCreateWindow(mode->width, mode->height, "", glfwGetPrimaryMonitor(), NULL);
@@ -127,7 +127,7 @@ namespace yourgame_internal_desktop
 
         if (!_window)
         {
-            yourgame::loge("glfwCreateWindow() failed");
+            yourgame::log::error("glfwCreateWindow() failed");
             glfwTerminate();
             return -1;
         }
@@ -141,19 +141,19 @@ namespace yourgame_internal_desktop
         framebufferSizeCallback(_window, width, height);
 
 #if defined(YOURGAME_GL_EXT_LOADER_GLAD)
-        yourgame::logi("gladLoadGL()...");
+        yourgame::log::info("gladLoadGL()...");
         if (!gladLoadGL())
         {
-            yourgame::loge("gladLoadGL() failed");
+            yourgame::log::error("gladLoadGL() failed");
             return -1;
         }
 #endif
-        yourgame::logi("GL_VERSION: %v", glGetString(GL_VERSION));
-        yourgame::logi("GL_VENDOR: %v", glGetString(GL_VENDOR));
-        yourgame::logi("GL_RENDERER: %v", glGetString(GL_RENDERER));
-        yourgame::logi("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
+        yourgame::log::info("GL_VERSION: %v", glGetString(GL_VERSION));
+        yourgame::log::info("GL_VENDOR: %v", glGetString(GL_VENDOR));
+        yourgame::log::info("GL_RENDERER: %v", glGetString(GL_RENDERER));
+        yourgame::log::info("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-        glfwSwapInterval(yourgame::inputi(yourgame::INPUT::VSYNC_ON) ? 1 : 0);
+        glfwSwapInterval(yourgame::input::geti(yourgame::input::VSYNC_ON) ? 1 : 0);
 
         // enable raw mouse input if supported. affects catched mouse mode, see catchMouse()
 // todo: raw mouse motion available since glfw v3.3,
@@ -190,8 +190,8 @@ namespace yourgame_internal_desktop
         // get the initial time point just before tick() starts, which will
         // result in a small time delta in the first tick() cycle.
         // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
-        yourgame_internal::initTiming();
-        yourgame::logi("steady_clock precision: %vs (%vns)", yourgame::getClockPeriod(), yourgame::getClockPeriod() * 1.0e+9);
+        yourgame_internal::time::init();
+        yourgame::log::info("steady_clock precision: %vs (%vns)", yourgame::time::getClockPeriod(), yourgame::time::getClockPeriod() * 1.0e+9);
 
         return 0;
     }
@@ -199,7 +199,7 @@ namespace yourgame_internal_desktop
     void tick()
     {
         // timing
-        yourgame_internal::tickTiming();
+        yourgame_internal::time::tick();
 
 #ifdef __EMSCRIPTEN__
         {
@@ -213,8 +213,8 @@ namespace yourgame_internal_desktop
             int width = static_cast<int>(widthD);
             int height = static_cast<int>(heightD);
             if (ret == EMSCRIPTEN_RESULT_SUCCESS &&
-                (yourgame::inputi(yourgame::INPUT::WINDOW_WIDTH) != width ||
-                 yourgame::inputi(yourgame::INPUT::WINDOW_HEIGHT) != height))
+                (yourgame::input::geti(yourgame::input::WINDOW_WIDTH) != width ||
+                 yourgame::input::geti(yourgame::input::WINDOW_HEIGHT) != height))
             {
                 glfwSetWindowSize(_window, width, height);
             }
@@ -266,49 +266,52 @@ namespace yourgame_internal_desktop
 
 namespace yourgame
 {
-    void notifyShutdown()
+    namespace control
     {
-        yourgame_internal_desktop::_pendingShutdown = true;
-    }
+        void notifyShutdown()
+        {
+            yourgame_internal_desktop::_pendingShutdown = true;
+        }
 
-    int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
-    {
-        return -1;
-    }
+        int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
+        {
+            return -1;
+        }
 
-    void enableFullscreen(bool enable)
-    {
+        void enableFullscreen(bool enable)
+        {
 #ifdef __EMSCRIPTEN__
-        // todo
+            // todo
 #else
-        auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        if (enable)
-        {
-            // set fullscreen
-            glfwSetWindowMonitor(yourgame_internal_desktop::_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
-        }
-        else
-        {
-            // set windowed, roughly centered, 0.8 times desktop resolution
-            glfwSetWindowMonitor(yourgame_internal_desktop::_window, NULL, 0, 0, (mode->width * 8) / 10, (mode->height * 8) / 10, mode->refreshRate);
-            glfwSetWindowPos(yourgame_internal_desktop::_window, mode->width / 10, mode->height / 10);
-        }
-        yourgame_internal::setInput2(yourgame::INPUT::WINDOW_FULLSCREEN, enable ? 1.0f : 0.0f);
-        // todo: glfwSwapInterval() is required to be called again after
-        // window mode changed: https://github.com/glfw/glfw/issues/1072
-        glfwSwapInterval(yourgame::inputi(yourgame::INPUT::VSYNC_ON) ? 1 : 0);
+            auto mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+            if (enable)
+            {
+                // set fullscreen
+                glfwSetWindowMonitor(yourgame_internal_desktop::_window, glfwGetPrimaryMonitor(), 0, 0, mode->width, mode->height, mode->refreshRate);
+            }
+            else
+            {
+                // set windowed, roughly centered, 0.8 times desktop resolution
+                glfwSetWindowMonitor(yourgame_internal_desktop::_window, NULL, 0, 0, (mode->width * 8) / 10, (mode->height * 8) / 10, mode->refreshRate);
+                glfwSetWindowPos(yourgame_internal_desktop::_window, mode->width / 10, mode->height / 10);
+            }
+            yourgame_internal::setInput2(yourgame::input::WINDOW_FULLSCREEN, enable ? 1.0f : 0.0f);
+            // todo: glfwSwapInterval() is required to be called again after
+            // window mode changed: https://github.com/glfw/glfw/issues/1072
+            glfwSwapInterval(yourgame::input::geti(yourgame::input::VSYNC_ON) ? 1 : 0);
 #endif
-    }
+        }
 
-    void enableVSync(bool enable)
-    {
-        glfwSwapInterval(enable ? 1 : 0);
-        yourgame_internal::setInput2(yourgame::INPUT::VSYNC_ON, enable ? 1.0f : 0.0f);
-    }
+        void enableVSync(bool enable)
+        {
+            glfwSwapInterval(enable ? 1 : 0);
+            yourgame_internal::setInput2(yourgame::input::VSYNC_ON, enable ? 1.0f : 0.0f);
+        }
 
-    void catchMouse(bool enable)
-    {
-        glfwSetInputMode(yourgame_internal_desktop::_window, GLFW_CURSOR, enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
-        yourgame_internal::setInput2(yourgame::INPUT::MOUSE_CATCHED, enable ? 1.0f : 0.0f);
+        void catchMouse(bool enable)
+        {
+            glfwSetInputMode(yourgame_internal_desktop::_window, GLFW_CURSOR, enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+            yourgame_internal::setInput2(yourgame::input::MOUSE_CATCHED, enable ? 1.0f : 0.0f);
+        }
     }
 } // namespace yourgame

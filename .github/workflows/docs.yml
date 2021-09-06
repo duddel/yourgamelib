@@ -15,14 +15,15 @@ jobs:
       - name: install deps
         run: |
           sudo apt update
-          sudo apt install doxygen
+          sudo apt install doxygen plantuml
           python -m pip install --upgrade pip
           pip install -r docs/requirements.txt
-          wget https://github.com/matusnovak/doxybook2/releases/download/v1.3.6/doxybook2-linux-amd64-v1.3.6.zip
-          unzip doxybook2-linux-amd64-v1.3.6.zip -d _doxybook2
+          wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
+          unzip doxybook2-linux-amd64-v1.4.0.zip -d _doxybook2
       - name: run doxygen
         run: |
           cd docs
+          doxygen --version
           doxygen
       - name: run doxybook2
         run: |
@@ -37,6 +38,7 @@ jobs:
         run: |
           git config --global user.name ${{ github.actor }}
           git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git config --global pull.rebase false
           git pull origin gh-pages --allow-unrelated-histories
           cd docs
           mike deploy ${GITHUB_REF##*/}

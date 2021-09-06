@@ -19,7 +19,7 @@ freely, subject to the following restrictions:
 */
 
 #include <cassert>
-#include "yourgame/assetmanager.h"
+#include "yourgame/util/assetmanager.h"
 
 struct A
 {
@@ -32,7 +32,7 @@ size_t A::numObj = 0;
 
 int main()
 {
-    yourgame::AssetManager assman;
+    yourgame::util::AssetManager assman;
 
     // nullptr insert
     assman.insert<A>("A1", nullptr);
@@ -93,7 +93,7 @@ int main()
 
     // destruction
     {
-        yourgame::AssetManager assman2;
+        yourgame::util::AssetManager assman2;
         assman2.insert<A>("A1", new A(1));
         assman2.insert<A>("A2", new A(2));
         assman2.insert<A>("A3", new A(3));

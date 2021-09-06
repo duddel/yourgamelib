@@ -14,9 +14,9 @@ namespace mygame
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if (yg::input(yg::INPUT::KEY_ESCAPE))
+        if (yg::input::get(yg::input::KEY_ESCAPE))
         {
-            yg::notifyShutdown();
+            yg::control::notifyShutdown();
         }
     }
 
