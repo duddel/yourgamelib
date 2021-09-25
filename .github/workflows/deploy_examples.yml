@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-latest]
+        os: [ubuntu-20.04, windows-2019]
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
@@ -67,7 +67,7 @@ jobs:
   deploy_examples_web:
     name: web
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
@@ -108,7 +108,7 @@ jobs:
   deploy_examples_android:
     name: android
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
@@ -138,7 +138,7 @@ jobs:
 
   deploy_gh_pages:
     name: deploy to gh-pages
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs:
       [deploy_examples_desktop, deploy_examples_web, deploy_examples_android]
     steps:

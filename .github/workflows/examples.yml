@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-16.04, ubuntu-18.04, windows-2016, windows-2019]
+        os: [ubuntu-18.04, ubuntu-20.04, windows-2016, windows-2019]
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
@@ -63,7 +63,7 @@ jobs:
   build_examples_web:
     name: web
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
@@ -100,7 +100,7 @@ jobs:
   build_examples_android:
     name: android
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
