@@ -172,7 +172,7 @@ namespace mygame
         // exit
         if (yg::input::get(yg::input::KEY_ESCAPE))
         {
-            yg::control::notifyShutdown();
+            yg::control::exit();
         }
 
         g_camera.setAspect(yg::input::get(yg::input::WINDOW_ASPECT_RATIO));

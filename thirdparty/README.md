@@ -35,7 +35,7 @@ These libraries are integrated if the project has been initialized with default 
 | [file-dialogs](#portable-file-dialogs) | Portable File Dialogs | :heavy_check_mark: |                    |                    |
 | [flecs](#flecs)                        | Flecs                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [fsm](#fsm)                            | fsm                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [lua](#lua)                            | Lua                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [lua](#lua)                            | Lua, LuaBridge        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [miniaudio](#miniaudio)                | miniaudio             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [qu3e](#qu3e)                          | qu3e                  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
@@ -182,13 +182,23 @@ These libraries are integrated if the project has been initialized with default 
     -   json.hpp, LICENSE.MIT
 -   license: [json/LICENSE.MIT](json/LICENSE.MIT)
 
-## Lua
+## Lua, LuaBridge
+
+### Lua
 
 -   version: **5.4.0**
 -   origin: <https://github.com/lua/lua/releases/tag/v5.4.0>
 -   extracted from origin:
     -   all .h and .c files from repo root
 -   license: see end of file [lua/lua.h](lua/lua.h)
+
+### LuaBridge
+
+-   version: **2.7, fab7b33 (master)**
+-   origin: <https://github.com/vinniefalco/LuaBridge/tree/fab7b33b896a42dcc865ba5ecdbacd9f409137f8>
+-   extracted from origin:
+    -   Source/LuaBridge/\*
+-   license: [luabridge/license.txt](luabridge/license.txt)
 
 ## miniaudio
 

@@ -25,7 +25,7 @@ namespace yourgame
     namespace control
     {
         /** \brief triggers the application to exit after the cycle this function was called in */
-        void notifyShutdown();
+        void exit();
 
         /** \brief sends a (user-defined) command to the application host environment */
         int sendCmdToEnv(int cmdId, int data0, int data1, int data2);

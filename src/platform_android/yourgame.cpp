@@ -229,6 +229,8 @@ namespace yourgame_internal_android
             return;
         }
 
+        mygame::shutdown();
+
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplAndroid_Shutdown();
@@ -256,8 +258,6 @@ namespace yourgame_internal_android
         _eglContext = EGL_NO_CONTEXT;
         _surface = EGL_NO_SURFACE;
 
-        mygame::shutdown();
-
         _initialized = false;
     }
 } // namespace yourgame_internal_android
@@ -266,7 +266,7 @@ namespace yourgame
 {
     namespace control
     {
-        void notifyShutdown()
+        void exit()
         {
             ANativeActivity_finish(yourgame_internal_android::_app->activity);
         }

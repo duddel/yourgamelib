@@ -28,7 +28,7 @@ namespace yourgame_internal_desktop
     int init(int argc, char *argv[]);
     void tick();
     int shutdown();
-    bool pendingShutdown();
+    bool wantToExit();
     void initInput(GLFWwindow *window);
     void tickInput();
     void initFile();

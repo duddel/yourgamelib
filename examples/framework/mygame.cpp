@@ -33,6 +33,8 @@ extern "C"
 #include "lualib.h"
 #include "lauxlib.h"
 }
+#include "LuaBridge/LuaBridge.h"
+#include "LuaBridge/Vector.h"
 
 namespace yg = yourgame; // convenience
 
@@ -373,7 +375,7 @@ namespace mygame
                 }
                 if (ImGui::MenuItem("Exit"))
                 {
-                    yg::control::notifyShutdown();
+                    yg::control::exit();
                 }
                 ImGui::EndMenu();
             }

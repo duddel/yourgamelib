@@ -18,10 +18,9 @@ loop until want to exit
   "User Code" --> YourGameLib
   YourGameLib -> YourGameLib: swap gl buffers, ...
 end
-YourGameLib -> YourGameLib: terminate framework, gl, ...
-note right: todo: terminating framework\nbefore ""mygame::shutdown()""\nseems wrong
 YourGameLib -> "User Code": **""mygame::shutdown(...)""**
 "User Code" -> "User Code": //delete assets, ...//
 "User Code" --> YourGameLib
+YourGameLib -> YourGameLib: terminate framework, gl, ...
 YourGameLib --> "Operating System\nPlatform": goodbye
 ```

@@ -16,7 +16,7 @@ namespace mygame
 
         if (yg::input::get(yg::input::KEY_ESCAPE))
         {
-            yg::control::notifyShutdown();
+            yg::control::exit();
         }
     }
 

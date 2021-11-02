@@ -4,6 +4,7 @@
 file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
 "list(APPEND YOURGAME_INC_DIRS
   ${YOURGAME_EXT_PROJ_CODE_DIR}/lua
+  ${YOURGAME_EXT_PROJ_CODE_DIR}/luabridge
 )
 # all Lua sources, except lua.c and onelua.c
 list(APPEND YOURGAME_SRC_FILES

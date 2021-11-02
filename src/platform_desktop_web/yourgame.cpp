@@ -43,7 +43,7 @@ namespace yourgame_internal_desktop
 {
     namespace
     {
-        bool _pendingShutdown = false;
+        bool _wantToExit = false;
 
         GLFWwindow *_window = NULL;
         void framebufferSizeCallback(GLFWwindow *window, int width, int height)
@@ -55,9 +55,9 @@ namespace yourgame_internal_desktop
         }
     } // namespace
 
-    bool pendingShutdown()
+    bool wantToExit()
     {
-        return _pendingShutdown;
+        return _wantToExit;
     }
 
     int init(int argc, char *argv[])
@@ -246,6 +246,8 @@ namespace yourgame_internal_desktop
 
     int shutdown()
     {
+        mygame::shutdown();
+
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
@@ -258,8 +260,6 @@ namespace yourgame_internal_desktop
         }
         glfwTerminate();
 
-        mygame::shutdown();
-
         return 0;
     }
 } // namespace yourgame_internal_desktop
@@ -268,9 +268,9 @@ namespace yourgame
 {
     namespace control
     {
-        void notifyShutdown()
+        void exit()
         {
-            yourgame_internal_desktop::_pendingShutdown = true;
+            yourgame_internal_desktop::_wantToExit = true;
         }
 
         int sendCmdToEnv(int cmdId, int data0, int data1, int data2)

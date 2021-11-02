@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     while (true)
     {
         yourgame_internal_desktop::tick();
-        if (yourgame_internal_desktop::pendingShutdown())
+        if (yourgame_internal_desktop::wantToExit())
             break;
     }
 #endif
