@@ -60,6 +60,12 @@ namespace yourgame
             return -1;
         }
 
+        int writeAssetFile(const std::string &filename, const void *data, size_t numBytes)
+        {
+            // assets are read-only on android
+            return -1;
+        }
+
         std::vector<std::string> ls(const std::string &pattern)
         {
             // todo not implemented. dirent might work with android.

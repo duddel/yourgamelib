@@ -78,6 +78,11 @@ namespace yourgame
             return yourgame_internal::readFileFromPath(yourgame_internal_desktop::assetPathAbs + filename, dst);
         }
 
+        int writeAssetFile(const std::string &filename, const void *data, size_t numBytes)
+        {
+            return yourgame_internal::writeFileToPath(yourgame_internal_desktop::assetPathAbs + filename, data, numBytes);
+        }
+
         std::vector<std::string> ls(const std::string &pattern)
         {
             std::vector<std::string> ret;

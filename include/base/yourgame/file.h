@@ -72,6 +72,10 @@ namespace yourgame
         */
         std::string getFileName(const std::string &filepath);
 
+        /** \brief writes numBytes bytes from data to a file called filename in the asset file location.
+        overwrites the file if it exists */
+        int writeAssetFile(const std::string &filename, const void *data, size_t numBytes);
+
         /** \brief writes numBytes bytes from data to a file called filename in the save file location.
         overwrites the file if it exists */
         int writeSaveFile(const std::string &filename, const void *data, size_t numBytes);
