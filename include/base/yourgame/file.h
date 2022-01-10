@@ -43,7 +43,7 @@ namespace yourgame
         /** \brief reads an entire file (from project file location) and returns it as a vector of bytes */
         int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst);
 
-        /** \brief sets the path to the current project directory */
+        /** \brief sets path as current project directory. initial project directory is "" */
         void setProjectPath(const std::string &path);
 
         /** \brief reads an entire file and returns it as a vector of bytes

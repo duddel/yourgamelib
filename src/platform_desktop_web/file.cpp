@@ -40,7 +40,7 @@ namespace yourgame_internal_desktop
 #ifdef __EMSCRIPTEN__
         assetPathAbs = "/assets/";
         yourgame_internal::saveFilesPathAbs = "/home/web_user/";
-        yourgame_internal::projectPathAbs = yourgame_internal::saveFilesPathAbs;
+        yourgame_internal::projectPathAbs = "";
 #else
         int exeBasePathLength;
         int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
@@ -64,7 +64,7 @@ namespace yourgame_internal_desktop
         }
 
         yourgame_internal::saveFilesPathAbs = basePath + "savefiles/";
-        yourgame_internal::projectPathAbs = yourgame_internal::saveFilesPathAbs;
+        yourgame_internal::projectPathAbs = "";
 #endif
     }
 } // namespace yourgame_internal_desktop

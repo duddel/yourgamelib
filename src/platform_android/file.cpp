@@ -35,7 +35,7 @@ namespace yourgame_internal_android
     {
         assMan = app->activity->assetManager;
         yourgame_internal::saveFilesPathAbs = std::string(app->activity->internalDataPath);
-        yourgame_internal::projectPathAbs = yourgame_internal::saveFilesPathAbs;
+        yourgame_internal::projectPathAbs = "";
     }
 } // namespace yourgame_internal_android
 
