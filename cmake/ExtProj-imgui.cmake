@@ -12,6 +12,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/imgui_draw.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/imgui_tables.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/imgui_widgets.cpp
+  ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/TextEditor.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
 )
 ") # file()

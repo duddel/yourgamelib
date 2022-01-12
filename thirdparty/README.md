@@ -174,6 +174,14 @@ These libraries are integrated if the project has been initialized with default 
     -   [imstb_textedit.h](imgui/imstb_textedit.h)
     -   [imstb_truetype.h](imgui/imstb_truetype.h)
 
+### ImGuiColorTextEdit
+
+-   version: **0a88824f7d**
+-   origin: <https://github.com/BalazsJako/ImGuiColorTextEdit/tree/0a88824f7de8d0bd11d8419066caa7d3469395c4>
+-   extracted from origin:
+    -   TextEditor.{h,cpp}, LICENSE
+-   license: [imgui/TextEditor_LICENSE](imgui/TextEditor_LICENSE)
+
 ## JSON for Modern C++
 
 -   version: **3.8.0**
