@@ -72,6 +72,14 @@ namespace yourgame
         */
         std::string getFileName(const std::string &filepath);
 
+        /** \brief returns the file extension
+        - example: "file1.bin" returns "bin"
+        - example: "a//texture.png" returns "png"
+        - example: ".gitignore" returns "gitignore"
+        - example: "Makefile" returns ""
+        */
+        std::string getFileExtension(const std::string &filepath);
+
         /** \brief writes numBytes bytes from data to a file called filename in the asset file location.
         overwrites the file if it exists */
         int writeAssetFile(const std::string &filename, const void *data, size_t numBytes);
@@ -83,6 +91,11 @@ namespace yourgame
         /** \brief writes numBytes bytes from data to a file called filename in the project file location.
         overwrites the file if it exists */
         int writeProjectFile(const std::string &filename, const void *data, size_t numBytes);
+
+        /** \brief writes numBytes bytes from data to a file called filename, destination path determined
+        by prefix ("a//", etc.), see readFile(). overwrites the file if it exists.
+        \attention filename requires a prefix, such as "a//". otherwise, writing is omitted. */
+        int writeFile(const std::string &filename, const void *data, size_t numBytes);
 
         /** \brief returns list of directory content. accepts prefixes like readFile() does. accepts wildcard "*" for
         files (after last / in pattern) */

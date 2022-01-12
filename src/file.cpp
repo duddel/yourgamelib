@@ -144,6 +144,19 @@ namespace yourgame
             return "";
         }
 
+        std::string getFileExtension(const std::string &filepath)
+        {
+            // match 2: everything after last "."
+            static std::regex reFilePath(R"((.*\.)(.*)$)");
+            std::smatch reMatches;
+            if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 3)
+            {
+                return reMatches[2].str();
+            }
+
+            return "";
+        }
+
         int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
         {
             return yourgame_internal::writeFileToPath(yourgame_internal::saveFilesPathAbs + filename, data, numBytes);
@@ -152,6 +165,24 @@ namespace yourgame
         int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
         {
             return yourgame_internal::writeFileToPath(yourgame_internal::projectPathAbs + filename, data, numBytes);
+        }
+
+        int writeFile(const std::string &filename, const void *data, size_t numBytes)
+        {
+            if (filename.length() > 3 && filename.compare(1, 2, "//") == 0)
+            {
+                switch (filename[0])
+                {
+                case 'a':
+                    return writeAssetFile(filename.substr(3, std::string::npos), data, numBytes);
+                case 's':
+                    return writeSaveFile(filename.substr(3, std::string::npos), data, numBytes);
+                case 'p':
+                    return writeProjectFile(filename.substr(3, std::string::npos), data, numBytes);
+                }
+            }
+
+            return -1;
         }
     }
 }
