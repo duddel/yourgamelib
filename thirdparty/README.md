@@ -182,6 +182,14 @@ These libraries are integrated if the project has been initialized with default 
     -   TextEditor.{h,cpp}, LICENSE
 -   license: [imgui/TextEditor_LICENSE](imgui/TextEditor_LICENSE)
 
+### imgui_memory_editor
+
+-   version: **450b9cf352**
+-   origin: <https://github.com/ocornut/imgui_club/tree/450b9cf352c51530b9e23fb14b83891c2555b032>
+-   extracted from origin:
+    -   imgui_memory_editor.h, LICENSE.txt
+-   license: [imgui/imgui_memory_editor_LICENSE.txt](imgui/imgui_memory_editor_LICENSE.txt)
+
 ## JSON for Modern C++
 
 -   version: **3.8.0**
