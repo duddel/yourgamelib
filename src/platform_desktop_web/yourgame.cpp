@@ -68,6 +68,7 @@ namespace yourgame_internal_desktop
         // initialize file io
         yourgame_internal_desktop::initFile();
 
+#ifndef YOURGAME_CLIMODE
         // initialize glfw, gl
         yourgame::log::info("glfwInit()...");
         if (!glfwInit())
@@ -178,6 +179,7 @@ namespace yourgame_internal_desktop
         ImGui_ImplGlfw_InitForOpenGL(_window, true);
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
 #endif
+#endif // #ifndef YOURGAME_CLIMODE
 
 #ifdef YOURGAME_EXTPROJ_stb
         stbi_set_flip_vertically_on_load(true);
@@ -201,6 +203,7 @@ namespace yourgame_internal_desktop
         // timing
         yourgame_internal::time::tick();
 
+#ifndef YOURGAME_CLIMODE
 #ifdef __EMSCRIPTEN__
         {
             // the desired size of the glfw "window" is the size of the canvas
@@ -226,9 +229,11 @@ namespace yourgame_internal_desktop
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 #endif
+#endif // #ifndef YOURGAME_CLIMODE
 
         mygame::tick();
 
+#ifndef YOURGAME_CLIMODE
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -242,12 +247,14 @@ namespace yourgame_internal_desktop
 #ifndef __EMSCRIPTEN__
         glfwPollEvents();
 #endif
+#endif // #ifndef YOURGAME_CLIMODE
     }
 
     int shutdown()
     {
         mygame::shutdown();
 
+#ifndef YOURGAME_CLIMODE
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
@@ -259,6 +266,7 @@ namespace yourgame_internal_desktop
             glfwDestroyWindow(_window);
         }
         glfwTerminate();
+#endif // #ifndef YOURGAME_CLIMODE
 
         return 0;
     }
