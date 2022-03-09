@@ -25,7 +25,8 @@ freely, subject to the following restrictions:
 
 int main(int argc, char *argv[])
 {
-    yourgame_internal_desktop::init(argc, argv);
+    if (yourgame_internal_desktop::init(argc, argv) != 0)
+        return -1;
 
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop(yourgame_internal_desktop::tick, 0, 1);
