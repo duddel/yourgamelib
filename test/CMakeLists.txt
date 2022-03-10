@@ -51,6 +51,7 @@ configure_file(
 # external projects
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "bullet"
+  "doctest"
 )
 
 # add the actual yourgame library as a subdirectory
@@ -61,6 +62,7 @@ add_subdirectory(
 
 # sources
 list(APPEND MYGAME_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
   ${CMAKE_CURRENT_BINARY_DIR}/mygame_version.cpp # generated above
 )
 
@@ -69,26 +71,24 @@ list(APPEND MYGAME_INC_DIRS_PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# glob all .cpp files in testcases/ and generate a test executable for each
+# glob all .cpp files in testcases/ and add to build
 file(GLOB YGTEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/testcases/*.cpp)
-foreach(YGTEST_FILE ${YGTEST_FILES})
-  get_filename_component(YGTEST_NAME ${YGTEST_FILE} NAME_WE)
 
-  add_executable(${CMAKE_PROJECT_NAME}-${YGTEST_NAME}
-    ${MYGAME_SRC_FILES}
-    ${YGTEST_FILE}
-  )
+add_executable(${CMAKE_PROJECT_NAME}
+  ${MYGAME_SRC_FILES}
+  ${YGTEST_FILES}
+)
 
-  target_include_directories(${CMAKE_PROJECT_NAME}-${YGTEST_NAME}
-    PRIVATE ${MYGAME_INC_DIRS_PRIVATE}
-  )
+target_include_directories(${CMAKE_PROJECT_NAME}
+  PRIVATE ${MYGAME_INC_DIRS_PRIVATE}
+)
 
-  target_link_libraries(${CMAKE_PROJECT_NAME}-${YGTEST_NAME} PRIVATE
-    yourgame
-  )
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+  yourgame
+)
 
-  add_test(
-    NAME ${CMAKE_PROJECT_NAME}-${YGTEST_NAME}
-    COMMAND ${CMAKE_PROJECT_NAME}-${YGTEST_NAME}
-  )
-endforeach()
+# register test executable to be run via ctest
+add_test(
+  NAME ${CMAKE_PROJECT_NAME}
+  COMMAND ${CMAKE_PROJECT_NAME}
+)

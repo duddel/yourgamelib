@@ -32,6 +32,7 @@ These libraries are integrated if the project has been initialized with default 
 | [box2d](#box2d)                        | Box2D                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [bullet](#bullet)                      | Bullet                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [choreograph](#choreograph)            | Choreograph           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [doctest](#doctest)                    | doctest               | :heavy_check_mark: |                    |                    |
 | [file-dialogs](#portable-file-dialogs) | Portable File Dialogs | :heavy_check_mark: |                    |                    |
 | [flecs](#flecs)                        | Flecs                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [fsm](#fsm)                            | fsm                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
@@ -95,6 +96,14 @@ These libraries are integrated if the project has been initialized with default 
 -   extracted from origin:
     -   include/dirent.h, LICENSE
 -   license: [dirent/LICENSE](dirent/LICENSE)
+
+## doctest
+
+-   version: **2.4.8**
+-   origin: <https://github.com/doctest/doctest/releases/tag/v2.4.8>
+-   extracted from origin:
+    -   doctest.h, LICENSE.txt
+-   license: [doctest/LICENSE.txt](doctest/LICENSE.txt)
 
 ## Easylogging++
 

@@ -313,9 +313,10 @@ namespace mygame
         }
     }
 
-    void shutdown()
+    int shutdown()
     {
         yg::audio::shutdown();
         g_assets.clear();
+        return 0;
     }
 } // namespace mygame

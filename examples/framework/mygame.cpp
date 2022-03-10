@@ -341,12 +341,13 @@ namespace mygame
         }
     }
 
-    void shutdown()
+    int shutdown()
     {
         if (yg::audio::isInitialized())
         {
             yg::audio::shutdown();
         }
+        return 0;
     }
 
     void updateImgui()

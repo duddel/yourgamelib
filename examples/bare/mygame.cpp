@@ -20,7 +20,8 @@ namespace mygame
         }
     }
 
-    void shutdown()
+    int shutdown()
     {
+        return 0;
     }
 } // namespace mygame
