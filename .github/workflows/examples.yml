@@ -1,8 +1,9 @@
 name: examples
 on:
   push:
-    branches:
-      - develop
+    # on main, examples are deployed via different workflow
+    branches-ignore:
+      - main
 
 jobs:
   build_examples_desktop:
