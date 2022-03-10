@@ -1,7 +1,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "btBulletDynamicsCommon.h"
 #include "yourgame/yourgame.h"
 #include "imgui.h"
 
@@ -9,23 +8,13 @@ namespace yg = yourgame; // convenience
 
 namespace mygame
 {
-    struct Player
-    {
-        btRigidBody *body;
-    };
-
-    struct Box
-    {
-        btRigidBody *body;
-    };
-
     yg::util::AssetManager g_assets;
-    yg::util::BulletEnv g_bullet;
+    yg::util::PhysEnv g_physEnv;
     yg::math::Camera g_camera;
     yg::math::Trafo g_camTrafoFltr;
-    Player g_player;
-    std::vector<Box> g_boxes;
     yg::gl::Lightsource g_light;
+
+    const float g_boxScale = 0.5f;
 
     void init(int argc, char *argv[])
     {
@@ -76,77 +65,73 @@ namespace mygame
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);
-        //yg::control::enableVSync(true);
-        //yg::control::enableFullscreen(true);
+        // yg::control::enableVSync(true);
+        // yg::control::enableFullscreen(true);
 #ifndef __EMSCRIPTEN__ // todo: we can not initially catch the mouse if the viewport does not have focus (web)
         yg::control::catchMouse(true);
 #endif
 
-        g_bullet.m_dynamicsWorld->setGravity(btVector3(0, -9.81, 0));
+        g_physEnv.setGravity(0.0f, -9.81f, 0.0f);
 
         // spawn boxes
-        g_bullet.m_shapes["box"] = new btBoxShape(btVector3(0.5, 0.5, 0.5));
+        g_physEnv.newBoxShape("box", g_boxScale, g_boxScale, g_boxScale);
         for (int bi = 0; bi <= 10; bi++)
         {
-            btTransform trafo;
-            btScalar mass(100.0);
-            btVector3 inertia(0, 0, 0);
-            g_bullet.m_shapes["box"]->calculateLocalInertia(mass, inertia);
-            trafo.setIdentity();
-            trafo.setOrigin(btVector3(-10 + 2 * bi, 50 - 5 * bi, 10 - 2 * bi));
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.m_shapes["box"], inertia);
-            rbInfo.m_restitution = 0.2f;
-            rbInfo.m_friction = 0.75f;
-            auto newBody = new btRigidBody(rbInfo);
-            newBody->setSleepingThresholds(0, 0); // never sleep
-            g_bullet.m_dynamicsWorld->addRigidBody(newBody);
-            g_boxes.push_back({newBody});
+            // todo: hand over Trafo (not only position) to newRigidBody()
+            g_physEnv.newRigidBody("box" + std::to_string(bi),
+                                   100.0f,
+                                   -10 + 2 * bi,
+                                   50 - 5 * bi,
+                                   10 - 2 * bi,
+                                   "box",
+                                   0.2f,
+                                   0.75f);
+
+            g_physEnv.getRigidBody("box" + std::to_string(bi))->setSleepingThresholds(0.0f, 0.0f);
         }
 
         // spawn player
         {
-            g_bullet.m_shapes["player"] = new btBoxShape(btVector3(1, 2, 1));
-            btTransform trafo;
-            btScalar mass(100.0);
-            btVector3 inertia(0, 0, 0);
-            g_bullet.m_shapes["player"]->calculateLocalInertia(mass, inertia);
-            trafo.setIdentity();
-            trafo.setOrigin(btVector3(8.0f, 2.0f, 8.0f));
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.m_shapes["player"], inertia);
-            rbInfo.m_restitution = 0.0f;
-            rbInfo.m_friction = 0.75f;
-            rbInfo.m_linearDamping = 0.9f;
-            auto newBody = new btRigidBody(rbInfo);
-            g_player = Player({newBody});
-            g_player.body->setAngularFactor(0);         // simple way to lock rotation axes
-            g_player.body->setSleepingThresholds(0, 0); // never sleep
-            g_bullet.m_dynamicsWorld->addRigidBody(newBody);
+            g_physEnv.newBoxShape("player", 1.0f, 2.0f, 1.0f);
+
+            g_physEnv.newRigidBody("player",
+                                   100.0f,
+                                   8.0f,
+                                   2.0f,
+                                   8.0f,
+                                   "player",
+                                   0.0f,
+                                   0.75f,
+                                   0.9f);
+
+            auto playerBody = g_physEnv.getRigidBody("player");
+            playerBody->setAngularFactor(0);         // simple way to lock rotation axes
+            playerBody->setSleepingThresholds(0, 0); // never sleep
         }
 
         // spawn ground
         {
-            g_bullet.m_shapes["ground"] = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
-            btTransform trafo;
-            trafo.setIdentity();
-            trafo.setOrigin(btVector3(0, -50, 0));
-            btScalar mass(0.0);
-            btVector3 inertia(0, 0, 0);
-            btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, new btDefaultMotionState(trafo), g_bullet.m_shapes["ground"], inertia);
-            rbInfo.m_restitution = 1.0f;
-            rbInfo.m_friction = 1.0f;
-            g_bullet.m_dynamicsWorld->addRigidBody(new btRigidBody(rbInfo));
+            g_physEnv.newBoxShape("ground", 50.0f, 50.0f, 50.0f);
+
+            g_physEnv.newRigidBody("ground",
+                                   0.0f,
+                                   0.0f,
+                                   -50.0f,
+                                   0.0f,
+                                   "ground",
+                                   1.0f,
+                                   1.0f,
+                                   0.0f);
         }
     }
 
     void tick()
     {
-        // tick bullet world
-        g_bullet.m_dynamicsWorld->stepSimulation(yg::time::getDelta(), 10);
+        // tick physics world
+        g_physEnv.tick(yg::time::getDelta());
 
-        // set camera trafo from bullet player body
-        btTransform trans;
-        g_player.body->getMotionState()->getWorldTransform(trans);
-        g_camera.trafo()->setTranslation({trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()});
+        // set camera trafo from physics player body
+        g_camera.trafo()->setTranslation(g_physEnv.getRigidBody("player")->getTrafo().getEye());
 
         // assemble force vector from WASD movement keys
         glm::vec3 forceX = g_camera.trafo()->getAxisLocal(yg::math::Axis::X);
@@ -163,13 +148,13 @@ namespace mygame
         {
             force = glm::normalize(force);
             force *= 2500.0f;
-            g_player.body->applyCentralForce({force[0], force[1], force[2]});
+            g_physEnv.getRigidBody("player")->applyCentralForce(force[0], force[1], force[2]);
         }
 
         // jump
         if (yg::input::getDelta(yg::input::KEY_SPACE) > 0.0f)
         {
-            g_player.body->applyCentralImpulse({0, 400, 0});
+            g_physEnv.getRigidBody("player")->applyCentralImpulse(0.0f, 400.0f, 0.0f);
         }
 
         // fire
@@ -183,20 +168,15 @@ namespace mygame
             auto eye = g_camera.trafo()->getEye();
             auto dir = -g_camera.trafo()->getAxisLocal(yg::math::Axis::Z);
             auto to = eye + (rayLength * dir);
-            btVector3 btFrom(eye.x, eye.y, eye.z);
-            btVector3 btTo(to.x, to.y, to.z);
-            btCollisionWorld::ClosestRayResultCallback res(btFrom, btTo);
-            g_bullet.m_dynamicsWorld->rayTest(btFrom, btTo, res);
-            if (res.hasHit())
+
+            auto rayRes = g_physEnv.rayTest(eye.x, eye.y, eye.z, to.x, to.y, to.z);
+
+            if (rayRes.m_rigidBody)
             {
-                // todo: upcast() returns const btRigidBody* because res.m_collisionObject is const.
-                // we cast the constness of the body away to apply impulse
-                btRigidBody *body = const_cast<btRigidBody *>(btRigidBody::upcast(res.m_collisionObject));
-                if (body)
-                {
-                    // todo: apply impulse at hit point, not center (0,0,0)
-                    body->applyImpulse((btTo - btFrom) * 50.0f, btVector3(0, 0, 0));
-                }
+                float impulseFactor = 50.0f;
+                rayRes.m_rigidBody->applyCentralImpulse((to.x - eye.x) * impulseFactor,
+                                                        (to.y - eye.y) * impulseFactor,
+                                                        (to.z - eye.z) * impulseFactor);
             }
         }
 
@@ -228,10 +208,9 @@ namespace mygame
                 ImGui::EndMenu();
             }
 
-            ImGui::Text("| mouse delta: %f,%f, player velocity: %f, fps: %f",
+            ImGui::Text("| mouse delta: %f,%f, fps: %f",
                         yg::input::getDelta(yg::input::MOUSE_X),
                         yg::input::getDelta(yg::input::MOUSE_Y),
-                        g_player.body->getLinearVelocity().length(),
                         (float)(1.0 / yg::time::getDelta()));
             ImGui::EndMainMenuBar();
         }
@@ -272,27 +251,21 @@ namespace mygame
         // draw boxes
         {
             std::vector<glm::mat4> trafos;
-            for (const auto &b : g_boxes)
+            auto bodies = g_physEnv.getRigidBodiesStartingWith("box");
+            for (const auto &b : bodies)
             {
-                yg::math::Trafo modelTrafo;
-                // get box data from bullet
-                btTransform trans;
-                b.body->getMotionState()->getWorldTransform(trans);
-                btQuaternion rot = trans.getRotation();
-                modelTrafo.setTranslation({trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()});
-                modelTrafo.setRotation({rot.getW(), rot.getX(), rot.getY(), rot.getZ()});
-                btBoxShape *bShape = static_cast<btBoxShape *>(b.body->getCollisionShape());
-                btVector3 bExtends = bShape->getHalfExtentsWithMargin();
-                modelTrafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
-                trafos.push_back(modelTrafo.mat());
+                auto trafo = b->getTrafo();
+                trafo.setScaleLocal(g_boxScale);
+                trafos.push_back(trafo.mat());
             }
+
             auto geoCube = g_assets.get<yg::gl::Geometry>("geoCube");
             geoCube->bufferData("instModelMat", trafos.size() * sizeof(trafos[0]), trafos.data());
             yg::gl::DrawConfig cfg;
             cfg.shader = shdrTex;
             cfg.textures = {g_assets.get<yg::gl::Texture>("texCube")};
             cfg.camera = &g_camera;
-            cfg.instancecount = g_boxes.size();
+            cfg.instancecount = bodies.size();
             yg::gl::drawGeo(geoCube, cfg);
         }
 
