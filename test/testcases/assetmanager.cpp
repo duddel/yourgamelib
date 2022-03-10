@@ -19,7 +19,6 @@ freely, subject to the following restrictions:
 */
 #include <cassert>
 #include "yourgame/yourgame.h"
-#include "mygame_version.h"
 
 namespace yg = yourgame; // convenience
 
