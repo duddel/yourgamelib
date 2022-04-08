@@ -170,8 +170,8 @@ namespace yourgame_internal_android
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO &imgio = ImGui::GetIO();
-        //imgio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-        //imgio.IniFilename = NULL;
+        // imgio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        // imgio.IniFilename = NULL;
 
         ImGui::StyleColorsDark();
         ImGui_ImplAndroid_Init(_win);
@@ -222,14 +222,14 @@ namespace yourgame_internal_android
         yourgame_internal_android::tickInput();
     }
 
-    void shutdown()
+    int shutdown()
     {
         if (!_initialized)
         {
             return;
         }
 
-        mygame::shutdown();
+        int ret = mygame::shutdown();
 
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplOpenGL3_Shutdown();
@@ -259,6 +259,8 @@ namespace yourgame_internal_android
         _surface = EGL_NO_SURFACE;
 
         _initialized = false;
+
+        return ret;
     }
 } // namespace yourgame_internal_android
 

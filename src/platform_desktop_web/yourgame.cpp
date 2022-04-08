@@ -252,7 +252,7 @@ namespace yourgame_internal_desktop
 
     int shutdown()
     {
-        mygame::shutdown();
+        int ret = mygame::shutdown();
 
 #ifndef YOURGAME_CLIMODE
 #ifdef YOURGAME_EXTPROJ_imgui
@@ -268,7 +268,7 @@ namespace yourgame_internal_desktop
         glfwTerminate();
 #endif // #ifndef YOURGAME_CLIMODE
 
-        return 0;
+        return ret;
     }
 } // namespace yourgame_internal_desktop
 

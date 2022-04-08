@@ -29,7 +29,7 @@ namespace mygame
         /* your gl code here */
     }
 
-    void shutdown() {
+    int shutdown() {
         /* your shutdown code here */
     }
 }

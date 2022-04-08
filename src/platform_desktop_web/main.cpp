@@ -39,7 +39,5 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    yourgame_internal_desktop::shutdown();
-
-    return 0;
+    return yourgame_internal_desktop::shutdown();
 }

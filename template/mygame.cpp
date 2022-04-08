@@ -90,9 +90,10 @@ namespace mygame
         }
     }
 
-    void shutdown()
+    int shutdown()
     {
         g_assets.clear();
+        return 0;
     }
 
 } // namespace mygame

@@ -17,30 +17,20 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <cassert>
+#include "doctest.h"
 #include "yourgame/yourgame.h"
 
 namespace yg = yourgame; // convenience
 
-namespace mygame
+TEST_CASE("PhysEnv")
 {
-    void init(int argc, char *argv[]) {}
-    void shutdown() {}
+    yg::util::PhysEnv env;
 
-    void tick()
+    SUBCASE("small simulation")
     {
-        // exit after first cycle
-        yg::control::exit();
-
-        // construct, destruct
-        {
-            yg::util::PhysEnv env;
-        }
-
-        yg::util::PhysEnv env;
         env.setGravity(0.0f, -9.81f, 0.0f);
 
-        // add shapes
+        // shapes
         env.newBoxShape("groundbox", 10.0f, 1.0f, 10.0f);
         env.newBoxShape("box1", 1.0f, 1.0f, 1.0f);
 
@@ -58,6 +48,11 @@ namespace mygame
             {
                 yg::log::info("box y: %v", boxBody->getTrafo().getEye().y);
             }
+            else
+            {
+                yg::log::info("ending simulation.");
+                break;
+            }
 
             auto cols = env.getCollisions();
             for (const auto &col : cols)
@@ -65,11 +60,16 @@ namespace mygame
                 if (col.involves("box", "ground"))
                 {
                     yg::log::info("%v hit %v, impact: %v. box destroyed.", col.m_body0->m_name, col.m_body1->m_name, col.m_impulse);
-                    env.deleteRigidBody("box");
+                    CHECK(env.deleteRigidBody("box") == true);
                     break;
                 }
             }
         }
+    }
+
+    SUBCASE("getRigidBodiesStartingWith()")
+    {
+        env.newBoxShape("box1", 1.0f, 1.0f, 1.0f);
 
         // add some boxes
         env.newRigidBody("box1", 1.0f, 0.0f, 3.0f, 0.0f, "box1", 0.9f);
@@ -77,13 +77,15 @@ namespace mygame
         env.newRigidBody("box3", 1.0f, 0.0f, 3.0f, 0.0f, "box1", 0.9f);
 
         // query bodies with getRigidBodiesStartingWith()
-        assert(env.getRigidBodiesStartingWith("box").size() == 3);
-        assert(env.getRigidBodiesStartingWith("ground").size() == 1);
-        assert(env.getRigidBodiesStartingWith("player").empty());
-        assert(env.getRigidBodiesStartingWith("verylongbodyname").empty());
-
-        // delete shapes
-        assert(env.deleteShape("groundbox") == true);
-        assert(env.deleteShape("groundbox") == false);
+        CHECK(env.getRigidBodiesStartingWith("box").size() == 3);
+        CHECK(env.getRigidBodiesStartingWith("player").empty());
+        CHECK(env.getRigidBodiesStartingWith("verylongbodyname").empty());
     }
-} // namespace mygame
+
+    SUBCASE("deleteShape()")
+    {
+        env.newBoxShape("groundbox", 10.0f, 1.0f, 10.0f);
+        CHECK(env.deleteShape("groundbox") == true);
+        CHECK(env.deleteShape("groundbox") == false);
+    }
+}

@@ -53,7 +53,7 @@ namespace mygame
 
     called by the yourgame framework before it is shut down
     */
-    extern void shutdown();
+    extern int shutdown();
 } // namespace mygame
 
 #endif

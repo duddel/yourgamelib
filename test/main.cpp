@@ -17,20 +17,33 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_ANDROID_H
-#define YOURGAME_INTERNAL_ANDROID_H
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest.h"
+#include "yourgame/yourgame.h"
 
-#include <android_native_app_glue.h>
-
-namespace yourgame_internal_android
+namespace mygame
 {
-    bool isInitialized();
-    int32_t handleInputEvent(AInputEvent *inputEvent);
-    void init(struct android_app *app);
-    void tick();
-    int shutdown();
-    void tickInput();
-    void initFile(struct android_app *app);
-} // namespace yourgame_internal_android
+    doctest::Context context;
 
-#endif
+    void init(int argc, char *argv[])
+    {
+        context.applyCommandLine(argc, argv);
+    }
+
+    void tick() { yourgame::control::exit(); }
+
+    int shutdown()
+    {
+        int ret = context.run();
+
+        // If the test executable should exit, no framework code should be called after
+        // context.run(), so exit the application in this case.
+        // But currently, there is nothing to be done after context.run() anyway.
+        // if(context.shouldExit())
+        // {
+        //     return ret;
+        // }
+
+        return ret;
+    }
+} // namespace mygame
