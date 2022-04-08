@@ -226,7 +226,7 @@ namespace yourgame_internal_android
     {
         if (!_initialized)
         {
-            return;
+            return -1;
         }
 
         int ret = mygame::shutdown();
