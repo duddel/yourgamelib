@@ -31,7 +31,6 @@ These libraries are integrated if the project has been initialized with default 
 | -------------------------------------- | --------------------- | ------------------ | ------------------ | ------------------ |
 | [box2d](#box2d)                        | Box2D                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [bullet](#bullet)                      | Bullet                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [choreograph](#choreograph)            | Choreograph           | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [doctest](#doctest)                    | doctest               | :heavy_check_mark: |                    |                    |
 | [file-dialogs](#portable-file-dialogs) | Portable File Dialogs | :heavy_check_mark: |                    |                    |
 | [flecs](#flecs)                        | Flecs                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
@@ -78,16 +77,6 @@ These libraries are integrated if the project has been initialized with default 
     -   src/btBulletDynamicsCommon.h
     -   src/btLinearMathAll.cpp
 -   license: [bullet/LICENSE.txt](bullet/LICENSE.txt)
-
-## Choreograph
-
--   version: **3463198, 0.4.0**
--   origin: <https://github.com/sansumbrella/Choreograph/tree/34631980702f5d3745ac29d262712dd81b594ade>
--   extracted from origin:
-    -   LICENSE.md
-    -   src/\*
--   modifications are marked with `YOURGAME_MODIFICATION`
--   license: [choreograph/LICENSE.md](choreograph/LICENSE.md)
 
 ## Dirent
 

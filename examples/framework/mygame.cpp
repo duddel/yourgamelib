@@ -21,11 +21,11 @@ freely, subject to the following restrictions:
 #include <string>
 #include <vector>
 #include <map>
+#include <memory> // unique_ptr
 #include "yourgame/yourgame.h"
 #include "imgui.h"
 #include "box2d/box2d.h"
 #include "flecs.h"
-#include "choreograph/Choreograph.h"
 #include "q3.h"
 extern "C"
 {
@@ -360,7 +360,7 @@ namespace mygame
         static bool showBox2d = false;
         static bool showFlecs = false;
         static bool showLua = false;
-        static bool showChoreograph = false;
+        static bool showMotion = false;
         static bool showSpriteGrid = false;
         static bool showQu3e = false;
         static bool showGamepadInput = false;
@@ -410,9 +410,9 @@ namespace mygame
                 {
                     showLua = true;
                 }
-                if (ImGui::MenuItem("Choreograph", "", &showChoreograph))
+                if (ImGui::MenuItem("Motion", "", &showMotion))
                 {
-                    showChoreograph = true;
+                    showMotion = true;
                 }
                 if (ImGui::MenuItem("SpriteGrid", "", &showSpriteGrid))
                 {
@@ -700,16 +700,14 @@ namespace mygame
                 flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel)
                                                                         {
                                                                             float newS = dist.s + vel.v * e.delta_time();
-                                                                            dist.s = newS > 10.0f ? newS - 10.0f : newS;
-                                                                        });
+                                                                            dist.s = newS > 10.0f ? newS - 10.0f : newS; });
 
                 // add drawing system
                 flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist)
                                                          {
                                                              // indicate entity components via sliders
                                                              float entityVal = dist.s;
-                                                             ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f);
-                                                         });
+                                                             ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f); });
 
                 // add some entities
                 for (int i = 1; i < 11; i++)
@@ -780,45 +778,98 @@ namespace mygame
             luaInitialized = false;
         }
 
-        // Choreograph demo window
-        static bool choreographInitialized = false;
-        static choreograph::Timeline *choreoTimeline;
-        static choreograph::Output<float> *choreoTarget1;
-        static choreograph::Output<float> *choreoTarget2;
-        static choreograph::Output<float> *choreoTarget3;
-        if (showChoreograph)
-        {
-            if (!choreographInitialized)
-            {
-                choreoTimeline = new choreograph::Timeline();
-                choreoTarget1 = new choreograph::Output<float>();
-                choreoTarget2 = new choreograph::Output<float>();
-                choreoTarget3 = new choreograph::Output<float>();
-                choreograph::PhraseRef<float> choreoPhrase1 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseNone());
-                choreograph::PhraseRef<float> choreoPhrase2 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutQuad());
-                choreograph::PhraseRef<float> choreoPhrase3 = choreograph::makeRamp<float>(-5.0f, 10.0f, 2.0, choreograph::EaseInOutExpo());
-                choreoTimeline->apply(choreoTarget1).then(choreograph::makePingPong(choreoPhrase1, 10.0f));
-                choreoTimeline->apply(choreoTarget2).then(choreograph::makePingPong(choreoPhrase2, 10.0f));
-                choreoTimeline->apply(choreoTarget3).then(choreograph::makePingPong(choreoPhrase3, 10.0f));
+        // Motion demo window
+        static bool motionInitialized = false;
+        static std::vector<std::unique_ptr<yg::util::Motion>> *motions;
 
-                choreographInitialized = true;
+        if (showMotion)
+        {
+            static std::vector<std::string> motionNames = {"linear",
+                                                           "SQUARE",
+                                                           "CUBE",
+                                                           "SQUAREDOWN",
+                                                           "CUBEDOWN",
+                                                           "SINE",
+                                                           "SINEDOWN",
+                                                           "SMOOTH",
+                                                           "SMOOTH2",
+                                                           "sequence"};
+
+            if (!motionInitialized)
+            {
+                motions = new std::vector<std::unique_ptr<yg::util::Motion>>();
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::NONE);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::SQUARE);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::CUBE);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::SQUAREDOWN);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::CUBEDOWN);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::SINE);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::SINEDOWN);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::SMOOTH);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::PINGPONG));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::SMOOTH2);
+
+                motions->emplace_back(new yg::util::Motion(yg::util::Motion::FlowType::ONCE));
+                motions->back()->addRamp(2.0f, -5.0f, 10.0f, yg::util::Motion::SegmentEase::NONE).addIdle(0.5f, 10.0f).addRamp(1.0f, 10.0f, -5.0f, yg::util::Motion::SegmentEase::SQUAREDOWN).addIdle(0.5f, -5.0f);
+
+                motionInitialized = true;
             }
 
-            choreoTimeline->step(yg::time::getDelta());
+            ImGui::Begin("Motion", &showMotion, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
 
-            ImGui::Begin("Choreograph", &showChoreograph, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-            ImGui::SliderFloat("linear", choreoTarget1->valuePtr(), -5.0f, 10.0f);
-            ImGui::SliderFloat("quad", choreoTarget2->valuePtr(), -5.0f, 10.0f);
-            ImGui::SliderFloat("expo", choreoTarget3->valuePtr(), -5.0f, 10.0f);
+            int mI = 0;
+            for (auto &m : *motions)
+            {
+                ImGui::PushID(&m);
+                m->tick(yg::time::getDelta());
+                float val = m->val();
+                ImGui::SliderFloat(motionNames.at(mI++).c_str(), &val, -5.0f, 10.0f);
+                ImGui::SameLine();
+                if (ImGui::Button("restart"))
+                {
+                    m->restart();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("pause"))
+                {
+                    m->pause(!m->isPaused());
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("direction"))
+                {
+                    m->setDirection(!m->getDirection());
+                }
+                if (m->isFinished())
+                {
+                    ImGui::SameLine();
+                    ImGui::Text("finished");
+                }
+                ImGui::PopID();
+            }
+
             ImGui::End();
         }
-        else if (choreographInitialized)
+        else if (motionInitialized)
         {
-            delete choreoTimeline;
-            delete choreoTarget1;
-            delete choreoTarget2;
-            delete choreoTarget3;
-            choreographInitialized = false;
+            delete motions;
+            motionInitialized = false;
         }
 
         // SpriteGrid demo window

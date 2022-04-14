@@ -17,28 +17,26 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_TOOLBOX_H
-#define YOURGAME_TOOLBOX_H
+#include "doctest.h"
+#include "yourgame/yourgame.h"
 
-// the following includes are part of the yourgame (toolbox) API
-#include "yourgame/gl/buffer.h"
-#include "yourgame/gl/conventions.h"
-#include "yourgame/gl/drawing.h"
-#include "yourgame/gl/framebuffer.h"
-#include "yourgame/gl/geometry.h"
-#include "yourgame/gl/lightsource.h"
-#include "yourgame/gl/loading.h"
-#include "yourgame/gl/particles.h"
-#include "yourgame/gl/shader.h"
-#include "yourgame/gl/shape.h"
-#include "yourgame/gl/spritegrid.h"
-#include "yourgame/gl/texture.h"
-#include "yourgame/gl/textureatlas.h"
-#include "yourgame/math/camera.h"
-#include "yourgame/math/particles.h"
-#include "yourgame/math/trafo.h"
-#include "yourgame/util/assetmanager.h"
-#include "yourgame/util/motion.h"
-#include "yourgame/util/physenv.h"
+namespace yg = yourgame; // convenience
 
-#endif
+TEST_CASE("Motion")
+{
+    SUBCASE("basics")
+    {
+        yg::util::Motion mot(yg::util::Motion::FlowType::ONCE);
+
+        mot.addRamp(1.5f, 0.0f, 5.0f, yg::util::Motion::SegmentEase::SQUARE)
+            .addRamp(1.5f, 0.0f, 5.0f, yg::util::Motion::SegmentEase::SQUAREDOWN)
+            .addRamp(1.5f, 0.0f, 5.0f, yg::util::Motion::SegmentEase::SMOOTH)
+            .addRamp(1.5f, 0.0f, 5.0f, yg::util::Motion::SegmentEase::SMOOTH2);
+
+        for (int i = 0; i < 100; i++)
+        {
+            mot.tick(0.1);
+            yg::log::info("value: %v", mot.val());
+        }
+    }
+}
