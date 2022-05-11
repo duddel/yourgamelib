@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #include <vector>
 #include <string>
 #include "yourgame/file.h"
+#include "yourgame/log.h"
 
 namespace yourgame_internal
 {
@@ -49,6 +50,7 @@ namespace yourgame_internal
     int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes)
     {
         int ret = -1;
+        yourgame::log::debug("writeFileToPath(): opening in wb mode: %v", filepath);
         std::FILE *f = std::fopen(filepath.c_str(), "wb");
         if (f)
         {
