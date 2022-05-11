@@ -149,18 +149,26 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   # ALLOW_MEMORY_GROWTH=1 was added after commit bd08b66, where initializing
   # of flecs caused the web app to crash
   # todo: what exactly does ALLOW_MEMORY_GROWTH mean?
+  # ASYNCIFY is required for emscripten_wget_data() etc.
   set(C_CXX_FLAGS_FOR_EM
     "-s USE_GLFW=3 \
     -s USE_WEBGL2=1 \
     -s ALLOW_MEMORY_GROWTH=1 \
+    -s ASYNCIFY \
     --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/shell.html")
-  # make sure assets/ gets copied into the wasm file system,
-  # but only if any asset files exist
-  file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
-  if(ASSET_FILES)
-    set(C_CXX_FLAGS_FOR_EM
-      "${C_CXX_FLAGS_FOR_EM} \
-      --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets")
+
+  # change the following line to
+  #   if(YES)
+  # to copy assets (if any) into the wasm file system. only recommended
+  # if the assets are final and not to be updated and loaded from
+  # assets/ directory during runtime
+  if(NO)
+    file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
+    if(ASSET_FILES)
+      set(C_CXX_FLAGS_FOR_EM
+        "${C_CXX_FLAGS_FOR_EM} \
+        --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
+    endif()
   endif()
 
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
