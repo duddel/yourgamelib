@@ -37,7 +37,6 @@ These libraries are integrated if the project has been initialized with default 
 | [fsm](#fsm)                            | fsm                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [lua](#lua)                            | Lua, LuaBridge        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [miniaudio](#miniaudio)                | miniaudio             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [qu3e](#qu3e)                          | qu3e                  | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 * * *
 
@@ -221,15 +220,6 @@ These libraries are integrated if the project has been initialized with default 
 -   extracted from origin:
     -   miniaudio.h, LICENSE
 -   license: [miniaudio/LICENSE](miniaudio/LICENSE)
-
-## qu3e
-
--   version: **1.01, ad3feda (master)**
--   origin: <https://github.com/RandyGaul/qu3e/tree/ad3feda2958f023f4989a69e5127265281cdf603>
--   extracted from origin
-    -   src/\*
-    -   LICENSE.txt
--   license: [qu3e/LICENSE.txt](qu3e/LICENSE.txt)
 
 ## stb
 
