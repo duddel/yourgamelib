@@ -26,7 +26,6 @@ freely, subject to the following restrictions:
 #include "imgui.h"
 #include "box2d/box2d.h"
 #include "flecs.h"
-#include "q3.h"
 extern "C"
 {
 #include "lua.h"
@@ -362,7 +361,6 @@ namespace mygame
         static bool showLua = false;
         static bool showMotion = false;
         static bool showSpriteGrid = false;
-        static bool showQu3e = false;
         static bool showGamepadInput = false;
         static bool showLs = false;
 
@@ -417,10 +415,6 @@ namespace mygame
                 if (ImGui::MenuItem("SpriteGrid", "", &showSpriteGrid))
                 {
                     showSpriteGrid = true;
-                }
-                if (ImGui::MenuItem("qu3e", "", &showQu3e))
-                {
-                    showQu3e = true;
                 }
                 if (ImGui::MenuItem("Gamepad input", "", &showGamepadInput))
                 {
@@ -952,75 +946,6 @@ namespace mygame
             delete spriteGrid;
             delete spriteGridTrafo;
             spriteGridInitialized = false;
-        }
-
-        // qu3e demo window
-        static bool qu3eInitialized = false;
-        static q3Scene *qu3eScene;
-        if (showQu3e)
-        {
-            static q3Body *qu3eBodyGround;
-            static q3Body *qu3eBodyDynamic;
-            static float gravity = -9.81f;
-
-            if (!qu3eInitialized)
-            {
-                qu3eScene = new q3Scene(1.0 / 60.0);
-
-                // static body with 2 boxes: bottom and top
-                q3BodyDef groundDef;
-                groundDef.bodyType = eStaticBody;
-                qu3eBodyGround = qu3eScene->CreateBody(groundDef);
-                q3BoxDef groundBoxDef;
-                q3Transform localSpace;
-                q3Identity(localSpace);
-                localSpace.position.Set(0.0, -5.0, 0.0);
-                groundBoxDef.Set(localSpace, q3Vec3(10.0, 10.0, 10.0));
-                qu3eBodyGround->AddBox(groundBoxDef);
-                localSpace.position.Set(0.0, 15.0, 0.0);
-                groundBoxDef.Set(localSpace, q3Vec3(10.0, 10.0, 10.0));
-                qu3eBodyGround->AddBox(groundBoxDef);
-
-                // dynamic body: move between static boxes
-                q3BodyDef dynDef;
-                dynDef.bodyType = eDynamicBody;
-                dynDef.allowSleep = false;
-                dynDef.lockAxisX = true; // lock rotations
-                dynDef.lockAxisY = true;
-                dynDef.lockAxisZ = true;
-                dynDef.position.Set(0.0, 10.0, 0.0);
-                qu3eBodyDynamic = qu3eScene->CreateBody(dynDef);
-                q3BoxDef dynBoxDef;
-                dynBoxDef.SetRestitution(0.5);
-                q3Identity(localSpace);
-                localSpace.position.Set(0.0, 0.0, 0.0);
-                dynBoxDef.Set(localSpace, q3Vec3(1.0, 1.0, 1.0));
-                qu3eBodyDynamic->AddBox(dynBoxDef);
-
-                qu3eInitialized = true;
-            }
-
-            // todo: the dynamic body falls asleep even though allowSleep was set to false
-            qu3eBodyDynamic->SetToAwake();
-
-            qu3eScene->SetGravity({0.0f, gravity, 0.0f});
-
-            // step qu3e scene
-            qu3eScene->Step();
-
-            // the vertical slider gets updated with qu3eTestHeight every frame,
-            // indicating the height of the dropping qu3e body
-            float qu3eTestHeight = (float)(qu3eBodyDynamic->GetTransform().position.y);
-            ImGui::Begin("qu3e", &showQu3e, (ImGuiWindowFlags_NoCollapse));
-            ImGui::VSliderFloat("box", ImVec2(50, 150), &qu3eTestHeight, 0.0f, 10.0f);
-            ImGui::SameLine();
-            ImGui::VSliderFloat("gravity", ImVec2(50, 150), &gravity, -20.0f, 20.0f);
-            ImGui::End();
-        }
-        else if (qu3eInitialized)
-        {
-            delete qu3eScene;
-            qu3eInitialized = false;
         }
 
         // Input demo window
