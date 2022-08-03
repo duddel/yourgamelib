@@ -6,15 +6,29 @@ find_package(Git)
 
 project({{ YOURGAME_PROJECT_NAME }} VERSION 0.0.1)
 
-# enforce C++11 and disable extensions
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# web platform only.
+# enable this option to copy assets (if any) into the wasm file system.
+# only recommended if the assets are final and not to be updated.
+# otherwise, assets are loaded from assets/ directory during runtime.
+set(WEB_PACK_ASSETS OFF)
+
+# enable this option to clone yourgamelib and checkout the commit, defined
+# as YOURGAME_GIT_COMMIT_REQUESTED. otherwise, the original path, where
+# this project has been initialized from, is used.
+set(YOURGAME_GIT_CLONE {{ YOURGAME_CLONE }})
+
+# if YOURGAME_GIT_CLONE == ON, this is the git remote url, yourgamelib is cloned from.
+set(YOURGAME_GIT_REMOTE https://github.com/duddel/yourgamelib)
 
 # the initial value of YOURGAME_GIT_COMMIT_REQUESTED is the commit of yourgamelib
 # during initialization of this project.
 # it should be adjusted if another (newer) version of yourgamelib is supported.
 set(YOURGAME_GIT_COMMIT_REQUESTED {{ YOURGAME_GIT_COMMIT_INIT }})
+
+# enforce C++11 and disable extensions
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # get git commit sha and test it against the requested commit of the project:
 # git describe usually returns the name of an annotated tag, but with --match="",
@@ -51,17 +65,13 @@ list(APPEND YOURGAME_EXT_PROJ_LIST
 set(YOURGAME_BARE TRUE)
 {%- endif %}
 
-# determine the source location of the yourgame library code:
-# changing the following line to
-#   if(YES)
-# lets CMake clone the yourgame library to the requested commit (via GitHub).
-# otherwise, the original path, where this project has been initialized from, is used.
-if({{ YOURGAME_CLONE }})
+# determine the source location of the yourgame library code
+if(YOURGAME_GIT_CLONE)
   if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib)
     message("${CMAKE_CURRENT_SOURCE_DIR}/yourgamelib exists, leaving unchanged")
   else()
     # clone yourgame library
-    execute_process(COMMAND "${GIT_EXECUTABLE}" clone https://github.com/duddel/yourgamelib
+    execute_process(COMMAND "${GIT_EXECUTABLE}" clone "${YOURGAME_GIT_REMOTE}"
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     )
     # checkout the requested yourgamelib commit
@@ -156,19 +166,13 @@ if(YOURGAME_PLATFORM STREQUAL "web")
     -s ALLOW_MEMORY_GROWTH=1 \
     -s ASYNCIFY \
     --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/shell.html")
-
-  # change the following line to
-  #   if(YES)
-  # to copy assets (if any) into the wasm file system. only recommended
-  # if the assets are final and not to be updated and loaded from
-  # assets/ directory during runtime
-  if(NO)
-    file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
-    if(ASSET_FILES)
-      set(C_CXX_FLAGS_FOR_EM
-        "${C_CXX_FLAGS_FOR_EM} \
-        --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
-    endif()
+    
+  # check if there are any assets
+  file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
+  
+  if(WEB_PACK_ASSETS AND ASSET_FILES)
+    set(C_CXX_FLAGS_FOR_EM "${C_CXX_FLAGS_FOR_EM} \
+      --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
   endif()
 
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
@@ -180,9 +184,18 @@ if(YOURGAME_PLATFORM STREQUAL "web")
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.html DESTINATION . RENAME index.html)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.js DESTINATION .)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.wasm DESTINATION .)
+
+    # pack asset files, if any.
+    # either pack the .data file, if WEB_PACK_ASSETS == ON,
+    # or pack separate assets/ directory, otherwise.
     if(ASSET_FILES)
-      install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.data DESTINATION .)
+      if(WEB_PACK_ASSETS)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.data DESTINATION .)
+      else()
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/ DESTINATION ./assets/)
+      endif()
     endif()
+
     set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY 0)
     include(CPack)
   endif()

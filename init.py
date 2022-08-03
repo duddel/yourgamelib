@@ -84,7 +84,7 @@ templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_GIT_COMMIT_INIT=gitSha,
     YOURGAME_ROOT=ygRootRel,
-    YOURGAME_CLONE=("YES" if args.clone else "NO"),
+    YOURGAME_CLONE=("ON" if args.clone else "OFF"),
     YOURGAME_PROJECT_NAME=newProjName,
     YOURGAME_BARE=args.bare,
     YOURGAME_MY_SOURCES=dstSources,
