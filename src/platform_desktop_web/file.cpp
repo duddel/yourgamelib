@@ -55,7 +55,7 @@ namespace yourgame_internal_desktop
         std::replace(basePath.begin(), basePath.end(), '\\', '/');
 
         // check existing (via dirent openable) asset directories
-        for (const auto &a : {"assets/", "../assets/", "../../assets/"})
+        for (const auto &a : {"assets/", "../assets/", "../../assets/", "../../../assets/"})
         {
             assetPathAbs = basePath + a;
             DIR *dir = opendir(assetPathAbs.c_str());

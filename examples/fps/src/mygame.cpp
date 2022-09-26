@@ -77,32 +77,29 @@ namespace mygame
         g_physEnv.newBoxShape("box", g_boxScale, g_boxScale, g_boxScale);
         for (int bi = 0; bi <= 10; bi++)
         {
-            // todo: hand over Trafo (not only position) to newRigidBody()
-            g_physEnv.newRigidBody("box" + std::to_string(bi),
-                                   100.0f,
-                                   -10 + 2 * bi,
-                                   50 - 5 * bi,
-                                   10 - 2 * bi,
-                                   "box",
-                                   0.2f,
-                                   0.75f);
-
-            g_physEnv.getRigidBody("box" + std::to_string(bi))->setSleepingThresholds(0.0f, 0.0f);
+            yg::math::Trafo trafo;
+            trafo.setTranslation({-10 + 2 * bi, 50 - 5 * bi, 10 - 2 * bi});
+            yg::util::RigidBodyInfo rbInfo;
+            rbInfo.mass = 100.0f;
+            rbInfo.restitution = 0.2f;
+            rbInfo.friction = 0.75f;
+            rbInfo.disableDeactivation = true;
+            g_physEnv.newRigidBody("box" + std::to_string(bi), "box", trafo, rbInfo);
         }
 
         // spawn player
         {
             g_physEnv.newBoxShape("player", 1.0f, 2.0f, 1.0f);
 
-            g_physEnv.newRigidBody("player",
-                                   100.0f,
-                                   8.0f,
-                                   2.0f,
-                                   8.0f,
-                                   "player",
-                                   0.0f,
-                                   0.75f,
-                                   0.9f);
+            yg::math::Trafo trafo;
+            trafo.setTranslation({8.0f, 2.0f, 8.0f});
+            yg::util::RigidBodyInfo rbInfo;
+            rbInfo.mass = 100.0f;
+            rbInfo.restitution = 0.0f;
+            rbInfo.friction = 0.75f;
+            rbInfo.linearDamping = 0.9f;
+            rbInfo.disableDeactivation = true;
+            g_physEnv.newRigidBody("player", "player", trafo, rbInfo);
 
             auto playerBody = g_physEnv.getRigidBody("player");
             playerBody->setAngularFactor(0);         // simple way to lock rotation axes
@@ -113,15 +110,14 @@ namespace mygame
         {
             g_physEnv.newBoxShape("ground", 50.0f, 50.0f, 50.0f);
 
-            g_physEnv.newRigidBody("ground",
-                                   0.0f,
-                                   0.0f,
-                                   -50.0f,
-                                   0.0f,
-                                   "ground",
-                                   1.0f,
-                                   1.0f,
-                                   0.0f);
+            yg::math::Trafo trafo;
+            trafo.setTranslation({0.0f, -50.0f, 0.0f});
+            yg::util::RigidBodyInfo rbInfo;
+            rbInfo.mass = 0.0f;
+            rbInfo.restitution = 1.0f;
+            rbInfo.friction = 1.0f;
+            rbInfo.linearDamping = 0.0f;
+            g_physEnv.newRigidBody("ground", "ground", trafo, rbInfo);
         }
     }
 
