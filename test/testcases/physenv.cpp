@@ -34,9 +34,23 @@ TEST_CASE("PhysEnv")
         env.newBoxShape("groundbox", 10.0f, 1.0f, 10.0f);
         env.newBoxShape("box1", 1.0f, 1.0f, 1.0f);
 
-        // bodies
-        env.newRigidBody("ground", 0.0f, 0.0f, 0.0f, 0.0f, "groundbox", 0.5f);
-        env.newRigidBody("box", 1.0f, 0.0f, 3.0f, 0.0f, "box1", 0.9f);
+        // ground body
+        {
+            yg::math::Trafo trafo;
+            yg::util::RigidBodyInfo rbInfo;
+            rbInfo.mass = 0.0f;
+            rbInfo.restitution = 0.5f;
+            env.newRigidBody("ground", "groundbox", trafo, rbInfo);
+        }
+
+        // box body
+        {
+            yg::math::Trafo trafo;
+            trafo.translateLocal(3.0f, yg::math::Axis::Y);
+            yg::util::RigidBodyInfo rbInfo;
+            rbInfo.restitution = 0.9f;
+            env.newRigidBody("box", "box1", trafo, rbInfo);
+        }
 
         // small simulation. box hits ground
         for (int i = 0; i < 45; i++)
@@ -57,7 +71,7 @@ TEST_CASE("PhysEnv")
             auto cols = env.getCollisions();
             for (const auto &col : cols)
             {
-                if (col.involves("box", "ground"))
+                if (col.involves2("box", "ground"))
                 {
                     yg::log::info("%v hit %v, impact: %v. box destroyed.", col.m_body0->m_name, col.m_body1->m_name, col.m_impulse);
                     CHECK(env.deleteRigidBody("box") == true);
@@ -72,9 +86,13 @@ TEST_CASE("PhysEnv")
         env.newBoxShape("box1", 1.0f, 1.0f, 1.0f);
 
         // add some boxes
-        env.newRigidBody("box1", 1.0f, 0.0f, 3.0f, 0.0f, "box1", 0.9f);
-        env.newRigidBody("box2", 1.0f, 0.0f, 3.0f, 0.0f, "box1", 0.9f);
-        env.newRigidBody("box3", 1.0f, 0.0f, 3.0f, 0.0f, "box1", 0.9f);
+        {
+            yg::math::Trafo trafo;
+            yg::util::RigidBodyInfo rbInfo;
+            env.newRigidBody("box1", "box1", trafo, rbInfo);
+            env.newRigidBody("box2", "box1", trafo, rbInfo);
+            env.newRigidBody("box3", "box1", trafo, rbInfo);
+        }
 
         // query bodies with getRigidBodiesStartingWith()
         CHECK(env.getRigidBodiesStartingWith("box").size() == 3);

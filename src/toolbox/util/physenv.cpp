@@ -48,21 +48,69 @@ namespace yourgame
             btTransform trans;
             auto body = static_cast<btRigidBody *>(m_body);
             body->getMotionState()->getWorldTransform(trans);
-            btQuaternion rot = trans.getRotation();
-            trafo.setTranslation({trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()});
+
+            auto eye = trans.getOrigin();
+            auto rot = trans.getRotation();
+            trafo.setTranslation({eye.getX(), eye.getY(), eye.getZ()});
             trafo.setRotation({rot.getW(), rot.getX(), rot.getY(), rot.getZ()});
 
-            // todo: depending on the shape type, scale the trafo to
-            //       match "default" geometry for rendering.
-            //       this scales the "unit cube" (box with x,y,z [-1,+1]) depending
-            //       on the rigid body shape extends:
-
-            // here, assuming we have a btBoxShape...
-            // btBoxShape *bShape = static_cast<btBoxShape *>(body->getCollisionShape());
-            // btVector3 bExtends = bShape->getHalfExtentsWithMargin();
-            // trafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
+            // perform shape specific scaling of the Trafo
+            btCollisionShape *shape = body->getCollisionShape();
+            auto shapeType = shape->getShapeType();
+            switch (shapeType)
+            {
+            // scale the "unit cube" (box with x,y,z [-1,+1])
+            // depending on the rigid body shape extends
+            case BOX_SHAPE_PROXYTYPE:
+            {
+                btBoxShape *shape1 = static_cast<btBoxShape *>(shape);
+                btVector3 bExtends = shape1->getHalfExtentsWithMargin();
+                trafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getZ()});
+            }
+            break;
+            case SPHERE_SHAPE_PROXYTYPE:
+            {
+                btSphereShape *shape1 = static_cast<btSphereShape *>(shape);
+                trafo.setScaleLocal(shape1->getRadius());
+            }
+            break;
+            // the default cylinder (btCylinderShape) is y axis aligned.
+            // scale "unit cylinder" (y-aligned, y [-1,+1], radius = 1)
+            // depending on the rigid body shape extends
+            case CYLINDER_SHAPE_PROXYTYPE:
+            {
+                btCylinderShape *shape1 = static_cast<btCylinderShape *>(shape);
+                btVector3 bExtends = shape1->getHalfExtentsWithMargin();
+                trafo.setScaleLocal({bExtends.getX(), bExtends.getY(), bExtends.getX()});
+            }
+            break;
+            // the default cone (btConeShape) is y axis aligned.
+            // scale "unit cone" (y-aligned, y [-1,+1], radius = 1)
+            // depending on the rigid body shape radius and height
+            case CONE_SHAPE_PROXYTYPE:
+            {
+                btConeShape *shape1 = static_cast<btConeShape *>(shape);
+                btScalar radius = shape1->getRadius();
+                btScalar height = shape1->getHeight() * 0.5f;
+                trafo.setScaleLocal({radius, height, radius});
+            }
+            break;
+            default:
+                break;
+            }
 
             return trafo;
+        }
+
+        void RigidBody::setTrafo(yourgame::math::Trafo trafo)
+        {
+            auto eye = trafo.getEye();
+            auto rot = trafo.getRotation();
+            btTransform btTrafo({rot.x, rot.y, rot.z, rot.w},
+                                {eye.x, eye.y, eye.z});
+
+            auto body = static_cast<btRigidBody *>(m_body);
+            body->getMotionState()->setWorldTransform(btTrafo);
         }
 
         void RigidBody::setRestitution(float restitution)
@@ -83,10 +131,22 @@ namespace yourgame
             body->setSleepingThresholds(linear, angular);
         }
 
+        void RigidBody::setLinearFactors(float x, float y, float z)
+        {
+            auto body = static_cast<btRigidBody *>(m_body);
+            body->setLinearFactor({x, y, z});
+        }
+
         void RigidBody::setAngularFactor(float angFac)
         {
             auto body = static_cast<btRigidBody *>(m_body);
             body->setAngularFactor(angFac);
+        }
+
+        void RigidBody::setAngularFactors(float x, float y, float z)
+        {
+            auto body = static_cast<btRigidBody *>(m_body);
+            body->setAngularFactor({x, y, z});
         }
 
         void RigidBody::applyCentralForce(float x, float y, float z)
@@ -100,8 +160,6 @@ namespace yourgame
             auto body = static_cast<btRigidBody *>(m_body);
             body->applyCentralImpulse({x, y, z});
         }
-
-        // todo: add more functions for body manipulation
     }
 }
 
@@ -187,6 +245,24 @@ namespace yourgame
             return emplaceRet.second;
         }
 
+        bool PhysEnv::newSphereShape(const std::string &name, float radius)
+        {
+            auto emplaceRet = pimpl->m_shapes.emplace(name, new btSphereShape(radius));
+            return emplaceRet.second;
+        }
+
+        bool PhysEnv::newCylinderShape(const std::string &name, float radius, float height)
+        {
+            auto emplaceRet = pimpl->m_shapes.emplace(name, new btCylinderShape(btVector3(radius, height, radius)));
+            return emplaceRet.second;
+        }
+
+        bool PhysEnv::newConeShape(const std::string &name, float radius, float height)
+        {
+            auto emplaceRet = pimpl->m_shapes.emplace(name, new btConeShape(radius, height));
+            return emplaceRet.second;
+        }
+
         bool PhysEnv::deleteShape(const std::string &name)
         {
             return pimpl->m_shapes.erase(name) > 0;
@@ -205,39 +281,52 @@ namespace yourgame
         }
 
         bool PhysEnv::newRigidBody(const std::string &name,
-                                   float mass,
-                                   float x,
-                                   float y,
-                                   float z,
                                    const std::string &shapeName,
-                                   float restitution,
-                                   float friction,
-                                   float linearDamping)
+                                   const yourgame::math::Trafo &trafo,
+                                   const RigidBodyInfo &info)
         {
             if (pimpl->m_rigidBodies.find(name) == pimpl->m_rigidBodies.end() &&
                 pimpl->m_shapes.find(shapeName) != pimpl->m_shapes.end())
             {
+                // kinematic bodies must have zero mass
+                float mass = info.kinematic ? 0.0f : info.mass;
+
                 btVector3 inertia(0, 0, 0);
                 pimpl->m_shapes[shapeName].get()->calculateLocalInertia(mass, inertia);
-                // todo check if this alters the shape
 
-                btTransform trafo;
-                trafo.setIdentity();
-                trafo.setOrigin(btVector3(x, y, z));
+                auto eye = trafo.getEye();
+                auto rot = trafo.getRotation();
+                btTransform btTrafo({rot.x, rot.y, rot.z, rot.w},
+                                    {eye.x, eye.y, eye.z});
 
                 btRigidBody::btRigidBodyConstructionInfo rbInfo(mass,
-                                                                new btDefaultMotionState(trafo),
+                                                                new btDefaultMotionState(btTrafo),
                                                                 pimpl->m_shapes[shapeName].get(),
                                                                 inertia);
-                rbInfo.m_restitution = restitution;
-                rbInfo.m_friction = friction;
-                rbInfo.m_linearDamping = linearDamping;
+
+                rbInfo.m_linearDamping = info.linearDamping;
+                rbInfo.m_angularDamping = info.angularDamping;
+                rbInfo.m_friction = info.friction;
+                rbInfo.m_rollingFriction = info.rollingFriction;
+                rbInfo.m_spinningFriction = info.spinningFriction;
+                rbInfo.m_restitution = info.restitution;
+                rbInfo.m_linearSleepingThreshold = info.linearSleepingThreshold;
+                rbInfo.m_angularSleepingThreshold = info.angularSleepingThreshold;
 
                 auto newBody = new btRigidBody(rbInfo);
-                // newBody->setSleepingThresholds(0, 0); // never sleep
+
+                if (info.disableDeactivation | info.kinematic)
+                {
+                    newBody->setActivationState(DISABLE_DEACTIVATION);
+                }
+
+                if (info.kinematic)
+                {
+                    newBody->setCollisionFlags(newBody->getCollisionFlags() |
+                                               btCollisionObject::CF_KINEMATIC_OBJECT);
+                }
 
                 auto newRigidBody = new RigidBody(name, newBody);
-
                 newBody->setUserPointer(static_cast<void *>(newRigidBody));
 
                 pimpl->m_dynamicsWorld->addRigidBody(newBody);

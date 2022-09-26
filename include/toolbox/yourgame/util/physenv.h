@@ -29,6 +29,21 @@ namespace yourgame
 {
     namespace util
     {
+        struct RigidBodyInfo
+        {
+            float mass = 1.0f;
+            float linearDamping = 0.0f;
+            float angularDamping = 0.0f;
+            float friction = 0.5f;
+            float rollingFriction = 0.0f;
+            float spinningFriction = 0.0f;
+            float restitution = 0.0f;
+            float linearSleepingThreshold = 0.8f;
+            float angularSleepingThreshold = 1.0f;
+            bool kinematic = false;
+            bool disableDeactivation = false;
+        };
+
         /** \brief Represents a rigid body, holding a void pointer to an underlying implementation */
         class RigidBody
         {
@@ -49,6 +64,15 @@ namespace yourgame
             \return Trafo object
             */
             yourgame::math::Trafo getTrafo();
+
+            /**
+            \brief Set transform (Trafo) of rigid body
+
+            \attention works for kinematic bodies only
+
+            \param trafo Trafo to set
+             */
+            void setTrafo(yourgame::math::Trafo trafo);
 
             /**
             \brief Set the restitution of the rigid body
@@ -73,11 +97,29 @@ namespace yourgame
             void setSleepingThresholds(float linear, float angular);
 
             /**
+            \brief Set the Linear Factors (x,y,z) of the rigid body
+
+            \param x Linear Factor for x coordinate
+            \param y Linear Factor for y coordinate
+            \param z Linear Factor for z coordinate
+            */
+            void setLinearFactors(float x, float y, float z);
+
+            /**
             \brief Set the Angular Factor of the rigid body
 
             \param angFac angular factor
             */
             void setAngularFactor(float angFac);
+
+            /**
+            \brief Set the Angular Factors (x,y,z) of the rigid body
+
+            \param x Angular Factor for x coordinate
+            \param y Angular Factor for y coordinate
+            \param z Angular Factor for z coordinate
+            */
+            void setAngularFactors(float x, float y, float z);
 
             /**
             \brief Apply central force to the rigid body
@@ -97,7 +139,7 @@ namespace yourgame
             */
             void applyCentralImpulse(float x, float y, float z);
 
-            const std::string m_name;
+            std::string m_name;
             void *const m_body;
         };
 
@@ -115,9 +157,20 @@ namespace yourgame
             Collision(RigidBody *body0, RigidBody *body1, float impulse) : m_body0(body0),
                                                                            m_body1(body1),
                                                                            m_impulse(impulse) {}
-            RigidBody *const m_body0;
-            RigidBody *const m_body1;
-            const float m_impulse;
+            RigidBody *m_body0;
+            RigidBody *m_body1;
+            float m_impulse;
+
+            /**
+            \brief Checks if rigid body with name name is involved in this Collision
+
+            \param name name of rigid body
+            \return true if rigid body with name name is involved in this Collision, false otherwise
+            */
+            bool involves(const std::string &name) const
+            {
+                return (m_body0->m_name == name) || (m_body1->m_name == name);
+            }
 
             /**
             \brief Checks if this Collision happened between rigid bodies with names nameA and nameB
@@ -126,7 +179,7 @@ namespace yourgame
             \param nameB name of second rigid body
             \return true if collision happened between these two, false otherwise
             */
-            bool involves(const std::string &nameA, const std::string &nameB) const
+            bool involves2(const std::string &nameA, const std::string &nameB) const
             {
                 return ((m_body0->m_name == nameA) && (m_body1->m_name == nameB)) ||
                        ((m_body0->m_name == nameB) && (m_body1->m_name == nameA));
@@ -169,6 +222,35 @@ namespace yourgame
             bool newBoxShape(const std::string &name, float halfX, float halfY, float halfZ);
 
             /**
+            \brief Creates and stores a new sphere shape to be referenced during rigid body creation.
+
+            \param name name of the new sphere shape
+            \param radius radius
+            \return true if new sphere shape was created, false if shape with this name existed before
+            */
+            bool newSphereShape(const std::string &name, float radius);
+
+            /**
+            \brief Creates and stores a new cylinder shape to be referenced during rigid body creation.
+
+            \param name name of the new cylinder shape
+            \param radius radius
+            \param height height
+            \return true if new cylinder shape was created, false if shape with this name existed before
+            */
+            bool newCylinderShape(const std::string &name, float radius, float height);
+
+            /**
+            \brief Creates and stores a new cone shape to be referenced during rigid body creation.
+
+            \param name name of the new cone shape
+            \param radius radius
+            \param height height
+            \return true if new cone shape was created, false if shape with this name existed before
+            */
+            bool newConeShape(const std::string &name, float radius, float height);
+
+            /**
             \brief Deletes a shape by name
 
             \param name name of shape to delete
@@ -194,25 +276,13 @@ namespace yourgame
             \brief Creates and stores a new rigid body
 
             \param name name of the rigid body
-            \param mass mass
-            \param x x position
-            \param y y position
-            \param z z position
             \param shapeName name of the shape to use for this rigid body
-            \param restitution restitution
-            \param friction friction
-            \param linearDamping linearDamping
             \return true if rigid body was added, false otherwise
             */
             bool newRigidBody(const std::string &name,
-                              float mass,
-                              float x,
-                              float y,
-                              float z,
                               const std::string &shapeName,
-                              float restitution = 0.0f,
-                              float friction = 0.5f,
-                              float linearDamping = 0.0f);
+                              const yourgame::math::Trafo &trafo,
+                              const RigidBodyInfo &info);
 
             /**
             \brief Deletes rigid body by name
