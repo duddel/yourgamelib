@@ -3,7 +3,7 @@
 IF NOT EXIST _build_release_ninja\ (
   mkdir _build_release_ninja
   cd _build_release_ninja
-  cmake -G "Ninja" -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=RELEASE -DCPACK_GENERATOR="ZIP" ..
+  cmake -G "Ninja" -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=RELEASE -DCPACK_GENERATOR="ZIP" ../..
   cd ..
 )
 

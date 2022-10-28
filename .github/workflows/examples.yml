@@ -38,7 +38,7 @@ jobs:
         if: startsWith(matrix.os, 'ubuntu')
       - name: configure/build (ubuntu)
         run: |
-          cd examples/${{ matrix.example_name }}
+          cd examples/${{ matrix.example_name }}/build
           ./build_desktop_debug.bash
         if: startsWith(matrix.os, 'ubuntu')
       # windows: init, configure, build ...
@@ -50,13 +50,13 @@ jobs:
         shell: cmd
       - name: configure/build (win32)
         run: |
-          cd examples/${{ matrix.example_name }}
+          cd examples/${{ matrix.example_name }}/build
           build_desktop_debug_win32.cmd
         if: startsWith(matrix.os, 'windows')
         shell: cmd
       - name: configure/build (win64)
         run: |
-          cd examples/${{ matrix.example_name }}
+          cd examples/${{ matrix.example_name }}/build
           build_desktop_debug_win64.cmd
         if: startsWith(matrix.os, 'windows')
         shell: cmd
@@ -95,7 +95,7 @@ jobs:
         env:
           EMSDK: ${{ github.workspace }}/emsdk
         run: |
-          cd examples/${{ matrix.example_name }}
+          cd examples/${{ matrix.example_name }}/build
           ./build_web_debug.bash
 
   build_examples_android:
@@ -122,5 +122,5 @@ jobs:
           ./init.bash
       - name: assemble
         run: |
-          cd examples/${{ matrix.example_name }}
+          cd examples/${{ matrix.example_name }}/build
           ./build_android_debug.bash

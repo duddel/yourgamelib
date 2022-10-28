@@ -49,7 +49,7 @@ execute_process(COMMAND
 
 # generate source file with version information
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/version/mygame_version.cpp.in"
   "${CMAKE_CURRENT_BINARY_DIR}/mygame_version.cpp" @ONLY
 )
 
@@ -98,13 +98,14 @@ list(APPEND MYGAME_SRC_FILES
 )
 list(APPEND MYGAME_SRC_FILES
 {%- for MY_SRC in YOURGAME_MY_SOURCES %}
-  ${CMAKE_CURRENT_SOURCE_DIR}/{{ MY_SRC }}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/{{ MY_SRC }}
 {%- endfor -%}
 )
 
 # inc dirs (internal)
 list(APPEND MYGAME_INC_DIRS_PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/version
 )
 
 if(YOURGAME_PLATFORM STREQUAL "android")
@@ -122,7 +123,7 @@ if(YOURGAME_PLATFORM STREQUAL "android")
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-    "${CMAKE_CURRENT_SOURCE_DIR}/android/app/src/main/assets"
+    "${CMAKE_CURRENT_SOURCE_DIR}/build/android/app/src/main/assets"
   )
 endif()
 
@@ -165,7 +166,7 @@ if(YOURGAME_PLATFORM STREQUAL "web")
     -s USE_WEBGL2=1 \
     -s ALLOW_MEMORY_GROWTH=1 \
     -s ASYNCIFY \
-    --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/shell.html")
+    --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/build/shell.html")
     
   # check if there are any assets
   file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
