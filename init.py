@@ -39,6 +39,7 @@ newProjNameLower = args.name.lower()
 # path from new project root to yourgamelib/
 ygRoot = os.path.normpath(os.path.dirname(__file__))
 tgtDir = os.path.join(os.getcwd(), newProjName)
+tgtDirSrc = os.path.join(tgtDir, 'src')
 ygRootRel = os.path.relpath(ygRoot, start=tgtDir)
 ygRootRel = ygRootRel.replace(os.sep, posixpath.sep)
 
@@ -57,12 +58,11 @@ else:
 # list content of template/ to copy for new project
 fileItemsToCopy = os.listdir(os.path.join(ygRoot, 'template'))
 
-# if new project already contains code (no stub from template desired),
-# or if new project is supposed to be "bare",
-# do not copy template code and assets
+# do not copy template code (src/) and assets/ if project is bare or
+# contains code + assets already (no stub)
 if(args.noStub or args.bare):
-    fileItemsToCopy = [i for i in fileItemsToCopy if not i.endswith(".cpp")]
-    fileItemsToCopy = [i for i in fileItemsToCopy if not i == "assets"]
+    fileItemsToCopy.remove("assets")
+    fileItemsToCopy.remove("src")
 
 # create empty assets/ directory if not present
 if not os.path.isdir(os.path.join(tgtDir, 'assets')):
@@ -79,7 +79,7 @@ jEnv = Environment(loader=ldr)
 
 # process CMakeLists.txt
 # todo: extend source file pattern
-dstSources = [f for f in os.listdir(tgtDir) if f.endswith(".cpp")]
+dstSources = [f for f in os.listdir(tgtDirSrc) if f.endswith(".cpp")]
 templ = jEnv.get_template("CMakeLists.txt")
 templ.stream(
     YOURGAME_GIT_COMMIT_INIT=gitSha,
@@ -92,16 +92,16 @@ templ.stream(
 ).dump(os.path.join(tgtDir, "CMakeLists.txt"))
 
 # process android build.gradle
-templ = jEnv.get_template("android/app/build.gradle")
+templ = jEnv.get_template("build/android/app/build.gradle")
 templ.stream(
     YOURGAME_PROJECT_NAME_LOWER=newProjNameLower
-).dump(os.path.join(tgtDir, 'android', 'app', 'build.gradle'))
+).dump(os.path.join(tgtDir, 'build', 'android', 'app', 'build.gradle'))
 
 # process android Manifest
-templ = jEnv.get_template("android/app/src/main/AndroidManifest.xml")
+templ = jEnv.get_template("build/android/app/src/main/AndroidManifest.xml")
 templ.stream(
     YOURGAME_PROJECT_NAME=newProjName
-).dump(os.path.join(tgtDir, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'))
+).dump(os.path.join(tgtDir, 'build', 'android', 'app', 'src', 'main', 'AndroidManifest.xml'))
 
 # process README.md
 templ = jEnv.get_template("README.md")

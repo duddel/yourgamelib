@@ -1,4 +1,8 @@
 *
+!src/
+!src/*
+!assets/
+!assets/*
 !.gitignore
 !init.bash
 !init.cmd

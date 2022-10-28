@@ -3,7 +3,7 @@
 IF NOT EXIST _build_release_win64\ (
   mkdir _build_release_win64
   cd _build_release_win64
-  cmake -A x64 -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=RELEASE -DCPACK_GENERATOR="ZIP" ..
+  cmake -A x64 -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=RELEASE -DCPACK_GENERATOR="ZIP" ../..
   cd ..
 )
 

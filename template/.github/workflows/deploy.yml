@@ -18,21 +18,27 @@ jobs:
           sudo apt install libgl1-mesa-dev xorg-dev
         if: startsWith(matrix.os, 'ubuntu')
       - name: configure/build (ubuntu)
-        run: ./build_desktop_release.bash
+        run: |
+          cd build
+          ./build_desktop_release.bash
         if: startsWith(matrix.os, 'ubuntu')
       # windows: configure/build
       - name: configure/build (win32)
-        run: build_desktop_release_win32.cmd
+        run: |
+          cd build
+          build_desktop_release_win32.cmd
         if: startsWith(matrix.os, 'windows')
         shell: cmd
       - name: configure/build (win64)
-        run: build_desktop_release_win64.cmd
+        run: |
+          cd build
+          build_desktop_release_win64.cmd
         if: startsWith(matrix.os, 'windows')
         shell: cmd
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: _deploy/*
+          path: build/_deploy/*
 
   deploy_web:
     name: web
@@ -51,11 +57,13 @@ jobs:
         # in order to call: source $EMSDK/emsdk_env.sh:
         env:
           EMSDK: ${{ github.workspace }}/emsdk
-        run: ./build_web_release.bash
+        run: |
+          cd build
+          ./build_web_release.bash
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: _deploy/*
+          path: build/_deploy/*
 
   deploy_android:
     name: android
@@ -64,8 +72,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: assemble
-        run: ./build_android_release.bash
+        run: |
+          cd build
+          ./build_android_release.bash
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: _deploy/*
+          path: build/_deploy/*
