@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -20,7 +20,7 @@
       <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -681,6 +681,10 @@
 </thead>
 <tbody>
 <tr>
+<td>struct</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/">yourgame::util::RigidBodyInfo</a></strong></td>
+</tr>
+<tr>
 <td>class</td>
 <td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1RigidBody/">yourgame::util::RigidBody</a></strong> <br>Represents a rigid body, holding a void pointer to an underlying implementation.</td>
 </tr>
@@ -730,6 +734,21 @@
 <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">namespace</span><span class="w"> </span><span class="nn">util</span><span class="w"></span>
 <span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">RigidBodyInfo</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">linearDamping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">angularDamping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">friction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">rollingFriction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">spinningFriction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">restitution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">linearSleepingThreshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.8f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">angularSleepingThreshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">kinematic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="n">disableDeactivation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="p">};</span><span class="w"></span>
+
 <span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="nc">RigidBody</span><span class="w"></span>
 <span class="w">        </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="k">public</span><span class="o">:</span><span class="w"></span>
@@ -739,19 +758,25 @@
 
 <span class="w">            </span><span class="n">yourgame</span><span class="o">::</span><span class="n">math</span><span class="o">::</span><span class="n">Trafo</span><span class="w"> </span><span class="nf">getTrafo</span><span class="p">();</span><span class="w"></span>
 
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setTrafo</span><span class="p">(</span><span class="n">yourgame</span><span class="o">::</span><span class="n">math</span><span class="o">::</span><span class="n">Trafo</span><span class="w"> </span><span class="n">trafo</span><span class="p">);</span><span class="w"></span>
+
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setRestitution</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">restitution</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFriction</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">friction</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSleepingThresholds</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">linear</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">angular</span><span class="p">);</span><span class="w"></span>
 
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setLinearFactors</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w"></span>
+
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setAngularFactor</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">angFac</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">setAngularFactors</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">applyCentralForce</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="nf">applyCentralImpulse</span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">);</span><span class="w"></span>
 
-<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">m_name</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">m_name</span><span class="p">;</span><span class="w"></span>
 <span class="w">            </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">m_body</span><span class="p">;</span><span class="w"></span>
 <span class="w">        </span><span class="p">};</span><span class="w"></span>
 
@@ -761,11 +786,16 @@
 <span class="w">            </span><span class="n">Collision</span><span class="p">(</span><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="n">body0</span><span class="p">,</span><span class="w"> </span><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="n">body1</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">impulse</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">m_body0</span><span class="p">(</span><span class="n">body0</span><span class="p">),</span><span class="w"></span>
 <span class="w">                                                                           </span><span class="n">m_body1</span><span class="p">(</span><span class="n">body1</span><span class="p">),</span><span class="w"></span>
 <span class="w">                                                                           </span><span class="n">m_impulse</span><span class="p">(</span><span class="n">impulse</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
-<span class="w">            </span><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">m_body0</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">m_body1</span><span class="p">;</span><span class="w"></span>
-<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m_impulse</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="n">m_body0</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="n">m_body1</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="kt">float</span><span class="w"> </span><span class="n">m_impulse</span><span class="p">;</span><span class="w"></span>
 
-<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">involves</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nameA</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nameB</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">involves</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+<span class="w">            </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">m_body0</span><span class="o">-&gt;</span><span class="n">m_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">(</span><span class="n">m_body1</span><span class="o">-&gt;</span><span class="n">m_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">name</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">involves2</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nameA</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">nameB</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
 <span class="w">            </span><span class="p">{</span><span class="w"></span>
 <span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="p">((</span><span class="n">m_body0</span><span class="o">-&gt;</span><span class="n">m_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nameA</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">m_body1</span><span class="o">-&gt;</span><span class="n">m_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nameB</span><span class="p">))</span><span class="w"> </span><span class="o">||</span><span class="w"></span>
 <span class="w">                       </span><span class="p">((</span><span class="n">m_body0</span><span class="o">-&gt;</span><span class="n">m_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nameB</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">m_body1</span><span class="o">-&gt;</span><span class="n">m_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nameA</span><span class="p">));</span><span class="w"></span>
@@ -789,6 +819,12 @@
 
 <span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">newBoxShape</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">halfX</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">halfY</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">halfZ</span><span class="p">);</span><span class="w"></span>
 
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">newSphereShape</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">radius</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">newCylinderShape</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">radius</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">height</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">newConeShape</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">radius</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">height</span><span class="p">);</span><span class="w"></span>
+
 <span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">deleteShape</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">size_t</span><span class="w"> </span><span class="nf">clearShapes</span><span class="p">();</span><span class="w"></span>
@@ -796,14 +832,9 @@
 <span class="w">            </span><span class="kt">size_t</span><span class="w"> </span><span class="nf">numShapes</span><span class="p">();</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">newRigidBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">mass</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"></span>
 <span class="w">                              </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">shapeName</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">restitution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">friction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">,</span><span class="w"></span>
-<span class="w">                              </span><span class="kt">float</span><span class="w"> </span><span class="n">linearDamping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">);</span><span class="w"></span>
+<span class="w">                              </span><span class="k">const</span><span class="w"> </span><span class="n">yourgame</span><span class="o">::</span><span class="n">math</span><span class="o">::</span><span class="n">Trafo</span><span class="w"> </span><span class="o">&amp;</span><span class="n">trafo</span><span class="p">,</span><span class="w"></span>
+<span class="w">                              </span><span class="k">const</span><span class="w"> </span><span class="n">RigidBodyInfo</span><span class="w"> </span><span class="o">&amp;</span><span class="n">info</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">            </span><span class="kt">bool</span><span class="w"> </span><span class="nf">deleteRigidBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">);</span><span class="w"></span>
 
@@ -831,7 +862,7 @@
 <span class="cp">#endif</span>
 </code></pre></div>
 <hr />
-<p>Updated on 2022-10-29 at 13:04:24 +0000</p>
+<p>Updated on 2022-11-03 at 18:58:37 +0000</p>
 
 
 
@@ -872,7 +903,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>

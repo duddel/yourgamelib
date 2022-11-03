@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -20,7 +20,7 @@
       <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -662,6 +662,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#function-newsphereshape" class="md-nav__link">
+    function newSphereShape
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-newcylindershape" class="md-nav__link">
+    function newCylinderShape
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-newconeshape" class="md-nav__link">
+    function newConeShape
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#function-deleteshape" class="md-nav__link">
     function deleteShape
   </a>
@@ -795,6 +816,18 @@
 </tr>
 <tr>
 <td>bool</td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1PhysEnv/#function-newsphereshape">newSphereShape</a></strong>(const std::string &amp; name, float radius)<br>Creates and stores a new sphere shape to be referenced during rigid body creation.</td>
+</tr>
+<tr>
+<td>bool</td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1PhysEnv/#function-newcylindershape">newCylinderShape</a></strong>(const std::string &amp; name, float radius, float height)<br>Creates and stores a new cylinder shape to be referenced during rigid body creation.</td>
+</tr>
+<tr>
+<td>bool</td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1PhysEnv/#function-newconeshape">newConeShape</a></strong>(const std::string &amp; name, float radius, float height)<br>Creates and stores a new cone shape to be referenced during rigid body creation.</td>
+</tr>
+<tr>
+<td>bool</td>
 <td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1PhysEnv/#function-deleteshape">deleteShape</a></strong>(const std::string &amp; name)<br>Deletes a shape by name.</td>
 </tr>
 <tr>
@@ -807,7 +840,7 @@
 </tr>
 <tr>
 <td>bool</td>
-<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1PhysEnv/#function-newrigidbody">newRigidBody</a></strong>(const std::string &amp; name, float mass, float x, float y, float z, const std::string &amp; shapeName, float restitution =0.0f, float friction =0.5f, float linearDamping =0.0f)<br>Creates and stores a new rigid body.</td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1PhysEnv/#function-newrigidbody">newRigidBody</a></strong>(const std::string &amp; name, const std::string &amp; shapeName, const <a href="/yourgamelib/main/Classes/classyourgame_1_1math_1_1Trafo/">yourgame::math::Trafo</a> &amp; trafo, const <a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/">RigidBodyInfo</a> &amp; info)<br>Creates and stores a new rigid body.</td>
 </tr>
 <tr>
 <td>bool</td>
@@ -881,6 +914,49 @@
 <li><strong>halfZ</strong> half extent in z dimension </li>
 </ul>
 <p><strong>Return</strong>: true if new box shape was created, false if shape with this name existed before </p>
+<h3 id="function-newsphereshape">function newSphereShape</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">newSphereShape</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">radius</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Creates and stores a new sphere shape to be referenced during rigid body creation. </p>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>name</strong> name of the new sphere shape </li>
+<li><strong>radius</strong> radius </li>
+</ul>
+<p><strong>Return</strong>: true if new sphere shape was created, false if shape with this name existed before </p>
+<h3 id="function-newcylindershape">function newCylinderShape</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">newCylinderShape</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">radius</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">height</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Creates and stores a new cylinder shape to be referenced during rigid body creation. </p>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>name</strong> name of the new cylinder shape </li>
+<li><strong>radius</strong> radius </li>
+<li><strong>height</strong> height </li>
+</ul>
+<p><strong>Return</strong>: true if new cylinder shape was created, false if shape with this name existed before </p>
+<h3 id="function-newconeshape">function newConeShape</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">newConeShape</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">radius</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">height</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Creates and stores a new cone shape to be referenced during rigid body creation. </p>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>name</strong> name of the new cone shape </li>
+<li><strong>radius</strong> radius </li>
+<li><strong>height</strong> height </li>
+</ul>
+<p><strong>Return</strong>: true if new cone shape was created, false if shape with this name existed before </p>
 <h3 id="function-deleteshape">function deleteShape</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">deleteShape</span><span class="p">(</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="w"></span>
@@ -905,28 +981,16 @@
 <h3 id="function-newrigidbody">function newRigidBody</h3>
 <div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">newRigidBody</span><span class="p">(</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">mass</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">shapeName</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">restitution</span><span class="w"> </span><span class="o">=</span><span class="mf">0.0f</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">friction</span><span class="w"> </span><span class="o">=</span><span class="mf">0.5f</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">linearDamping</span><span class="w"> </span><span class="o">=</span><span class="mf">0.0f</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">yourgame</span><span class="o">::</span><span class="n">math</span><span class="o">::</span><span class="n">Trafo</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">trafo</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">RigidBodyInfo</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">info</span><span class="w"></span>
 <span class="p">)</span><span class="w"></span>
 </code></pre></div>
 <p>Creates and stores a new rigid body. </p>
 <p><strong>Parameters</strong>: </p>
 <ul>
 <li><strong>name</strong> name of the rigid body </li>
-<li><strong>mass</strong> mass </li>
-<li><strong>x</strong> x position </li>
-<li><strong>y</strong> y position </li>
-<li><strong>z</strong> z position </li>
 <li><strong>shapeName</strong> name of the shape to use for this rigid body </li>
-<li><strong>restitution</strong> restitution </li>
-<li><strong>friction</strong> friction </li>
-<li><strong>linearDamping</strong> linearDamping </li>
 </ul>
 <p><strong>Return</strong>: true if rigid body was added, false otherwise </p>
 <h3 id="function-deleterigidbody">function deleteRigidBody</h3>
@@ -1000,7 +1064,7 @@
 <p>Shoots a ray from eye to target into the world. Result contains first rigid body hit, if any. </p>
 <p><strong>Return</strong>: Result of the ray test </p>
 <hr />
-<p>Updated on 2022-10-29 at 13:04:24 +0000</p>
+<p>Updated on 2022-11-03 at 18:58:37 +0000</p>
 
 
 
@@ -1041,7 +1105,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>

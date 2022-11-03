@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.1, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -20,7 +20,7 @@
       <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -654,6 +654,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-involves2" class="md-nav__link">
+    function involves2
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -726,7 +733,11 @@
 </tr>
 <tr>
 <td>bool</td>
-<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/#function-involves">involves</a></strong>(const std::string &amp; nameA, const std::string &amp; nameB) const<br>Checks if this <a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/">Collision</a> happened between rigid bodies with names nameA and nameB.</td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/#function-involves">involves</a></strong>(const std::string &amp; name) const<br>Checks if rigid body with name name is involved in this <a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/">Collision</a>.</td>
+</tr>
+<tr>
+<td>bool</td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/#function-involves2">involves2</a></strong>(const std::string &amp; nameA, const std::string &amp; nameB) const<br>Checks if this <a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/">Collision</a> happened between rigid bodies with names nameA and nameB.</td>
 </tr>
 </tbody>
 </table>
@@ -740,15 +751,15 @@
 </thead>
 <tbody>
 <tr>
-<td><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1RigidBody/">RigidBody</a> *const</td>
+<td><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1RigidBody/">RigidBody</a> *</td>
 <td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/#variable-m-body0">m_body0</a></strong></td>
 </tr>
 <tr>
-<td><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1RigidBody/">RigidBody</a> *const</td>
+<td><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1RigidBody/">RigidBody</a> *</td>
 <td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/#variable-m-body1">m_body1</a></strong></td>
 </tr>
 <tr>
-<td>const float</td>
+<td>float</td>
 <td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/#variable-m-impulse">m_impulse</a></strong></td>
 </tr>
 </tbody>
@@ -770,6 +781,17 @@
 </ul>
 <h3 id="function-involves">function involves</h3>
 <div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">involves</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="w"></span>
+<span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
+</code></pre></div>
+<p>Checks if rigid body with name name is involved in this <a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/">Collision</a>. </p>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>name</strong> name of rigid body </li>
+</ul>
+<p><strong>Return</strong>: true if rigid body with name name is involved in this <a href="/yourgamelib/main/Classes/classyourgame_1_1util_1_1Collision/">Collision</a>, false otherwise </p>
+<h3 id="function-involves2">function involves2</h3>
+<div class="highlight"><pre><span></span><code><span class="kr">inline</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">involves2</span><span class="p">(</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">nameA</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">nameB</span><span class="w"></span>
 <span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"></span>
@@ -783,16 +805,16 @@
 <p><strong>Return</strong>: true if collision happened between these two, false otherwise </p>
 <h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
 <h3 id="variable-m_body0">variable m_body0</h3>
-<div class="highlight"><pre><span></span><code><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">m_body0</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_body0</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 <h3 id="variable-m_body1">variable m_body1</h3>
-<div class="highlight"><pre><span></span><code><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="k">const</span><span class="w"> </span><span class="n">m_body1</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">RigidBody</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">m_body1</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 <h3 id="variable-m_impulse">variable m_impulse</h3>
-<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">m_impulse</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">m_impulse</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 <hr />
-<p>Updated on 2022-10-29 at 13:04:24 +0000</p>
+<p>Updated on 2022-11-03 at 18:58:37 +0000</p>
 
 
 
@@ -833,7 +855,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>

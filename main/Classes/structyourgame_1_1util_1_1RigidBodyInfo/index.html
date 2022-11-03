@@ -13,7 +13,7 @@
     
     
       
-        <title>/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/toolbox.h - YourGameLib</title>
+        <title>yourgame::util::RigidBodyInfo - YourGameLib</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#homerunnerworkyourgamelibyourgamelibincludetoolboxyourgametoolboxh" class="md-skip">
+        <a href="#yourgameutilrigidbodyinfo" class="md-skip">
           Skip to content
         </a>
       
@@ -103,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              /home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/toolbox.h
+              yourgame::util::RigidBodyInfo
             
           </span>
         </div>
@@ -619,9 +619,99 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#source-code" class="md-nav__link">
-    Source code
+  <a href="#public-attributes" class="md-nav__link">
+    Public Attributes
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#public-attributes-documentation" class="md-nav__link">
+    Public Attributes Documentation
+  </a>
+  
+    <nav class="md-nav" aria-label="Public Attributes Documentation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variable-mass" class="md-nav__link">
+    variable mass
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-lineardamping" class="md-nav__link">
+    variable linearDamping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-angulardamping" class="md-nav__link">
+    variable angularDamping
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-friction" class="md-nav__link">
+    variable friction
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-rollingfriction" class="md-nav__link">
+    variable rollingFriction
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-spinningfriction" class="md-nav__link">
+    variable spinningFriction
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-restitution" class="md-nav__link">
+    variable restitution
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-linearsleepingthreshold" class="md-nav__link">
+    variable linearSleepingThreshold
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-angularsleepingthreshold" class="md-nav__link">
+    variable angularSleepingThreshold
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-kinematic" class="md-nav__link">
+    variable kinematic
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-disabledeactivation" class="md-nav__link">
+    variable disableDeactivation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -640,52 +730,96 @@
                   
 
 
-<h1 id="homerunnerworkyourgamelibyourgamelibincludetoolboxyourgametoolboxh">/home/runner/work/yourgamelib/yourgamelib/include/toolbox/yourgame/toolbox.h</h1>
-<h2 id="source-code">Source code</h2>
-<div class="highlight"><pre><span></span><code><span class="cm">/*</span>
-<span class="cm">Copyright (c) 2019-2022 Alexander Scholz</span>
-
-<span class="cm">This software is provided &#39;as-is&#39;, without any express or implied</span>
-<span class="cm">warranty. In no event will the authors be held liable for any damages</span>
-<span class="cm">arising from the use of this software.</span>
-
-<span class="cm">Permission is granted to anyone to use this software for any purpose,</span>
-<span class="cm">including commercial applications, and to alter it and redistribute it</span>
-<span class="cm">freely, subject to the following restrictions:</span>
-
-<span class="cm">1. The origin of this software must not be misrepresented; you must not</span>
-<span class="cm">   claim that you wrote the original software. If you use this software</span>
-<span class="cm">   in a product, an acknowledgment in the product documentation would be</span>
-<span class="cm">   appreciated but is not required.</span>
-<span class="cm">2. Altered source versions must be plainly marked as such, and must not be</span>
-<span class="cm">   misrepresented as being the original software.</span>
-<span class="cm">3. This notice may not be removed or altered from any source distribution.</span>
-<span class="cm">*/</span><span class="w"></span>
-<span class="cp">#ifndef YOURGAME_TOOLBOX_H</span>
-<span class="cp">#define YOURGAME_TOOLBOX_H</span>
-
-<span class="c1">// the following includes are part of the yourgame (toolbox) API</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/buffer.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/conventions.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/drawing.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/framebuffer.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/geometry.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/lightsource.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/loading.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/particles.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/shader.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/shape.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/spritegrid.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/texture.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/gl/textureatlas.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/math/camera.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/math/particles.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/math/trafo.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/util/assetmanager.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/util/motion.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;yourgame/util/physenv.h&quot;</span><span class="cp"></span>
-
-<span class="cp">#endif</span>
+<h1 id="yourgameutilrigidbodyinfo">yourgame::util::RigidBodyInfo</h1>
+<p><code>#include &lt;physenv.h&gt;</code></p>
+<h2 id="public-attributes">Public Attributes</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-mass">mass</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-lineardamping">linearDamping</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-angulardamping">angularDamping</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-friction">friction</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-rollingfriction">rollingFriction</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-spinningfriction">spinningFriction</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-restitution">restitution</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-linearsleepingthreshold">linearSleepingThreshold</a></strong></td>
+</tr>
+<tr>
+<td>float</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-angularsleepingthreshold">angularSleepingThreshold</a></strong></td>
+</tr>
+<tr>
+<td>bool</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-kinematic">kinematic</a></strong></td>
+</tr>
+<tr>
+<td>bool</td>
+<td><strong><a href="/yourgamelib/main/Classes/structyourgame_1_1util_1_1RigidBodyInfo/#variable-disabledeactivation">disableDeactivation</a></strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="public-attributes-documentation">Public Attributes Documentation</h2>
+<h3 id="variable-mass">variable mass</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">mass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-lineardamping">variable linearDamping</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">linearDamping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-angulardamping">variable angularDamping</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">angularDamping</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-friction">variable friction</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">friction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-rollingfriction">variable rollingFriction</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">rollingFriction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-spinningfriction">variable spinningFriction</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">spinningFriction</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-restitution">variable restitution</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">restitution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-linearsleepingthreshold">variable linearSleepingThreshold</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">linearSleepingThreshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.8f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-angularsleepingthreshold">variable angularSleepingThreshold</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">float</span><span class="w"> </span><span class="n">angularSleepingThreshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0f</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-kinematic">variable kinematic</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">kinematic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<h3 id="variable-disabledeactivation">variable disableDeactivation</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span><span class="w"> </span><span class="n">disableDeactivation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 <hr />
 <p>Updated on 2022-11-03 at 18:58:37 +0000</p>
