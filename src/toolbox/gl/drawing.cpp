@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -31,10 +31,12 @@ namespace yourgame
                 return;
             }
 
-            // mvp matrix
+            // check uniforms
             if (cfg.shader)
             {
                 GLint unif;
+
+                // mvp matrix
                 unif = cfg.shader->getUniformLocation(gl::unifNameMvpMatrix);
                 if (unif != -1)
                 {

@@ -132,7 +132,9 @@ https://github.com/emscripten-core/emscripten/blob/1fc1c90941936c140827e101dce15
       };
       Module.setStatus('Downloading...');
       window.onerror = function() {
-        Module.setStatus('Exception thrown, see JavaScript console');
+        // disabled to suppress "uncaught unwind" message of unwind exceptions,
+        // which is related to <set_mainloop> and is always thrown.
+        //Module.setStatus('Exception thrown, see JavaScript console');
         spinnerElement.style.display = 'none';
         Module.setStatus = function(text) {
           if (text) Module.printErr('[post-exception status] ' + text);

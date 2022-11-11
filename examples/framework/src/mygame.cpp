@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -260,14 +260,15 @@ namespace mygame
         // draw skybox
         if (g_drawSkybox)
         {
-            g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
-            auto mvpSky = g_skyboxCamera.pMat() *                    // skybox camera projection
-                          glm::mat4(glm::mat3(g_camera.vMat())) *    // rotation part of main camera view matrix
-                          glm::mat4(glm::mat3(g_skyboxTrafo.mat())); // rotation part of skybox transformation
-            glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderSkybox")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvpSky));
-            g_assets.get<yg::gl::Texture>("skybox")->bind();
+            yg::gl::DrawConfig cfg;
+            cfg.shader = g_assets.get<yg::gl::Shader>("shaderSkybox");
+            cfg.textures = {g_assets.get<yg::gl::Texture>("skybox")};
+            cfg.modelMat = g_skyboxCamera.pMat() *                    // skybox camera projection
+                           glm::mat4(glm::mat3(g_camera.vMat())) *    // rotation part of main camera view matrix
+                           glm::mat4(glm::mat3(g_skyboxTrafo.mat())); // rotation part of skybox transformation
             glDepthMask(GL_FALSE);
-            g_assets.get<yg::gl::Geometry>("cube")->drawAll();
+            g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
+            yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("cube"), cfg);
             glDepthMask(GL_TRUE);
         }
 
@@ -868,13 +869,16 @@ namespace mygame
 
         // SpriteGrid demo window
         static bool spriteGridInitialized = false;
-        static yg::gl::TextureAtlas *spriteGridAtlas;
+        static yg::gl::Texture *spriteGridAtlas;
         static yg::gl::SpriteGrid *spriteGrid;
         static yg::math::Trafo *spriteGridTrafo;
         if (showSpriteGrid)
         {
             static const int tilesWide = 48; // match kenney_1bitpack_colored_packed.png
             static const int tilesHigh = 22; // match kenney_1bitpack_colored_packed.png
+            static const int tileWidth = 16; // match kenney_1bitpack_colored_packed.png
+            static const int tileHeight = 16; // match kenney_1bitpack_colored_packed.png
+            
             static const int maxNumTiles = tilesWide * tilesHigh;
             if (!spriteGridInitialized)
             {
@@ -883,6 +887,8 @@ namespace mygame
                 spriteGridAtlas = yg::gl::loadTextureAtlasGrid("a//kenney_1bitpack_colored_packed.png",
                                                                tilesWide,
                                                                tilesHigh,
+                                                               tileWidth,
+                                                               tileHeight,
                                                                cfg);
                 spriteGrid = new yg::gl::SpriteGrid();
                 spriteGridTrafo = new yg::math::Trafo();
@@ -921,7 +927,7 @@ namespace mygame
             {
                 tiles.push_back(std::to_string(i));
             }
-            spriteGrid->make(spriteGridAtlas, tiles, tilesWide, (float)(spriteGridAtlas->texture(0)->width()), -1.0f);
+            spriteGrid->make(spriteGridAtlas, tiles, tilesWide, static_cast<float>(spriteGridAtlas->getWidth()), -1.0f);
 
             // gl drawing
             spriteGridTrafo->pointTo({0.0f + xOffset, yg::input::get(yg::input::WINDOW_HEIGHT) + yOffset, 0.0f},
@@ -931,7 +937,7 @@ namespace mygame
             auto mvp = pMat * spriteGridTrafo->mat();
             g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
             glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            spriteGridAtlas->texture(0)->bind();
+            spriteGridAtlas->bind();
             if (texFilter != texFilterLast) // change texture mode filter if requested
             {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);

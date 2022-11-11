@@ -19,7 +19,6 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/shape.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/spritegrid.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/texture.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/textureatlas.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/camera.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/particles.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/trafo.cpp

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 #include <string>
 #include <vector>
 #include "yourgame/gl/geometry.h"
-#include "yourgame/gl/textureatlas.h"
+#include "yourgame/gl/texture.h"
 
 namespace yourgame
 {
@@ -57,7 +57,7 @@ namespace yourgame
             \param gridHeight desired height of entire grid. if <= 0.0f, aspect ratio and gridWidth (if > 0.0f) used
             \return error (0 on success)
             */
-            int make(const yourgame::gl::TextureAtlas *atlas,
+            int make(const yourgame::gl::Texture *atlas,
                      const std::vector<std::string> &tiles,
                      unsigned int width,
                      float gridWidth,

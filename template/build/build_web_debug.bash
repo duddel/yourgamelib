@@ -5,10 +5,10 @@ source $EMSDK/emsdk_env.sh
 if [ ! -d "_build_web_debug" ]; then
   mkdir _build_web_debug
   cd _build_web_debug
-  emcmake cmake -DYOURGAME_PLATFORM=web -DCMAKE_BUILD_TYPE=DEBUG ../..
+  emcmake cmake -DYOURGAME_PLATFORM=web -DCMAKE_BUILD_TYPE=DEBUG ../.. || exit $?
   cd -
 fi
 
 cd _build_web_debug
-emmake cmake --build .
+emmake cmake --build . || exit $?
 cd -

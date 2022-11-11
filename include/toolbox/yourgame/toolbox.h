@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -33,7 +33,6 @@ freely, subject to the following restrictions:
 #include "yourgame/gl/shape.h"
 #include "yourgame/gl/spritegrid.h"
 #include "yourgame/gl/texture.h"
-#include "yourgame/gl/textureatlas.h"
 #include "yourgame/math/camera.h"
 #include "yourgame/math/particles.h"
 #include "yourgame/math/trafo.h"

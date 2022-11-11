@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -26,7 +26,6 @@ freely, subject to the following restrictions:
 #include "yourgame/gl/geometry.h"
 #include "yourgame/gl/shader.h"
 #include "yourgame/gl/texture.h"
-#include "yourgame/gl/textureatlas.h"
 #include "yourgame/gl/conventions.h"
 
 namespace yourgame
@@ -43,16 +42,16 @@ namespace yourgame
             std::vector<std::pair<GLenum, GLint>> parameteri = {};
         };
 
-        Texture *loadTexture(const std::string &filename,
+        Texture *loadTexture(const std::string &imgFilename,
+                             const std::string &atlasFilename,
                              const yourgame::gl::TextureConfig &cfg);
 
-        TextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
-                                             const yourgame::gl::TextureConfig &cfg);
-
-        TextureAtlas *loadTextureAtlasGrid(const std::string &filename,
-                                           int tilesWidth,
-                                           int tilesHeight,
-                                           const yourgame::gl::TextureConfig &cfg);
+        Texture *loadTextureAtlasGrid(const std::string &filename,
+                                      int tilesWidth,
+                                      int tilesHeight,
+                                      int tileWidthPixel,
+                                      int tileHeightPixel,
+                                      const yourgame::gl::TextureConfig &cfg);
 
         /**
         \brief loads images and generates cubemap texture

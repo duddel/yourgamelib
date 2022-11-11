@@ -5,6 +5,6 @@ if [ ! -d "_deploy" ]; then
 fi
 
 cd android
-gradle assembleRelease
+gradle assembleRelease --stacktrace || exit $?
 cd -
-mv -f android/app/build/outputs/apk/release/*.apk _deploy/
+mv -f android/app/build/outputs/apk/release/*.apk _deploy/ || exit $?

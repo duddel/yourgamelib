@@ -28,16 +28,14 @@ All files placed in `assets/` will be packed and made available to be loaded by 
 
 ## Android
 
-### Requirements
+The Android project is configured to be built with a separate Gradle installation (Tested with 8.0.1). To build it, you need to
 
-To build for target `android`, you need:
+-   Install the Android SDK
+-   set the environment variable `ANDROID_SDK_HOME` pointing to your Android SDK installation
 
--   The Android SDK
-    -   check yourgame template [build.gradle](template/android/app/build.gradle)...
-        -   ...and install the requested **NDK** version (`ndkVersion`) via **sdkmanager**, or change suitable
-        -   ...do the same for other Android SDK components, if they are not installed automatically
--   Gradle (tested version 6.8.3), **or...**
--   ...use Android Studio. It generates a Gradle Wrapper for the project, not requiring a separate Gradle installation
+If this stops working with a newer Gradle version, open the project in Android Studio and let it generate a Gradle Wrapper for the project.
+
+Or try to fix it by looking into [build.gradle](template/build/android/app/build.gradle). Maybe some dependencies have to be installed manually via the `sdkmanager`, or have to be updated in `build.gradle` to work with a newer Gradle version.
 
 ## WebAssembly
 

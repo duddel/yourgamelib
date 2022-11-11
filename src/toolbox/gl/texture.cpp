@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -17,6 +17,7 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include <regex>
 #include "yourgame/gl_include.h"
 #include "yourgame/gl/texture.h"
 
@@ -97,6 +98,89 @@ namespace yourgame
 
             m_width = width;
             m_height = height;
+        }
+
+        void Texture::insertCoords(std::string name, int x, int y, int width, int height, bool cwRot)
+        {
+            if (width == 0 || height == 0 || getWidth() == 0 || getHeight() == 0)
+            {
+                return;
+            }
+
+            m_coords[name] = TextureCoords(x, y, width, height, getWidth(), getHeight(), cwRot);
+
+            // matches sprite names that have indexes at the end (with - or _),
+            // like walking_01, or walking-01, but NOT: walking01
+            static std::regex reSequence("^(.+)[-_](\\d+)$");
+            std::smatch reMatch;
+            if (std::regex_match(name, reMatch, reSequence) && reMatch.size() == 3)
+            {
+                // match 0: full string, 1: base, 2: index string
+                int seqFrameIdx = std::stoi(reMatch[2].str());
+                m_sequences[reMatch[1].str()].frames[seqFrameIdx] = m_coords[name];
+
+                // make sure framesConsec of this Sequence gets updated
+                m_sequences[reMatch[1].str()].framesInvalidated = true;
+            }
+        }
+
+        TextureCoords Texture::getCoords(std::string name) const
+        {
+            auto it = m_coords.find(name);
+            if (it != m_coords.end())
+            {
+                return it->second;
+            }
+
+            return TextureCoords();
+        }
+
+        TextureCoords Texture::getFrameCoords(std::string sequenceName, int frame)
+        {
+            auto it = m_sequences.find(sequenceName);
+            if (it != m_sequences.end())
+            {
+                // update the consecutive representation of the sequence frames
+                // if it is invalidated (inserts happened since last getFrameCoords())
+                if (it->second.framesInvalidated)
+                {
+                    it->second.framesConsec.clear();
+                    for (const auto &f : it->second.frames)
+                    {
+                        it->second.framesConsec.push_back(f.second);
+                    }
+                    it->second.framesInvalidated = false;
+                }
+
+                int sizeV = static_cast<int>(it->second.framesConsec.size());
+                if (sizeV == 0)
+                {
+                    return TextureCoords();
+                }
+
+                // make sure the requested frame index is wrapped into valid range
+                int i = (sizeV + (frame % sizeV)) % sizeV;
+
+                return it->second.framesConsec[i];
+            }
+
+            return TextureCoords();
+        }
+
+        int Texture::getNumFrames(std::string sequenceName) const
+        {
+            auto it = m_sequences.find(sequenceName);
+            return (it == m_sequences.end()) ? 0 : it->second.frames.size();
+        }
+
+        std::vector<std::string> Texture::getSequenceNames() const
+        {
+            std::vector<std::string> names;
+            for (const auto &seq : m_sequences)
+            {
+                names.push_back(seq.first);
+            }
+            return names;
         }
     }
 } // namespace yourgame
