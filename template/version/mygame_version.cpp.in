@@ -7,6 +7,7 @@ namespace mygame
         const int major = @PROJECT_VERSION_MAJOR@;
         const int minor = @PROJECT_VERSION_MINOR@;
         const int patch = @PROJECT_VERSION_PATCH@;
+        const std::string verstr = "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@";
         const std::string git_commit = "@MYGAME_GIT_COMMIT@";
         const std::string git_date = "@MYGAME_GIT_DATE@";
         const std::string PROJECT_NAME = "@PROJECT_NAME@";

@@ -3,10 +3,10 @@
 if [ ! -d "_build_debug" ]; then
   mkdir _build_debug
   cd _build_debug
-  cmake -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=DEBUG ../..
+  cmake -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=DEBUG ../.. || exit $?
   cd -
 fi
 
 cd _build_debug
-cmake --build .
+cmake --build . || exit $?
 cd -

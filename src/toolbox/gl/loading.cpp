@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -53,19 +53,22 @@ namespace yourgame
 {
     namespace gl
     {
-        Texture *loadTexture(const std::string &filename,
+        Texture *loadTexture(const std::string &imgFilename,
+                             const std::string &atlasFilename,
                              const yourgame::gl::TextureConfig &cfg)
         {
+            Texture *texture = nullptr;
+
             int width;
             int height;
             int numChannels;
             std::vector<uint8_t> imgData;
-            yourgame::file::readFile(filename, imgData);
-            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
+            yourgame::file::readFile(imgFilename, imgData);
 
+            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
             if (img)
             {
-                yourgame::log::debug("loaded %v: %vx%vx%v", filename, width, height, numChannels);
+                yourgame::log::debug("loaded %v: %vx%vx%v", imgFilename, width, height, numChannels);
 
                 // premultiply alpha if available (numChannels == 4 -> RGBA)
                 if (cfg.premultiplyAlpha && numChannels == 4)
@@ -79,7 +82,7 @@ namespace yourgame
                                                                    {GL_TEXTURE_WRAP_T, cfg.wrapMode}};
                 texParamI.insert(texParamI.end(), cfg.parameteri.begin(), cfg.parameteri.end());
 
-                Texture *texture = Texture::make(GL_TEXTURE_2D, cfg.unit, texParamI);
+                texture = Texture::make(GL_TEXTURE_2D, cfg.unit, texParamI);
                 texture->updateData(GL_TEXTURE_2D,
                                     0,
                                     GL_RGBA8,
@@ -91,99 +94,184 @@ namespace yourgame
                                     img,
                                     cfg.generateMipmap);
                 stbi_image_free(img);
-                return texture;
             }
             else
             {
-                yourgame::log::warn("image %v failed to load", filename);
-                return nullptr;
-            }
-        }
-
-        TextureAtlas *loadTextureAtlasCrunch(const std::string &filename,
-                                             const yourgame::gl::TextureConfig &cfg)
-        {
-            std::vector<uint8_t> atlasFile;
-            if (yourgame::file::readFile(filename, atlasFile))
-            {
-                yourgame::log::error("failed to load %v", filename);
-                return nullptr;
+                yourgame::log::warn("loadTexture(): failed to load image file %v", imgFilename);
             }
 
-            json jAtlas;
-            try
+            // process atlas file
+            if (texture && atlasFilename != "")
             {
-                jAtlas = json::parse(atlasFile);
-            }
-            catch (std::exception &e)
-            {
-                yourgame::log::error("failed to parse json from %v: %v", filename, e.what());
-                return nullptr;
-            }
+                std::vector<uint8_t> atlasFile;
+                json jAtlas;
+                bool jParsed = false;
 
-            TextureAtlas *newAtlas = new TextureAtlas();
-
-            for (auto &jTex : jAtlas["textures"])
-            {
-                // load texture by name (from crunch json)
-                // look for .png file in the same location as the json
-                // todo: always assume .png for crunch atlasses?
-                std::string texFileName = yourgame::file::getFileLocation(filename) +
-                                          jTex["name"].get<std::string>() +
-                                          ".png";
-
-                auto newTex = loadTexture(texFileName, cfg);
-                if (newTex)
+                if (yourgame::file::readFile(atlasFilename, atlasFile))
                 {
-                    newAtlas->pushTexture(newTex);
-
-                    for (auto &jImg : jTex["images"])
-                    {
-                        newAtlas->pushCoords(jImg["n"].get<std::string>(),
-                                             (float)(jImg["x"].get<double>() / (double)newTex->width()),
-                                             (float)((jImg["x"].get<double>() + jImg["w"].get<double>()) / (double)newTex->width()),
-                                             (float)(1.0 - ((jImg["y"].get<double>() + jImg["h"].get<double>()) / (double)newTex->height())),
-                                             (float)(1.0 - (jImg["y"].get<double>() / (double)newTex->height())));
-                    }
+                    yourgame::log::warn("loadTexture(): failed to load atlas file %v for image file %v", atlasFilename, imgFilename);
                 }
                 else
                 {
-                    yourgame::log::error("failed to load texture from file %v referenced in atlas %v", texFileName, filename);
-                    delete newAtlas;
-                    return nullptr;
+                    try
+                    {
+                        jAtlas = json::parse(atlasFile);
+                        jParsed = true;
+                    }
+                    catch (std::exception &e)
+                    {
+                        yourgame::log::warn("loadTexture(): failed to parse atlas file %v (json): %v", atlasFilename, e.what());
+                    }
+                }
+
+                if (jParsed)
+                {
+                    // FTP "array"
+                    if (jAtlas.contains("frames") && jAtlas["frames"].is_array())
+                    {
+                        try
+                        {
+                            for (auto &jFrame : jAtlas["frames"])
+                            {
+                                bool rotated = jFrame.at("rotated").get<bool>();
+                                int pixelWidth;
+                                int pixelHeight;
+
+                                // FTP reports the original width and height of a frame,
+                                // even if rotated. Therefore, width and height need to
+                                // be swapped here to represent the actual dimensions
+                                // of the frame in the texture image.
+                                if (rotated)
+                                {
+                                    pixelWidth = jFrame.at("frame").at("h").get<int>();
+                                    pixelHeight = jFrame.at("frame").at("w").get<int>();
+                                }
+                                else
+                                {
+                                    pixelWidth = jFrame.at("frame").at("w").get<int>();
+                                    pixelHeight = jFrame.at("frame").at("h").get<int>();
+                                }
+
+                                texture->insertCoords(jFrame.at("filename").get<std::string>(),
+                                                      jFrame.at("frame").at("x").get<int>(),
+                                                      jFrame.at("frame").at("y").get<int>(),
+                                                      pixelWidth,
+                                                      pixelHeight,
+                                                      rotated);
+                            }
+                        }
+                        catch (std::exception &e)
+                        {
+                            yourgame::log::warn("loadTexture(): failed to read frames from atlas file %v (json, FTP array): %v", atlasFilename, e.what());
+                        }
+                    }
+                    // FTP "hash"
+                    else if (jAtlas.contains("frames") && jAtlas["frames"].is_object())
+                    {
+                        try
+                        {
+                            for (auto &jFrame : jAtlas["frames"].items())
+                            {
+                                bool rotated = jFrame.value().at("rotated").get<bool>();
+                                int pixelWidth;
+                                int pixelHeight;
+
+                                // FTP reports the original width and height of a frame,
+                                // even if rotated. Therefore, width and height need to
+                                // be swapped here to represent the actual dimensions
+                                // of the frame in the texture image.
+                                if (rotated)
+                                {
+                                    pixelWidth = jFrame.value().at("frame").at("h").get<int>();
+                                    pixelHeight = jFrame.value().at("frame").at("w").get<int>();
+                                }
+                                else
+                                {
+                                    pixelWidth = jFrame.value().at("frame").at("w").get<int>();
+                                    pixelHeight = jFrame.value().at("frame").at("h").get<int>();
+                                }
+
+                                texture->insertCoords(jFrame.key(),
+                                                      jFrame.value().at("frame").at("x").get<int>(),
+                                                      jFrame.value().at("frame").at("y").get<int>(),
+                                                      pixelWidth,
+                                                      pixelHeight,
+                                                      rotated);
+                            }
+                        }
+                        catch (std::exception &e)
+                        {
+                            yourgame::log::warn("loadTexture(): failed to read frames from atlas file %v (json, FTP hash): %v", atlasFilename, e.what());
+                        }
+                    }
+                    // Crunch
+                    else if (jAtlas.contains("textures") && jAtlas["textures"].is_array())
+                    {
+                        try
+                        {
+                            // crunch atlas files contain information for multiple
+                            // image files, but we only want the current texture to load.
+                            for (auto &jTex : jAtlas["textures"])
+                            {
+                                if (yourgame::file::getFileNameWithoutExtension(imgFilename) ==
+                                    jTex.at("name").get<std::string>())
+                                {
+                                    for (auto &jImg : jTex.at("images"))
+                                    {
+                                        texture->insertCoords(jImg.at("n").get<std::string>(),
+                                                              jImg.at("x").get<int>(),
+                                                              jImg.at("y").get<int>(),
+                                                              jImg.at("w").get<int>(),
+                                                              jImg.at("h").get<int>(),
+                                                              false);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        catch (std::exception &e)
+                        {
+                            yourgame::log::warn("loadTexture(): failed to read frames from atlas file %v (json, Crunch): %v", atlasFilename, e.what());
+                        }
+                    }
+                    else
+                    {
+                        yourgame::log::warn("loadTexture(): unknown atlas file format %v", atlasFilename);
+                    }
                 }
             }
 
-            return newAtlas;
+            return texture;
         }
 
-        TextureAtlas *loadTextureAtlasGrid(const std::string &filename,
-                                           int tilesWidth,
-                                           int tilesHeight,
-                                           const yourgame::gl::TextureConfig &cfg)
+        // todo: make this a function of Texture()
+        Texture *loadTextureAtlasGrid(const std::string &filename,
+                                      int tilesWidth,
+                                      int tilesHeight,
+                                      int tileWidthPixel,
+                                      int tileHeightPixel,
+                                      const yourgame::gl::TextureConfig &cfg)
         {
-            auto newTex = loadTexture(filename, cfg);
+            auto newTex = loadTexture(filename, "", cfg);
             if (!newTex)
             {
                 return nullptr;
             }
 
-            TextureAtlas *newAtlas = new TextureAtlas();
-            newAtlas->pushTexture(newTex);
-
             for (int h = 0; h < tilesHeight; h++)
             {
                 for (int w = 0; w < tilesWidth; w++)
                 {
-                    newAtlas->pushCoords(std::to_string(h * tilesWidth + w),
-                                         ((float)w) / ((float)tilesWidth),
-                                         ((float)(w + 1)) / ((float)tilesWidth),
-                                         1.0f - (((float)(h + 1)) / ((float)tilesHeight)),
-                                         1.0f - (((float)h) / ((float)tilesHeight)));
+                    newTex->insertCoords(std::to_string(h * tilesWidth + w),
+                                           w * tileWidthPixel,
+                                           h * tileHeightPixel,
+                                           tileWidthPixel,
+                                           tileHeightPixel,
+                                           false);
                 }
             }
 
-            return newAtlas;
+            return newTex;
         }
 
         Texture *loadCubemap(const std::vector<std::string> &filenames,

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 find_package(Git)
 
 # yourgame library project + version
-project(yourgame VERSION 0.0.0)
+project(yrgame VERSION 0.0.0)
 
 # enforce C++11 and disable extensions
 set(CMAKE_CXX_STANDARD 11)

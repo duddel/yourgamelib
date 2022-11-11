@@ -1,6 +1,3 @@
-# initialized from yourgamelib commit:
-# 06d229bc4b0113cef559a453a754c1aa1ababba4
-
 cmake_minimum_required(VERSION 3.6)
 find_package(Git)
 
@@ -44,7 +41,7 @@ execute_process(COMMAND
 
 # generate source file with version information
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/mygame_version.cpp.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/version/mygame_version.cpp.in"
   "${CMAKE_CURRENT_BINARY_DIR}/mygame_version.cpp" @ONLY
 )
 
@@ -69,6 +66,7 @@ list(APPEND MYGAME_SRC_FILES
 # inc dirs (internal)
 list(APPEND MYGAME_INC_DIRS_PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/version
 )
 
 # glob all .cpp files in testcases/ and add to build
@@ -84,7 +82,7 @@ target_include_directories(${CMAKE_PROJECT_NAME}
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-  yourgame
+  yrgame
 )
 
 # register test executable to be run via ctest

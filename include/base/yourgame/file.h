@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -71,6 +71,18 @@ namespace yourgame
         - example: "/home/user/file3.bin" returns "file3.bin"
         */
         std::string getFileName(const std::string &filepath);
+
+        /** \brief returns the actual file name (w/o file extension) of a file, filepath points to
+        - example: "file1.bin" returns "file1"
+        - example: "a//file2.bin" returns "file2"
+        - example: "/home/user/file3.bin" returns "file3"
+        - example: "file4" returns "file4"
+        - example: ".file5" returns ".file5"
+        - example: "a//file6.tar.gz" returns "file6"
+        - example: "a//file7" returns "file7"
+        - example: "/home/user.a/file8.txt" returns "file8"
+        */
+        std::string getFileNameWithoutExtension(const std::string &filepath);
 
         /** \brief returns the file extension
         - example: "file1.bin" returns "bin"

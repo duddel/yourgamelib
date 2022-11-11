@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -29,6 +29,7 @@ namespace yourgame
         extern const int major;
         extern const int minor;
         extern const int patch;
+        extern const std::string verstr;
         extern const std::string git_commit;
         extern const std::string git_date;
         extern const std::string PROJECT_NAME;

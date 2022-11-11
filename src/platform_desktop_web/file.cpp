@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -107,9 +107,7 @@ namespace yourgame
                         yourgame::log::debug("readAssetFile(): successfully downloaded asset %v from %v, %v bytes", filename, a, wgetSize);
 
                         // save downloaded asset in asset directory
-                        int ret1 = yourgame::file::writeAssetFile(filename, wgetData, wgetSize);
-
-                        if (ret1 == 0)
+                        if (yourgame::file::writeAssetFile(filename, wgetData, wgetSize) == 0)
                         {
                             yourgame::log::debug("readAssetFile() successfully saved asset %v", filename);
                         }
@@ -121,12 +119,13 @@ namespace yourgame
                         dst.resize(wgetSize);
                         std::memcpy(&dst[0], wgetData, wgetSize);
                         std::free(wgetData);
-                        return 0;
+                        ret = 0;
+                        break;
                     }
                 }
             }
 
-            return -1;
+            return ret;
 #endif
         }
 

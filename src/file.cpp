@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -38,9 +38,12 @@ namespace yourgame_internal
         {
             std::fseek(f, 0, SEEK_END);
             auto nBytes = std::ftell(f);
-            dst.resize(nBytes);
-            std::rewind(f);
-            std::fread(&dst[0], 1, dst.size(), f);
+            if (nBytes > 0)
+            {
+                dst.resize(nBytes);
+                std::rewind(f);
+                std::fread(&dst[0], 1, dst.size(), f);
+            }
             std::fclose(f);
             return 0;
         }
@@ -139,6 +142,22 @@ namespace yourgame
             static std::regex reFilePath(R"((.*\/|^)(.*)$)");
             std::smatch reMatches;
             if (std::regex_match(filepath, reMatches, reFilePath) && reMatches.size() == 3)
+            {
+                return reMatches[2].str();
+            }
+
+            return "";
+        }
+
+        std::string getFileNameWithoutExtension(const std::string &filepath)
+        {
+            // match 2: everything after last "/" and then
+            //   rest of filepath if there are no more ".", OR
+            //   everything before first ".", OR
+            //   file name starting with "."
+            static std::regex re(R"((^.*\/|^)([^.]+$|[^.]+|\..+$)(.*$))");
+            std::smatch reMatches;
+            if (std::regex_match(filepath, reMatches, re) && reMatches.size() == 4)
             {
                 return reMatches[2].str();
             }

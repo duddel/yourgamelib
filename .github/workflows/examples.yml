@@ -12,11 +12,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04, windows-2019, windows-2022]
+        os: [ubuntu-20.04, ubuntu-22.04, windows-2019, windows-2022]
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: setup python
         uses: actions/setup-python@v1
         with:
@@ -64,13 +64,13 @@ jobs:
   build_examples_web:
     name: web
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: setup python
         uses: actions/setup-python@v1
         with:
@@ -101,13 +101,13 @@ jobs:
   build_examples_android:
     name: android
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: setup python
         uses: actions/setup-python@v1
         with:

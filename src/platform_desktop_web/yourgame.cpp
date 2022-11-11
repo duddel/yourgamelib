@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -50,8 +50,13 @@ namespace yourgame_internal_desktop
         {
             yourgame_internal::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
             yourgame_internal::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
-            yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO,
-                                         static_cast<float>(width) / static_cast<float>(height));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_WIDTH_INVERSE,
+                                         width < 1 ? 1.0f : 1.0f / static_cast<float>(width));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_HEIGHT_INVERSE,
+                                         height < 1 ? 1.0f : 1.0f / static_cast<float>(height));
+            yourgame_internal::setInput2(
+                yourgame::input::WINDOW_ASPECT_RATIO,
+                (width < 1 || height < 1) ? 1.0f : static_cast<float>(width) / static_cast<float>(height));
         }
     } // namespace
 

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -43,7 +43,7 @@ namespace yourgame
             GLint getUniformLocation(const GLchar *name);
 
             /* deleting the copy constructor and the copy assignment operator
-    prevents copying (and moving) of the object. */
+            prevents copying (and moving) of the object. */
             Shader(Shader const &) = delete;
             Shader &operator=(Shader const &) = delete;
 

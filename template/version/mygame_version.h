@@ -10,6 +10,7 @@ namespace mygame
         extern const int major;
         extern const int minor;
         extern const int patch;
+        extern const std::string verstr;
         extern const std::string git_commit;
         extern const std::string git_date;
         extern const std::string PROJECT_NAME;

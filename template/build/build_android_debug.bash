@@ -1,5 +1,5 @@
 #!/bin/bash
 
 cd android
-gradle assembleDebug
+gradle assembleDebug --stacktrace || exit $?
 cd -

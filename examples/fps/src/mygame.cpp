@@ -49,7 +49,7 @@ namespace mygame
         {
             yg::gl::TextureConfig cfg;
             cfg.minMagFilter = GL_NEAREST;
-            g_assets.insert("texCube", yg::gl::loadTexture("a//cube.png", cfg));
+            g_assets.insert("texCube", yg::gl::loadTexture("a//cube.png", "", cfg));
         }
 
         // for instanced drawing of the cube, add and configure a buffer for per-cube (per draw instance) matrixes:

@@ -30,7 +30,8 @@ namespace mygame
         {
             yg::gl::TextureConfig cfg;
             cfg.minMagFilter = GL_NEAREST;
-            g_assets.insert("atlas", yg::gl::loadTextureAtlasCrunch("a//sprites.json", cfg));
+
+            g_assets.insert("atlas", yg::gl::loadTexture("a//sprites0.png", "a//sprites.json", cfg));
         }
 
         // geometry
@@ -46,8 +47,8 @@ namespace mygame
 
         glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
         glEnable(GL_DEPTH_TEST);
-        //yg::control::enableVSync(true);
-        //yg::control::enableFullscreen(true);
+        // yg::control::enableVSync(true);
+        // yg::control::enableFullscreen(true);
 #ifndef __EMSCRIPTEN__ // todo: we can not initially catch the mouse if the viewport does not have focus (web) \
                        //yg::control::catchMouse(true);
 #endif
@@ -122,50 +123,53 @@ namespace mygame
         g_camera.trafo()->translateLocal(0.01f * yg::input::get(yg::input::KEY_D), yg::math::Axis::X);
         g_camera.trafo()->translateLocal(-0.01f * yg::input::get(yg::input::KEY_A), yg::math::Axis::X);
 
-        auto atlas = g_assets.get<yg::gl::TextureAtlas>("atlas");
+        auto atlas = g_assets.get<yg::gl::Texture>("atlas");
         static int frameIdx = 0;
         static bool play = true;
         static float frameRate = 10.0f;
         static bool drawGrid = false;
 
-        ImGui::Begin("Sprite Animation", nullptr, (ImGuiWindowFlags_AlwaysAutoResize));
-        // sequence combo
         auto seqNames = atlas->getSequenceNames();
-        static int selectedIdx = 0;
-        const char *selectedSeqName = seqNames[selectedIdx].c_str();
-        if (ImGui::BeginCombo("Sequences", selectedSeqName))
+        if (seqNames.size() > 0)
         {
-            for (int i = 0; i < seqNames.size(); i++)
+            static int selectedIdx = 0;
+            const char *selectedSeqName = seqNames[selectedIdx].c_str();
+
+            ImGui::Begin("Sprite Animation", nullptr, (ImGuiWindowFlags_AlwaysAutoResize));
+            if (ImGui::BeginCombo("Sequences", selectedSeqName))
             {
-                if (ImGui::Selectable(seqNames[i].c_str(), selectedIdx == i))
+                for (int i = 0; i < seqNames.size(); i++)
                 {
-                    selectedIdx = i;
+                    if (ImGui::Selectable(seqNames[i].c_str(), selectedIdx == i))
+                    {
+                        selectedIdx = i;
+                    }
                 }
+                ImGui::EndCombo();
             }
-            ImGui::EndCombo();
-        }
-        ImGui::SliderInt("Frame #", &frameIdx, 0, atlas->getSeqFrames(selectedSeqName) - 1);
-        ImGui::SliderFloat("Frames/s", &frameRate, 0.0f, 30.0f);
-        ImGui::Checkbox("Play", &play);
-        ImGui::Checkbox("Draw grid", &drawGrid);
-        ImGui::End();
+            ImGui::SliderInt("Frame #", &frameIdx, 0, atlas->getNumFrames(selectedSeqName) - 1);
+            ImGui::SliderFloat("Frames/s", &frameRate, 0.0f, 30.0f);
+            ImGui::Checkbox("Play", &play);
+            ImGui::Checkbox("Draw grid", &drawGrid);
+            ImGui::End();
 
-        if (play)
-        {
-            frameIdx = ((int)(yg::time::getTime() * frameRate)) % atlas->getSeqFrames(selectedSeqName);
-        }
+            if (play)
+            {
+                frameIdx = ((int)(yg::time::getTime() * frameRate)) % atlas->getNumFrames(selectedSeqName);
+            }
 
-        // draw sprite quad
-        {
-            auto shdrSimpleTex = g_assets.get<yg::gl::Shader>("shaderSimpleSubtex");
-            shdrSimpleTex->useProgram();
-            auto stc = atlas->getCoords(selectedSeqName, frameIdx);
-            yg::gl::DrawConfig cfg;
-            cfg.shader = shdrSimpleTex;
-            cfg.camera = &g_camera;
-            cfg.textures = {stc.first};
-            cfg.subtex = stc.second;
-            yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("geoQuad"), cfg);
+            // draw sprite quad
+            {
+                auto shdrSimpleTex = g_assets.get<yg::gl::Shader>("shaderSimpleSubtex");
+                shdrSimpleTex->useProgram();
+                auto stc = atlas->getFrameCoords(selectedSeqName, frameIdx);
+                yg::gl::DrawConfig cfg;
+                cfg.shader = shdrSimpleTex;
+                cfg.camera = &g_camera;
+                cfg.textures = {atlas};
+                cfg.subtex = {stc.uMin, stc.uMax, stc.vMin, stc.vMax};
+                yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("geoQuad"), cfg);
+            }
         }
 
         // draw grid

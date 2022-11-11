@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Alexander Scholz
+Copyright (c) 2019-2023 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -26,7 +26,7 @@ namespace yourgame
     {
         SpriteGrid::SpriteGrid() {}
 
-        int SpriteGrid::make(const yourgame::gl::TextureAtlas *atlas,
+        int SpriteGrid::make(const yourgame::gl::Texture *atlas,
                              const std::vector<std::string> &tiles,
                              unsigned int width,
                              float gridWidth,
@@ -51,13 +51,8 @@ namespace yourgame
 
             // precalc tile width/height
             auto coords = atlas->getCoords(tiles[0]);
-            if (!coords.first)
-            {
-                return -2;
-            }
-            float tileAspectNum = (coords.first->width() * (coords.second[1] - coords.second[0]));
-            float tileAspectDen = (coords.first->height() * (coords.second[3] - coords.second[2]));
-            float tileAspect = (tileAspectNum > 1.0e-6f && tileAspectDen > 1.0e-6f) ? (tileAspectNum / tileAspectDen) : 1.0f;
+
+            float tileAspect = coords.aspectRatioPixel;
             float tileWidth = 1.0f;
             float tileHeight = 1.0f;
             // determine the actual number of tiles, the grid is wide:
@@ -94,10 +89,6 @@ namespace yourgame
             for (int i = 0; i < numTiles; i++)
             {
                 auto coords = atlas->getCoords(tiles[i]);
-                if (!coords.first)
-                {
-                    return -3;
-                }
 
                 // positions: 4 vertices, cw, upper left to lower left
                 objPosData[pWrite++] = orgX;
@@ -114,14 +105,14 @@ namespace yourgame
                 objPosData[pWrite++] = orgZ;
 
                 // texture coordinates
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[0];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[3];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[1];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[3];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[1];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[2];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[0];
-                objTexCoordData[tWrite++] = (GLfloat)coords.second[2];
+                objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
+                objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
+                objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
+                objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
+                objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
+                objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
+                objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
+                objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
 
                 // normals
                 objNormalData[nWrite++] = 0.0f;
