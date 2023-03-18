@@ -18,7 +18,7 @@ namespace mygame
 
     void init(int argc, char *argv[])
     {
-        yg::audio::init(2, 44100, 5);
+        yg::audio::init(5, 0, 0);
         yg::audio::storeFile("a//laserSmall_000.ogg");
 
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});

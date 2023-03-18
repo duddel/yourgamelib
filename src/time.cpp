@@ -70,5 +70,10 @@ namespace yourgame
             std::chrono::duration<double> duration = now - yourgame_internal::time::initTime;
             return duration.count();
         }
+
+        void reset()
+        {
+            yourgame_internal::time::init();
+        }
     }
 }

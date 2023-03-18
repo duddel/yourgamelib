@@ -46,13 +46,6 @@ namespace yourgame
                              const std::string &atlasFilename,
                              const yourgame::gl::TextureConfig &cfg);
 
-        Texture *loadTextureAtlasGrid(const std::string &filename,
-                                      int tilesWidth,
-                                      int tilesHeight,
-                                      int tileWidthPixel,
-                                      int tileHeightPixel,
-                                      const yourgame::gl::TextureConfig &cfg);
-
         /**
         \brief loads images and generates cubemap texture
 

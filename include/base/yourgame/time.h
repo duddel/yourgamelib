@@ -32,6 +32,9 @@ namespace yourgame
 
         /** \brief returns (monotonic) time duration [seconds] since init */
         double getTime();
+
+        /** \brief resets the timing so time retrieved by getTime() starts at 0 again */
+        void reset();
     }
 }
 

@@ -132,7 +132,7 @@ namespace yourgame
                 return it->second;
             }
 
-            return TextureCoords();
+            return getGridCoords(1, 1, 0);
         }
 
         TextureCoords Texture::getFrameCoords(std::string sequenceName, int frame)
@@ -155,7 +155,7 @@ namespace yourgame
                 int sizeV = static_cast<int>(it->second.framesConsec.size());
                 if (sizeV == 0)
                 {
-                    return TextureCoords();
+                    return getGridCoords(1, 1, 0);
                 }
 
                 // make sure the requested frame index is wrapped into valid range
@@ -164,7 +164,7 @@ namespace yourgame
                 return it->second.framesConsec[i];
             }
 
-            return TextureCoords();
+            return getGridCoords(1, 1, 0);
         }
 
         int Texture::getNumFrames(std::string sequenceName) const
@@ -181,6 +181,30 @@ namespace yourgame
                 names.push_back(seq.first);
             }
             return names;
+        }
+
+        TextureCoords Texture::getGridCoords(int gridWidth, int gridHeight, int index) const
+        {
+            if (gridWidth < 1 || gridHeight < 1 || index < 0 || index >= gridWidth * gridHeight)
+            {
+                return getGridCoords(1, 1, 0);
+            }
+
+            float x = (static_cast<float>(index % gridWidth) / gridWidth) * getWidth();
+            float y = ((index / gridWidth) / static_cast<float>(gridHeight)) * getHeight();
+            int width = getWidth() / gridWidth;
+            int height = getHeight() / gridHeight;
+
+            auto coords = TextureCoords(
+                static_cast<int>(x),
+                static_cast<int>(y),
+                width,
+                height,
+                getWidth(),
+                getHeight(),
+                false);
+
+            return coords;
         }
     }
 } // namespace yourgame
