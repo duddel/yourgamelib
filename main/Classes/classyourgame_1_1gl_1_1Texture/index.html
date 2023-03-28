@@ -11,7 +11,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.2">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.4">
     
     
       
@@ -19,7 +19,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7bf56d0a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.240905d7.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -741,6 +741,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#function-getgridcoords" class="md-nav__link">
+    function getGridCoords
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -831,6 +838,10 @@
 <tr>
 <td>std::vector&lt; std::string &gt;</td>
 <td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1gl_1_1Texture/#function-getsequencenames">getSequenceNames</a></strong>() const<br>returns a list of the names of all sequences</td>
+</tr>
+<tr>
+<td><a href="/yourgamelib/main/Classes/structyourgame_1_1gl_1_1TextureCoords/">TextureCoords</a></td>
+<td><strong><a href="/yourgamelib/main/Classes/classyourgame_1_1gl_1_1Texture/#function-getgridcoords">getGridCoords</a></strong>(int gridWidth, int gridHeight, int index) const<br>returns texture coordinates of grid subtexture</td>
 </tr>
 </tbody>
 </table>
@@ -930,8 +941,22 @@
 <div class="highlight"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">getSequenceNames</span><span class="p">()</span><span class="w"> </span><span class="k">const</span>
 </code></pre></div>
 <p>returns a list of the names of all sequences </p>
+<h3 id="function-getgridcoords">function getGridCoords</h3>
+<div class="highlight"><pre><span></span><code><span class="n">TextureCoords</span><span class="w"> </span><span class="n">getGridCoords</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">gridWidth</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">gridHeight</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span>
+<span class="p">)</span><span class="w"> </span><span class="k">const</span>
+</code></pre></div>
+<p>returns texture coordinates of grid subtexture </p>
+<p><strong>Parameters</strong>: </p>
+<ul>
+<li><strong>gridWidth</strong> number of grid columns </li>
+<li><strong>gridHeight</strong> number of grid rows </li>
+<li><strong>index</strong> index of the grid cell to return coordinates for, starting top-left with index 0 </li>
+</ul>
 <hr />
-<p>Updated on 2023-03-11 at 12:35:45 +0000</p>
+<p>Updated on 2023-03-28 at 20:47:30 +0000</p>
 
 
 
@@ -972,7 +997,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.fc8c2696.min.js"></script>
+      <script src="../../assets/javascripts/bundle.19047be9.min.js"></script>
       
     
   </body>
