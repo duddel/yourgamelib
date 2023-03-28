@@ -550,7 +550,7 @@ namespace mygame
 
                 if (!yg::audio::isInitialized())
                 {
-                    yg::audio::init(2, 44100, numAudioSources);
+                    yg::audio::init(numAudioSources, 0, 0);
                     yg::audio::storeFile("a//jingles_SAX07_mono_11025.ogg");
                     yg::audio::storeFile("a//jingles_PIZZI00.ogg");
                 }
@@ -869,27 +869,42 @@ namespace mygame
 
         // SpriteGrid demo window
         static bool spriteGridInitialized = false;
-        static yg::gl::Texture *spriteGridAtlas;
+        static yg::gl::Texture *spriteTexture;
         static yg::gl::SpriteGrid *spriteGrid;
         static yg::math::Trafo *spriteGridTrafo;
         if (showSpriteGrid)
         {
-            static const int tilesWide = 48; // match kenney_1bitpack_colored_packed.png
-            static const int tilesHigh = 22; // match kenney_1bitpack_colored_packed.png
-            static const int tileWidth = 16; // match kenney_1bitpack_colored_packed.png
+            static const int tilesWide = 48;  // match kenney_1bitpack_colored_packed.png
+            static const int tilesHigh = 22;  // match kenney_1bitpack_colored_packed.png
+            static const int tileWidth = 16;  // match kenney_1bitpack_colored_packed.png
             static const int tileHeight = 16; // match kenney_1bitpack_colored_packed.png
-            
+
             static const int maxNumTiles = tilesWide * tilesHigh;
             if (!spriteGridInitialized)
             {
                 yg::gl::TextureConfig cfg;
                 cfg.minMagFilter = GL_NEAREST;
-                spriteGridAtlas = yg::gl::loadTextureAtlasGrid("a//kenney_1bitpack_colored_packed.png",
-                                                               tilesWide,
-                                                               tilesHigh,
-                                                               tileWidth,
-                                                               tileHeight,
-                                                               cfg);
+                spriteTexture = yg::gl::loadTexture("a//kenney_1bitpack_colored_packed.png", "", cfg);
+
+                // ToDo: SpriteGrid could use some rework
+
+                // for each sprite in the grid, get the coords via getGridCoords() and save them
+                // back into the texture with insertCoords() with sprite index as name
+                for (int h = 0; h < tilesHigh; h++)
+                {
+                    for (int w = 0; w < tilesWide; w++)
+                    {
+                        int spriteIndex = h * tilesWide + w;
+                        auto coords = spriteTexture->getGridCoords(tilesWide, tilesHigh, spriteIndex);
+                        spriteTexture->insertCoords(std::to_string(spriteIndex),
+                                                    coords.xMinPixel,
+                                                    coords.yMinPixel,
+                                                    coords.xMaxPixel - coords.xMinPixel,
+                                                    coords.yMaxPixel - coords.yMinPixel,
+                                                    false);
+                    }
+                }
+
                 spriteGrid = new yg::gl::SpriteGrid();
                 spriteGridTrafo = new yg::math::Trafo();
                 spriteGridInitialized = true;
@@ -927,7 +942,7 @@ namespace mygame
             {
                 tiles.push_back(std::to_string(i));
             }
-            spriteGrid->make(spriteGridAtlas, tiles, tilesWide, static_cast<float>(spriteGridAtlas->getWidth()), -1.0f);
+            spriteGrid->make(spriteTexture, tiles, tilesWide, static_cast<float>(spriteTexture->getWidth()), -1.0f);
 
             // gl drawing
             spriteGridTrafo->pointTo({0.0f + xOffset, yg::input::get(yg::input::WINDOW_HEIGHT) + yOffset, 0.0f},
@@ -937,7 +952,7 @@ namespace mygame
             auto mvp = pMat * spriteGridTrafo->mat();
             g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
             glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(mvp));
-            spriteGridAtlas->bind();
+            spriteTexture->bind();
             if (texFilter != texFilterLast) // change texture mode filter if requested
             {
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
@@ -948,7 +963,7 @@ namespace mygame
         }
         else if (spriteGridInitialized)
         {
-            delete spriteGridAtlas;
+            delete spriteTexture;
             delete spriteGrid;
             delete spriteGridTrafo;
             spriteGridInitialized = false;

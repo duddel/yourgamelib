@@ -30,7 +30,7 @@ namespace yourgame
         /**
         \brief initialize audio
          */
-        int init(int numChannels, int sampleRate, int numSources);
+        int init(int numSources, int numChannels = 0, int sampleRate = 0);
 
         /**
         \brief shutdown audio

@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #include <vector>
 #include <valarray>
 #include "yourgame/file.h"
+#include "yourgame/log.h"
 #ifdef YOURGAME_EXTPROJ_miniaudio
 #define STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
@@ -36,7 +37,7 @@ namespace yourgame
 {
     namespace audio
     {
-        int init(int numChannels, int sampleRate, int numSources)
+        int init(int numSources, int numChannels, int sampleRate)
         {
             return -1;
         }
@@ -99,15 +100,21 @@ namespace yourgame
             std::map<std::string, std::vector<uint8_t>> g_audioFileData;
             bool g_audioInitialized = false;
 
+            bool checkValidSourceId(int sourceId)
+            {
+                return sourceId >= 0 && sourceId < g_sources.size();
+            }
+
             // does NOT lock g_mtxSources
             int deleteAudioSource(int sourceId)
             {
-                if (sourceId >= g_sources.size())
+                if (!checkValidSourceId(sourceId))
                 {
                     return -1;
                 }
 
-                audioSource *&src = g_sources[sourceId];
+                audioSource *src = g_sources[sourceId];
+
                 if (src == nullptr)
                 {
                     return -2;
@@ -115,7 +122,8 @@ namespace yourgame
 
                 ma_decoder_uninit(&(src->decoder));
                 delete src;
-                src = nullptr;
+                g_sources[sourceId] = nullptr;
+
                 return 0;
             }
 
@@ -143,10 +151,11 @@ namespace yourgame
                     // form a valarray from pcm frames. the gains get applied in this valarray below
                     std::valarray<float> pcmBufVarr(pcmBuf.data(), pcmBuf.size());
 
-                    for (auto iChan = 0; iChan < numDeviceChannels; iChan++)
+                    for (ma_uint32 iChan = 0; iChan < numDeviceChannels; iChan++)
                     {
-                        // skip channel if gain is unchanged (1.0)
-                        if (std::abs(src->channelGains[iChan] - 1.0f) < 0.0e-6f)
+                        // skip channel if no gain value is present or if the gain is 1.0
+                        if (iChan >= src->channelGains.size() ||
+                            std::abs(src->channelGains[iChan] - 1.0f) < 0.0e-6f)
                         {
                             continue;
                         }
@@ -177,7 +186,7 @@ namespace yourgame
             }
         } // namespace
 
-        int init(int numChannels, int sampleRate, int numSources)
+        int init(int numSources, int numChannels, int sampleRate)
         {
             // audio sources are identified by their index. the size of
             // this vector is unchanged once initialized (resized) here:
@@ -198,6 +207,9 @@ namespace yourgame
             {
                 return -2;
             }
+
+            yourgame::log::info("yourgame::audio::init(): initialized with channels %v, sampleRate %v",
+                                g_maDevice.playback.channels, g_maDevice.sampleRate);
 
             if (ma_device_start(&g_maDevice) != MA_SUCCESS)
             {
@@ -223,6 +235,8 @@ namespace yourgame
             ma_mutex_unlock(&g_mtxSources);
 
             g_audioInitialized = false;
+
+            yourgame::log::info("yourgame::audio::shutdown(): audio shut down.");
         }
 
         bool isInitialized()
@@ -313,12 +327,12 @@ namespace yourgame
             int ret = 0;
 
             ma_mutex_lock(&g_mtxSources);
-            if (sourceId >= g_sources.size())
+            if (!checkValidSourceId(sourceId))
             {
                 ret = -1;
             }
 
-            if (g_sources[sourceId] != nullptr)
+            if (ret == 0 && g_sources[sourceId] != nullptr)
             {
                 g_sources[sourceId]->paused = pause;
             }
@@ -336,12 +350,12 @@ namespace yourgame
             int ret = 0;
 
             ma_mutex_lock(&g_mtxSources);
-            if (sourceId >= g_sources.size())
+            if (!checkValidSourceId(sourceId))
             {
                 ret = -1;
             }
 
-            if (g_sources[sourceId] != nullptr)
+            if (ret == 0 && g_sources[sourceId] != nullptr)
             {
                 g_sources[sourceId]->channelGains = gains;
             }

@@ -46,21 +46,21 @@ namespace yourgame
             */
             struct Config
             {
-                size_t count = 100;                           /**< \brief number of particles */
-                unsigned int seed = std::time(nullptr);       /**< \brief seed for random generator */
-                bool scatterOnInit = true;                    /**< \brief if true, particles are scattered in the volume when system is initialized */
-                bool scatterOnSpawn = false;                  /**< \brief if true, particles are scattered when they are respawned */
-                bool respawn = true;                          /**< \brief if true, particles are respawned after their lifetime ends */
-                glm::vec3 origin = {0.0f, 0.0f, 0.0f};        /**< \brief origin of the system */
-                glm::vec3 emitterA = {0.0f, 0.0f, 0.0f};      /**< \brief first vector that forms a volume inside particles are spawned */
-                glm::vec3 emitterB = {0.0f, 0.0f, 0.0f};      /**< \brief second vector that forms a volume inside particles are spawned */
-                glm::vec3 emitterC = {0.0f, 0.0f, 0.0f};      /**< \brief third vector that forms a volume inside particles are spawned */
-                glm::vec3 baseDirection = {0.0f, 1.0f, 0.0f}; /**< \brief base direction of particles */
-                glm::vec3 noisDirection = {0.2f, 0.2f, 0.2f}; /**< \brief uniform noise for direction */
-                float baseVelocity = 1.5f;                    /**< \brief base velocity of particles */
-                float noisVelocity = 0.2f;                    /**< \brief uniform noise for velocity */
-                float baseLifetime = 3.0f;                    /**< \brief base lifetime of particles */
-                float noisLifetime = 0.4f;                    /**< \brief uniform noise for lifetime */
+                size_t count = 100;                                                /**< \brief number of particles */
+                unsigned int seed = static_cast<unsigned int>(std::time(nullptr)); /**< \brief seed for random generator */
+                bool scatterOnInit = true;                                         /**< \brief if true, particles are scattered in the volume when system is initialized */
+                bool scatterOnSpawn = false;                                       /**< \brief if true, particles are scattered when they are respawned */
+                bool respawn = true;                                               /**< \brief if true, particles are respawned after their lifetime ends */
+                glm::vec3 origin = {0.0f, 0.0f, 0.0f};                             /**< \brief origin of the system */
+                glm::vec3 emitterA = {0.0f, 0.0f, 0.0f};                           /**< \brief first vector that forms a volume inside particles are spawned */
+                glm::vec3 emitterB = {0.0f, 0.0f, 0.0f};                           /**< \brief second vector that forms a volume inside particles are spawned */
+                glm::vec3 emitterC = {0.0f, 0.0f, 0.0f};                           /**< \brief third vector that forms a volume inside particles are spawned */
+                glm::vec3 baseDirection = {0.0f, 1.0f, 0.0f};                      /**< \brief base direction of particles */
+                glm::vec3 noisDirection = {0.2f, 0.2f, 0.2f};                      /**< \brief uniform noise for direction */
+                float baseVelocity = 1.5f;                                         /**< \brief base velocity of particles */
+                float noisVelocity = 0.2f;                                         /**< \brief uniform noise for velocity */
+                float baseLifetime = 3.0f;                                         /**< \brief base lifetime of particles */
+                float noisLifetime = 0.4f;                                         /**< \brief uniform noise for lifetime */
             };
 
             Particles(const Config cfg);

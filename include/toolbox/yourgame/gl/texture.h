@@ -125,6 +125,15 @@ namespace yourgame
              */
             std::vector<std::string> getSequenceNames() const;
 
+            /**
+            \brief returns texture coordinates of grid subtexture
+
+            \param gridWidth number of grid columns
+            \param gridHeight number of grid rows
+            \param index index of the grid cell to return coordinates for, starting top-left with index 0
+            */
+            TextureCoords getGridCoords(int gridWidth, int gridHeight, int index) const;
+
         private:
             Texture() {}
             GLuint m_handle;

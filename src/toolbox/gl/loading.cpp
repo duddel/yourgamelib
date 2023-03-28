@@ -244,36 +244,6 @@ namespace yourgame
             return texture;
         }
 
-        // todo: make this a function of Texture()
-        Texture *loadTextureAtlasGrid(const std::string &filename,
-                                      int tilesWidth,
-                                      int tilesHeight,
-                                      int tileWidthPixel,
-                                      int tileHeightPixel,
-                                      const yourgame::gl::TextureConfig &cfg)
-        {
-            auto newTex = loadTexture(filename, "", cfg);
-            if (!newTex)
-            {
-                return nullptr;
-            }
-
-            for (int h = 0; h < tilesHeight; h++)
-            {
-                for (int w = 0; w < tilesWidth; w++)
-                {
-                    newTex->insertCoords(std::to_string(h * tilesWidth + w),
-                                           w * tileWidthPixel,
-                                           h * tileHeightPixel,
-                                           tileWidthPixel,
-                                           tileHeightPixel,
-                                           false);
-                }
-            }
-
-            return newTex;
-        }
-
         Texture *loadCubemap(const std::vector<std::string> &filenames,
                              const yourgame::gl::TextureConfig &cfg)
         {
