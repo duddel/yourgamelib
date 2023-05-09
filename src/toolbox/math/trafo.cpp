@@ -36,10 +36,22 @@ namespace yourgame
             m_matInvalidated = true;
         }
 
+        void Trafo::rotateLocal(float angle, glm::vec3 const &ax)
+        {
+            m_rot = m_rot * glm::angleAxis(angle, glm::normalize(ax));
+            m_matInvalidated = true;
+        }
+
         void Trafo::rotateGlobal(float angle, math::Axis ax)
         {
             // global rotation: use this quaternion order:
             m_rot = glm::angleAxis(angle, getAxisGlobal(ax)) * m_rot;
+            m_matInvalidated = true;
+        }
+
+        void Trafo::rotateGlobal(float angle, glm::vec3 const &ax)
+        {
+            m_rot = glm::angleAxis(angle, normalize(ax)) * m_rot;
             m_matInvalidated = true;
         }
 

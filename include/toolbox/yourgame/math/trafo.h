@@ -34,7 +34,9 @@ namespace yourgame
         public:
             glm::mat4 mat();
             void rotateLocal(float angle, math::Axis ax);
+            void rotateLocal(float angle, glm::vec3 const &ax);
             void rotateGlobal(float angle, math::Axis ax);
+            void rotateGlobal(float angle, glm::vec3 const &ax);
             void translateLocal(float distance, math::Axis ax);
             void translateLocal(glm::vec3 const &trans);
             void translateGlobal(float distance, math::Axis ax);
