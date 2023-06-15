@@ -30,7 +30,10 @@ namespace mygame
         context.applyCommandLine(argc, argv);
     }
 
-    void tick() { yourgame::control::exit(); }
+    void tick()
+    {
+        yourgame::control::exit();
+    }
 
     int shutdown()
     {

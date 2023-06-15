@@ -28,10 +28,6 @@ freely, subject to the following restrictions:
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #endif
-#ifdef YOURGAME_EXTPROJ_stb
-#include "stb_image.h"
-#include "stb_image_write.h"
-#endif
 #include "yourgame/yourgame.h"
 #include "yourgame_internal/yourgame_internal_desktop.h"
 #include "yourgame_internal/mygame_external.h"
@@ -185,11 +181,6 @@ namespace yourgame_internal_desktop
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
 #endif
 #endif // #ifndef YOURGAME_CLIMODE
-
-#ifdef YOURGAME_EXTPROJ_stb
-        stbi_set_flip_vertically_on_load(true);
-        stbi_flip_vertically_on_write(true);
-#endif
 
         mygame::init(argc, argv);
 

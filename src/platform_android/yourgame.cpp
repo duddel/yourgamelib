@@ -26,10 +26,6 @@ freely, subject to the following restrictions:
 #include "imgui_impl_android.h"
 #include "imgui_impl_opengl3.h"
 #endif
-#ifdef YOURGAME_EXTPROJ_stb
-#include "stb_image.h"
-#include "stb_image_write.h"
-#endif
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
 #include "yourgame_internal/yourgame_internal_android.h"
@@ -176,11 +172,6 @@ namespace yourgame_internal_android
         ImGui::StyleColorsDark();
         ImGui_ImplAndroid_Init(_win);
         ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
-#endif
-
-#ifdef YOURGAME_EXTPROJ_stb
-        stbi_set_flip_vertically_on_load(true);
-        stbi_flip_vertically_on_write(true);
 #endif
 
         char *initArgv = nullptr;

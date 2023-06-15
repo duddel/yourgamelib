@@ -22,6 +22,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/camera.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/particles.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/math/trafo.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/image.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/motion.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/physenv.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/headerlibs.cpp

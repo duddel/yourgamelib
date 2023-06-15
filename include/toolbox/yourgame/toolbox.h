@@ -37,6 +37,7 @@ freely, subject to the following restrictions:
 #include "yourgame/math/particles.h"
 #include "yourgame/math/trafo.h"
 #include "yourgame/util/assetmanager.h"
+#include "yourgame/util/image.h"
 #include "yourgame/util/motion.h"
 #include "yourgame/util/physenv.h"
 

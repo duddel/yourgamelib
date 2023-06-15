@@ -22,7 +22,6 @@ freely, subject to the following restrictions:
 #include <map>
 #include <array>
 #include <exception>
-#include "stb_image.h"
 #include "tiny_obj_loader.h"
 #include "nlohmann/json.hpp"
 #include "yourgame/yourgame.h"
@@ -31,23 +30,6 @@ freely, subject to the following restrictions:
 #include "yourgame/gl/conventions.h"
 
 using json = nlohmann::json;
-
-namespace
-{
-    void premultiplyAlphaRGBA(stbi_uc *data, unsigned int numPixels)
-    {
-        for (unsigned int i = 0; i < numPixels; i++)
-        {
-            auto rIdx = i * 4;
-            auto gIdx = i * 4 + 1;
-            auto bIdx = i * 4 + 2;
-            auto alpha = data[rIdx + 3];
-            data[rIdx] = (data[rIdx] * alpha) / 255;
-            data[gIdx] = (data[gIdx] * alpha) / 255;
-            data[bIdx] = (data[bIdx] * alpha) / 255;
-        }
-    }
-}
 
 namespace yourgame
 {
@@ -59,21 +41,17 @@ namespace yourgame
         {
             Texture *texture = nullptr;
 
-            int width;
-            int height;
-            int numChannels;
             std::vector<uint8_t> imgData;
             yourgame::file::readFile(imgFilename, imgData);
 
-            auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
+            yourgame::util::Image *img =
+                yourgame::util::Image::fromMemoryEncoded(imgData.data(), imgData.size(), true);
+
             if (img)
             {
-                yourgame::log::debug("loaded %v: %vx%vx%v", imgFilename, width, height, numChannels);
-
-                // premultiply alpha if available (numChannels == 4 -> RGBA)
-                if (cfg.premultiplyAlpha && numChannels == 4)
+                if (cfg.premultiplyAlpha)
                 {
-                    premultiplyAlphaRGBA(img, width * height);
+                    img->premultiplyAlpha();
                 }
 
                 std::vector<std::pair<GLenum, GLint>> texParamI = {{GL_TEXTURE_MIN_FILTER, cfg.minMagFilter},
@@ -86,14 +64,14 @@ namespace yourgame
                 texture->updateData(GL_TEXTURE_2D,
                                     0,
                                     GL_RGBA8,
-                                    width,
-                                    height,
+                                    img->getWidth(),
+                                    img->getHeight(),
                                     0,
                                     GL_RGBA,
                                     GL_UNSIGNED_BYTE,
-                                    img,
+                                    img->getData(),
                                     cfg.generateMipmap);
-                stbi_image_free(img);
+                delete img;
             }
             else
             {
@@ -259,40 +237,30 @@ namespace yourgame
             for (int i = 0; i < filenames.size(); i++)
             {
                 auto f = filenames[i];
-                int width;
-                int height;
-                int numChannels;
                 std::vector<uint8_t> imgData;
                 yourgame::file::readFile(f, imgData);
-                // assuming "flip vertically on load" is true, disable it here because
-                // opengl expects cubemap textures "unflipped"...
-                stbi_set_flip_vertically_on_load(false);
-                auto img = stbi_load_from_memory(imgData.data(), imgData.size(), &width, &height, &numChannels, 4);
-                // todo: we should check the state of "flip vertically on load" before and
-                // restore it afterwards
-                stbi_set_flip_vertically_on_load(true);
+
+                yourgame::util::Image *img =
+                    yourgame::util::Image::fromMemoryEncoded(imgData.data(), imgData.size(), false);
 
                 if (img)
                 {
-                    yourgame::log::debug("loaded %v: %vx%vx%v", f, width, height, numChannels);
-
-                    // premultiply alpha if available (numChannels == 4 -> RGBA)
-                    if (cfg.premultiplyAlpha && numChannels == 4)
+                    if (cfg.premultiplyAlpha)
                     {
-                        premultiplyAlphaRGBA(img, width * height);
+                        img->premultiplyAlpha();
                     }
 
                     texture->updateData(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                                         0,
                                         GL_RGBA8,
-                                        width,
-                                        height,
+                                        img->getWidth(),
+                                        img->getHeight(),
                                         0,
                                         GL_RGBA,
                                         GL_UNSIGNED_BYTE,
-                                        img,
+                                        img->getData(),
                                         cfg.generateMipmap);
-                    stbi_image_free(img);
+                    delete img;
                 }
                 else
                 {
