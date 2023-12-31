@@ -1,8 +1,7 @@
 import os
 import posixpath
 import argparse
-from distutils.dir_util import copy_tree
-from distutils.file_util import copy_file
+import shutil
 from jinja2 import Environment, FileSystemLoader
 import git
 
@@ -12,9 +11,9 @@ def copy_file_items(items, src, dst):
         item_src = os.path.join(src, item)
         item_dst = os.path.join(dst, item)
         if os.path.isdir(item_src):
-            copy_tree(item_src, item_dst)
+            shutil.copytree(item_src, item_dst)
         else:
-            copy_file(item_src, item_dst)
+            shutil.copy(item_src, item_dst)
 
 
 # command line args
@@ -64,14 +63,14 @@ if(args.noStub or args.bare):
     fileItemsToCopy.remove("assets")
     fileItemsToCopy.remove("src")
 
+print("copying these items to {}:".format(tgtDir))
+print("\n".join(fileItemsToCopy))
+copy_file_items(fileItemsToCopy, os.path.join(ygRoot, 'template'), tgtDir)
+
 # create empty assets/ directory if not present
 if not os.path.isdir(os.path.join(tgtDir, 'assets')):
     os.mkdir(os.path.join(tgtDir, 'assets'))
     print("{} created".format(os.path.join(tgtDir, 'assets')))
-
-print("copying these items to {}:".format(tgtDir))
-print("\n".join(fileItemsToCopy))
-copy_file_items(fileItemsToCopy, os.path.join(ygRoot, 'template'), tgtDir)
 
 # process template with jinja
 ldr = FileSystemLoader(tgtDir)
