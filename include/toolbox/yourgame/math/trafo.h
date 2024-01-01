@@ -59,10 +59,11 @@ namespace yourgame
             glm::vec3 m_eye = glm::vec3(0.0f, 0.0f, 0.0f);
             glm::quat m_rot = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
             glm::vec3 m_scale = glm::vec3(1.0f, 1.0f, 1.0f);
-            glm::mat4 m_mat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
-                                        0.0f, 1.0f, 0.0f, 0.0f,
-                                        0.0f, 0.0f, 1.0f, 0.0f,
-                                        0.0f, 0.0f, 0.0f, 1.0f);
+
+            // Matrixes generated from the above vectors via updateMatrixIfInvalidated()
+            glm::mat4 m_mat = glm::mat4(1.0f);    // identity
+            glm::mat4 m_matRot = glm::mat4(1.0f); // identity
+
             bool m_matInvalidated = false;
             void updateMatrixIfInvalidated();
         };

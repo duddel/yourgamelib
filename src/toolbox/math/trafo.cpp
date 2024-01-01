@@ -138,7 +138,8 @@ namespace yourgame
         {
             if (m_matInvalidated)
             {
-                m_mat = glm::translate(m_eye) * glm::mat4(m_rot) * glm::scale(m_scale);
+                m_matRot = glm::mat4(m_rot);
+                m_mat = glm::translate(m_eye) * m_matRot * glm::scale(m_scale);
                 m_matInvalidated = false;
             }
         }
@@ -158,13 +159,13 @@ namespace yourgame
             {
             default:
             case math::Axis::X:
-                return m_mat[0];
+                return m_matRot[0];
                 break;
             case math::Axis::Y:
-                return m_mat[1];
+                return m_matRot[1];
                 break;
             case math::Axis::Z:
-                return m_mat[2];
+                return m_matRot[2];
                 break;
             }
         }
