@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2023 Alexander Scholz
+Copyright (c) 2019-2024 Alexander Scholz
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
