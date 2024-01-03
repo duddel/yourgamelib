@@ -32,7 +32,7 @@ namespace yourgame
         const GLuint attrLocInstModelMatCol1 = 5;
         const GLuint attrLocInstModelMatCol2 = 6;
         const GLuint attrLocInstModelMatCol3 = 7;
-        const GLuint attrLocInstProgress = 8; // GL_MAX_VERTEX_ATTRIBS is at least 16 in gl/es 3, but only 8 in gles 2!
+        const GLuint attrLocInstProgress = 8;
         const GLchar *unifNameMvpMatrix = "mvpMat";
         const GLchar *unifNameVpMatrix = "vpMat";
         const GLchar *unifNameModelMatrix = "modelMat";
@@ -41,15 +41,24 @@ namespace yourgame
         const GLchar *unifNameCameraTrafo = "camTrafo";
         const GLchar *unifNameSkyRotationInv = "skyRotInv";
         const GLchar *unifNameTextureDiffuse = "textureDiffuse";
+        const GLchar *unifNameTextureSkyCube = "textureSkyCube";
         const GLchar *unifNameTextureSky = "textureSky";
+        const GLchar *unifNameTextureBufferDepth = "textureBufferDepth";
+        const GLchar *unifNameTextureBufferColor0 = "textureBufferColor0";
         const GLchar *unifNameLightAmbient = "lightAmbient";
         const GLchar *unifNameLightDiffuse = "lightDiffuse";
         const GLchar *unifNameLightSpecular = "lightSpecular";
         const GLchar *unifNameLightPosition = "lightPosition";
         const GLchar *unifNameSubtexture = "subtex";
         const GLint unifValueTextureDiffuse = 0;
-        const GLint unifValueTextureSky = 4;
+        const GLint unifValueTextureSkyCube = 4;
+        const GLint unifValueTextureSky = 5;
+        const GLint unifValueTextureBufferDepth = 6;
+        const GLint unifValueTextureBufferColor0 = 7;
         const GLenum textureUnitDiffuse = GL_TEXTURE0;
-        const GLenum textureUnitSky = GL_TEXTURE4;
+        const GLenum textureUnitSkyCube = GL_TEXTURE4;
+        const GLenum textureUnitSky = GL_TEXTURE5;
+        const GLenum textureUnitBufferDepth = GL_TEXTURE6;
+        const GLenum textureUnitBufferColor0 = GL_TEXTURE7;
     }
 } // namespace yourgame

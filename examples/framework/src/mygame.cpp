@@ -98,7 +98,7 @@ namespace mygame
         // Skybox texture
         {
             yg::gl::TextureConfig cfg;
-            cfg.unit = yg::gl::textureUnitSky;
+            cfg.unit = yg::gl::textureUnitSkyCube;
             cfg.minMagFilter = GL_LINEAR_MIPMAP_LINEAR;
             cfg.wrapMode = GL_CLAMP_TO_EDGE;
             cfg.generateMipmap = true;
@@ -113,8 +113,6 @@ namespace mygame
                                              {GL_FRAGMENT_SHADER, "a//skybox.frag"}},
                                             {}, {}));
         g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
-        glUniform1i(g_assets.get<yg::gl::Shader>("shaderSkybox")->getUniformLocation(yg::gl::unifNameTextureSky),
-                    yg::gl::unifValueTextureSky);
 
         // Normal shader
         g_assets.insert("shaderNormal", yg::gl::loadShader(
@@ -128,8 +126,6 @@ namespace mygame
                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}},
                                            {}, {}));
         g_assets.get<yg::gl::Shader>("shaderColor")->useProgram();
-        glUniform1i(g_assets.get<yg::gl::Shader>("shaderColor")->getUniformLocation(yg::gl::unifNameTextureSky),
-                    yg::gl::unifValueTextureSky);
 
         // Texture shader
         g_assets.insert("shaderTexture", yg::gl::loadShader(
@@ -137,17 +133,20 @@ namespace mygame
                                               {GL_FRAGMENT_SHADER, "a//simpletex.frag"}},
                                              {}, {}));
         g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
-        glUniform1i(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameTextureDiffuse),
-                    yg::gl::unifValueTextureDiffuse);
 
-        // Depth Texture shader
+        // Post processing Depth Texture shader
         g_assets.insert("shaderTextureDepth", yg::gl::loadShader(
                                                   {{GL_VERTEX_SHADER, "a//simple.vert"},
-                                                   {GL_FRAGMENT_SHADER, "a//simpletexdepth.frag"}},
+                                                   {GL_FRAGMENT_SHADER, "a//postdepth.frag"}},
                                                   {}, {}));
         g_assets.get<yg::gl::Shader>("shaderTextureDepth")->useProgram();
-        glUniform1i(g_assets.get<yg::gl::Shader>("shaderTextureDepth")->getUniformLocation(yg::gl::unifNameTextureDiffuse),
-                    yg::gl::unifValueTextureDiffuse);
+
+        // Post processing Color0 shader
+        g_assets.insert("shaderPostColor0", yg::gl::loadShader(
+                                             {{GL_VERTEX_SHADER, "a//simple.vert"},
+                                              {GL_FRAGMENT_SHADER, "a//postcolor0.frag"}},
+                                             {}, {}));
+        g_assets.get<yg::gl::Shader>("shaderPostColor0")->useProgram();
 
         // geometry
         g_assets.insert("quadGeo", yg::gl::loadGeometry("a//quad.obj"));
@@ -162,7 +161,7 @@ namespace mygame
                                                   {{GL_RGBA8,
                                                     GL_RGBA,
                                                     GL_UNSIGNED_BYTE,
-                                                    yg::gl::textureUnitDiffuse,
+                                                    yg::gl::textureUnitBufferColor0,
                                                     {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
                                                      {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
                                                      {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
@@ -171,7 +170,7 @@ namespace mygame
                                                    {GL_DEPTH_COMPONENT16,
                                                     GL_DEPTH_COMPONENT,
                                                     GL_UNSIGNED_SHORT,
-                                                    yg::gl::textureUnitDiffuse,
+                                                    yg::gl::textureUnitBufferDepth,
                                                     {{GL_TEXTURE_MIN_FILTER, GL_NEAREST},
                                                      {GL_TEXTURE_MAG_FILTER, GL_NEAREST},
                                                      {GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE},
@@ -320,8 +319,8 @@ namespace mygame
             // render color- or depth texture attachment of the framebuffer to a quad
             if (g_framebufDisplay == 1) // color
             {
-                g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
-                glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTexture")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
+                g_assets.get<yg::gl::Shader>("shaderPostColor0")->useProgram();
+                glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderPostColor0")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
                 g_assets.get<yg::gl::Framebuffer>("framebuf")->textureAttachment(0)->bind();
             }
             else if (g_framebufDisplay == 2) // depth

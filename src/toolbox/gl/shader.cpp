@@ -112,6 +112,49 @@ namespace yourgame
                 return nullptr;
             }
 
+            // set fixed uniform values for texture units
+            {
+                glUseProgram(progHandle);
+                GLint unif;
+
+                // diffuse texture
+                unif = glGetUniformLocation(progHandle, gl::unifNameTextureDiffuse);
+                if (unif != -1)
+                {
+                    glUniform1i(unif, gl::unifValueTextureDiffuse);
+                }
+
+                // sky cube texture
+                unif = glGetUniformLocation(progHandle, gl::unifNameTextureSkyCube);
+                if (unif != -1)
+                {
+                    glUniform1i(unif, gl::unifValueTextureSkyCube);
+                }
+
+                // sky texture
+                unif = glGetUniformLocation(progHandle, gl::unifNameTextureSky);
+                if (unif != -1)
+                {
+                    glUniform1i(unif, gl::unifValueTextureSky);
+                }
+
+                // framebuffer depth texture
+                unif = glGetUniformLocation(progHandle, gl::unifNameTextureBufferDepth);
+                if (unif != -1)
+                {
+                    glUniform1i(unif, gl::unifValueTextureBufferDepth);
+                }
+
+                // framebuffer color0 texture
+                unif = glGetUniformLocation(progHandle, gl::unifNameTextureBufferColor0);
+                if (unif != -1)
+                {
+                    glUniform1i(unif, gl::unifValueTextureBufferColor0);
+                }
+
+                glUseProgram(0);
+            }
+
             Shader *newShader = new Shader();
             newShader->m_programHandle = progHandle;
             return newShader;

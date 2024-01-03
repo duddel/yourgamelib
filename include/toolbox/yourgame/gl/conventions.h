@@ -43,16 +43,25 @@ namespace yourgame
         extern const GLchar *unifNameCameraTrafo;
         extern const GLchar *unifNameSkyRotationInv;
         extern const GLchar *unifNameTextureDiffuse;
+        extern const GLchar *unifNameTextureSkyCube;
         extern const GLchar *unifNameTextureSky;
+        extern const GLchar *unifNameTextureBufferDepth;
+        extern const GLchar *unifNameTextureBufferColor0;
         extern const GLchar *unifNameLightAmbient;
         extern const GLchar *unifNameLightDiffuse;
         extern const GLchar *unifNameLightSpecular;
         extern const GLchar *unifNameLightPosition;
         extern const GLchar *unifNameSubtexture;
         extern const GLint unifValueTextureDiffuse;
+        extern const GLint unifValueTextureSkyCube;
         extern const GLint unifValueTextureSky;
+        extern const GLint unifValueTextureBufferDepth;
+        extern const GLint unifValueTextureBufferColor0;
         extern const GLenum textureUnitDiffuse;
+        extern const GLenum textureUnitSkyCube;
         extern const GLenum textureUnitSky;
+        extern const GLenum textureUnitBufferDepth;
+        extern const GLenum textureUnitBufferColor0;
     }
 } // namespace yourgame
 
