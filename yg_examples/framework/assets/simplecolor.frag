@@ -12,7 +12,7 @@ layout(location = 0) out vec4 color;
 uniform float colorMix;
 uniform mat3 skyRotInv;
 uniform vec3 camPos;
-uniform samplerCube textureSky;
+uniform samplerCube textureSkyCube;
 
 void main()
 {
@@ -24,5 +24,5 @@ void main()
     vec3 refl = reflect(dir, normalize(vOutNorm));
     refl = skyRotInv * refl;
 
-    color = mix(vec4(vOutCol * (diff + 0.2), 1.0), texture(textureSky, refl), colorMix);
+    color = mix(vec4(vOutCol * (diff + 0.2), 1.0), texture(textureSkyCube, refl), colorMix);
 }
