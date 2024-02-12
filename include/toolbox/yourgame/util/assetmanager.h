@@ -84,7 +84,7 @@ namespace yourgame
 
             /**
             \brief dummy for compile-time check (static_assert) of non-pointer type
-            
+
             \tparam T object type
             \param name name
             \param obj pointer
@@ -97,7 +97,7 @@ namespace yourgame
 
             /**
             \brief request pointer by name
-            
+
             \tparam T object type
             \param name name
             \return pointer. nullptr, if no pointer of type T* and name exists
@@ -119,7 +119,7 @@ namespace yourgame
 
             /**
             \brief returns number of stored pointers of type T*
-            
+
             \tparam T object type
             \return number of stored pointers of type T*
             */
@@ -136,7 +136,7 @@ namespace yourgame
 
             /**
             \brief destroy (delete) object, remove pointer
-            
+
             \tparam T object type
             \param name name
             */
@@ -157,7 +157,7 @@ namespace yourgame
 
             /**
             \brief destroy (delete) all objects of type T, remove all pointers of type T*
-            
+
             \tparam T object type
             */
             template <class T>
@@ -194,7 +194,7 @@ namespace yourgame
             std::map<size_t, std::map<std::string, std::uintptr_t>> m_ptrMaps;
             std::map<size_t, std::function<void(std::uintptr_t)>> m_delFuncs;
         };
-    }
+    } // namespace util
 } // namespace yourgame
 
 #endif

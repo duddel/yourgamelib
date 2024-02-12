@@ -52,7 +52,7 @@ namespace yourgame
             GLuint m_programHandle;
             std::map<std::string, GLint> m_uniformLocations;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

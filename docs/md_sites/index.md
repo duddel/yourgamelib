@@ -36,10 +36,10 @@ Installation done.
 
 ## Initialize a User Project
 
-Initialize a new user project by running the `init.py` script from the just cloned `yourgamelib` directory. This creates the directory `./MyGame/` next to `./yourgamelib/` containing a couple of files derived from a template.
+Initialize a new user project by running the `init/init.py` script. This creates the directory `./MyGame/` next to `./yourgamelib/` containing a couple of files derived from a template.
 
 ```bash
-python ./yourgamelib/init.py MyGame
+python ./yourgamelib/init/init.py MyGame
 ```
 
 ## Build the project

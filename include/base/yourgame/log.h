@@ -101,7 +101,7 @@ namespace yourgame
             if (logr != nullptr)
                 logr->error(value);
         }
-    }
+    } // namespace log
 } // namespace yourgame
 
 #endif

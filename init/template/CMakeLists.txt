@@ -157,9 +157,6 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
   # enforce GLFW v3 API (default is v2)
   # enforce WEB GL v2 (default is v1)
-  # ALLOW_MEMORY_GROWTH=1 was added after commit bd08b66, where initializing
-  # of flecs caused the web app to crash
-  # todo: what exactly does ALLOW_MEMORY_GROWTH mean?
   # ASYNCIFY is required for emscripten_wget_data() etc.
   set(C_CXX_FLAGS_FOR_EM
     "-s USE_GLFW=3 \
@@ -167,10 +164,10 @@ if(YOURGAME_PLATFORM STREQUAL "web")
     -s ALLOW_MEMORY_GROWTH=1 \
     -s ASYNCIFY \
     --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/build/shell.html")
-    
+
   # check if there are any assets
   file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
-  
+
   if(WEB_PACK_ASSETS AND ASSET_FILES)
     set(C_CXX_FLAGS_FOR_EM "${C_CXX_FLAGS_FOR_EM} \
       --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
@@ -207,5 +204,5 @@ target_include_directories(${CMAKE_PROJECT_NAME}
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-  yrgame
+  yourgame
 )

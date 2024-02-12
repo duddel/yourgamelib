@@ -3,4 +3,4 @@
 cd "${0%/*}"
 cd ..
 
-python ../init.py template
+python ../init/init.py template

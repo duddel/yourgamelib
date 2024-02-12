@@ -15,15 +15,15 @@ jobs:
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r init/requirements.txt
       - name: install deps
         run: |
           sudo apt update
@@ -73,15 +73,15 @@ jobs:
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r init/requirements.txt
       - name: install emsdk
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
@@ -114,15 +114,15 @@ jobs:
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: setup python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r init/requirements.txt
       - name: initialize
         run: |
           cd examples/${{ matrix.example_name }}
@@ -142,7 +142,7 @@ jobs:
     needs:
       [deploy_examples_desktop, deploy_examples_web, deploy_examples_android]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v2
         with:
           name: artifact # default name (by not giving any name to actions/upload-artifact@v2)

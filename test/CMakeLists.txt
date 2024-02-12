@@ -82,7 +82,7 @@ target_include_directories(${CMAKE_PROJECT_NAME}
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-  yrgame
+  yourgame
 )
 
 # register test executable to be run via ctest

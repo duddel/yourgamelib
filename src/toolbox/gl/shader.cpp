@@ -229,5 +229,5 @@ namespace yourgame
                 return unifLoc;
             }
         }
-    }
+    } // namespace gl
 } // namespace yourgame

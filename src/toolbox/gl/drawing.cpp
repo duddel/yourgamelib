@@ -88,5 +88,5 @@ namespace yourgame
                 geo->drawAll();
             }
         }
-    }
+    } // namespace gl
 } // namespace yourgame

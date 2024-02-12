@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 find_package(Git)
 
 # yourgame library project + version
-project(yrgame VERSION 0.0.0)
+project(yourgame VERSION 0.0.0)
 
 # enforce C++11 and disable extensions
 set(CMAKE_CXX_STANDARD 11)
@@ -183,43 +183,18 @@ if(YOURGAME_PLATFORM_GL_EXT_LOADER STREQUAL "glad")
   )
 endif()
 
-# prepare external projects
-# step 1: copy the script
-configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/cmake/PrepareExternalProjects.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/thirdparty/CMakeLists.txt" COPYONLY
-)
-# step 2:
-# run a separate CMake instance preparing external projects.
-# the original generator of the current CMake instance is intentionally
-# not passed to the new CMake instance.
-# to do it anyway, add this to the command below: -G "${CMAKE_GENERATOR}"
-execute_process(
-  COMMAND "${CMAKE_COMMAND}" .
-  "-DYOURGAME_EXT_PROJ_LIST=${YOURGAME_EXT_PROJ_LIST}"
-  "-DYOURGAME_EXT_PROJ_MODULE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/cmake"
-  "-DYOURGAME_EXT_PROJ_CODE_DIR=${CMAKE_CURRENT_SOURCE_DIR}/thirdparty"
-  "-DYOURGAME_EXT_PROJ_OUT_FILE=${CMAKE_CURRENT_BINARY_DIR}/thirdparty/yourgame_ext_proj.cmake"
-  "-DYOURGAME_PLATFORM=${YOURGAME_PLATFORM}"
-  RESULT_VARIABLE extProjResult
-  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/thirdparty"
-)
-if(extProjResult)
-  message(FATAL_ERROR "Configure step of external projects FAILED: ${extProjResult}")
-endif()
-# step 3:
-# run the "build step" in a separate CMake instance
-execute_process(
-  COMMAND "${CMAKE_COMMAND}" --build .
-  RESULT_VARIABLE extProjResult
-  WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/thirdparty"
-)
-if(extProjResult)
-  message(FATAL_ERROR "Build step (prepare) of external projects FAILED: ${extProjResult}")
-endif()
-# step 4:
-# include the output file
-include(${CMAKE_CURRENT_BINARY_DIR}/thirdparty/yourgame_ext_proj.cmake)
+# external projects:
+# the modules (ExtProj-<proj>.cmake) may write CMake commands,
+# such as add_subdirectory(), and may append items to these lists:
+# YOURGAME_INC_DIRS, YOURGAME_SRC_FILES, YOURGAME_LIBS, YOURGAME_COMPILE_DEFS
+set(YOURGAME_EXT_PROJ_CODE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
+foreach(proj ${YOURGAME_EXT_PROJ_LIST})
+  include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/ExtProj-${proj}.cmake)
+  # add a compile definition for each available external project,
+  # replace improper characters from ${extproj} by an underscore (_)
+  string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" proj ${proj})
+  list(APPEND YOURGAME_COMPILE_DEFS YOURGAME_EXTPROJ_${proj})
+endforeach()
 
 # add the yourgame library target
 add_library(${PROJECT_NAME}

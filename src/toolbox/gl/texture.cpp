@@ -206,5 +206,5 @@ namespace yourgame
 
             return coords;
         }
-    }
+    } // namespace gl
 } // namespace yourgame

@@ -61,7 +61,7 @@ namespace yourgame
             std::map<std::string, Buffer *> m_buffers;
             std::map<std::string, Shape *> m_shapes;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

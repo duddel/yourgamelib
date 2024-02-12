@@ -160,8 +160,8 @@ namespace yourgame
             auto body = static_cast<btRigidBody *>(m_body);
             body->applyCentralImpulse({x, y, z});
         }
-    }
-}
+    } // namespace util
+} // namespace yourgame
 
 namespace yourgame
 {
@@ -434,7 +434,7 @@ namespace yourgame
 
             return RayTestResult(hitBody);
         }
-    }
+    } // namespace util
 } // namespace yourgame
 
 #endif

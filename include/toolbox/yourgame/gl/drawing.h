@@ -42,7 +42,7 @@ namespace yourgame
         };
 
         void drawGeo(const yourgame::gl::Geometry *geo, const yourgame::gl::DrawConfig &cfg);
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

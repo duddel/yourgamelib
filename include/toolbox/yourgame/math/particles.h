@@ -90,7 +90,7 @@ namespace yourgame
             Part spawn();
             float rnd1();
         };
-    }
+    } // namespace math
 } // namespace yourgame
 
 #endif

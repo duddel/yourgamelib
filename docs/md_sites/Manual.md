@@ -7,7 +7,7 @@
 To integrate additional [third-party libraries](thirdparty/README.md), use the `--extProj` option, like so:
 
 ```bash
-python <path_to_yourgamelib>/init.py MyGame --extProj box2d lua
+python <path_to_yourgamelib>/init/init.py MyGame --extProj box2d lua
 ```
 
 ## Build System

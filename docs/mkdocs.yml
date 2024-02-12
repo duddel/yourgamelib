@@ -1,5 +1,6 @@
 site_name: YourGameLib
 docs_dir: md_sites
+site_dir: _deploy
 theme:
   name: material
   icon:
@@ -17,9 +18,6 @@ theme:
       toggle:
         icon: material/lightbulb
         name: Switch to light mode
-extra:
-  version:
-    provider: mike
 markdown_extensions:
   - admonition
   - pymdownx.highlight
@@ -30,25 +28,13 @@ repo_name: duddel/yourgamelib
 edit_uri: ""
 nav:
   - Getting Started: index.md
-  - Template Example: Pages/Template_01Example.md
-  - "More Examples":
+  - Examples:
       - Bare: Examples/Bare.md
       - Fps: Examples/Fps.md
       - Framework: Examples/Framework.md
       - Particles: Examples/Particles.md
       - Sprites: Examples/Sprites.md
   - Manual: Manual.md
-  - "API":
-      - Fundamentals: Fundamentals.md
-      - mygame (User Code): Namespaces/namespacemygame.md
-      - yourgame: Namespaces/namespaceyourgame.md
-      - yourgame::audio: Namespaces/namespaceyourgame_1_1audio.md
-      - yourgame::control: Namespaces/namespaceyourgame_1_1control.md
-      - yourgame::file: Namespaces/namespaceyourgame_1_1file.md
-      - yourgame::gl: Namespaces/namespaceyourgame_1_1gl.md
-      - yourgame::input: Namespaces/namespaceyourgame_1_1input.md
-      - yourgame::log: Namespaces/namespaceyourgame_1_1log.md
-      - yourgame::math: Namespaces/namespaceyourgame_1_1math.md
-      - yourgame::time: Namespaces/namespaceyourgame_1_1time.md
-      - yourgame::util: Namespaces/namespaceyourgame_1_1util.md
-      - yourgame::version: Namespaces/namespaceyourgame_1_1version.md
+  - API:
+    - Overview: Overview.md
+  - Development: Development.md

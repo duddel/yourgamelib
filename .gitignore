@@ -1,5 +1,5 @@
 **/_build*
 *.log
-docs/_doxyout
-docs/site
+docs/_deploy
 .vscode/
+YourGameProject/

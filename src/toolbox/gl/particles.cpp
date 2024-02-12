@@ -64,5 +64,5 @@ namespace yourgame
         {
             return m_positionData.size();
         }
-    }
+    } // namespace gl
 } // namespace yourgame

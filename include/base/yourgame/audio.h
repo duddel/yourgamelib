@@ -49,39 +49,39 @@ namespace yourgame
 
         /**
         \brief play audio file, that was previously loaded via storeFile()
-        
-        \param filename 
-        \param loop 
+
+        \param filename
+        \param loop
         \return int audio source id
          */
         int play(const std::string &filename, bool loop = false);
 
         /**
         \brief stop audio source
-        
+
         \param sourceId audio source id
-        \return int 
+        \return int
          */
         int stop(int sourceId);
 
         /**
         \brief pause/unpause audio source
-        
+
         \param sourceId audio source id
         \param pause true: pause, false: unpause
-        \return int 
+        \return int
          */
         int pause(int sourceId, bool pause);
 
         /**
         \brief set gain per channel of an audio source
-        
+
         \param sourceId audio source id
         \param gains gain [0.0 .. 1.0] per channel
-        \return int 
+        \return int
          */
         int setChannelGains(int sourceId, const std::vector<float> &gains);
-    }
-}
+    } // namespace audio
+} // namespace yourgame
 
 #endif

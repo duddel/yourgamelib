@@ -1,126 +1,71 @@
 name: examples
-on:
-  push:
-    # on main, examples are deployed via different workflow
-    branches-ignore:
-      - main
+on: push
 
 jobs:
-  build_examples_desktop:
-    name: desktop
-
-    runs-on: ${{ matrix.os }}
+  examples:
+    name: build examples
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-20.04, ubuntu-22.04, windows-2019, windows-2022]
+        example_name: [framework, bare, template, fps, particles, sprites]
+        #yourgame_platform: [desktop, web, android]
+        # ToDo: fix android
+        yourgame_platform: [desktop, web]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: build docker image (desktop)
+        run: docker build -t yourgame --build-arg NO_DOCS="true" --build-arg NO_EMSDK="true" --build-arg NO_ANDROID="true" .
+        if: startsWith(matrix.yourgame_platform, 'desktop')
+      - name: build docker image (web)
+        run: docker build -t yourgame --build-arg NO_DOCS="true" --build-arg NO_ANDROID="true" .
+        if: startsWith(matrix.yourgame_platform, 'web')
+      - name: build docker image (android)
+        run: docker build -t yourgame --build-arg NO_DOCS="true" --build-arg NO_EMSDK="true" .
+        if: startsWith(matrix.yourgame_platform, 'android')
+
+      - name: initialize
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd examples/${{ matrix.example_name }} && ./init.bash"
+      - name: build
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd examples/${{ matrix.example_name }}/build && ./build_${{ matrix.yourgame_platform }}_release.bash"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.example_name }}-${{ matrix.yourgame_platform }}
+          path: examples/${{ matrix.example_name }}/build/_deploy/*
+
+  examples_windows:
+    name: build examples windows
+    runs-on: windows-latest
+    strategy:
+      matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: setup python
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: install deps
-        run: |
-          sudo apt update
-          sudo apt install libgl1-mesa-dev xorg-dev
-        if: startsWith(matrix.os, 'ubuntu')
-      # ubuntu: init, configure, build ...
-      - name: initialize (ubuntu)
-        run: |
-          cd examples/${{ matrix.example_name }}
-          ./init.bash
-        if: startsWith(matrix.os, 'ubuntu')
-      - name: configure/build (ubuntu)
-        run: |
-          cd examples/${{ matrix.example_name }}/build
-          ./build_desktop_debug.bash
-        if: startsWith(matrix.os, 'ubuntu')
-      # windows: init, configure, build ...
-      - name: initialize (windows)
+          pip install -r init/requirements.txt
+      - name: initialize
         run: |
           cd examples/${{ matrix.example_name }}
           init.cmd
-        if: startsWith(matrix.os, 'windows')
         shell: cmd
       - name: configure/build (win32)
         run: |
           cd examples/${{ matrix.example_name }}/build
-          build_desktop_debug_win32.cmd
-        if: startsWith(matrix.os, 'windows')
+          build_desktop_release_win32.cmd
         shell: cmd
       - name: configure/build (win64)
         run: |
           cd examples/${{ matrix.example_name }}/build
-          build_desktop_debug_win64.cmd
-        if: startsWith(matrix.os, 'windows')
+          build_desktop_release_win64.cmd
         shell: cmd
-
-  build_examples_web:
-    name: web
-
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        example_name: [framework, bare, template, fps, particles, sprites]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: setup python
-        uses: actions/setup-python@v1
+      - uses: actions/upload-artifact@v4
         with:
-          python-version: "3.10"
-      - name: install python deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: install emsdk
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          ./emsdk install latest
-          ./emsdk activate latest
-      - name: initialize
-        run: |
-          cd examples/${{ matrix.example_name }}
-          ./init.bash
-      - name: configure/build
-        # build_web_debug.bash needs to know the emsdk location
-        # in order to call: source $EMSDK/emsdk_env.sh:
-        env:
-          EMSDK: ${{ github.workspace }}/emsdk
-        run: |
-          cd examples/${{ matrix.example_name }}/build
-          ./build_web_debug.bash
-
-  build_examples_android:
-    name: android
-
-    runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        example_name: [framework, bare, template, fps, particles, sprites]
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: setup python
-        uses: actions/setup-python@v1
-        with:
-          python-version: "3.10"
-      - name: install python deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: initialize
-        run: |
-          cd examples/${{ matrix.example_name }}
-          ./init.bash
-      - name: assemble
-        run: |
-          cd examples/${{ matrix.example_name }}/build
-          ./build_android_debug.bash
+          name: ${{ matrix.example_name }}-windows
+          path: examples/${{ matrix.example_name }}/build/_deploy/*

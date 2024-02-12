@@ -1,0 +1,17 @@
+Checks: '*,
+    -cppcoreguidelines-avoid-magic-numbers,
+    -cppcoreguidelines-macro-usage,
+    -fuchsia-default-arguments-calls,
+    -fuchsia-default-arguments-declarations,
+    -hicpp-uppercase-literal-suffix,
+    -llvmlibc-*,
+    -misc-confusable-identifiers,
+    -modernize-use-trailing-return-type,
+    -readability-identifier-length,
+    -readability-magic-numbers,
+    -readability-uppercase-literal-suffix'
+
+#WarningsAsErrors: '*'
+
+# Run clang-tidy on headers in yourgame/ and yourgame_internal/ directories
+HeaderFilterRegex: '.*\/yourgame(_internal)?\/.*'

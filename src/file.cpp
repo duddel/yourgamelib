@@ -205,5 +205,5 @@ namespace yourgame
 
             return -1;
         }
-    }
-}
+    } // namespace file
+} // namespace yourgame

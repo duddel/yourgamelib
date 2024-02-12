@@ -1,6 +1,9 @@
 /**
 \mainpage
 YourGameLib Doxygen Mainpage
+
+Check namespace \ref mygame.
+
 */
 
 /** \namespace yourgame::audio

@@ -75,8 +75,8 @@ namespace yourgame
         {
             return -1;
         }
-    }
-}
+    } // namespace audio
+} // namespace yourgame
 
 #else
 
@@ -367,7 +367,7 @@ namespace yourgame
 
             return ret;
         }
-    }
-}
+    } // namespace audio
+} // namespace yourgame
 
 #endif

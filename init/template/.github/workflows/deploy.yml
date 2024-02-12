@@ -10,7 +10,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # ubuntu: install deps, configure/build
       - name: install deps
         run: |
@@ -36,16 +36,16 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         shell: cmd
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: build/_deploy/*
 
   deploy_web:
     name: web
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: install emsdk
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
@@ -61,21 +61,21 @@ jobs:
           cd build
           ./build_web_release.bash
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: build/_deploy/*
 
   deploy_android:
     name: android
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: assemble
         run: |
           cd build
           ./build_android_release.bash
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           path: build/_deploy/*

@@ -535,5 +535,5 @@ namespace yourgame
 
             return newGeo;
         }
-    }
+    } // namespace gl
 } // namespace yourgame

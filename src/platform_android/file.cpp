@@ -72,5 +72,5 @@ namespace yourgame
             std::vector<std::string> ret;
             return ret;
         }
-    }
-}
+    } // namespace file
+} // namespace yourgame

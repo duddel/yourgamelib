@@ -3,4 +3,4 @@
 cd %~dp0
 cd ..
 
-python ../init.py particles --noStub
+python ../init/init.py particles --noStub

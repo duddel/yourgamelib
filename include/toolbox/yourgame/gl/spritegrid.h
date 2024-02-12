@@ -69,7 +69,7 @@ namespace yourgame
         private:
             Geometry *m_geo = nullptr;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

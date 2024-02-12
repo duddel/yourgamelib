@@ -141,5 +141,5 @@ namespace yourgame
                 s.second->drawInstanced(instancecount);
             }
         }
-    }
+    } // namespace gl
 } // namespace yourgame

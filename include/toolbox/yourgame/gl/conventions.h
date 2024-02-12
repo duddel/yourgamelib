@@ -62,7 +62,7 @@ namespace yourgame
         extern const GLenum textureUnitSky;
         extern const GLenum textureUnitBufferDepth;
         extern const GLenum textureUnitBufferColor0;
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

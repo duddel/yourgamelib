@@ -54,8 +54,7 @@ namespace yourgame
             elArBuffer->bind();
             glBindVertexArray(0);
 
-            // todo: what about unbinding the buffers (ARRAY, ELEMENT_ARRAY)
-            // after creating the VAO?
+            /// \todo what about unbinding the buffers (ARRAY, ELEMENT_ARRAY) after creating the VAO?
 
             return newShape;
         }
@@ -109,5 +108,5 @@ namespace yourgame
             glDrawElementsInstanced(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0, instancecount);
             glBindVertexArray(0);
         }
-    }
+    } // namespace gl
 } // namespace yourgame

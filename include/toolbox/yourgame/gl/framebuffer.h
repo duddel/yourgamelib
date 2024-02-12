@@ -61,7 +61,7 @@ namespace yourgame
             std::vector<yourgame::gl::Texture *> m_textureAttachments;
             std::vector<TextureAttachDescr> m_texAttachDescrs;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

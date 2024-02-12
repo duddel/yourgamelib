@@ -46,7 +46,7 @@ namespace yourgame
                                              1.0f, 1.0f, 1.0f,
                                              0.0f, 0.0f, 0.0f}};
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

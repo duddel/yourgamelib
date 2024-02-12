@@ -39,25 +39,25 @@ do not include any other gl headers before or after gl_include.h
 #define YOURGAME_GL_INCLUDE_H
 
 #if defined(GL_TRUE) // assuming GL_TRUE is (only) defined in some gl header
-  #error gl header is already included
+#error gl header is already included
 #elif defined(YOURGAME_GL_INCLUDE_GLES1)
-  #include <GLES/gl.h>
+#include <GLES/gl.h>
 #elif defined(YOURGAME_GL_INCLUDE_GLES2)
-  #include <GLES2/gl2.h>
+#include <GLES2/gl2.h>
 #elif defined(YOURGAME_GL_INCLUDE_GLES3)
-  #include <GLES3/gl3.h>
+#include <GLES3/gl3.h>
 #elif defined(YOURGAME_GL_INCLUDE_GLES31)
-  #include <GLES3/gl31.h>
+#include <GLES3/gl31.h>
 #elif defined(YOURGAME_GL_INCLUDE_GLES32)
-  #include <GLES3/gl32.h>
+#include <GLES3/gl32.h>
 #elif defined(YOURGAME_GL_INCLUDE_GLEW)
-  #include <GL/glew.h>
+#include <GL/glew.h>
 #elif defined(YOURGAME_GL_INCLUDE_GL3W)
-  #include <GL/gl3w.h>
+#include <GL/gl3w.h>
 #elif defined(YOURGAME_GL_INCLUDE_GLAD)
-  #include <glad/glad.h>
+#include <glad/glad.h>
 #else
-  #error no gl header included
+#error no gl header included
 #endif
 
 /*
@@ -71,39 +71,39 @@ and the used gl (es) version with both
   YOURGAME_GL_MINOR
 */
 #if defined(YOURGAME_GL_API_GL)
-  #if (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 0)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 110"
-  #elif (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 1)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 120"
-  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 0)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 130"
-  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 1)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 140"
-  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 2)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 150"
-  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 3)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 330"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 0)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 400"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 1)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 410"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 2)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 420"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 3)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 430"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 4)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 440"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 5)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 450"
-  #elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 6)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 460"
-  #endif
+#if (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 0)
+#define YOURGAME_GLSL_VERSION_STRING "#version 110"
+#elif (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 1)
+#define YOURGAME_GLSL_VERSION_STRING "#version 120"
+#elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 0)
+#define YOURGAME_GLSL_VERSION_STRING "#version 130"
+#elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 1)
+#define YOURGAME_GLSL_VERSION_STRING "#version 140"
+#elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 2)
+#define YOURGAME_GLSL_VERSION_STRING "#version 150"
+#elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 3)
+#define YOURGAME_GLSL_VERSION_STRING "#version 330"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 0)
+#define YOURGAME_GLSL_VERSION_STRING "#version 400"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 1)
+#define YOURGAME_GLSL_VERSION_STRING "#version 410"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 2)
+#define YOURGAME_GLSL_VERSION_STRING "#version 420"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 3)
+#define YOURGAME_GLSL_VERSION_STRING "#version 430"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 4)
+#define YOURGAME_GLSL_VERSION_STRING "#version 440"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 5)
+#define YOURGAME_GLSL_VERSION_STRING "#version 450"
+#elif (YOURGAME_GL_MAJOR == 4) && (YOURGAME_GL_MINOR == 6)
+#define YOURGAME_GLSL_VERSION_STRING "#version 460"
+#endif
 #elif defined(YOURGAME_GL_API_GLES)
-  #if (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 0)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 100"
-  #elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 0)
-    #define YOURGAME_GLSL_VERSION_STRING "#version 300 es"
-  #endif
+#if (YOURGAME_GL_MAJOR == 2) && (YOURGAME_GL_MINOR == 0)
+#define YOURGAME_GLSL_VERSION_STRING "#version 100"
+#elif (YOURGAME_GL_MAJOR == 3) && (YOURGAME_GL_MINOR == 0)
+#define YOURGAME_GLSL_VERSION_STRING "#version 300 es"
+#endif
 #endif
 
 #endif

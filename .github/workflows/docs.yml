@@ -1,81 +1,54 @@
 name: docs
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   docs:
-    name: build and deploy docs
-    runs-on: ubuntu-22.04
+    name: build docs
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: setup python
-        uses: actions/setup-python@v1
-        with:
-          python-version: "3.10"
-      - name: install deps
-        run: |
-          sudo apt update
-          sudo apt install doxygen plantuml
-          python -m pip install --upgrade pip
-          pip install -r docs/requirements.txt
-          wget https://github.com/matusnovak/doxybook2/releases/download/v1.4.0/doxybook2-linux-amd64-v1.4.0.zip
-          unzip doxybook2-linux-amd64-v1.4.0.zip -d _doxybook2
+      - uses: actions/checkout@v4
+      - name: build docker image
+        run: docker build -t yourgame --build-arg NO_EMSDK="true" --build-arg NO_ANDROID="true" .
+      - name: run mkdocs
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd docs && mkdocs build"
       - name: run doxygen
-        run: |
-          cd docs
-          doxygen --version
-          doxygen
-      - name: run doxybook2
-        run: |
-          cd docs
-          # append the branch/tag name to the baseUrl for doxybook2, becuase the docs
-          # are later moved there by mike (see below). ${GITHUB_REF##*/} is the actual
-          # branch/tag name. double quotes (") around the sed substitute argument are
-          # required for expanding ${GITHUB_REF##*/} before sed is executed.
-          sed -i -E "s/(\"baseUrl\":\s*\".*)\"/\1${GITHUB_REF##*/}\/\"/g" doxybook_cfg.json
-          ../_doxybook2/bin/doxybook2 --input _doxyout/xml/ --output ./md_sites --config ./doxybook_cfg.json
-      - name: run mike
-        run: |
-          git config --global user.name ${{ github.actor }}
-          git config --global user.email ${{ github.actor }}@users.noreply.github.com
-          git config --global pull.rebase false
-          git pull origin gh-pages --allow-unrelated-histories
-          cd docs
-          mike deploy ${GITHUB_REF##*/}
-          cd ..
-          git push origin gh-pages
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd docs && mkdir -p _deploy/doxygen && doxygen --version && doxygen"
+      - name: initialize project
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "python ./init/init.py YourGameProject --clone && zip -r docs/_deploy/YourGameProject.zip YourGameProject/"
+      - name: prepare clang-tidy
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd quality && /bin/bash yg_cmake_lib.bash"
+      - name: run clang-tidy
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd quality && python ./run-clang-tidy.py -config-file ../.clang-tidy -p _build -source-filter '^((?!thirdparty).)*$' > ../docs/_deploy/clang-tidy_log.txt"
+      - name: process clang-tidy log
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd quality && python ./yg_parse_clang-tidy.py ../docs/_deploy/clang-tidy_log.txt > ../docs/_deploy/clang-tidy_results.txt"
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: docs/_deploy
 
-  init:
-    name: initialize project
-    runs-on: ubuntu-22.04
+  deploy:
+    name: deploy docs
+    runs-on: ubuntu-latest
     needs: docs
 
     steps:
-      - uses: actions/checkout@v3
-      - name: setup python
-        uses: actions/setup-python@v1
+      - uses: actions/checkout@v4
         with:
-          python-version: "3.10"
-      - name: install python deps
+          ref: "refs/heads/gh-pages"
+      - name: clean-up
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: initialize
-        run: |
-          python ./init.py YourGameProject --clone
-      - name: zip project
-        run: |
-          mkdir _deploy
-          zip -r _deploy/YourGameProject.zip YourGameProject/
-      - name: Inject slug/short variables
-        uses: rlespinasse/github-slug-action@v3.x
-      - name: deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.5
+          rm -rf ./*
+      - uses: actions/download-artifact@v4
         with:
-          branch: gh-pages
-          folder: _deploy
-          target-folder: ${{ env.GITHUB_REF_SLUG }}
-          clean: false
+          name: docs
+          path: ./
+      - name: deploy to gh-pages
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git add .
+          git status
+          git commit --allow-empty -m "YourGameLib automatic docs deployment"
+          git push origin gh-pages

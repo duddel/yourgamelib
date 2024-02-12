@@ -23,6 +23,7 @@ namespace yourgame
 {
     namespace version
     {
+        // clang-format off
         const int major = @PROJECT_VERSION_MAJOR@;
         const int minor = @PROJECT_VERSION_MINOR@;
         const int patch = @PROJECT_VERSION_PATCH@;
@@ -41,5 +42,6 @@ namespace yourgame
         const std::string CMAKE_GENERATOR = "@CMAKE_GENERATOR@";
         const std::string CMAKE_GENERATOR_PLATFORM = "@CMAKE_GENERATOR_PLATFORM@";
         const int CMAKE_SIZEOF_VOID_P = @CMAKE_SIZEOF_VOID_P@;
-    }
+        // clang-format on
+    } // namespace version
 } // namespace yourgame

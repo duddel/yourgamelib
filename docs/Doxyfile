@@ -1,12 +1,13 @@
 INPUT                   = ../include \
-                          ../docs \
-                          ../src/include_internal/yourgame_internal/mygame_external.h
-EXAMPLE_PATH            = ../template/mygame.cpp
+                          ../docs/dox_sites \
+                          ../src
+EXAMPLE_PATH            = ../init/template/src/mygame.cpp
 EXTRACT_ALL             = YES
 RECURSIVE               = YES
-OUTPUT_DIRECTORY        = ./_doxyout
+OUTPUT_DIRECTORY        = ./_deploy/doxygen
 PROJECT_NAME            = "YourGameLib"
 HTML_EXTRA_STYLESHEET   = ./customdoxy.css
-GENERATE_XML            = YES
+GENERATE_XML            = NO
 XML_OUTPUT              = xml
-PREDEFINED              = YG_DOXYGEN
+GENERATE_LATEX          = NO
+PREDEFINED              = YG_DOXYGEN YOURGAME_EXTPROJ_miniaudio

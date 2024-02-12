@@ -1,0 +1,19 @@
+name: docker
+on:
+  push:
+    paths:
+      - "Dockerfile"
+      - ".github/workflows/docker.yml"
+
+jobs:
+  docker_image:
+    name: build docker image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_version: [20.04, 22.04, 24.04]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: build
+        run: docker build -t yourgame --build-arg UBUNTU_VERSION="${{ matrix.ubuntu_version }}" .

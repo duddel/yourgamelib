@@ -3,4 +3,4 @@
 cd %~dp0
 cd ..
 
-python ../init.py sprites --noStub
+python ../init/init.py sprites --noStub

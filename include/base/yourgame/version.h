@@ -44,7 +44,7 @@ namespace yourgame
         extern const std::string CMAKE_GENERATOR;
         extern const std::string CMAKE_GENERATOR_PLATFORM;
         extern const int CMAKE_SIZEOF_VOID_P;
-    }
+    } // namespace version
 } // namespace yourgame
 
 #endif

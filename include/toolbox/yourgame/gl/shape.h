@@ -69,7 +69,7 @@ namespace yourgame
             ElemArrBufferDescr m_elArDescr;
             GLuint m_vaoHandle;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

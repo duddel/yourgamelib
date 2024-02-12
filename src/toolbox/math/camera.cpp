@@ -167,5 +167,5 @@ namespace yourgame
                 return glm::ortho(-widthHalf, widthHalf, -heightHalf, heightHalf, zNear, zFar);
             }
         }
-    }
+    } // namespace math
 } // namespace yourgame

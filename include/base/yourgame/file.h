@@ -112,7 +112,7 @@ namespace yourgame
         /** \brief returns list of directory content. accepts prefixes like readFile() does. accepts wildcard "*" for
         files (after last / in pattern) */
         std::vector<std::string> ls(const std::string &pattern);
-    }
-}
+    } // namespace file
+} // namespace yourgame
 
 #endif
