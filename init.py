@@ -11,7 +11,7 @@ def copy_file_items(items, src, dst):
         item_src = os.path.join(src, item)
         item_dst = os.path.join(dst, item)
         if os.path.isdir(item_src):
-            shutil.copytree(item_src, item_dst)
+            shutil.copytree(item_src, item_dst, dirs_exist_ok=True)
         else:
             shutil.copy(item_src, item_dst)
 

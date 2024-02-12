@@ -1,10 +1,7 @@
-#
-# included by PrepareExternalProjects.cmake
-#
-file(APPEND ${YOURGAME_EXT_PROJ_OUT_FILE}
-"list(APPEND YOURGAME_INC_DIRS
+list(APPEND YOURGAME_INC_DIRS
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/include
 )
+
 list(APPEND YOURGAME_SRC_FILES
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/collision/b2_broad_phase.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/collision/b2_chain_shape.cpp
@@ -53,4 +50,3 @@ list(APPEND YOURGAME_SRC_FILES
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_world_callbacks.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/rope/b2_rope.cpp
 )
-") # file()
