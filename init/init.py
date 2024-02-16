@@ -23,15 +23,15 @@ def main(args):
 
     # assuming this script lies in yourgamelib/init/, this computes the relative
     # path from new project root to yourgamelib/
-    ygRoot = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
-    templateRoot = os.path.join(ygRoot, "init", 'template')
+    ygRootAbs = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    templateRoot = os.path.join(ygRootAbs, "init", 'template')
     tgtDir = os.path.join(os.getcwd(), newProjName)
     tgtDirSrc = os.path.join(tgtDir, 'src')
-    ygRootRel = os.path.relpath(ygRoot, start=tgtDir)
+    ygRootRel = os.path.relpath(ygRootAbs, start=tgtDir)
     ygRootRel = ygRootRel.replace(os.sep, posixpath.sep)
 
     # get git information about yourgamelib
-    gitRepo = git.Repo(ygRoot)
+    gitRepo = git.Repo(ygRootAbs)
     gitSha = gitRepo.head.object.hexsha
     print("yourgamelib commit: {}".format(gitSha))
 
