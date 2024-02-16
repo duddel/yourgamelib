@@ -62,7 +62,7 @@ jobs:
       - name: install python deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r init/requirements.txt
       - name: initialize
         run: |
           python ./init/init.py YourGameProject --clone

@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y \
 RUN ln -s /usr/bin/python3 /usr/bin/python
 # /usr/bin/pip -> /usr/bin/pip3 is already present
 
-COPY requirements.txt /tmp
+COPY init/requirements.txt /tmp
 
 RUN python -m pip install --upgrade pip &&\
     pip install -r /tmp/requirements.txt
