@@ -3,4 +3,4 @@
 cd %~dp0
 cd ..
 
-python ../init.py template
+python ../init/init.py template

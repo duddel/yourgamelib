@@ -3,4 +3,4 @@
 cd %~dp0
 cd ..
 
-python ../init.py bare --bare
+python ../init/init.py bare --bare

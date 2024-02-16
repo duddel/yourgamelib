@@ -65,7 +65,7 @@ jobs:
           pip install -r requirements.txt
       - name: initialize
         run: |
-          python ./init.py YourGameProject --clone
+          python ./init/init.py YourGameProject --clone
       - name: zip project
         run: |
           mkdir _deploy
