@@ -71,7 +71,7 @@ namespace yourgame
             void updatePMatIfInvalidated();
             glm::mat4 calcPMat(float zNear, float zFar);
         };
-    }
+    } // namespace math
 } // namespace yourgame
 
 #endif

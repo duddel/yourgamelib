@@ -41,7 +41,7 @@ namespace yourgame
             Particles(const Config cfg, yourgame::gl::Geometry *geo) : yourgame::math::Particles(cfg), m_geo(geo) {}
             yourgame::gl::Geometry *m_geo;
         };
-    }
-}
+    } // namespace gl
+} // namespace yourgame
 
 #endif

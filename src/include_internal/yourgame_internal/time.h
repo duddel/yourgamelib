@@ -26,7 +26,7 @@ namespace yourgame_internal
     {
         void init();
         void tick();
-    }
-}
+    } // namespace time
+} // namespace yourgame_internal
 
 #endif

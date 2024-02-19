@@ -67,7 +67,7 @@ namespace yourgame
             bool m_matInvalidated = false;
             void updateMatrixIfInvalidated();
         };
-    }
+    } // namespace math
 } // namespace yourgame
 
 #endif

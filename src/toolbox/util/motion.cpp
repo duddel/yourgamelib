@@ -237,5 +237,5 @@ namespace yourgame
             float t01s = (3.0f * t01 * t01 - 2.0f * t01 * t01 * t01);
             return (3.0f * t01s * t01s - 2.0f * t01s * t01s * t01s) * dt;
         }
-    }
+    } // namespace util
 } // namespace yourgame

@@ -317,5 +317,5 @@ namespace yourgame
             glfwSetInputMode(yourgame_internal_desktop::_window, GLFW_CURSOR, enable ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
             yourgame_internal::setInput2(yourgame::input::MOUSE_CATCHED, enable ? 1.0f : 0.0f);
         }
-    }
+    } // namespace control
 } // namespace yourgame

@@ -35,7 +35,7 @@ namespace yourgame
 
         /** \brief resets the timing so time retrieved by getTime() starts at 0 again */
         void reset();
-    }
-}
+    } // namespace time
+} // namespace yourgame
 
 #endif

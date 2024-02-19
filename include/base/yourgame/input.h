@@ -296,7 +296,7 @@ namespace yourgame
 
         /** \brief returns the value delta (current minus last frame value) of the input source \p source */
         float getDelta(Source source);
-    }
+    } // namespace input
 } // namespace yourgame
 
 #endif

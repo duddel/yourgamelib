@@ -33,9 +33,9 @@ namespace mygame
 {
     /**
     \brief user project initialization
-    
+
     called by the yourgame framework after it has been initialized
-    
+
     \param argc number of arguments
     \param argv arguments, forwarded from main() (C style application args)
     */
@@ -43,7 +43,7 @@ namespace mygame
 
     /**
     \brief user project update/draw (once pre frame)
-    
+
     called by the yourgame framework once per frame
     */
     extern void tick();

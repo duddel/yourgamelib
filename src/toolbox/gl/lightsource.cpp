@@ -75,5 +75,5 @@ namespace yourgame
             m_data[10] = pos[1];
             m_data[11] = pos[2];
         }
-    }
+    } // namespace gl
 } // namespace yourgame

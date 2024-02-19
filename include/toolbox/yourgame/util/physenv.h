@@ -347,7 +347,7 @@ namespace yourgame
             class impl;
             std::unique_ptr<impl> pimpl;
         };
-    }
+    } // namespace util
 } // namespace yourgame
 
 #endif

@@ -30,7 +30,7 @@ namespace yourgame_internal
             double deltaTimeS = 0.0;
             std::chrono::steady_clock::time_point lastNowTime;
             std::chrono::steady_clock::time_point initTime;
-        }
+        } // namespace
 
         void init()
         {
@@ -47,8 +47,8 @@ namespace yourgame_internal
             lastNowTime = now;
             deltaTimeS = (duration.count());
         }
-    }
-}
+    } // namespace time
+} // namespace yourgame_internal
 
 namespace yourgame
 {
@@ -75,5 +75,5 @@ namespace yourgame
         {
             yourgame_internal::time::init();
         }
-    }
-}
+    } // namespace time
+} // namespace yourgame

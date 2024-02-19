@@ -26,67 +26,67 @@ freely, subject to the following restrictions:
 
 namespace yourgame
 {
-   namespace util
-   {
-      class Image
-      {
-      public:
-         enum class Layout
-         {
-            RGBA
-         };
+    namespace util
+    {
+        class Image
+        {
+        public:
+            enum class Layout
+            {
+                RGBA
+            };
 
-         /* deleting the copy constructor and the copy assignment operator
-         prevents copying (and moving) of the object. */
-         Image(Image const &) = delete;
-         Image &operator=(Image const &) = delete;
+            /* deleting the copy constructor and the copy assignment operator
+            prevents copying (and moving) of the object. */
+            Image(Image const &) = delete;
+            Image &operator=(Image const &) = delete;
 
-         static Image *fromMemoryEncoded(const uint8_t *data,
-                                         size_t numBytes,
-                                         bool flipVertically = false,
-                                         Layout layoutDst = Layout::RGBA);
+            static Image *fromMemoryEncoded(const uint8_t *data,
+                                            size_t numBytes,
+                                            bool flipVertically = false,
+                                            Layout layoutDst = Layout::RGBA);
 
-         static Image *fromMemoryRaw(const uint8_t *data,
-                                     int width,
-                                     int height,
-                                     Layout layout = Layout::RGBA);
+            static Image *fromMemoryRaw(const uint8_t *data,
+                                        int width,
+                                        int height,
+                                        Layout layout = Layout::RGBA);
 
-         static Image *fromEmpty(int width,
-                                 int height,
-                                 Layout layout = Layout::RGBA);
+            static Image *fromEmpty(int width,
+                                    int height,
+                                    Layout layout = Layout::RGBA);
 
-         static std::array<int, 3> decodeImageInfo(const uint8_t *data,
-                                                   size_t numBytes);
+            static std::array<int, 3> decodeImageInfo(const uint8_t *data,
+                                                      size_t numBytes);
 
-         static int getNumChannelsFromLayout(Layout layout);
+            static int getNumChannelsFromLayout(Layout layout);
 
-         void premultiplyAlpha();
+            void premultiplyAlpha();
 
-         void updateRaw(const uint8_t *data,
-                        int width,
-                        int height,
-                        Layout layout = Layout::RGBA);
+            void updateRaw(const uint8_t *data,
+                           int width,
+                           int height,
+                           Layout layout = Layout::RGBA);
 
-         const uint8_t *getData() const;
+            const uint8_t *getData() const;
 
-         int getWidth() const;
+            int getWidth() const;
 
-         int getHeight() const;
+            int getHeight() const;
 
-         Layout getLayout() const;
+            Layout getLayout() const;
 
-         int getNumChannels() const;
+            int getNumChannels() const;
 
-         size_t getNumDemandedBytes() const;
+            size_t getNumDemandedBytes() const;
 
-      private:
-         Image() {}
-         std::vector<uint8_t> m_data;
-         int m_width;
-         int m_height;
-         Layout m_layout;
-      };
-   }
+        private:
+            Image() {}
+            std::vector<uint8_t> m_data;
+            int m_width;
+            int m_height;
+            Layout m_layout;
+        };
+    } // namespace util
 } // namespace yourgame
 
 #endif

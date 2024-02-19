@@ -58,7 +58,7 @@ namespace yourgame_internal
                 }
             };
 #endif
-        }
+        } // namespace
 
         void init(int argc, char *argv[])
         {
@@ -71,5 +71,5 @@ namespace yourgame_internal
             dispatcher->setEnabled(true);
 #endif
         }
-    }
+    } // namespace log
 } // namespace yourgame_internal

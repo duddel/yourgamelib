@@ -317,5 +317,5 @@ namespace yourgame
         void enableFullscreen(bool enable) {}
         void enableVSync(bool enable) {}
         void catchMouse(bool enable) {}
-    }
+    } // namespace control
 } // namespace yourgame

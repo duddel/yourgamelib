@@ -46,7 +46,7 @@ namespace yourgame
             GLuint m_handle;
             GLenum m_usage;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

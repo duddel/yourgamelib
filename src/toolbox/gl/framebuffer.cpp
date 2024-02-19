@@ -111,5 +111,5 @@ namespace yourgame
                 return nullptr;
             }
         }
-    }
+    } // namespace gl
 } // namespace yourgame

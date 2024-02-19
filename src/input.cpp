@@ -57,5 +57,5 @@ namespace yourgame
             auto i = yourgame_internal::inputStates.find(source);
             return (i == yourgame_internal::inputStates.end()) ? 0.0f : (i->second).val - (i->second).valLast;
         }
-    }
+    } // namespace input
 } // namespace yourgame

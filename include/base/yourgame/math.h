@@ -36,7 +36,7 @@ namespace yourgame
             Y,
             Z
         };
-    }
-}
+    } // namespace math
+} // namespace yourgame
 
 #endif

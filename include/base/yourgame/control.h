@@ -39,7 +39,7 @@ namespace yourgame
 
         /** \brief disable mouse cursor, infinite movement */
         void catchMouse(bool enable);
-    }
-}
+    } // namespace control
+} // namespace yourgame
 
 #endif

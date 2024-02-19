@@ -109,5 +109,5 @@ namespace yourgame
             glDrawElementsInstanced(m_elArDescr.drawMode, m_elArDescr.numElements, m_elArDescr.type, 0, instancecount);
             glBindVertexArray(0);
         }
-    }
+    } // namespace gl
 } // namespace yourgame

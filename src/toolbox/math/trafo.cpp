@@ -201,5 +201,5 @@ namespace yourgame
         {
             return m_scale;
         }
-    }
+    } // namespace math
 } // namespace yourgame

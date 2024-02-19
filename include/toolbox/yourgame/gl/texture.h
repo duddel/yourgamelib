@@ -152,7 +152,7 @@ namespace yourgame
             std::map<std::string, TextureCoords> m_coords;
             std::map<std::string, Sequence> m_sequences;
         };
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

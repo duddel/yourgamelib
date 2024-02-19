@@ -105,5 +105,5 @@ namespace yourgame
         {
             return m_unirnd(m_rndgen);
         }
-    }
+    } // namespace math
 } // namespace yourgame

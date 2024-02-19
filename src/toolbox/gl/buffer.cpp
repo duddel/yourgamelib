@@ -73,5 +73,5 @@ namespace yourgame
             glGetBufferParameteriv(m_target, GL_BUFFER_SIZE, &checkSize);
             return (size == checkSize);
         }
-    }
+    } // namespace gl
 } // namespace yourgame

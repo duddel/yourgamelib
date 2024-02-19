@@ -216,5 +216,5 @@ namespace yourgame
             std::sort(ret.begin(), ret.end());
             return ret;
         }
-    }
-}
+    } // namespace file
+} // namespace yourgame

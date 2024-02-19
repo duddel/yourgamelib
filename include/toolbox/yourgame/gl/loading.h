@@ -64,7 +64,7 @@ namespace yourgame
 
         Geometry *loadGeometry(const std::string &objFilename,
                                const std::string &mtlFilename = "");
-    }
+    } // namespace gl
 } // namespace yourgame
 
 #endif

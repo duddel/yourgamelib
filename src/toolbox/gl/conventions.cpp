@@ -60,5 +60,5 @@ namespace yourgame
         const GLenum textureUnitSky = GL_TEXTURE5;
         const GLenum textureUnitBufferDepth = GL_TEXTURE6;
         const GLenum textureUnitBufferColor0 = GL_TEXTURE7;
-    }
+    } // namespace gl
 } // namespace yourgame

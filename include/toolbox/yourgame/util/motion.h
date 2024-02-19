@@ -105,7 +105,7 @@ namespace yourgame
             static float calcEaseSmooth(float t, float dt);
             static float calcEaseSmooth2(float t, float dt);
         };
-    }
+    } // namespace util
 } // namespace yourgame
 
 #endif

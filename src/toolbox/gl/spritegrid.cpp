@@ -203,5 +203,5 @@ namespace yourgame
         {
             delete m_geo;
         }
-    }
+    } // namespace gl
 } // namespace yourgame
