@@ -1,0 +1,5 @@
+<map id="yourgame::util::RayTestResult" name="yourgame::util::RayTestResult">
+<area shape="rect" id="Node000001" title="Represents the result of a ray test." alt="" coords="5,93,223,119"/>
+<area shape="rect" id="Node000002" href="$classyourgame_1_1util_1_1RigidBody.html" title="Represents a rigid body, holding a void pointer to an underlying implementation." alt="" coords="19,5,209,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,45,117,93,111,93,111,45"/>
+</map>

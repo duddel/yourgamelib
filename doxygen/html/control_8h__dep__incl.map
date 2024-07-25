@@ -1,0 +1,13 @@
+<map id="/code/include/base/yourgame/control.h" name="/code/include/base/yourgame/control.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="327,5,480,45"/>
+<area shape="rect" id="Node000002" href="$yourgame_8h.html" title=" " alt="" coords="316,93,491,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="406,59,406,93,401,93,401,59"/>
+<area shape="rect" id="Node000003" href="$platform__android_2yourgame_8cpp.html" title=" " alt="" coords="5,181,180,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="323,140,161,184,160,179,321,134"/>
+<area shape="rect" id="Node000004" href="$platform__desktop__web_2main_8cpp.html" title=" " alt="" coords="205,181,383,221"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="370,144,320,183,317,179,367,140"/>
+<area shape="rect" id="Node000005" href="$platform__desktop__web_2yourgame_8cpp.html" title=" " alt="" coords="408,181,620,221"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="440,140,491,179,488,183,437,144"/>
+<area shape="rect" id="Node000006" href="$loading_8cpp.html" title=" " alt="" coords="643,181,793,221"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="486,134,650,179,648,184,485,140"/>
+</map>

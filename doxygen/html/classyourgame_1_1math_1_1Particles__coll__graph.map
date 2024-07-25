@@ -1,0 +1,5 @@
+<map id="yourgame::math::Particles" name="yourgame::math::Particles">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,108,199,133"/>
+<area shape="rect" id="Node000002" href="$structyourgame_1_1math_1_1Particles_1_1Config.html" title="Particle system configuration." alt="" coords="5,5,199,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,59,105,108,99,108,99,59"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="yourgame::util::Collision" name="yourgame::util::Collision">
+<area shape="rect" id="Node000001" title="Represents a Collision between two rigid bodies." alt="" coords="10,108,191,133"/>
+<area shape="rect" id="Node000002" href="$classyourgame_1_1util_1_1RigidBody.html" title="Represents a rigid body, holding a void pointer to an underlying implementation." alt="" coords="5,5,196,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,45,103,108,98,108,98,45"/>
+</map>

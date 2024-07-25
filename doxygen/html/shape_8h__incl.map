@@ -1,0 +1,10 @@
+<map id="/code/include/toolbox/yourgame/gl/shape.h" name="/code/include/toolbox/yourgame/gl/shape.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="25,5,187,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,68,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,47,58,84,54,81,87,44"/>
+<area shape="rect" id="Node000003" href="$gl__include_8h.html" title=" " alt="" coords="78,167,249,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="112,45,134,118,152,154,147,156,129,120,107,46"/>
+<area shape="rect" id="Node000004" href="$buffer_8h.html" title=" " alt="" coords="143,93,301,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="136,43,195,83,192,88,133,48"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="214,121,183,158,179,155,210,117"/>
+</map>

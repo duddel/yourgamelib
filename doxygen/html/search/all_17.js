@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['y_0',['Y',['../namespaceyourgame_1_1math.html#a72ad72f03d28b8d78f7751c61ad0d95ca57cec4137b614c87cb4e24a3d003a3e0',1,'yourgame::math']]],
+  ['ymaxpixel_1',['yMaxPixel',['../structyourgame_1_1gl_1_1TextureCoords.html#aaf550ed2c9e2eb452b4590d06c30235e',1,'yourgame::gl::TextureCoords']]],
+  ['yminpixel_2',['yMinPixel',['../structyourgame_1_1gl_1_1TextureCoords.html#a871afd1532d0d3b11629f13112c2a654',1,'yourgame::gl::TextureCoords']]],
+  ['yourgame_3',['yourgame',['../namespaceyourgame.html',1,'']]],
+  ['yourgame_2ecpp_4',['yourgame.cpp',['../platform__android_2yourgame_8cpp.html',1,'(Global Namespace)'],['../platform__desktop__web_2yourgame_8cpp.html',1,'(Global Namespace)']]],
+  ['yourgame_2eh_5',['yourgame.h',['../yourgame_8h.html',1,'']]],
+  ['yourgame_3a_3aaudio_6',['audio',['../namespaceyourgame_1_1audio.html',1,'yourgame']]],
+  ['yourgame_3a_3acontrol_7',['control',['../namespaceyourgame_1_1control.html',1,'yourgame']]],
+  ['yourgame_3a_3afile_8',['file',['../namespaceyourgame_1_1file.html',1,'yourgame']]],
+  ['yourgame_3a_3agl_9',['gl',['../namespaceyourgame_1_1gl.html',1,'yourgame']]],
+  ['yourgame_3a_3ainput_10',['input',['../namespaceyourgame_1_1input.html',1,'yourgame']]],
+  ['yourgame_3a_3alog_11',['log',['../namespaceyourgame_1_1log.html',1,'yourgame']]],
+  ['yourgame_3a_3amath_12',['math',['../namespaceyourgame_1_1math.html',1,'yourgame']]],
+  ['yourgame_3a_3atime_13',['time',['../namespaceyourgame_1_1time.html',1,'yourgame']]],
+  ['yourgame_3a_3autil_14',['util',['../namespaceyourgame_1_1util.html',1,'yourgame']]],
+  ['yourgame_3a_3aversion_15',['version',['../namespaceyourgame_1_1version.html',1,'yourgame']]],
+  ['yourgame_5finternal_16',['yourgame_internal',['../namespaceyourgame__internal.html',1,'']]],
+  ['yourgame_5finternal_3a_3alog_17',['log',['../namespaceyourgame__internal_1_1log.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_3a_3atime_18',['time',['../namespaceyourgame__internal_1_1time.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_5fandroid_19',['yourgame_internal_android',['../namespaceyourgame__internal__android.html',1,'']]],
+  ['yourgame_5finternal_5fandroid_2eh_20',['yourgame_internal_android.h',['../yourgame__internal__android_8h.html',1,'']]],
+  ['yourgame_5finternal_5fdesktop_21',['yourgame_internal_desktop',['../namespaceyourgame__internal__desktop.html',1,'']]],
+  ['yourgame_5finternal_5fdesktop_2eh_22',['yourgame_internal_desktop.h',['../yourgame__internal__desktop_8h.html',1,'']]],
+  ['yourgamelib_23',['YourGameLib',['../index.html',1,'']]]
+];

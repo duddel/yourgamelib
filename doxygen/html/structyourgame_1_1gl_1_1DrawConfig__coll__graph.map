@@ -1,0 +1,7 @@
+<map id="yourgame::gl::DrawConfig" name="yourgame::gl::DrawConfig">
+<area shape="rect" id="Node000001" title=" " alt="" coords="91,93,281,119"/>
+<area shape="rect" id="Node000002" href="$classyourgame_1_1gl_1_1Shader.html" title=" " alt="" coords="5,5,167,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,38,174,91,170,95,108,42"/>
+<area shape="rect" id="Node000003" href="$classyourgame_1_1math_1_1Camera.html" title=" " alt="" coords="191,5,381,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="264,42,202,95,198,91,260,38"/>
+</map>

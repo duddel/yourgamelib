@@ -1,0 +1,17 @@
+<map id="/code/src/toolbox/math/camera.cpp" name="/code/src/toolbox/math/camera.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,176,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="23,240,127,265"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,47,63,69,52,94,47,129,50,165,67,226,62,228,45,166,42,129,47,93,58,66,73,44"/>
+<area shape="rect" id="Node000003" href="$camera_8h.html" title=" " alt="" coords="62,93,253,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="109,44,141,81,137,84,105,47"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="153,120,90,229,86,227,148,118"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="165,240,265,265"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="156,119,149,153,148,172,153,191,167,212,186,230,183,234,163,216,148,193,143,173,143,152,151,118"/>
+<area shape="rect" id="Node000005" href="$math_8h.html" title=" " alt="" coords="296,240,435,265"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="254,114,305,132,329,147,350,165,359,179,365,195,369,226,364,226,360,196,355,181,346,168,326,151,303,137,252,119"/>
+<area shape="rect" id="Node000006" href="$trafo_8h.html" title=" " alt="" coords="163,167,336,192"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="174,117,225,156,222,160,170,121"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="222,194,117,237,115,232,220,190"/>
+<area shape="poly" id="edge8_Node000006_Node000004" title=" " alt="" coords="246,194,229,229,224,226,241,191"/>
+<area shape="poly" id="edge9_Node000006_Node000005" title=" " alt="" coords="269,190,336,230,333,235,267,194"/>
+</map>
