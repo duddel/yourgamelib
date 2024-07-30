@@ -138,27 +138,24 @@ Enabled checks:
     google-runtime-operator
     google-upgrade-googletest-case
 
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/particles.cpp
-/code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-   66 |             Particles(const Config cfg);
-      |             ^
-      |             explicit 
-/code/src/toolbox/gl/particles.cpp:41:119: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-   41 |             newParts->m_geo->addBufferToShape("main", {{gl::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1}}, "instModelPos");
-      |                                                                                                                       ^
-/code/src/toolbox/gl/particles.cpp:42:122: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-   42 |             newParts->m_geo->addBufferToShape("main", {{gl::attrLocInstProgress, 1, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (void *)0, 1}}, "instProgress");
-      |                                                                                                                          ^
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/shape.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/log.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/headerlibs.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/math/particles.cpp
-/code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-   66 |             Particles(const Config cfg);
-      |             ^
-      |             explicit 
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/shader.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/platform_desktop_web/file.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/time.cpp
+/code/src/time.cpp:37:27: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+   37 |             clockPeriod = (double)std::chrono::steady_clock::period::num /
+      |                           ^~~~~~~~
+      |                           static_cast<double>(                          )
+/code/src/time.cpp:38:27: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+   38 |                           (double)std::chrono::steady_clock::period::den;
+      |                           ^~~~~~~~                                      
+      |                           static_cast<double>(                          )
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/input.cpp
+/code/src/include_internal/yourgame_internal/input.h:30:9: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+   30 |         InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
+      |         ^
+      |         explicit 
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/framebuffer.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/math/trafo.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/buffer.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/platform_desktop_web/main.cpp
 /code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
    35 |             if (logr != nullptr)
       |                                 ^
@@ -207,107 +204,38 @@ Enabled checks:
       |                                  {
   102 |                 logr->error(value);
       |                                    
-/code/src/platform_desktop_web/file.cpp:50:22: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-   50 |         char *path = (char *)malloc(exePathLength + 1);
-      |                      ^~~~~~~~                         
-      |                      static_cast<char *>(             )
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/framebuffer.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/util/motion.cpp
+/code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+   66 |             Particles(const Config cfg);
+      |             ^
+      |             explicit 
+/code/include/toolbox/yourgame/util/assetmanager.h:64:36: warning: statement should be inside braces [google-readability-braces-around-statements]
+   64 |                 if (obj == nullptr)
+      |                                    ^
+      |                                     {
+   65 |                     return;
+      |                            
 /code/include/toolbox/yourgame/util/motion.h:53:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
    53 |             Motion(FlowType flowType);
       |             ^
       |             explicit 
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/util/physenv.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/spritegrid.cpp
-/code/src/toolbox/gl/spritegrid.cpp:63:41: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-   63 |                 tileWidth = gridWidth / (float)tilesWide;
-      |                                         ^~~~~~~         
-      |                                         static_cast<float>( )
-/code/src/toolbox/gl/spritegrid.cpp:73:43: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-   73 |                 tileHeight = gridHeight / (float)height;
-      |                                           ^~~~~~~      
-      |                                           static_cast<float>( )
-/code/src/toolbox/gl/spritegrid.cpp:97:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-   97 |                 objPosData[pWrite++] = orgX + (GLfloat)tileWidth;
-      |                                               ^~~~~~~~~         
-      |                                               static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:100:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  100 |                 objPosData[pWrite++] = orgX + (GLfloat)tileWidth;
-      |                                               ^~~~~~~~~         
-      |                                               static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:101:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  101 |                 objPosData[pWrite++] = orgY - (GLfloat)tileHeight;
-      |                                               ^~~~~~~~~          
-      |                                               static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:104:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  104 |                 objPosData[pWrite++] = orgY - (GLfloat)tileHeight;
-      |                                               ^~~~~~~~~          
-      |                                               static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:108:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  108 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:109:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  109 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:110:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  110 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:111:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  111 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:112:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  112 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:113:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  113 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:114:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  114 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:115:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  115 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
-      |                                             ^~~~~~~~~           
-      |                                             static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:147:29: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  147 |                     orgY -= (GLfloat)(tileHeight);
-      |                             ^~~~~~~~~
-      |                             static_cast<GLfloat>
-/code/src/toolbox/gl/spritegrid.cpp:148:28: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  148 |                     orgX = (GLfloat)0.0f;
-      |                            ^~~~~~~~~    
-      |                            static_cast<GLfloat>( )
-/code/src/toolbox/gl/spritegrid.cpp:152:29: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
-  152 |                     orgX += (GLfloat)(tileWidth);
-      |                             ^~~~~~~~~
-      |                             static_cast<GLfloat>
-/code/src/toolbox/gl/spritegrid.cpp:177:70: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-  177 |                     {{gl::attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-      |                                                                      ^
-/code/src/toolbox/gl/spritegrid.cpp:178:68: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-  178 |                      {gl::attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-      |                                                                    ^
-/code/src/toolbox/gl/spritegrid.cpp:179:71: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-  179 |                      {gl::attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-      |                                                                       ^
-/code/src/toolbox/gl/spritegrid.cpp:180:67: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
-  180 |                      {gl::attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0}};
-      |                                                                   ^
-/code/src/toolbox/gl/spritegrid.cpp:182:98: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-  182 |                 m_geo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
-      |                                                                                                  ^~~~~~~~~                 
-      |                                                                                                  static_cast<GLsizei>(     )
-/code/src/toolbox/gl/spritegrid.cpp:194:82: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-  194 |                 m_geo->setShapeElArDescr("main", {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
-      |                                                                                  ^~~~~~~~~                 
-      |                                                                                  static_cast<GLsizei>(     )
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/util/image.cpp
+/code/include/toolbox/yourgame/util/physenv.h:193:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+  193 |             RayTestResult(RigidBody *rigidBody) : m_rigidBody(rigidBody) {}
+      |             ^
+      |             explicit 
+/code/src/platform_desktop_web/main.cpp:28:58: warning: statement should be inside braces [google-readability-braces-around-statements]
+   28 |     if (yourgame_internal_desktop::init(argc, argv) != 0)
+      |                                                          ^
+      |                                                           {
+   29 |         return -1;
+      |                   
+/code/src/platform_desktop_web/main.cpp:37:53: warning: statement should be inside braces [google-readability-braces-around-statements]
+   37 |         if (yourgame_internal_desktop::wantToExit())
+      |                                                     ^
+      |                                                      {
+   38 |             break;
+      |                   
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/texture.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/drawing.cpp
 /usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/loading.cpp
 /code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
    35 |             if (logr != nullptr)
@@ -503,98 +431,6 @@ Enabled checks:
   534 |             newGeo->addShape("lines", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_LINES, (GLsizei)objLineIdxData.size()}, "idxLines");
       |                                                                                            ^~~~~~~~~                     
       |                                                                                            static_cast<GLsizei>(         )
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/input.cpp
-/code/src/include_internal/yourgame_internal/input.h:30:9: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-   30 |         InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
-      |         ^
-      |         explicit 
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/conventions.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/lightsource.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/time.cpp
-/code/src/time.cpp:37:27: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-   37 |             clockPeriod = (double)std::chrono::steady_clock::period::num /
-      |                           ^~~~~~~~
-      |                           static_cast<double>(                          )
-/code/src/time.cpp:38:27: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
-   38 |                           (double)std::chrono::steady_clock::period::den;
-      |                           ^~~~~~~~                                      
-      |                           static_cast<double>(                          )
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/math/camera.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/platform_desktop_web/yourgame.cpp
-/code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   35 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   36 |                 logr->debug(s, value, args...);
-      |                                                
-/code/include/base/yourgame/log.h:46:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   46 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   47 |                 logr->debug(value);
-      |                                    
-/code/include/base/yourgame/log.h:56:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   56 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   57 |                 logr->info(s, value, args...);
-      |                                               
-/code/include/base/yourgame/log.h:65:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   65 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   66 |                 logr->info(value);
-      |                                   
-/code/include/base/yourgame/log.h:74:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   74 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   75 |                 logr->warn(s, value, args...);
-      |                                               
-/code/include/base/yourgame/log.h:83:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   83 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   84 |                 logr->warn(value);
-      |                                   
-/code/include/base/yourgame/log.h:92:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-   92 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-   93 |                 logr->error(s, value, args...);
-      |                                                
-/code/include/base/yourgame/log.h:101:33: warning: statement should be inside braces [google-readability-braces-around-statements]
-  101 |             if (logr != nullptr)
-      |                                 ^
-      |                                  {
-  102 |                 logr->error(value);
-      |                                    
-/code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-   66 |             Particles(const Config cfg);
-      |             ^
-      |             explicit 
-/code/include/toolbox/yourgame/util/assetmanager.h:64:36: warning: statement should be inside braces [google-readability-braces-around-statements]
-   64 |                 if (obj == nullptr)
-      |                                    ^
-      |                                     {
-   65 |                     return;
-      |                            
-/code/include/toolbox/yourgame/util/motion.h:53:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-   53 |             Motion(FlowType flowType);
-      |             ^
-      |             explicit 
-/code/include/toolbox/yourgame/util/physenv.h:193:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-  193 |             RayTestResult(RigidBody *rigidBody) : m_rigidBody(rigidBody) {}
-      |             ^
-      |             explicit 
-/code/src/include_internal/yourgame_internal/input.h:30:9: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-   30 |         InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
-      |         ^
-      |         explicit 
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/buffer.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/drawing.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/geometry.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/quality/_build/version.cpp
 /usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/file.cpp
 /code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
    35 |             if (logr != nullptr)
@@ -644,7 +480,13 @@ Enabled checks:
       |                                  {
   102 |                 logr->error(value);
       |                                    
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/platform_desktop_web/main.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/headerlibs.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/math/particles.cpp
+/code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+   66 |             Particles(const Config cfg);
+      |             ^
+      |             explicit 
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/platform_desktop_web/file.cpp
 /code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
    35 |             if (logr != nullptr)
       |                                 ^
@@ -693,36 +535,125 @@ Enabled checks:
       |                                  {
   102 |                 logr->error(value);
       |                                    
+/code/src/platform_desktop_web/file.cpp:50:22: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+   50 |         char *path = (char *)malloc(exePathLength + 1);
+      |                      ^~~~~~~~                         
+      |                      static_cast<char *>(             )
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/math/camera.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/log.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/shader.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/conventions.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/quality/_build/version.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/particles.cpp
 /code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
    66 |             Particles(const Config cfg);
       |             ^
       |             explicit 
-/code/include/toolbox/yourgame/util/assetmanager.h:64:36: warning: statement should be inside braces [google-readability-braces-around-statements]
-   64 |                 if (obj == nullptr)
-      |                                    ^
-      |                                     {
-   65 |                     return;
-      |                            
+/code/src/toolbox/gl/particles.cpp:41:119: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
+   41 |             newParts->m_geo->addBufferToShape("main", {{gl::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1}}, "instModelPos");
+      |                                                                                                                       ^
+/code/src/toolbox/gl/particles.cpp:42:122: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
+   42 |             newParts->m_geo->addBufferToShape("main", {{gl::attrLocInstProgress, 1, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (void *)0, 1}}, "instProgress");
+      |                                                                                                                          ^
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/util/image.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/lightsource.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/util/motion.cpp
 /code/include/toolbox/yourgame/util/motion.h:53:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
    53 |             Motion(FlowType flowType);
       |             ^
       |             explicit 
-/code/include/toolbox/yourgame/util/physenv.h:193:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
-  193 |             RayTestResult(RigidBody *rigidBody) : m_rigidBody(rigidBody) {}
-      |             ^
-      |             explicit 
-/code/src/platform_desktop_web/main.cpp:28:58: warning: statement should be inside braces [google-readability-braces-around-statements]
-   28 |     if (yourgame_internal_desktop::init(argc, argv) != 0)
-      |                                                          ^
-      |                                                           {
-   29 |         return -1;
-      |                   
-/code/src/platform_desktop_web/main.cpp:37:53: warning: statement should be inside braces [google-readability-braces-around-statements]
-   37 |         if (yourgame_internal_desktop::wantToExit())
-      |                                                     ^
-      |                                                      {
-   38 |             break;
-      |                   
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/geometry.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/spritegrid.cpp
+/code/src/toolbox/gl/spritegrid.cpp:63:41: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+   63 |                 tileWidth = gridWidth / (float)tilesWide;
+      |                                         ^~~~~~~         
+      |                                         static_cast<float>( )
+/code/src/toolbox/gl/spritegrid.cpp:73:43: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+   73 |                 tileHeight = gridHeight / (float)height;
+      |                                           ^~~~~~~      
+      |                                           static_cast<float>( )
+/code/src/toolbox/gl/spritegrid.cpp:97:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+   97 |                 objPosData[pWrite++] = orgX + (GLfloat)tileWidth;
+      |                                               ^~~~~~~~~         
+      |                                               static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:100:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  100 |                 objPosData[pWrite++] = orgX + (GLfloat)tileWidth;
+      |                                               ^~~~~~~~~         
+      |                                               static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:101:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  101 |                 objPosData[pWrite++] = orgY - (GLfloat)tileHeight;
+      |                                               ^~~~~~~~~          
+      |                                               static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:104:47: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  104 |                 objPosData[pWrite++] = orgY - (GLfloat)tileHeight;
+      |                                               ^~~~~~~~~          
+      |                                               static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:108:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  108 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:109:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  109 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:110:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  110 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:111:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  111 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMax;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:112:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  112 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMax;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:113:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  113 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:114:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  114 |                 objTexCoordData[tWrite++] = (GLfloat)coords.uMin;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:115:45: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  115 |                 objTexCoordData[tWrite++] = (GLfloat)coords.vMin;
+      |                                             ^~~~~~~~~           
+      |                                             static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:147:29: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  147 |                     orgY -= (GLfloat)(tileHeight);
+      |                             ^~~~~~~~~
+      |                             static_cast<GLfloat>
+/code/src/toolbox/gl/spritegrid.cpp:148:28: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  148 |                     orgX = (GLfloat)0.0f;
+      |                            ^~~~~~~~~    
+      |                            static_cast<GLfloat>( )
+/code/src/toolbox/gl/spritegrid.cpp:152:29: warning: C-style casts are discouraged; use static_cast (if needed, the cast may be redundant) [google-readability-casting]
+  152 |                     orgX += (GLfloat)(tileWidth);
+      |                             ^~~~~~~~~
+      |                             static_cast<GLfloat>
+/code/src/toolbox/gl/spritegrid.cpp:177:70: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
+  177 |                     {{gl::attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+      |                                                                      ^
+/code/src/toolbox/gl/spritegrid.cpp:178:68: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
+  178 |                      {gl::attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+      |                                                                    ^
+/code/src/toolbox/gl/spritegrid.cpp:179:71: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
+  179 |                      {gl::attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
+      |                                                                       ^
+/code/src/toolbox/gl/spritegrid.cpp:180:67: warning: C-style casts are discouraged; use static_cast/const_cast/reinterpret_cast [google-readability-casting]
+  180 |                      {gl::attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0}};
+      |                                                                   ^
+/code/src/toolbox/gl/spritegrid.cpp:182:98: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+  182 |                 m_geo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
+      |                                                                                                  ^~~~~~~~~                 
+      |                                                                                                  static_cast<GLsizei>(     )
+/code/src/toolbox/gl/spritegrid.cpp:194:82: warning: C-style casts are discouraged; use static_cast [google-readability-casting]
+  194 |                 m_geo->setShapeElArDescr("main", {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
+      |                                                                                  ^~~~~~~~~                 
+      |                                                                                  static_cast<GLsizei>(     )
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/shape.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/util/physenv.cpp
 /usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/audio.cpp
 /code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
    35 |             if (logr != nullptr)
@@ -832,5 +763,74 @@ Enabled checks:
       |                                                      {
   218 |                     yourgame_internal::setInput(mapping->second, 0.0f);
       |                                                                        
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/math/trafo.cpp
-/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/toolbox/gl/texture.cpp
+/usr/bin/clang-tidy -p=_build --config-file=../.clang-tidy /code/src/platform_desktop_web/yourgame.cpp
+/code/include/base/yourgame/log.h:35:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   35 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   36 |                 logr->debug(s, value, args...);
+      |                                                
+/code/include/base/yourgame/log.h:46:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   46 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   47 |                 logr->debug(value);
+      |                                    
+/code/include/base/yourgame/log.h:56:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   56 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   57 |                 logr->info(s, value, args...);
+      |                                               
+/code/include/base/yourgame/log.h:65:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   65 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   66 |                 logr->info(value);
+      |                                   
+/code/include/base/yourgame/log.h:74:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   74 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   75 |                 logr->warn(s, value, args...);
+      |                                               
+/code/include/base/yourgame/log.h:83:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   83 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   84 |                 logr->warn(value);
+      |                                   
+/code/include/base/yourgame/log.h:92:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+   92 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+   93 |                 logr->error(s, value, args...);
+      |                                                
+/code/include/base/yourgame/log.h:101:33: warning: statement should be inside braces [google-readability-braces-around-statements]
+  101 |             if (logr != nullptr)
+      |                                 ^
+      |                                  {
+  102 |                 logr->error(value);
+      |                                    
+/code/include/toolbox/yourgame/math/particles.h:66:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+   66 |             Particles(const Config cfg);
+      |             ^
+      |             explicit 
+/code/include/toolbox/yourgame/util/assetmanager.h:64:36: warning: statement should be inside braces [google-readability-braces-around-statements]
+   64 |                 if (obj == nullptr)
+      |                                    ^
+      |                                     {
+   65 |                     return;
+      |                            
+/code/include/toolbox/yourgame/util/motion.h:53:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+   53 |             Motion(FlowType flowType);
+      |             ^
+      |             explicit 
+/code/include/toolbox/yourgame/util/physenv.h:193:13: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+  193 |             RayTestResult(RigidBody *rigidBody) : m_rigidBody(rigidBody) {}
+      |             ^
+      |             explicit 
+/code/src/include_internal/yourgame_internal/input.h:30:9: warning: single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor]
+   30 |         InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
+      |         ^
+      |         explicit 

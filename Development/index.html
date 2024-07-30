@@ -9,10 +9,8 @@
       
       
       
-        <link rel="prev" href="../Examples/Sprites/">
+        <link rel="prev" href="../Overview/">
       
-      
-        <link rel="next" href="../Overview/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -20,7 +18,7 @@
     
     
       
-        <title>Manual - YourGameLib</title>
+        <title>Development - YourGameLib</title>
       
     
     
@@ -72,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#manual" class="md-skip">
+        <a href="#development" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Manual
+              Development
             
           </span>
         </div>
@@ -415,30 +413,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Manual
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../Manual/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -447,122 +425,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#init-script" class="md-nav__link">
-    <span class="md-ellipsis">
-      Init Script
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#build-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      Build System
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#assets-save-files-project-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Assets (Save files, Project files)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#user-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      User Code
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#yourgame-api-and-namespaces" class="md-nav__link">
-    <span class="md-ellipsis">
-      YourGame API and Namespaces
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#toolbox" class="md-nav__link">
-    <span class="md-ellipsis">
-      Toolbox
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#third-party-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Third-party libraries
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#android" class="md-nav__link">
-    <span class="md-ellipsis">
-      Android
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#webassembly" class="md-nav__link">
-    <span class="md-ellipsis">
-      WebAssembly
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="WebAssembly">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Requirements
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -634,10 +496,30 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../Development/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Development
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -646,6 +528,44 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clang-tidy-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      clang-tidy Warnings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clang-format-violations" class="md-nav__link">
+    <span class="md-ellipsis">
+      clang-format Violations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -677,98 +597,20 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#init-script" class="md-nav__link">
+  <a href="#clang-tidy-warnings" class="md-nav__link">
     <span class="md-ellipsis">
-      Init Script
+      clang-tidy Warnings
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-system" class="md-nav__link">
+  <a href="#clang-format-violations" class="md-nav__link">
     <span class="md-ellipsis">
-      Build System
+      clang-format Violations
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#assets-save-files-project-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Assets (Save files, Project files)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#user-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      User Code
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#yourgame-api-and-namespaces" class="md-nav__link">
-    <span class="md-ellipsis">
-      YourGame API and Namespaces
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#toolbox" class="md-nav__link">
-    <span class="md-ellipsis">
-      Toolbox
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#third-party-libraries" class="md-nav__link">
-    <span class="md-ellipsis">
-      Third-party libraries
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#android" class="md-nav__link">
-    <span class="md-ellipsis">
-      Android
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#webassembly" class="md-nav__link">
-    <span class="md-ellipsis">
-      WebAssembly
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="WebAssembly">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Requirements
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -787,37 +629,13 @@
                   
 
 
-<h1 id="manual">Manual</h1>
-<blockquote>
-<p><strong>NOTE:</strong> This site is UNDER CONSTRUCTION!</p>
-</blockquote>
-<h2 id="init-script">Init Script</h2>
-<p>To integrate additional <a href="thirdparty/README.md">third-party libraries</a>, use the <code>--extProj</code> option, like so:</p>
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>&lt;path_to_yourgamelib&gt;/init/init.py<span class="w"> </span>MyGame<span class="w"> </span>--extProj<span class="w"> </span>box2d<span class="w"> </span>lua
-</code></pre></div>
-<h2 id="build-system">Build System</h2>
-<p><code>yourgamelib</code> is pulled into <code>MyGame</code> via CMake <code>add_subdirectory()</code>. This path needs to be adjusted in <code>CMakeLists.txt</code> if the projects are moved around. Alternatively, <code>MyGame</code> can be configured to clone <code>yourgamelib</code> by itself to make it independent of the original <code>yourgamelib</code> location. See <a href="template/CMakeLists.txt">template/CMakeLists.txt</a> on how to do this.</p>
-<h2 id="assets-save-files-project-files">Assets (Save files, Project files)</h2>
-<p>All files placed in <code>assets/</code> will be packed and made available to be loaded by the application at runtime.</p>
-<h2 id="user-code">User Code</h2>
-<h2 id="yourgame-api-and-namespaces">YourGame API and Namespaces</h2>
-<h2 id="toolbox">Toolbox</h2>
-<h2 id="third-party-libraries">Third-party libraries</h2>
-<h2 id="android">Android</h2>
-<p>The Android project is configured to be built with a separate Gradle installation (Tested with 8.0.1). To build it, you need to</p>
-<ul>
-<li>Install the Android SDK</li>
-<li>set the environment variable <code>ANDROID_SDK_HOME</code> pointing to your Android SDK installation</li>
-</ul>
-<p>If this stops working with a newer Gradle version, open the project in Android Studio and let it generate a Gradle Wrapper for the project.</p>
-<p>Or try to fix it by looking into <a href="template/build/android/app/build.gradle">build.gradle</a>. Maybe some dependencies have to be installed manually via the <code>sdkmanager</code>, or have to be updated in <code>build.gradle</code> to work with a newer Gradle version.</p>
-<h2 id="webassembly">WebAssembly</h2>
-<h3 id="requirements">Requirements</h3>
-<p>To build for target <code>web</code>, you need:</p>
-<ul>
-<li>Emscripten</li>
-<li>Make sure the environment variable <code>EMSDK</code> is set and points to the emsdk root directory.</li>
-</ul>
+<h1 id="development">Development</h1>
+<h2 id="clang-tidy-warnings">clang-tidy Warnings</h2>
+<p><code>clang-tidy</code> log: <a href="../clang-tidy_log.txt">clang-tidy_log.txt</a>.</p>
+<p>ToDo: Parse <code>clang-tidy</code> output.</p>
+<p>RegEx: <code>^(.*):(\d+):(\d+):\swarning:\s(.+)\s\[(.*)\]$</code></p>
+<h2 id="clang-format-violations">clang-format Violations</h2>
+<p>ToDo.</p>
 
 
 
