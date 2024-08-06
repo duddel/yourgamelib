@@ -9,8 +9,7 @@ jobs:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
         #yourgame_platform: [desktop, web, android]
-        # ToDo: fix android
-        yourgame_platform: [desktop, web]
+        yourgame_platform: [desktop, web] # ToDo: fix android
 
     steps:
       - uses: actions/checkout@v4
@@ -69,3 +68,35 @@ jobs:
         with:
           name: ${{ matrix.example_name }}-windows
           path: examples/${{ matrix.example_name }}/build/_deploy/*
+
+  deploy:
+    name: deploy examples
+    runs-on: ubuntu-latest
+    needs: examples
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: "refs/heads/gh-pages"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "*-web"
+          path: ./
+          merge-multiple: true
+      - name: unzip web examples
+        run: |
+          for filename in ./*Emscripten.zip
+          do
+            # Get project name (match group \1) from zip file ("project-version-Emscripten.zip")
+            projname=$(echo $filename | sed -E 's/.*\/(.+)-(.+)-(.+)\.zip/\1/')
+            mkdir -p yg_examples/$projname
+            unzip $filename -d yg_examples/$projname
+          done
+      - name: deploy to gh-pages
+        run: |
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git add yg_examples
+          git status
+          git commit --allow-empty -m "YourGameLib automatic web example deployment"
+          git push origin gh-pages
