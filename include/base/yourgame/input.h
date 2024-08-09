@@ -283,6 +283,7 @@ namespace yourgame
             WINDOW_HEIGHT,
             WINDOW_HEIGHT_INVERSE,
             WINDOW_ASPECT_RATIO,
+            WINDOW_ASPECT_RATIO_INVERSE,
             WINDOW_FULLSCREEN,
             VSYNC_ON,
             MOUSE_CATCHED

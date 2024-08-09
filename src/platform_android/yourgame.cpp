@@ -57,7 +57,9 @@ namespace yourgame_internal_android
             yourgame_internal::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
             yourgame_internal::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
             yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO,
-                                         static_cast<float>(width) / static_cast<float>(height));
+                                         (width < 1 || height < 1) ? 1.0f : static_cast<float>(width) / static_cast<float>(height));
+            yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO_INVERSE,
+                                         (width < 1 || height < 1) ? 1.0f : static_cast<float>(height) / static_cast<float>(width));
         }
     } // namespace
 
