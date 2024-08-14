@@ -20,5 +20,6 @@ var searchData=
   ['premultiplyalpha_17',['premultiplyalpha',['../classyourgame_1_1util_1_1Image.html#a2f24d63a694c0befbc00ddbaba8beb5c',1,'yourgame::util::Image::premultiplyAlpha()'],['../structyourgame_1_1gl_1_1TextureConfig.html#a481d38113e0aa8721197a32ffb848c2c',1,'yourgame::gl::TextureConfig::premultiplyAlpha']]],
   ['project_5fname_18',['PROJECT_NAME',['../namespaceyourgame_1_1version.html#a84ecdf18258526c9c4060c06e66a376e',1,'yourgame::version']]],
   ['projection_19',['Projection',['../namespaceyourgame_1_1math.html#a6a62831be548cf34649cdb2c32dbfbe5',1,'yourgame::math']]],
-  ['projectpathabs_20',['projectPathAbs',['../namespaceyourgame__internal.html#ac382d315fb80b229600fc650872b229d',1,'yourgame_internal']]]
+  ['projectpathabs_20',['projectPathAbs',['../namespaceyourgame__internal_1_1file.html#acf40b9331217d5a739b22a2566b74446',1,'yourgame_internal::file']]],
+  ['projectpathisdirectory_21',['projectPathIsDirectory',['../namespaceyourgame__internal_1_1file.html#a451b3807bf6b999f51928180d4c5b1f8',1,'yourgame_internal::file']]]
 ];

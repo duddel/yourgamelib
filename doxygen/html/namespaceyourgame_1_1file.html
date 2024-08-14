@@ -85,18 +85,14 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1da1b006c4d9d318993f757e53712117" id="r_a1da1b006c4d9d318993f757e53712117"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a1da1b006c4d9d318993f757e53712117">getSaveFilePath</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
-<tr class="memdesc:a1da1b006c4d9d318993f757e53712117"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the full (absolut) path to a file called filename in the save file location  <br /></td></tr>
-<tr class="separator:a1da1b006c4d9d318993f757e53712117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7368c62b53a859656c782411288c03fe" id="r_a7368c62b53a859656c782411288c03fe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a7368c62b53a859656c782411288c03fe">getProjectFilePath</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
 <tr class="memdesc:a7368c62b53a859656c782411288c03fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the full (absolut) path to a file called filename in the project file location  <br /></td></tr>
 <tr class="separator:a7368c62b53a859656c782411288c03fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d0897d329c534851abe3a4aa9aef150" id="r_a6d0897d329c534851abe3a4aa9aef150"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a6d0897d329c534851abe3a4aa9aef150">getAssetFilePath</a> (const std::string &amp;filename=&quot;&quot;)</td></tr>
+<tr class="separator:a6d0897d329c534851abe3a4aa9aef150"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31a3d638ce9b52a47c1b263eb26f466c" id="r_a31a3d638ce9b52a47c1b263eb26f466c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a31a3d638ce9b52a47c1b263eb26f466c">readAssetFile</a> (const std::string &amp;filename, std::vector&lt; uint8_t &gt; &amp;dst)</td></tr>
 <tr class="memdesc:a31a3d638ce9b52a47c1b263eb26f466c"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an entire file (from asset file location) and returns it as a vector of bytes  <br /></td></tr>
 <tr class="separator:a31a3d638ce9b52a47c1b263eb26f466c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab79e95461dac7d95dbb173d3eb9d5139" id="r_ab79e95461dac7d95dbb173d3eb9d5139"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#ab79e95461dac7d95dbb173d3eb9d5139">readSaveFile</a> (const std::string &amp;filename, std::vector&lt; uint8_t &gt; &amp;dst)</td></tr>
-<tr class="memdesc:ab79e95461dac7d95dbb173d3eb9d5139"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an entire file (from save file location) and returns it as a vector of bytes  <br /></td></tr>
-<tr class="separator:ab79e95461dac7d95dbb173d3eb9d5139"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c16170704856813727ff3f5b9c939ff" id="r_a1c16170704856813727ff3f5b9c939ff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a1c16170704856813727ff3f5b9c939ff">readProjectFile</a> (const std::string &amp;filename, std::vector&lt; uint8_t &gt; &amp;dst)</td></tr>
 <tr class="memdesc:a1c16170704856813727ff3f5b9c939ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an entire file (from project file location) and returns it as a vector of bytes  <br /></td></tr>
 <tr class="separator:a1c16170704856813727ff3f5b9c939ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,9 +117,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a28a00564ef12218a9921b876c53d0a88" id="r_a28a00564ef12218a9921b876c53d0a88"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a28a00564ef12218a9921b876c53d0a88">writeAssetFile</a> (const std::string &amp;filename, const void *data, size_t numBytes)</td></tr>
 <tr class="memdesc:a28a00564ef12218a9921b876c53d0a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes numBytes bytes from data to a file called filename in the asset file location. overwrites the file if it exists  <br /></td></tr>
 <tr class="separator:a28a00564ef12218a9921b876c53d0a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a067eb0353132fa614e6c184ba54816c5" id="r_a067eb0353132fa614e6c184ba54816c5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a067eb0353132fa614e6c184ba54816c5">writeSaveFile</a> (const std::string &amp;filename, const void *data, size_t numBytes)</td></tr>
-<tr class="memdesc:a067eb0353132fa614e6c184ba54816c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes numBytes bytes from data to a file called filename in the save file location. overwrites the file if it exists  <br /></td></tr>
-<tr class="separator:a067eb0353132fa614e6c184ba54816c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17ebab0b8e3f32101f00cf22d060a455" id="r_a17ebab0b8e3f32101f00cf22d060a455"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1file.html#a17ebab0b8e3f32101f00cf22d060a455">writeProjectFile</a> (const std::string &amp;filename, const void *data, size_t numBytes)</td></tr>
 <tr class="memdesc:a17ebab0b8e3f32101f00cf22d060a455"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes numBytes bytes from data to a file called filename in the project file location. overwrites the file if it exists  <br /></td></tr>
 <tr class="separator:a17ebab0b8e3f32101f00cf22d060a455"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +130,24 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>file and path related functions </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a6d0897d329c534851abe3a4aa9aef150" name="a6d0897d329c534851abe3a4aa9aef150"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d0897d329c534851abe3a4aa9aef150">&#9670;&#160;</a></span>getAssetFilePath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string yourgame::file::getAssetFilePath </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a63ae81a45522494c595be936b34aa388" name="a63ae81a45522494c595be936b34aa388"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63ae81a45522494c595be936b34aa388">&#9670;&#160;</a></span>getFileExtension()</h2>
 
@@ -263,26 +274,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1da1b006c4d9d318993f757e53712117" name="a1da1b006c4d9d318993f757e53712117"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1da1b006c4d9d318993f757e53712117">&#9670;&#160;</a></span>getSaveFilePath()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string yourgame::file::getSaveFilePath </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em> = <code>&quot;&quot;</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>returns the full (absolut) path to a file called filename in the save file location </p>
-
-</div>
-</div>
 <a id="a01c44182cb042d89869452b08cc9e4f1" name="a01c44182cb042d89869452b08cc9e4f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a01c44182cb042d89869452b08cc9e4f1">&#9670;&#160;</a></span>ls()</h2>
 
@@ -362,11 +353,9 @@ Functions</h2></td></tr>
 <p>reads an entire file and returns it as a vector of bytes </p>
 <ul>
 <li>prepend <code>a//</code> to load a file from asset file location</li>
-<li>prepend <code>s//</code> to load a file from save file location</li>
 <li>prepend <code>p//</code> to load a file from project file location</li>
 <li>prepend none of the above to load a file with unchanged filename as path</li>
 <li>example: <code>loadFile("a//file1.bin" ...) // loads file1.bin from assets</code></li>
-<li>example: <code>loadFile("s//file2.bin" ...) // loads file2.bin from save file location</code></li>
 <li>example: <code>loadFile("p//file3.bin" ...) // loads file3.bin from project file location</code></li>
 <li>example: <code>loadFile("file4.bin" ...) // loads file4.bin from working directory </code> </li>
 </ul>
@@ -400,36 +389,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>reads an entire file (from project file location) and returns it as a vector of bytes </p>
-
-</div>
-</div>
-<a id="ab79e95461dac7d95dbb173d3eb9d5139" name="ab79e95461dac7d95dbb173d3eb9d5139"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab79e95461dac7d95dbb173d3eb9d5139">&#9670;&#160;</a></span>readSaveFile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int yourgame::file::readSaveFile </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; uint8_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>dst</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>reads an entire file (from save file location) and returns it as a vector of bytes </p>
 
 </div>
 </div>
@@ -559,42 +518,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>writes numBytes bytes from data to a file called filename in the project file location. overwrites the file if it exists </p>
-
-</div>
-</div>
-<a id="a067eb0353132fa614e6c184ba54816c5" name="a067eb0353132fa614e6c184ba54816c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a067eb0353132fa614e6c184ba54816c5">&#9670;&#160;</a></span>writeSaveFile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int yourgame::file::writeSaveFile </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const void *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>numBytes</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>writes numBytes bytes from data to a file called filename in the save file location. overwrites the file if it exists </p>
 
 </div>
 </div>

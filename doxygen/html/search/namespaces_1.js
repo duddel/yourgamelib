@@ -12,8 +12,14 @@ var searchData=
   ['yourgame_3a_3autil_9',['util',['../namespaceyourgame_1_1util.html',1,'yourgame']]],
   ['yourgame_3a_3aversion_10',['version',['../namespaceyourgame_1_1version.html',1,'yourgame']]],
   ['yourgame_5finternal_11',['yourgame_internal',['../namespaceyourgame__internal.html',1,'']]],
-  ['yourgame_5finternal_3a_3alog_12',['log',['../namespaceyourgame__internal_1_1log.html',1,'yourgame_internal']]],
-  ['yourgame_5finternal_3a_3atime_13',['time',['../namespaceyourgame__internal_1_1time.html',1,'yourgame_internal']]],
-  ['yourgame_5finternal_5fandroid_14',['yourgame_internal_android',['../namespaceyourgame__internal__android.html',1,'']]],
-  ['yourgame_5finternal_5fdesktop_15',['yourgame_internal_desktop',['../namespaceyourgame__internal__desktop.html',1,'']]]
+  ['yourgame_5finternal_3a_3aandroid_12',['android',['../namespaceyourgame__internal_1_1android.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_3a_3adesktop_13',['desktop',['../namespaceyourgame__internal_1_1desktop.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_3a_3afile_14',['file',['../namespaceyourgame__internal_1_1file.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_3a_3afile_3a_3aandroid_15',['android',['../namespaceyourgame__internal_1_1file_1_1android.html',1,'yourgame_internal::file']]],
+  ['yourgame_5finternal_3a_3afile_3a_3adesktop_16',['desktop',['../namespaceyourgame__internal_1_1file_1_1desktop.html',1,'yourgame_internal::file']]],
+  ['yourgame_5finternal_3a_3ainput_17',['input',['../namespaceyourgame__internal_1_1input.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_3a_3ainput_3a_3aandroid_18',['android',['../namespaceyourgame__internal_1_1input_1_1android.html',1,'yourgame_internal::input']]],
+  ['yourgame_5finternal_3a_3ainput_3a_3adesktop_19',['desktop',['../namespaceyourgame__internal_1_1input_1_1desktop.html',1,'yourgame_internal::input']]],
+  ['yourgame_5finternal_3a_3alog_20',['log',['../namespaceyourgame__internal_1_1log.html',1,'yourgame_internal']]],
+  ['yourgame_5finternal_3a_3atime_21',['time',['../namespaceyourgame__internal_1_1time.html',1,'yourgame_internal']]]
 ];

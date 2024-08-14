@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['wanttoexit_0',['wantToExit',['../namespaceyourgame__internal__desktop.html#a84bb6d3ef24fa0badc5f0142a5f4ae10',1,'yourgame_internal_desktop']]],
+  ['wanttoexit_0',['wantToExit',['../namespaceyourgame__internal_1_1desktop.html#aebc3585a9c128404b020c38fe610a63c',1,'yourgame_internal::desktop']]],
   ['warn_1',['warn',['../namespaceyourgame_1_1log.html#ad44bc6040fa2f86b770680bd12678388',1,'yourgame::log::warn(const char *s, const T &amp;value, const Args &amp;...args)'],['../namespaceyourgame_1_1log.html#aa339017be157cd795f94443fc12ca0ae',1,'yourgame::log::warn(const T &amp;value)']]],
   ['window_5faspect_5fratio_2',['WINDOW_ASPECT_RATIO',['../namespaceyourgame_1_1input.html#a68c4565f302f1a2d129634d97bc7bc80aac923593b033b2aa935dbcdf683d4f56',1,'yourgame::input']]],
   ['window_5faspect_5fratio_5finverse_3',['WINDOW_ASPECT_RATIO_INVERSE',['../namespaceyourgame_1_1input.html#a68c4565f302f1a2d129634d97bc7bc80ab6a75fd552dd9039153a8212d40b0256',1,'yourgame::input']]],
@@ -12,7 +12,6 @@ var searchData=
   ['wrapmode_9',['wrapMode',['../structyourgame_1_1gl_1_1TextureConfig.html#a8cd25f2467ff5ccc58b6033b51685539',1,'yourgame::gl::TextureConfig']]],
   ['writeassetfile_10',['writeAssetFile',['../namespaceyourgame_1_1file.html#a28a00564ef12218a9921b876c53d0a88',1,'yourgame::file']]],
   ['writefile_11',['writeFile',['../namespaceyourgame_1_1file.html#a053f188bd99662dbe9959c2a48751199',1,'yourgame::file']]],
-  ['writefiletopath_12',['writeFileToPath',['../namespaceyourgame__internal.html#ad94c5ea5ed50d2934cab02ab774f7eb0',1,'yourgame_internal']]],
-  ['writeprojectfile_13',['writeProjectFile',['../namespaceyourgame_1_1file.html#a17ebab0b8e3f32101f00cf22d060a455',1,'yourgame::file']]],
-  ['writesavefile_14',['writeSaveFile',['../namespaceyourgame_1_1file.html#a067eb0353132fa614e6c184ba54816c5',1,'yourgame::file']]]
+  ['writefiletopath_12',['writeFileToPath',['../namespaceyourgame__internal_1_1file.html#a89f78209a8f3a6b2a447edc19f61998c',1,'yourgame_internal::file']]],
+  ['writeprojectfile_13',['writeProjectFile',['../namespaceyourgame_1_1file.html#a17ebab0b8e3f32101f00cf22d060a455',1,'yourgame::file']]]
 ];
