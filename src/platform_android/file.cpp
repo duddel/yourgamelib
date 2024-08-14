@@ -24,28 +24,37 @@ freely, subject to the following restrictions:
 #include <android/asset_manager.h>
 #include "yourgame_internal/file.h"
 
-namespace yourgame_internal_android
+namespace
 {
-    namespace
-    {
-        AAssetManager *assMan;
-    } // namespace
+    AAssetManager *assMan;
+} // namespace
 
-    void initFile(struct android_app *app)
+namespace yourgame_internal
+{
+    namespace file
     {
-        assMan = app->activity->assetManager;
-        yourgame_internal::saveFilesPathAbs = std::string(app->activity->internalDataPath);
-        yourgame_internal::projectPathAbs = "";
-    }
-} // namespace yourgame_internal_android
+        namespace android
+        {
+            void initFile(struct android_app *app)
+            {
+                assMan = app->activity->assetManager;
+            }
+        } // namespace android
+    } // namespace file
+} // namespace yourgame_internal
 
 namespace yourgame
 {
     namespace file
     {
+        std::string getAssetFilePath(const std::string &filename)
+        {
+            return "";
+        }
+
         int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
         {
-            AAsset *assDesc = AAssetManager_open(yourgame_internal_android::assMan,
+            AAsset *assDesc = AAssetManager_open(assMan,
                                                  filename.c_str(),
                                                  AASSET_MODE_BUFFER);
             if (assDesc)

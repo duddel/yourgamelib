@@ -17,24 +17,15 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_FILE_H
-#define YOURGAME_INTERNAL_FILE_H
-
-#include <cstdint>
-#include <vector>
-#include <string>
+#ifndef YOURGAME_INTERNAL_YOURGAME_DESKTOP_H
+#define YOURGAME_INTERNAL_YOURGAME_DESKTOP_H
 
 namespace yourgame_internal
 {
-    namespace file
+    namespace desktop
     {
-        extern std::string projectPathAbs;
-
-        int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst);
-        int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes);
-        bool checkIfPathIsDirectory(const std::string &filepath);
-        void normalizePath(std::string &path);
-    } // namespace file
+        int init(int argc, char *argv[]);
+        bool wantToExit();
+    } // namespace desktop
 } // namespace yourgame_internal
-
 #endif

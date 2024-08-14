@@ -82,8 +82,8 @@ RUN if [ "$NO_ANDROID" = "false" ]; then \
 # Install Android SDK
 RUN if [ "$NO_ANDROID" = "false" ]; then \
       cd /opt && \
-      wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip && \
-      unzip commandlinetools-linux-11076708_latest.zip -d android_sdk && \
+      wget https://dl.google.com/android/repository/commandlinetools-linux-12172612_latest.zip && \
+      unzip commandlinetools-linux-12172612_latest.zip -d android_sdk && \
       cd android_sdk/cmdline-tools && \
       mkdir latest && \
       mv NOTICE.txt latest/ && \

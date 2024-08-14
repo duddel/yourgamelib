@@ -17,38 +17,19 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_INPUT_H
-#define YOURGAME_INTERNAL_INPUT_H
+#ifndef YOURGAME_INTERNAL_INPUT_ANDROID_H
+#define YOURGAME_INTERNAL_INPUT_ANDROID_H
 
-#include <map>
-#include "yourgame/input.h"
+#include <android_native_app_glue.h>
 
 namespace yourgame_internal
 {
     namespace input
     {
-        struct InputValue
+        namespace android
         {
-            InputValue(float v = 0.0f) : val(v), valLast(v) {} // default ctor
-            float val;
-            float valLast;
-        };
-
-        extern std::map<yourgame::input::Source, InputValue> inputStates;
-
-        /** \brief set input value. used for buttons/keys
-        if first input of source occurs, the last (previous) value is set to 0.0,
-        resulting in positive value delta, if first input of source is "key down"
-        */
-        void setInput(yourgame::input::Source source, float value);
-
-        /** \brief set input value. used for positions/axes or other "continuous" signals
-        if first input of source occurs, the last (previous) value is set to value,
-        resulting in zero value delta after first input.
-        */
-        void setInput2(yourgame::input::Source source, float value);
-
-        void tickInput();
+            int32_t handleInputEvent(AInputEvent *inputEvent);
+        }
     } // namespace input
 } // namespace yourgame_internal
 

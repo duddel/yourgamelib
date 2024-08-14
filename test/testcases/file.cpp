@@ -17,24 +17,31 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_FILE_H
-#define YOURGAME_INTERNAL_FILE_H
-
 #include <cstdint>
 #include <vector>
-#include <string>
+#include "doctest.h"
+#include "yourgame/yourgame.h"
 
-namespace yourgame_internal
+namespace yg = yourgame; // convenience
+
+TEST_CASE("File")
 {
-    namespace file
+    SUBCASE("readProjectFile_zip_vs_dir")
     {
-        extern std::string projectPathAbs;
+        // read the same file twice, from .zip and from directory
 
-        int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst);
-        int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes);
-        bool checkIfPathIsDirectory(const std::string &filepath);
-        void normalizePath(std::string &path);
-    } // namespace file
-} // namespace yourgame_internal
+        std::vector<uint8_t> data_zip;
+        std::vector<uint8_t> data_dir;
 
-#endif
+        yg::file::setProjectPath(yg::file::getAssetFilePath("img.zip"));
+
+        CHECK(yg::file::readFile("p//img_32_16_3.png", data_zip) == 0);
+
+        yg::file::setProjectPath(yg::file::getAssetFilePath());
+
+        CHECK(yg::file::readFile("p//img_32_16_3.png", data_dir) == 0);
+
+        // make sure the file content is identical
+        CHECK(data_zip == data_dir);
+    }
+}

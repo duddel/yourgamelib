@@ -96,6 +96,7 @@ list(APPEND YOURGAME_COMPILE_DEFS
 list(APPEND YOURGAME_EXT_PROJ_LIST
   "easyloggingpp"
   "dirent"
+  "miniz"
 )
 if(YOURGAME_PLATFORM STREQUAL "desktop")
   list(APPEND YOURGAME_EXT_PROJ_LIST

@@ -11,6 +11,7 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 | [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark:            | :heavy_check_mark: | :heavy_check_mark: |
 | [glad](#glad)                             | glad               | :heavy_check_mark:            |                    |                    |
 | [glfw](#glfw)                             | GLFW               | :heavy_check_mark:            |                    |                    |
+| [miniz](#miniz)                           | Miniz              | :heavy_check_mark:            | :heavy_check_mark: | :heavy_check_mark: |
 | [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark:            |                    |                    |
 
 ## Toolbox libraries
@@ -171,22 +172,6 @@ These libraries are integrated if the project has been initialized with default 
     -   [imstb_textedit.h](imgui/imstb_textedit.h)
     -   [imstb_truetype.h](imgui/imstb_truetype.h)
 
-### ImGuiColorTextEdit
-
--   version: **0a88824f7d**
--   origin: <https://github.com/BalazsJako/ImGuiColorTextEdit/tree/0a88824f7de8d0bd11d8419066caa7d3469395c4>
--   extracted from origin:
-    -   TextEditor.{h,cpp}, LICENSE
--   license: [imgui/TextEditor_LICENSE](imgui/TextEditor_LICENSE)
-
-### imgui_memory_editor
-
--   version: **450b9cf352**
--   origin: <https://github.com/ocornut/imgui_club/tree/450b9cf352c51530b9e23fb14b83891c2555b032>
--   extracted from origin:
-    -   imgui_memory_editor.h, LICENSE.txt
--   license: [imgui/imgui_memory_editor_LICENSE.txt](imgui/imgui_memory_editor_LICENSE.txt)
-
 ## JSON for Modern C++
 
 -   version: **3.8.0**
@@ -220,6 +205,14 @@ These libraries are integrated if the project has been initialized with default 
 -   extracted from origin:
     -   miniaudio.h, LICENSE
 -   license: [miniaudio/LICENSE](miniaudio/LICENSE)
+
+## Miniz
+
+-   version: **3.0.2**
+-   origin: <https://github.com/richgel999/miniz/releases/tag/3.0.2>
+-   extracted from origin:
+    -   LICENSE, miniz.{h,c}
+-   license: [miniz/LICENSE](miniz/LICENSE)
 
 ## stb
 

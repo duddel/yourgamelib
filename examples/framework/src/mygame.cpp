@@ -355,7 +355,6 @@ namespace mygame
         static bool showDemoGl = true;
         static bool showLicense = false;
         static bool showImguiDemo = false;
-        static bool showSaveFile = false;
         static bool showBox2d = false;
         static bool showFlecs = false;
         static bool showLua = false;
@@ -391,10 +390,6 @@ namespace mygame
                 if (ImGui::MenuItem("Imgui", "", &showImguiDemo))
                 {
                     showImguiDemo = true;
-                }
-                if (ImGui::MenuItem("Save file", "", &showSaveFile))
-                {
-                    showSaveFile = true;
                 }
                 if (ImGui::MenuItem("Box2D", "", &showBox2d))
                 {
@@ -596,32 +591,6 @@ namespace mygame
             {
                 yg::audio::shutdown();
             }
-        }
-
-        // save file demo window
-        if (showSaveFile)
-        {
-            static int testValue = 0;
-
-            ImGui::Begin("Save file", &showSaveFile, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-            if (ImGui::Button("load"))
-            {
-                std::vector<uint8_t> fileData;
-                // try to read save file
-                if (!yg::file::readFile("s//testValue.bin", fileData))
-                {
-                    testValue = *((int *)fileData.data());
-                }
-            }
-            ImGui::SameLine();
-
-            if (ImGui::Button("save"))
-            {
-                yg::file::writeSaveFile("testValue.bin", &testValue, sizeof(testValue));
-            }
-
-            ImGui::SliderInt("persistent integer", &testValue, -100, 100);
-            ImGui::End();
         }
 
         // Box2D demo window

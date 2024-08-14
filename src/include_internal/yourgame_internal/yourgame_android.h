@@ -17,24 +17,18 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_FILE_H
-#define YOURGAME_INTERNAL_FILE_H
+#ifndef YOURGAME_INTERNAL_YOURGAME_ANDROID_H
+#define YOURGAME_INTERNAL_YOURGAME_ANDROID_H
 
-#include <cstdint>
-#include <vector>
-#include <string>
+#include <android_native_app_glue.h>
 
 namespace yourgame_internal
 {
-    namespace file
+    namespace android
     {
-        extern std::string projectPathAbs;
-
-        int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst);
-        int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes);
-        bool checkIfPathIsDirectory(const std::string &filepath);
-        void normalizePath(std::string &path);
-    } // namespace file
+        bool isInitialized();
+        void init(struct android_app *app);
+    } // namespace android
 } // namespace yourgame_internal
 
 #endif

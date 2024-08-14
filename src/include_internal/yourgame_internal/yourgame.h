@@ -17,21 +17,13 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_DESKTOP_H
-#define YOURGAME_INTERNAL_DESKTOP_H
+#ifndef YOURGAME_INTERNAL_YOURGAME_H
+#define YOURGAME_INTERNAL_YOURGAME_H
 
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-
-namespace yourgame_internal_desktop
+namespace yourgame_internal
 {
-    int init(int argc, char *argv[]);
     void tick();
     int shutdown();
-    bool wantToExit();
-    void initInput(GLFWwindow *window);
-    void tickInput();
-    void initFile();
-} // namespace yourgame_internal_desktop
+} // namespace yourgame_internal
 
 #endif

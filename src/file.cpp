@@ -23,79 +23,131 @@ freely, subject to the following restrictions:
 #include <cstdio>
 #include <vector>
 #include <string>
+#include "dirent.h"
+#include "miniz.h"
 #include "yourgame/file.h"
 #include "yourgame/log.h"
 
 namespace yourgame_internal
 {
-    std::string saveFilesPathAbs = "";
-    std::string projectPathAbs = "";
-
-    int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst)
+    namespace file
     {
-        std::FILE *f = std::fopen(filepath.c_str(), "rb");
-        if (f)
+        std::string projectPathAbs = "";
+        bool projectPathIsDirectory = false;
+
+        int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst)
         {
-            std::fseek(f, 0, SEEK_END);
-            auto nBytes = std::ftell(f);
-            if (nBytes > 0)
+            std::FILE *f = std::fopen(filepath.c_str(), "rb");
+            if (f)
             {
-                dst.resize(nBytes);
-                std::rewind(f);
-                std::fread(&dst[0], 1, dst.size(), f);
+                std::fseek(f, 0, SEEK_END);
+                auto nBytes = std::ftell(f);
+                if (nBytes > 0)
+                {
+                    dst.resize(nBytes);
+                    std::rewind(f);
+                    std::fread(&dst[0], 1, dst.size(), f);
+                }
+                std::fclose(f);
+                return 0;
             }
-            std::fclose(f);
-            return 0;
+            return -1;
         }
-        return -1;
-    }
 
-    int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes)
-    {
-        int ret = -1;
-        yourgame::log::debug("writeFileToPath(): opening in wb mode: %v", filepath);
-        std::FILE *f = std::fopen(filepath.c_str(), "wb");
-        if (f)
+        int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes)
         {
-            std::fwrite(data, 1, numBytes, f);
-            ret = std::ferror(f);
-            std::fclose(f);
+            int ret = -1;
+            yourgame::log::debug("writeFileToPath(): opening in wb mode: %v", filepath);
+            std::FILE *f = std::fopen(filepath.c_str(), "wb");
+            if (f)
+            {
+                std::fwrite(data, 1, numBytes, f);
+                ret = std::ferror(f);
+                std::fclose(f);
+            }
+            return ret;
         }
-        return ret;
-    }
+
+        bool checkIfPathIsDirectory(const std::string &filepath)
+        {
+            DIR *dir = opendir(filepath.c_str());
+            if (dir)
+            {
+                closedir(dir);
+                return true;
+            }
+            return false;
+        }
+
+        void normalizePath(std::string &path)
+        {
+            std::replace(path.begin(), path.end(), '\\', '/');
+        }
+    } // namespace file
 } // namespace yourgame_internal
 
 namespace yourgame
 {
     namespace file
     {
-        std::string getSaveFilePath(const std::string &filename)
-        {
-            return yourgame_internal::saveFilesPathAbs + filename;
-        }
-
         std::string getProjectFilePath(const std::string &filename)
         {
-            return yourgame_internal::projectPathAbs + filename;
-        }
-
-        int readSaveFile(const std::string &filename, std::vector<uint8_t> &dst)
-        {
-            return yourgame_internal::readFileFromPath(yourgame_internal::saveFilesPathAbs + filename, dst);
+            return yourgame_internal::file::projectPathAbs + filename;
         }
 
         int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
         {
-            return yourgame_internal::readFileFromPath(yourgame_internal::projectPathAbs + filename, dst);
+            if (yourgame_internal::file::projectPathIsDirectory)
+            {
+                return yourgame_internal::file::readFileFromPath(yourgame_internal::file::projectPathAbs + filename, dst);
+            }
+            else
+            {
+                // Assuming archive file
+                mz_zip_archive zip_archive;
+                void *p;
+                size_t uncomp_size;
+
+                std::memset(&zip_archive, 0, sizeof(zip_archive));
+
+                mz_bool status = mz_zip_reader_init_file(&zip_archive, yourgame_internal::file::projectPathAbs.c_str(), 0);
+                if (!status)
+                {
+                    return -2;
+                }
+
+                p = mz_zip_reader_extract_file_to_heap(&zip_archive, filename.c_str(), &uncomp_size, 0);
+                if (!p)
+                {
+                    mz_zip_reader_end(&zip_archive);
+                    return -3;
+                }
+
+                // Success
+                dst.assign(static_cast<uint8_t *>(p),
+                           static_cast<uint8_t *>(p) + uncomp_size);
+                mz_free(p);
+            }
+
+            return 0;
         }
 
         void setProjectPath(const std::string &path)
         {
-            yourgame_internal::projectPathAbs = path;
-            std::replace(yourgame_internal::projectPathAbs.begin(), yourgame_internal::projectPathAbs.end(), '\\', '/');
-            if (yourgame_internal::projectPathAbs.back() != '/')
+            yourgame_internal::file::projectPathAbs = path;
+            yourgame_internal::file::normalizePath(yourgame_internal::file::projectPathAbs);
+
+            if (yourgame_internal::file::checkIfPathIsDirectory(yourgame_internal::file::projectPathAbs))
             {
-                yourgame_internal::projectPathAbs += "/";
+                yourgame_internal::file::projectPathIsDirectory = true;
+                if (yourgame_internal::file::projectPathAbs.back() != '/')
+                {
+                    yourgame_internal::file::projectPathAbs += "/";
+                }
+            }
+            else
+            {
+                yourgame_internal::file::projectPathIsDirectory = false;
             }
         }
 
@@ -107,14 +159,12 @@ namespace yourgame
                 {
                 case 'a':
                     return readAssetFile(filename.substr(3, std::string::npos), dst);
-                case 's':
-                    return readSaveFile(filename.substr(3, std::string::npos), dst);
                 case 'p':
                     return readProjectFile(filename.substr(3, std::string::npos), dst);
                 }
             }
 
-            return yourgame_internal::readFileFromPath(filename, dst);
+            return yourgame_internal::file::readFileFromPath(filename, dst);
         }
 
         std::string getFileLocation(const std::string &filepath)
@@ -178,14 +228,9 @@ namespace yourgame
             return "";
         }
 
-        int writeSaveFile(const std::string &filename, const void *data, size_t numBytes)
-        {
-            return yourgame_internal::writeFileToPath(yourgame_internal::saveFilesPathAbs + filename, data, numBytes);
-        }
-
         int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
         {
-            return yourgame_internal::writeFileToPath(yourgame_internal::projectPathAbs + filename, data, numBytes);
+            return yourgame_internal::file::writeFileToPath(yourgame_internal::file::projectPathAbs + filename, data, numBytes);
         }
 
         int writeFile(const std::string &filename, const void *data, size_t numBytes)
@@ -196,8 +241,6 @@ namespace yourgame
                 {
                 case 'a':
                     return writeAssetFile(filename.substr(3, std::string::npos), data, numBytes);
-                case 's':
-                    return writeSaveFile(filename.substr(3, std::string::npos), data, numBytes);
                 case 'p':
                     return writeProjectFile(filename.substr(3, std::string::npos), data, numBytes);
                 }

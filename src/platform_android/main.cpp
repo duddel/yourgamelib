@@ -18,22 +18,23 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include <android_native_app_glue.h>
-#include "yourgame_internal/yourgame_internal_android.h"
+#include "yourgame_internal/yourgame.h"
+#include "yourgame_internal/yourgame_android.h"
 #include "yourgame/log.h"
 
 static void handleAppCmd(struct android_app *app, int32_t appCmd)
 {
-    // logging works after yourgame_internal_android::init() was called
+    // logging works after yourgame_internal::android::init() was called
     // todo: split log::init() from init()?
 
     switch (appCmd)
     {
     case APP_CMD_INIT_WINDOW:
-        yourgame_internal_android::init(app);
+        yourgame_internal::android::init(app);
         yourgame::log::debug("APP_CMD_INIT_WINDOW");
         break;
     case APP_CMD_TERM_WINDOW:
-        yourgame_internal_android::shutdown();
+        yourgame_internal::shutdown();
         yourgame::log::debug("APP_CMD_TERM_WINDOW");
         break;
     case APP_CMD_GAINED_FOCUS:
@@ -64,8 +65,8 @@ void android_main(struct android_app *app)
         int outEvents;
         struct android_poll_source *outData;
 
-        // poll all events. if the app is not visible, this loop blocks until yourgame_internal_android::isInitialized() returns true
-        while ((ident = ALooper_pollAll(yourgame_internal_android::isInitialized() ? 0 : -1, NULL, &outEvents, (void **)&outData)) >= 0)
+        // poll all events. if the app is not visible, this loop blocks until yourgame_internal::android::isInitialized() returns true
+        while ((ident = ALooper_pollAll(yourgame_internal::android::isInitialized() ? 0 : -1, NULL, &outEvents, (void **)&outData)) >= 0)
         {
             // process one event
             if (outData != NULL)
@@ -76,17 +77,17 @@ void android_main(struct android_app *app)
             // exit the app by returning from within the infinite loop
             if (app->destroyRequested != 0)
             {
-                // yourgame_internal_android::shutdown() should have been called already while processing the
+                // yourgame_internal::shutdown() should have been called already while processing the
                 // app command APP_CMD_TERM_WINDOW. but we play save here
-                if (!yourgame_internal_android::isInitialized())
+                if (!yourgame_internal::android::isInitialized())
                 {
-                    yourgame_internal_android::shutdown();
+                    yourgame_internal::shutdown();
                 }
                 return;
             }
         }
 
         // tick the engine
-        yourgame_internal_android::tick();
+        yourgame_internal::tick();
     }
 }

@@ -17,7 +17,7 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#include <algorithm> // std::replace(), std::sort()
+#include <algorithm> // std::sort()
 #include <string>
 #include <vector>
 #include <regex>
@@ -31,60 +31,66 @@ freely, subject to the following restrictions:
 #include "yourgame/file.h"
 #include "yourgame_internal/file.h"
 
-namespace yourgame_internal_desktop
+namespace
 {
-    namespace
-    {
-        std::string assetPathAbs;
-    } // namespace
+    std::string assetPathAbs;
+} // namespace
 
-    void initFile()
+namespace yourgame_internal
+{
+    namespace file
     {
-#ifdef __EMSCRIPTEN__
-        assetPathAbs = "/home/web_user/";
-        yourgame_internal::saveFilesPathAbs = "/home/web_user/";
-        yourgame_internal::projectPathAbs = "";
-#else
-        int exeBasePathLength;
-        int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
-        char *path = (char *)malloc(exePathLength + 1);
-        wai_getExecutablePath(path, exePathLength, &exeBasePathLength);
-        path[exeBasePathLength + 1] = '\0';
-        std::string basePath(path);
-        free(path);
-        std::replace(basePath.begin(), basePath.end(), '\\', '/');
-
-        // check existing (via dirent openable) asset directories
-        for (const auto &a : {"assets/", "../assets/", "../../assets/", "../../../assets/"})
+        namespace desktop
         {
-            assetPathAbs = basePath + a;
-            DIR *dir = opendir(assetPathAbs.c_str());
-            if (dir)
+            void initFile()
             {
-                closedir(dir);
-                break;
-            }
-        }
+#ifdef __EMSCRIPTEN__
+                assetPathAbs = "/home/web_user/";
+#else
+                int exeBasePathLength;
+                int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
+                char *path = (char *)malloc(exePathLength + 1);
+                wai_getExecutablePath(path, exePathLength, &exeBasePathLength);
+                path[exeBasePathLength + 1] = '\0';
+                std::string basePath(path);
+                free(path);
+                yourgame_internal::file::normalizePath(basePath);
 
-        yourgame_internal::saveFilesPathAbs = basePath + "savefiles/";
-        yourgame_internal::projectPathAbs = "";
+                // check existing (via dirent openable) asset directories
+                for (const auto &a : {"assets/", "../assets/", "../../assets/", "../../../assets/"})
+                {
+                    assetPathAbs = basePath + a;
+                    DIR *dir = opendir(assetPathAbs.c_str());
+                    if (dir)
+                    {
+                        closedir(dir);
+                        break;
+                    }
+                }
 #endif
-    }
-} // namespace yourgame_internal_desktop
+            }
+        } // namespace desktop
+    } // namespace file
+} // namespace yourgame_internal
 
 namespace yourgame
 {
     namespace file
     {
+        std::string getAssetFilePath(const std::string &filename)
+        {
+            return assetPathAbs + filename;
+        }
+
         int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
         {
             // on platform desktop: try to read file from the actual assets directory.
             // on platform web, this is transient memory. assets are only available if they
             // have been packed by emscripten or have been downloaded before (see below).
-            int ret = yourgame_internal::readFileFromPath(yourgame_internal_desktop::assetPathAbs + filename, dst);
+            int ret = yourgame_internal::file::readFileFromPath(assetPathAbs + filename, dst);
             if (ret == 0)
             {
-                yourgame::log::debug("readAssetFile(): successfully read asset %v from %v", filename, yourgame_internal_desktop::assetPathAbs);
+                yourgame::log::debug("readAssetFile(): successfully read asset %v from %v", filename, assetPathAbs);
             }
 
 // on platform desktop, return result of readFileFromPath()
@@ -131,7 +137,7 @@ namespace yourgame
 
         int writeAssetFile(const std::string &filename, const void *data, size_t numBytes)
         {
-            return yourgame_internal::writeFileToPath(yourgame_internal_desktop::assetPathAbs + filename, data, numBytes);
+            return yourgame_internal::file::writeFileToPath(assetPathAbs + filename, data, numBytes);
         }
 
         std::vector<std::string> ls(const std::string &pattern)
@@ -147,15 +153,11 @@ namespace yourgame
                 {
                 case 'a':
                     // substr() returns empty string if pos == length.
-                    pathToOpen = (yourgame_internal_desktop::assetPathAbs + pathToOpen.substr(3, std::string::npos));
-                    break;
-                case 's':
-                    // substr() returns empty string if pos == length.
-                    pathToOpen = (yourgame_internal::saveFilesPathAbs + pathToOpen.substr(3, std::string::npos));
+                    pathToOpen = (assetPathAbs + pathToOpen.substr(3, std::string::npos));
                     break;
                 case 'p':
                     // substr() returns empty string if pos == length.
-                    pathToOpen = (yourgame_internal::projectPathAbs + pathToOpen.substr(3, std::string::npos));
+                    pathToOpen = (yourgame_internal::file::projectPathAbs + pathToOpen.substr(3, std::string::npos));
                     break;
                 }
             }

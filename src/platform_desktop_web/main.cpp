@@ -20,24 +20,24 @@ freely, subject to the following restrictions:
 #ifdef __EMSCRIPTEN__
 #include <emscripten/emscripten.h>
 #endif
-#include "yourgame/yourgame.h"
-#include "yourgame_internal/yourgame_internal_desktop.h"
+#include "yourgame_internal/yourgame.h"
+#include "yourgame_internal/yourgame_desktop.h"
 
 int main(int argc, char *argv[])
 {
-    if (yourgame_internal_desktop::init(argc, argv) != 0)
+    if (yourgame_internal::desktop::init(argc, argv) != 0)
         return -1;
 
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(yourgame_internal_desktop::tick, 0, 1);
+    emscripten_set_main_loop(yourgame_internal::tick, 0, 1);
 #else
     while (true)
     {
-        yourgame_internal_desktop::tick();
-        if (yourgame_internal_desktop::wantToExit())
+        yourgame_internal::tick();
+        if (yourgame_internal::desktop::wantToExit())
             break;
     }
 #endif
 
-    return yourgame_internal_desktop::shutdown();
+    return yourgame_internal::shutdown();
 }

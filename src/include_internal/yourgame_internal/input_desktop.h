@@ -17,20 +17,21 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_INTERNAL_ANDROID_H
-#define YOURGAME_INTERNAL_ANDROID_H
+#ifndef YOURGAME_INTERNAL_INPUT_DESKTOP_H
+#define YOURGAME_INTERNAL_INPUT_DESKTOP_H
 
-#include <android_native_app_glue.h>
+#define GLFW_INCLUDE_NONE
+#include <GLFW/glfw3.h>
 
-namespace yourgame_internal_android
+namespace yourgame_internal
 {
-    bool isInitialized();
-    int32_t handleInputEvent(AInputEvent *inputEvent);
-    void init(struct android_app *app);
-    void tick();
-    int shutdown();
-    void tickInput();
-    void initFile(struct android_app *app);
-} // namespace yourgame_internal_android
+    namespace input
+    {
+        namespace desktop
+        {
+            void initInput(GLFWwindow *window);
+        }
+    } // namespace input
+} // namespace yourgame_internal
 
 #endif

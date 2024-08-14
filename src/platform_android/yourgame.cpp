@@ -28,166 +28,170 @@ freely, subject to the following restrictions:
 #endif
 #include "yourgame/yourgame.h"
 #include "yourgame/gl_include.h"
-#include "yourgame_internal/yourgame_internal_android.h"
 #include "yourgame_internal/mygame_external.h"
+#include "yourgame_internal/file_android.h"
 #include "yourgame_internal/input.h"
+#include "yourgame_internal/input_android.h"
 #include "yourgame_internal/log.h"
 #include "yourgame_internal/time.h"
 
-namespace yourgame_internal_android
+namespace
 {
-    namespace
+    bool _initialized = false;
+
+    EGLDisplay _display = EGL_NO_DISPLAY;
+    EGLSurface _surface = EGL_NO_SURFACE;
+    EGLContext _eglContext = EGL_NO_CONTEXT;
+    ANativeWindow *_win = NULL;
+    struct android_app *_app = NULL;
+
+    /* todo: this is called every frame, but actually only required
+    if the screen size changed. however, the app command
+    APP_CMD_WINDOW_RESIZED is not invoked reliable.*/
+    void updateWinSize()
     {
-        bool _initialized = false;
-
-        EGLDisplay _display = EGL_NO_DISPLAY;
-        EGLSurface _surface = EGL_NO_SURFACE;
-        EGLContext _eglContext = EGL_NO_CONTEXT;
-        ANativeWindow *_win = NULL;
-        struct android_app *_app = NULL;
-
-        /* todo: this is called every frame, but actually only required
-        if the screen size changed. however, the app command
-        APP_CMD_WINDOW_RESIZED is not invoked reliable.*/
-        void updateWinSize()
-        {
-            EGLint width, height;
-            eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
-            eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
-            yourgame_internal::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
-            yourgame_internal::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
-            yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO,
-                                         (width < 1 || height < 1) ? 1.0f : static_cast<float>(width) / static_cast<float>(height));
-            yourgame_internal::setInput2(yourgame::input::WINDOW_ASPECT_RATIO_INVERSE,
-                                         (width < 1 || height < 1) ? 1.0f : static_cast<float>(height) / static_cast<float>(width));
-        }
-    } // namespace
-
-    bool isInitialized()
-    {
-        return _initialized;
+        EGLint width, height;
+        eglQuerySurface(_display, _surface, EGL_WIDTH, &width);
+        eglQuerySurface(_display, _surface, EGL_HEIGHT, &height);
+        yourgame_internal::input::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
+        yourgame_internal::input::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
+        yourgame_internal::input::setInput2(yourgame::input::WINDOW_ASPECT_RATIO,
+                                            (width < 1 || height < 1) ? 1.0f : static_cast<float>(width) / static_cast<float>(height));
+        yourgame_internal::input::setInput2(yourgame::input::WINDOW_ASPECT_RATIO_INVERSE,
+                                            (width < 1 || height < 1) ? 1.0f : static_cast<float>(height) / static_cast<float>(width));
     }
 
     static int32_t onInputEvent(struct android_app *app, AInputEvent *inputEvent)
     {
-        yourgame_internal_android::handleInputEvent(inputEvent);
+        yourgame_internal::input::android::handleInputEvent(inputEvent);
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui_ImplAndroid_HandleInputEvent(inputEvent);
 #endif
         return 1;
     }
+} // namespace
 
-    void init(struct android_app *app)
+namespace yourgame_internal
+{
+    namespace android
     {
-        if (_initialized)
+        bool isInitialized()
         {
-            return;
+            return _initialized;
         }
 
-        _win = app->window;
-        _app = app;
-
-        _app->onInputEvent = onInputEvent;
-        yourgame_internal_android::initFile(_app);
-
-        // initialize logging
-        char *initLogArgv = nullptr;
-        yourgame_internal::log::init(0, &initLogArgv);
-
-        // initialize EGL
-        _display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-        if (_display == EGL_NO_DISPLAY)
+        void init(struct android_app *app)
         {
-            yourgame::log::error("eglGetDisplay(EGL_DEFAULT_DISPLAY) returned EGL_NO_DISPLAY");
-        }
+            if (_initialized)
+            {
+                return;
+            }
 
-        if (eglInitialize(_display, 0, 0) != EGL_TRUE)
-        {
-            yourgame::log::error("eglInitialize(..) returned with an error");
-        }
+            _win = app->window;
+            _app = app;
 
-        // use these attributes to choose a matching EGL frame buffer config
-        const EGLint eglAttribs[] = {
-            EGL_BLUE_SIZE, 8,
-            EGL_GREEN_SIZE, 8,
-            EGL_RED_SIZE, 8,
-            EGL_DEPTH_SIZE, 24,
-            EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-            EGL_NONE};
+            _app->onInputEvent = onInputEvent;
+            yourgame_internal::file::android::initFile(_app);
 
-        EGLint numConfigs = 0;
-        if (eglChooseConfig(_display, eglAttribs, nullptr, 0, &numConfigs) != EGL_TRUE)
-        {
-            yourgame::log::error("eglChooseConfig(..) returned with an error");
-        }
+            // initialize logging
+            char *initLogArgv = nullptr;
+            yourgame_internal::log::init(0, &initLogArgv);
 
-        if (numConfigs == 0)
-        {
-            yourgame::log::error("eglChooseConfig(..) returned 0 matching configs");
-        }
+            // initialize EGL
+            _display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+            if (_display == EGL_NO_DISPLAY)
+            {
+                yourgame::log::error("eglGetDisplay(EGL_DEFAULT_DISPLAY) returned EGL_NO_DISPLAY");
+            }
 
-        /* the first returned config matches the desired attributes "best",
-        but might not be the ideal choice. we take in anyway.
-        todo: we could check attributes of the matching configs and choose
-        a suitable config by some criteria (with eglGetConfigAttrib(..)) */
-        yourgame::log::info("choosing the first egl config (of %v total configs)", numConfigs);
+            if (eglInitialize(_display, 0, 0) != EGL_TRUE)
+            {
+                yourgame::log::error("eglInitialize(..) returned with an error");
+            }
 
-        // get the actual (first) matching config
-        EGLConfig config;
-        eglChooseConfig(_display, eglAttribs, &config, 1, &numConfigs);
+            // use these attributes to choose a matching EGL frame buffer config
+            const EGLint eglAttribs[] = {
+                EGL_BLUE_SIZE, 8,
+                EGL_GREEN_SIZE, 8,
+                EGL_RED_SIZE, 8,
+                EGL_DEPTH_SIZE, 24,
+                EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
+                EGL_NONE};
 
-        /* the attribute EGL_NATIVE_VISUAL_ID is an element of the enum AHardwareBuffer_Format,
-        that matches the chosen egl config. configure the buffers of the native window
-        appropriately (via ANativeWindow_setBuffersGeometry(..)) */
-        EGLint format;
-        eglGetConfigAttrib(_display, config, EGL_NATIVE_VISUAL_ID, &format);
-        yourgame::log::info("calling ANativeWindow_setBuffersGeometry(..) with format %v", format);
-        ANativeWindow_setBuffersGeometry(_win, 0, 0, format);
+            EGLint numConfigs = 0;
+            if (eglChooseConfig(_display, eglAttribs, nullptr, 0, &numConfigs) != EGL_TRUE)
+            {
+                yourgame::log::error("eglChooseConfig(..) returned with an error");
+            }
 
-        // create context, surface and make the context current
-        const EGLint contextAttribs[] = {
-            EGL_CONTEXT_CLIENT_VERSION, YOURGAME_GL_MAJOR,
-            EGL_NONE};
-        _eglContext = eglCreateContext(_display, config, EGL_NO_CONTEXT, contextAttribs);
-        if (_eglContext == EGL_NO_CONTEXT)
-        {
-            yourgame::log::error("eglCreateContext(..) returned EGL_NO_CONTEXT");
-        }
-        _surface = eglCreateWindowSurface(_display, config, _win, NULL);
-        eglMakeCurrent(_display, _surface, _surface, _eglContext);
+            if (numConfigs == 0)
+            {
+                yourgame::log::error("eglChooseConfig(..) returned 0 matching configs");
+            }
 
-        // update window size in yourgame
-        updateWinSize();
+            /* the first returned config matches the desired attributes "best",
+            but might not be the ideal choice. we take in anyway.
+            todo: we could check attributes of the matching configs and choose
+            a suitable config by some criteria (with eglGetConfigAttrib(..)) */
+            yourgame::log::info("choosing the first egl config (of %v total configs)", numConfigs);
 
-        yourgame::log::info("GL_VERSION: %v", glGetString(GL_VERSION));
-        yourgame::log::info("GL_VENDOR: %v", glGetString(GL_VENDOR));
-        yourgame::log::info("GL_RENDERER: %v", glGetString(GL_RENDERER));
-        yourgame::log::info("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
+            // get the actual (first) matching config
+            EGLConfig config;
+            eglChooseConfig(_display, eglAttribs, &config, 1, &numConfigs);
+
+            /* the attribute EGL_NATIVE_VISUAL_ID is an element of the enum AHardwareBuffer_Format,
+            that matches the chosen egl config. configure the buffers of the native window
+            appropriately (via ANativeWindow_setBuffersGeometry(..)) */
+            EGLint format;
+            eglGetConfigAttrib(_display, config, EGL_NATIVE_VISUAL_ID, &format);
+            yourgame::log::info("calling ANativeWindow_setBuffersGeometry(..) with format %v", format);
+            ANativeWindow_setBuffersGeometry(_win, 0, 0, format);
+
+            // create context, surface and make the context current
+            const EGLint contextAttribs[] = {
+                EGL_CONTEXT_CLIENT_VERSION, YOURGAME_GL_MAJOR,
+                EGL_NONE};
+            _eglContext = eglCreateContext(_display, config, EGL_NO_CONTEXT, contextAttribs);
+            if (_eglContext == EGL_NO_CONTEXT)
+            {
+                yourgame::log::error("eglCreateContext(..) returned EGL_NO_CONTEXT");
+            }
+            _surface = eglCreateWindowSurface(_display, config, _win, NULL);
+            eglMakeCurrent(_display, _surface, _surface, _eglContext);
+
+            // update window size in yourgame
+            updateWinSize();
+
+            yourgame::log::info("GL_VERSION: %v", glGetString(GL_VERSION));
+            yourgame::log::info("GL_VENDOR: %v", glGetString(GL_VENDOR));
+            yourgame::log::info("GL_RENDERER: %v", glGetString(GL_RENDERER));
+            yourgame::log::info("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
 
 #ifdef YOURGAME_EXTPROJ_imgui
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGuiIO &imgio = ImGui::GetIO();
-        // imgio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-        // imgio.IniFilename = NULL;
+            IMGUI_CHECKVERSION();
+            ImGui::CreateContext();
+            ImGuiIO &imgio = ImGui::GetIO();
+            // imgio.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+            // imgio.IniFilename = NULL;
 
-        ImGui::StyleColorsDark();
-        ImGui_ImplAndroid_Init(_win);
-        ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
+            ImGui::StyleColorsDark();
+            ImGui_ImplAndroid_Init(_win);
+            ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
 #endif
 
-        char *initArgv = nullptr;
-        mygame::init(0, &initArgv);
+            char *initArgv = nullptr;
+            mygame::init(0, &initArgv);
 
-        _initialized = true;
+            _initialized = true;
 
-        // initialize timing:
-        // get the initial time point just before tick() starts, which will
-        // result in a small time delta in the first tick() cycle.
-        // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
-        yourgame_internal::time::init();
-        yourgame::log::info("steady_clock precision: %vs (%vns)", yourgame::time::getClockPeriod(), yourgame::time::getClockPeriod() * 1.0e+9);
-    }
+            // initialize timing:
+            // get the initial time point just before tick() starts, which will
+            // result in a small time delta in the first tick() cycle.
+            // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
+            yourgame_internal::time::init();
+            yourgame::log::info("steady_clock precision: %vs (%vns)", yourgame::time::getClockPeriod(), yourgame::time::getClockPeriod() * 1.0e+9);
+        }
+    } // namespace android
 
     void tick()
     {
@@ -212,7 +216,7 @@ namespace yourgame_internal_android
             eglSwapBuffers(_display, _surface);
         }
 
-        yourgame_internal_android::tickInput();
+        yourgame_internal::input::tickInput();
     }
 
     int shutdown()
@@ -255,7 +259,7 @@ namespace yourgame_internal_android
 
         return ret;
     }
-} // namespace yourgame_internal_android
+} // namespace yourgame_internal
 
 namespace yourgame
 {
@@ -263,7 +267,7 @@ namespace yourgame
     {
         void exit()
         {
-            ANativeActivity_finish(yourgame_internal_android::_app->activity);
+            ANativeActivity_finish(_app->activity);
         }
 
         int sendCmdToEnv(int cmdId, int data0, int data1, int data2)
@@ -271,7 +275,7 @@ namespace yourgame
             // the whole procedure (get environment, etc.) is done every time to
             // not risk inconsistencies with global references to JNI objects.
 
-            JavaVM *jVM = yourgame_internal_android::_app->activity->vm;
+            JavaVM *jVM = _app->activity->vm;
             JNIEnv *jEnv = NULL;
 
             // todo: clearify JNI version to request
@@ -287,7 +291,7 @@ namespace yourgame
                 return -2;
             }
 
-            jclass natActClazz = jEnv->GetObjectClass(yourgame_internal_android::_app->activity->clazz);
+            jclass natActClazz = jEnv->GetObjectClass(_app->activity->clazz);
             if (natActClazz == NULL)
             {
                 return -3;
@@ -301,7 +305,7 @@ namespace yourgame
             }
 
             // call the actual method
-            jint methodRet = jEnv->CallIntMethod(yourgame_internal_android::_app->activity->clazz, methodID, cmdId, data0, data1, data2);
+            jint methodRet = jEnv->CallIntMethod(_app->activity->clazz, methodID, cmdId, data0, data1, data2);
             if (methodRet != 0)
             {
                 return -10;
