@@ -2,9 +2,9 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="65,5,243,45"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,93,116,119"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,48,87,86,84,82,130,44"/>
-<area shape="rect" id="Node000003" href="$include_2base_2yourgame_2input_8h.html" title=" " alt="" coords="93,167,231,192"/>
+<area shape="rect" id="Node000003" href="$yourgame_2input_8h.html" title=" " alt="" coords="93,167,231,192"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,46,163,153,158,153,152,46"/>
-<area shape="rect" id="Node000004" href="$src_2include__internal_2yourgame__internal_2input_8h.html" title=" " alt="" coords="191,93,386,119"/>
+<area shape="rect" id="Node000004" href="$internal_2yourgame__internal_2input_8h.html" title=" " alt="" coords="191,93,386,119"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,43,258,84,256,89,185,48"/>
 <area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="270,121,196,162,193,157,267,116"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="263,167,314,192"/>

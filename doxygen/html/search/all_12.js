@@ -18,7 +18,7 @@ var searchData=
   ['tick_15',['tick',['../namespacemygame.html#ab1121048bb4f4e56f0f424b3898049f2',1,'mygame::tick()'],['../namespaceyourgame__internal_1_1time.html#a1bb388c25330b990dac5bc240cffa283',1,'yourgame_internal::time::tick()'],['../namespaceyourgame__internal.html#adb1c12d91fa3224ba01cae0c3f8b4ecf',1,'yourgame_internal::tick()'],['../classyourgame_1_1util_1_1PhysEnv.html#af49ebfc076842317bd7375a7bd10e6c8',1,'yourgame::util::PhysEnv::tick()'],['../classyourgame_1_1util_1_1Motion.html#ae9de732587d6c46ab26bb13834d40a63',1,'yourgame::util::Motion::tick()'],['../classyourgame_1_1gl_1_1Particles.html#ae02728e5bc8a8269e619809329c156f8',1,'yourgame::gl::Particles::tick()'],['../classyourgame_1_1math_1_1Particles.html#af474b3cc9fd5c653d8e6c201db00daf7',1,'yourgame::math::Particles::tick()']]],
   ['tickinput_16',['tickInput',['../namespaceyourgame__internal_1_1input.html#a98c50e7a0dc6a15f507693cecf9c94d7',1,'yourgame_internal::input']]],
   ['time_2ecpp_17',['time.cpp',['../time_8cpp.html',1,'']]],
-  ['time_2eh_18',['time.h',['../include_2base_2yourgame_2time_8h.html',1,'(Global Namespace)'],['../src_2include__internal_2yourgame__internal_2time_8h.html',1,'(Global Namespace)']]],
+  ['time_2eh_18',['time.h',['../yourgame_2time_8h.html',1,'(Global Namespace)'],['../internal_2yourgame__internal_2time_8h.html',1,'(Global Namespace)']]],
   ['tinyobjloader_5fimplementation_19',['TINYOBJLOADER_IMPLEMENTATION',['../headerlibs_8cpp.html#af14fac7fbc250522a78849d58d5b0811',1,'headerlibs.cpp']]],
   ['todo_20list_20',['Todo List',['../todo.html',1,'']]],
   ['toolbox_2eh_21',['toolbox.h',['../toolbox_8h.html',1,'']]],

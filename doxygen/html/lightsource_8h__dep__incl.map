@@ -1,22 +1,29 @@
 <map id="/code/include/toolbox/yourgame/gl/lightsource.h" name="/code/include/toolbox/yourgame/gl/lightsource.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="542,5,738,45"/>
-<area shape="rect" id="Node000002" href="$shader_8h.html" title=" " alt="" coords="309,93,475,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="573,52,447,96,445,91,572,47"/>
-<area shape="rect" id="Node000004" href="$toolbox_8h.html" title=" " alt="" coords="311,269,473,309"/>
-<area shape="poly" id="edge10_Node000001_Node000004" title=" " alt="" coords="648,59,651,96,649,139,639,184,630,204,616,223,597,234,562,246,470,272,469,267,560,241,595,229,613,219,625,202,634,182,644,139,646,96,643,59"/>
-<area shape="rect" id="Node000009" href="$lightsource_8cpp.html" title=" " alt="" coords="677,93,827,133"/>
-<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="678,52,729,91,726,95,674,56"/>
-<area shape="rect" id="Node000003" href="$drawing_8h.html" title=" " alt="" coords="5,181,181,221"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="314,140,159,184,158,179,313,135"/>
-<area shape="poly" id="edge8_Node000002_Node000004" title=" " alt="" coords="395,147,395,269,389,269,389,147"/>
-<area shape="rect" id="Node000006" href="$loading_8h.html" title=" " alt="" coords="430,181,602,221"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="432,139,490,179,487,183,429,143"/>
-<area shape="rect" id="Node000008" href="$shader_8cpp.html" title=" " alt="" coords="205,181,355,221"/>
-<area shape="poly" id="edge9_Node000002_Node000008" title=" " alt="" coords="358,144,306,183,303,179,354,140"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="173,223,327,267,326,272,171,228"/>
-<area shape="rect" id="Node000005" href="$drawing_8cpp.html" title=" " alt="" coords="19,269,168,309"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="96,235,96,269,91,269,91,235"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="479,231,421,271,418,267,476,227"/>
-<area shape="rect" id="Node000007" href="$loading_8cpp.html" title=" " alt="" coords="497,269,647,309"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="538,232,562,268,557,271,534,234"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="267,5,463,45"/>
+<area shape="rect" id="Node000002" href="$shader_8h.html" title=" " alt="" coords="282,93,449,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="368,59,368,93,363,93,363,59"/>
+<area shape="rect" id="Node000004" href="$toolbox_8h.html" title=" " alt="" coords="173,269,334,309"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="255,46,190,64,125,91,93,109,64,130,39,155,17,183,9,204,12,221,26,236,47,249,107,268,173,279,172,284,106,273,45,254,22,240,7,224,3,203,12,180,35,151,61,126,90,105,122,87,189,59,253,41"/>
+<area shape="rect" id="Node000011" href="$lightsource_8cpp.html" title=" " alt="" coords="473,93,623,133"/>
+<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="419,49,509,91,507,96,417,54"/>
+<area shape="rect" id="Node000003" href="$drawing_8h.html" title=" " alt="" coords="712,181,888,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="463,131,712,180,711,185,462,136"/>
+<area shape="poly" id="edge10_Node000002_Node000004" title=" " alt="" coords="321,143,299,161,281,183,270,204,263,228,257,270,251,269,258,226,265,202,276,180,295,157,318,139"/>
+<area shape="rect" id="Node000006" href="$postproc_8cpp.html" title=" " alt="" coords="595,269,754,309"/>
+<area shape="poly" id="edge14_Node000002_Node000006" title=" " alt="" coords="462,132,583,159,651,179,666,200,674,224,678,269,673,269,669,225,661,203,648,183,582,164,461,137"/>
+<area shape="rect" id="Node000007" href="$loading_8h.html" title=" " alt="" coords="465,181,637,221"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="420,137,511,179,509,184,417,142"/>
+<area shape="rect" id="Node000009" href="$yourgame_2util_2postproc_8h.html" title=" " alt="" coords="27,181,216,221"/>
+<area shape="poly" id="edge11_Node000002_Node000009" title=" " alt="" coords="300,140,176,184,174,179,298,135"/>
+<area shape="rect" id="Node000010" href="$shader_8cpp.html" title=" " alt="" coords="291,181,440,221"/>
+<area shape="poly" id="edge13_Node000002_Node000010" title=" " alt="" coords="368,147,368,181,363,181,363,147"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="699,221,334,278,334,273,698,216"/>
+<area shape="rect" id="Node000005" href="$drawing_8cpp.html" title=" " alt="" coords="779,269,928,309"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="821,232,844,268,839,271,817,234"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="762,232,704,271,701,267,759,227"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="473,228,319,272,318,267,471,223"/>
+<area shape="poly" id="edge9_Node000007_Node000006" title=" " alt="" coords="591,227,649,267,646,271,588,231"/>
+<area shape="rect" id="Node000008" href="$loading_8cpp.html" title=" " alt="" coords="421,269,571,309"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="533,234,510,271,506,268,529,232"/>
+<area shape="poly" id="edge12_Node000009_Node000004" title=" " alt="" coords="163,227,225,267,223,271,160,231"/>
 </map>

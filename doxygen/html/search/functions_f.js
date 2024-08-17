@@ -34,7 +34,7 @@ var searchData=
   ['setznear_31',['setZNear',['../classyourgame_1_1math_1_1Camera.html#a8a2527e82d772e89d8003046cb127c11',1,'yourgame::math::Camera']]],
   ['shader_32',['Shader',['../classyourgame_1_1gl_1_1Shader.html#a1749e4aa6b627fb4fd3f17544087ec44',1,'yourgame::gl::Shader']]],
   ['shape_33',['Shape',['../classyourgame_1_1gl_1_1Shape.html#a89fcb7119e0104edc5bfb5f0335125c1',1,'yourgame::gl::Shape']]],
-  ['shutdown_34',['shutdown',['../namespaceyourgame_1_1audio.html#aaa6dab66685272ac9a6f54bd91fada29',1,'yourgame::audio::shutdown()'],['../namespacemygame.html#a090ecba8849435450b44d62de8da78c0',1,'mygame::shutdown()'],['../namespaceyourgame__internal.html#afebbf63bdda05d434307053bdcacc84d',1,'yourgame_internal::shutdown()']]],
+  ['shutdown_34',['shutdown',['../namespaceyourgame_1_1audio.html#aaa6dab66685272ac9a6f54bd91fada29',1,'yourgame::audio::shutdown()'],['../namespacemygame.html#a090ecba8849435450b44d62de8da78c0',1,'mygame::shutdown()'],['../namespaceyourgame__internal.html#afebbf63bdda05d434307053bdcacc84d',1,'yourgame_internal::shutdown()'],['../namespaceyourgame_1_1util_1_1postproc.html#a92a99306e51721679b5d0f9788af5f31',1,'yourgame::util::postproc::shutdown()']]],
   ['specular_35',['specular',['../classyourgame_1_1gl_1_1Lightsource.html#a5f834d86a457d521f32b64b73e9a498a',1,'yourgame::gl::Lightsource']]],
   ['spritegrid_36',['spritegrid',['../classyourgame_1_1gl_1_1SpriteGrid.html#a155eb48ecafbce6f2a62568ff4630fc5',1,'yourgame::gl::SpriteGrid::SpriteGrid()'],['../classyourgame_1_1gl_1_1SpriteGrid.html#a8d3589ddcdf6990b741dd2e6cfed9f59',1,'yourgame::gl::SpriteGrid::SpriteGrid(SpriteGrid const &amp;)=delete']]],
   ['stop_37',['stop',['../namespaceyourgame_1_1audio.html#a2ae53547f4cb2bf76c12f1dd81e5e04a',1,'yourgame::audio']]],

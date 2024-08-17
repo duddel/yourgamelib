@@ -1,0 +1,18 @@
+<map id="/code/include/base/yourgame/file.h" name="/code/include/base/yourgame/file.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="533,5,676,45"/>
+<area shape="rect" id="Node000002" href="$yourgame_2yourgame_8h.html" title=" " alt="" coords="261,93,436,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="536,52,406,96,404,91,535,47"/>
+<area shape="rect" id="Node000005" href="$loading_8cpp.html" title=" " alt="" coords="439,181,589,221"/>
+<area shape="poly" id="edge8_Node000001_Node000005" title=" " alt="" coords="558,55,538,73,522,95,514,116,511,139,513,181,508,181,506,139,509,115,517,92,534,69,555,51"/>
+<area shape="rect" id="Node000006" href="$audio_8cpp.html" title=" " alt="" coords="531,101,678,126"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="607,59,607,100,602,100,602,59"/>
+<area shape="rect" id="Node000007" href="$file_8cpp.html" title=" " alt="" coords="702,101,833,126"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="653,49,747,98,744,103,651,54"/>
+<area shape="rect" id="Node000008" href="$platform__desktop__web_2file_8cpp.html" title=" " alt="" coords="857,93,1024,133"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="690,46,867,91,866,96,689,51"/>
+<area shape="rect" id="Node000003" href="$platform__android_2yourgame_8cpp.html" title=" " alt="" coords="5,181,180,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="280,140,150,184,148,179,279,135"/>
+<area shape="rect" id="Node000004" href="$platform__desktop__web_2yourgame_8cpp.html" title=" " alt="" coords="204,181,416,221"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="337,147,321,182,316,180,332,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="398,137,479,179,477,184,396,142"/>
+</map>

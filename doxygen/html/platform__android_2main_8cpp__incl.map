@@ -2,11 +2,11 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="191,5,334,45"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="112,181,263,221"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="191,39,87,61,43,76,16,95,9,109,9,121,14,132,25,143,58,162,100,177,98,182,56,167,22,147,10,135,4,122,4,107,12,92,40,72,85,56,190,34"/>
-<area shape="rect" id="Node000003" href="$src_2include__internal_2yourgame__internal_2yourgame_8h.html" title=" " alt="" coords="26,101,253,126"/>
+<area shape="rect" id="Node000003" href="$internal_2yourgame__internal_2yourgame_8h.html" title=" " alt="" coords="26,101,253,126"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,48,169,95,166,91,233,43"/>
 <area shape="rect" id="Node000004" href="$yourgame__android_8h.html" title=" " alt="" coords="278,93,492,133"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="291,43,348,83,345,88,288,48"/>
-<area shape="rect" id="Node000005" href="$include_2base_2yourgame_2log_8h.html" title=" " alt="" coords="516,101,640,126"/>
+<area shape="rect" id="Node000005" href="$yourgame_2log_8h.html" title=" " alt="" coords="516,101,640,126"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="332,43,524,95,523,100,331,48"/>
 <area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="343,136,244,178,242,173,340,131"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="511,189,646,214"/>

@@ -145,10 +145,13 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        Geometry *<a class="code hl_function" href="namespaceyourgame_1_1gl.html#a8d348fe359492169000af38f4dc88ff3">loadGeometry</a>(<span class="keyword">const</span> std::string &amp;objFilename,</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>                               <span class="keyword">const</span> std::string &amp;mtlFilename = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    } <span class="comment">// namespace gl</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <span class="comment">// namespace yourgame</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        Geometry *<a class="code hl_function" href="namespaceyourgame_1_1gl.html#ac7e154ff074bae3fa3f1c54fa22a06d0">loadGeometryFromStrings</a>(<span class="keyword">const</span> std::string &amp;objCode,</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                                          <span class="keyword">const</span> std::string &amp;mtlCode = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    } <span class="comment">// namespace gl</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace yourgame</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aconventions_8h_html"><div class="ttname"><a href="conventions_8h.html">conventions.h</a></div></div>
 <div class="ttc" id="ageometry_8h_html"><div class="ttname"><a href="geometry_8h.html">geometry.h</a></div></div>
 <div class="ttc" id="agl__include_8h_html"><div class="ttname"><a href="gl__include_8h.html">gl_include.h</a></div></div>
@@ -158,6 +161,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespaceyourgame_1_1gl_html_a8d348fe359492169000af38f4dc88ff3"><div class="ttname"><a href="namespaceyourgame_1_1gl.html#a8d348fe359492169000af38f4dc88ff3">yourgame::gl::loadGeometry</a></div><div class="ttdeci">Geometry * loadGeometry(const std::string &amp;objFilename, const std::string &amp;mtlFilename=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> loading.cpp:315</div></div>
 <div class="ttc" id="anamespaceyourgame_1_1gl_html_a907ede102856dae3cc4b6bc74843c702"><div class="ttname"><a href="namespaceyourgame_1_1gl.html#a907ede102856dae3cc4b6bc74843c702">yourgame::gl::loadTexture</a></div><div class="ttdeci">Texture * loadTexture(const std::string &amp;imgFilename, const std::string &amp;atlasFilename, const yourgame::gl::TextureConfig &amp;cfg)</div><div class="ttdef"><b>Definition</b> loading.cpp:38</div></div>
 <div class="ttc" id="anamespaceyourgame_1_1gl_html_a95ca8f05fd41df16d2ec9fb5fd342ba2"><div class="ttname"><a href="namespaceyourgame_1_1gl.html#a95ca8f05fd41df16d2ec9fb5fd342ba2">yourgame::gl::loadCubemap</a></div><div class="ttdeci">Texture * loadCubemap(const std::vector&lt; std::string &gt; &amp;filenames, const yourgame::gl::TextureConfig &amp;cfg)</div><div class="ttdoc">loads images and generates cubemap texture</div><div class="ttdef"><b>Definition</b> loading.cpp:225</div></div>
+<div class="ttc" id="anamespaceyourgame_1_1gl_html_ac7e154ff074bae3fa3f1c54fa22a06d0"><div class="ttname"><a href="namespaceyourgame_1_1gl.html#ac7e154ff074bae3fa3f1c54fa22a06d0">yourgame::gl::loadGeometryFromStrings</a></div><div class="ttdeci">Geometry * loadGeometryFromStrings(const std::string &amp;objCode, const std::string &amp;mtlCode=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> loading.cpp:343</div></div>
 <div class="ttc" id="anamespaceyourgame_html"><div class="ttname"><a href="namespaceyourgame.html">yourgame</a></div><div class="ttdef"><b>Definition</b> audio.h:27</div></div>
 <div class="ttc" id="ashader_8h_html"><div class="ttname"><a href="shader_8h.html">shader.h</a></div></div>
 <div class="ttc" id="astructyourgame_1_1gl_1_1TextureConfig_html"><div class="ttname"><a href="structyourgame_1_1gl_1_1TextureConfig.html">yourgame::gl::TextureConfig</a></div><div class="ttdef"><b>Definition</b> loading.h:36</div></div>

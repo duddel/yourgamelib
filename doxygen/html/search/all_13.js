@@ -28,5 +28,6 @@ var searchData=
   ['unit_25',['unit',['../structyourgame_1_1gl_1_1Framebuffer_1_1TextureAttachDescr.html#a97412dde0a9f7f707e075ecaf89c5203',1,'yourgame::gl::Framebuffer::TextureAttachDescr::unit'],['../structyourgame_1_1gl_1_1TextureConfig.html#ac416df2b908079282f9b898f092d4b17',1,'yourgame::gl::TextureConfig::unit']]],
   ['updatedata_26',['updateData',['../classyourgame_1_1gl_1_1Texture.html#a7d5c0da4b352d2434faad98f75ea1404',1,'yourgame::gl::Texture']]],
   ['updateraw_27',['updateRaw',['../classyourgame_1_1util_1_1Image.html#ac6ed69b77c6f191d52ff3dfdb53c3ea7',1,'yourgame::util::Image']]],
-  ['useprogram_28',['useProgram',['../classyourgame_1_1gl_1_1Shader.html#a6ca44f771372f92f9f41b37b3a8fba7c',1,'yourgame::gl::Shader']]]
+  ['use_28',['use',['../namespaceyourgame_1_1util_1_1postproc.html#a0cd5fa6ccc2355b31648eb37e85c723b',1,'yourgame::util::postproc']]],
+  ['useprogram_29',['useProgram',['../classyourgame_1_1gl_1_1Shader.html#a6ca44f771372f92f9f41b37b3a8fba7c',1,'yourgame::gl::Shader']]]
 ];
