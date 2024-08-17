@@ -17,25 +17,19 @@ freely, subject to the following restrictions:
    misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
-#ifndef YOURGAME_YOURGAME_H
-#define YOURGAME_YOURGAME_H
+#ifndef YOURGAME_INTERNAL_POSTPROC_H
+#define YOURGAME_INTERNAL_POSTPROC_H
 
-// include the actual gl api for the target platform
-#include "yourgame/gl_include.h"
-
-// the following includes are part of the yourgame (base) API
-#include "yourgame/audio.h"
-#include "yourgame/control.h"
-#include "yourgame/file.h"
-#include "yourgame/input.h"
-#include "yourgame/log.h"
-#include "yourgame/math.h"
-#include "yourgame/time.h"
-#include "yourgame/version.h"
-
-// provide the toolbox, if requested (YOURGAME_TOOLBOX is defined via Toolbox.cmake)
-#ifdef YOURGAME_TOOLBOX
-#include "yourgame/toolbox.h"
-#endif
+namespace yourgame_internal
+{
+    namespace util
+    {
+        namespace postproc
+        {
+            void activate();
+            void deactivateAndDraw();
+        } // namespace postproc
+    } // namespace util
+} // namespace yourgame_internal
 
 #endif

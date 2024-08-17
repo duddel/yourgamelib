@@ -40,5 +40,6 @@ freely, subject to the following restrictions:
 #include "yourgame/util/image.h"
 #include "yourgame/util/motion.h"
 #include "yourgame/util/physenv.h"
+#include "yourgame/util/postproc.h"
 
 #endif

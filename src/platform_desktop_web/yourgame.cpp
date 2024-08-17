@@ -35,6 +35,9 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/input_desktop.h"
 #include "yourgame_internal/log.h"
 #include "yourgame_internal/time.h"
+#ifdef YOURGAME_TOOLBOX
+#include "yourgame_internal/util/postproc.h"
+#endif
 
 namespace
 {
@@ -89,11 +92,19 @@ namespace yourgame_internal
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 #endif
+
+#ifdef YOURGAME_TOOLBOX
+        yourgame_internal::util::postproc::activate();
+#endif
 #endif // #ifndef YOURGAME_CLIMODE
 
         mygame::tick();
 
 #ifndef YOURGAME_CLIMODE
+#ifdef YOURGAME_TOOLBOX
+        yourgame_internal::util::postproc::deactivateAndDraw();
+#endif
+
 #ifdef YOURGAME_EXTPROJ_imgui
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

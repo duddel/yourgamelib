@@ -285,6 +285,14 @@ namespace yourgame
             WINDOW_ASPECT_RATIO,
             WINDOW_ASPECT_RATIO_INVERSE,
             WINDOW_FULLSCREEN,
+            POSTPROC_INITIALIZED,
+            FRAMEBUF_WIDTH,
+            FRAMEBUF_WIDTH_INVERSE,
+            FRAMEBUF_HEIGHT,
+            FRAMEBUF_HEIGHT_INVERSE,
+            FRAMEBUF_ASPECT_RATIO,
+            FRAMEBUF_ASPECT_RATIO_INVERSE,
+            FRAMEBUF_MATCHES_WINDOW,
             VSYNC_ON,
             MOUSE_CATCHED
         };

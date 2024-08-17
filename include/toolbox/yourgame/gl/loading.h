@@ -64,6 +64,9 @@ namespace yourgame
 
         Geometry *loadGeometry(const std::string &objFilename,
                                const std::string &mtlFilename = "");
+
+        Geometry *loadGeometryFromStrings(const std::string &objCode,
+                                          const std::string &mtlCode = "");
     } // namespace gl
 } // namespace yourgame
 

@@ -337,11 +337,17 @@ namespace yourgame
                 mtlStr = std::string(mtlData.begin(), mtlData.end());
             }
 
+            return loadGeometryFromStrings(objStr, mtlStr);
+        }
+
+        Geometry *loadGeometryFromStrings(const std::string &objCode,
+                                          const std::string &mtlCode)
+        {
             tinyobj::ObjReader objRdr;
             tinyobj::ObjReaderConfig objRdrCfg;
             objRdrCfg.triangulate = true;
             objRdrCfg.vertex_color = true;
-            if (!objRdr.ParseFromString(objStr, mtlStr, objRdrCfg))
+            if (!objRdr.ParseFromString(objCode, mtlCode, objRdrCfg))
             {
                 yourgame::log::error("tinyobj::ObjReader::ParseFromString failed");
                 return nullptr;
@@ -428,7 +434,7 @@ namespace yourgame
                         }
                         catch (...)
                         {
-                            yourgame::log::error("loadGeometry(): %v has faulty obj vertex data", objFilename);
+                            yourgame::log::error("loadGeometry(): faulty obj vertex data");
                             return nullptr;
                         }
                         uniqueVertCount++;
@@ -481,7 +487,7 @@ namespace yourgame
                         }
                         catch (...)
                         {
-                            yourgame::log::error("loadGeometry(): %v has faulty line obj vertex data for", objFilename);
+                            yourgame::log::error("loadGeometry(): faulty line obj vertex data");
                             return nullptr;
                         }
                         uniqueVertCount++;

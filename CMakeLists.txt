@@ -83,7 +83,7 @@ list(APPEND YOURGAME_INC_DIRS
 )
 # inc dirs (internal)
 list(APPEND YOURGAME_INC_DIRS_PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/include_internal
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/base_internal
 )
 
 # preprocessor definition to describe the platform

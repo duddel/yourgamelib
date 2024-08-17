@@ -25,11 +25,18 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/image.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/motion.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/physenv.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/util/postproc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/headerlibs.cpp
 )
 
+# Public toolbox API headers
 list(APPEND YOURGAME_INC_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox
+)
+
+# Internal toolbox API headers
+list(APPEND YOURGAME_INC_DIRS_PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/toolbox_internal
 )
 
 list(APPEND YOURGAME_COMPILE_DEFS
