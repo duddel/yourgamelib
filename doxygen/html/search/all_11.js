@@ -38,7 +38,7 @@ var searchData=
   ['settranslation_35',['setTranslation',['../classyourgame_1_1math_1_1Trafo.html#a22d8aabebed9a0f60d88ca70ece6fc25',1,'yourgame::math::Trafo']]],
   ['setzfar_36',['setZFar',['../classyourgame_1_1math_1_1Camera.html#a3e0af8acd07df9934c6177a0dd3e693f',1,'yourgame::math::Camera']]],
   ['setznear_37',['setZNear',['../classyourgame_1_1math_1_1Camera.html#a8a2527e82d772e89d8003046cb127c11',1,'yourgame::math::Camera']]],
-  ['shader_38',['shader',['../classyourgame_1_1gl_1_1Shader.html#a1749e4aa6b627fb4fd3f17544087ec44',1,'yourgame::gl::Shader::Shader()'],['../structyourgame_1_1gl_1_1DrawConfig.html#ae8d0d098061d9769df100a6353029be6',1,'yourgame::gl::DrawConfig::shader'],['../classyourgame_1_1gl_1_1Shader.html',1,'yourgame::gl::Shader']]],
+  ['shader_38',['shader',['../structyourgame_1_1gl_1_1DrawConfig.html#ae8d0d098061d9769df100a6353029be6',1,'yourgame::gl::DrawConfig::shader'],['../classyourgame_1_1gl_1_1Shader.html#a1749e4aa6b627fb4fd3f17544087ec44',1,'yourgame::gl::Shader::Shader()'],['../classyourgame_1_1gl_1_1Shader.html',1,'yourgame::gl::Shader']]],
   ['shader_2ecpp_39',['shader.cpp',['../shader_8cpp.html',1,'']]],
   ['shader_2eh_40',['shader.h',['../shader_8h.html',1,'']]],
   ['shape_41',['shape',['../classyourgame_1_1gl_1_1Shape.html',1,'yourgame::gl::Shape'],['../classyourgame_1_1gl_1_1Shape.html#a89fcb7119e0104edc5bfb5f0335125c1',1,'yourgame::gl::Shape::Shape()']]],

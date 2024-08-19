@@ -7,9 +7,13 @@ var searchData=
   ['readfilefrompath_4',['readFileFromPath',['../namespaceyourgame__internal_1_1file.html#ab7220d695def8c7e9ff60c9b1f8b9224',1,'yourgame_internal::file']]],
   ['readprojectfile_5',['readProjectFile',['../namespaceyourgame_1_1file.html#a1c16170704856813727ff3f5b9c939ff',1,'yourgame::file']]],
   ['reset_6',['reset',['../classyourgame_1_1math_1_1Particles.html#ae4ede732bfe7cc54d4c7e5d4aab2a5e6',1,'yourgame::math::Particles::reset()'],['../namespaceyourgame_1_1time.html#a5991c73722a8d5b12affc85aef755254',1,'yourgame::time::reset()']]],
-  ['resize_7',['resize',['../classyourgame_1_1gl_1_1Framebuffer.html#a552053fee455d18d6da939b00e1a2af6',1,'yourgame::gl::Framebuffer::resize()'],['../namespaceyourgame_1_1util_1_1postproc.html#a1ace0c4dc458008fafed29125ec51eb9',1,'yourgame::util::postproc::resize()']]],
-  ['restart_8',['restart',['../classyourgame_1_1util_1_1Motion.html#ade9dc1ca08b6122a292cbb5f0e1e5e4e',1,'yourgame::util::Motion']]],
-  ['rigidbody_9',['RigidBody',['../classyourgame_1_1util_1_1RigidBody.html#a0a7e2736f6063d5c64451dc147419bfa',1,'yourgame::util::RigidBody']]],
-  ['rotateglobal_10',['rotateglobal',['../classyourgame_1_1math_1_1Trafo.html#ac38cc400be9e0cb0086899264d72fb87',1,'yourgame::math::Trafo::rotateGlobal(float angle, math::Axis ax)'],['../classyourgame_1_1math_1_1Trafo.html#ae9c2b7df51309961b7ca990e2e47b301',1,'yourgame::math::Trafo::rotateGlobal(float angle, glm::vec3 const &amp;ax)']]],
-  ['rotatelocal_11',['rotatelocal',['../classyourgame_1_1math_1_1Trafo.html#a882fdd272e1ed1f7bddd27a93f3b6c9e',1,'yourgame::math::Trafo::rotateLocal(float angle, math::Axis ax)'],['../classyourgame_1_1math_1_1Trafo.html#a8e93096dad7774ab0b5002093e4ac098',1,'yourgame::math::Trafo::rotateLocal(float angle, glm::vec3 const &amp;ax)']]]
+  ['resetrotation_7',['resetRotation',['../classyourgame_1_1math_1_1Trafo.html#aca349262b7c80b11e84f0498e8fe0a9f',1,'yourgame::math::Trafo']]],
+  ['resetscale_8',['resetScale',['../classyourgame_1_1math_1_1Trafo.html#a6b96dba740e01c3deb28fb14d9e3efb5',1,'yourgame::math::Trafo']]],
+  ['resettranslation_9',['resetTranslation',['../classyourgame_1_1math_1_1Trafo.html#ae6729686072276e4caa27ab8e22477e8',1,'yourgame::math::Trafo']]],
+  ['resize_10',['resize',['../namespaceyourgame_1_1util_1_1postproc.html#a1ace0c4dc458008fafed29125ec51eb9',1,'yourgame::util::postproc::resize()'],['../classyourgame_1_1gl_1_1Framebuffer.html#a552053fee455d18d6da939b00e1a2af6',1,'yourgame::gl::Framebuffer::resize()']]],
+  ['restart_11',['restart',['../classyourgame_1_1util_1_1Motion.html#ade9dc1ca08b6122a292cbb5f0e1e5e4e',1,'yourgame::util::Motion']]],
+  ['rigidbody_12',['RigidBody',['../classyourgame_1_1util_1_1RigidBody.html#a0a7e2736f6063d5c64451dc147419bfa',1,'yourgame::util::RigidBody']]],
+  ['rotatefirstperson_13',['rotateFirstPerson',['../classyourgame_1_1math_1_1Camera.html#af9f3c76f674408821143d4eed83a3b29',1,'yourgame::math::Camera']]],
+  ['rotateglobal_14',['rotateglobal',['../classyourgame_1_1math_1_1Trafo.html#ae9c2b7df51309961b7ca990e2e47b301',1,'yourgame::math::Trafo::rotateGlobal(float angle, glm::vec3 const &amp;ax)'],['../classyourgame_1_1math_1_1Trafo.html#ac38cc400be9e0cb0086899264d72fb87',1,'yourgame::math::Trafo::rotateGlobal(float angle, math::Axis ax)']]],
+  ['rotatelocal_15',['rotatelocal',['../classyourgame_1_1math_1_1Trafo.html#a882fdd272e1ed1f7bddd27a93f3b6c9e',1,'yourgame::math::Trafo::rotateLocal(float angle, math::Axis ax)'],['../classyourgame_1_1math_1_1Trafo.html#a8e93096dad7774ab0b5002093e4ac098',1,'yourgame::math::Trafo::rotateLocal(float angle, glm::vec3 const &amp;ax)']]]
 ];
