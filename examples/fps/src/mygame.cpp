@@ -226,15 +226,16 @@ namespace mygame
             ImGui::End();
         }
 
-        // first-person camera
-        g_camera.trafo()->rotateGlobal(-0.002f * yg::input::getDelta(yg::input::MOUSE_X), yg::math::Axis::Y);
-        g_camera.trafo()->rotateLocal(-0.002f * yg::input::getDelta(yg::input::MOUSE_Y), yg::math::Axis::X);
-        g_camera.trafo()->rotateGlobal(-0.001f * yg::input::getDelta(yg::input::TOUCH_0_X), yg::math::Axis::Y);
-        g_camera.trafo()->rotateLocal(-0.001f * yg::input::getDelta(yg::input::TOUCH_0_Y), yg::math::Axis::X);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::time::getDelta()) * 1.0f * yg::input::get(yg::input::KEY_LEFT), yg::math::Axis::Y);
-        g_camera.trafo()->rotateGlobal(static_cast<float>(yg::time::getDelta()) * -1.0f * yg::input::get(yg::input::KEY_RIGHT), yg::math::Axis::Y);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::time::getDelta()) * 1.0f * yg::input::get(yg::input::KEY_UP), yg::math::Axis::X);
-        g_camera.trafo()->rotateLocal(static_cast<float>(yg::time::getDelta()) * -1.0f * yg::input::get(yg::input::KEY_DOWN), yg::math::Axis::X);
+        // Rotate camera from input
+        float yawFromInput = -0.0005f * yg::input::getDelta(yg::input::MOUSE_X) +
+                             -0.0005f * yg::input::getDelta(yg::input::TOUCH_0_X) +
+                             (yg::input::get(yg::input::KEY_LEFT) - yg::input::get(yg::input::KEY_RIGHT)) * static_cast<float>(yg::time::getDelta());
+
+        float pitchFromInput = -0.0005f * yg::input::getDelta(yg::input::MOUSE_Y) +
+                               -0.0005f * yg::input::getDelta(yg::input::TOUCH_0_Y) +
+                               (yg::input::get(yg::input::KEY_UP) - yg::input::get(yg::input::KEY_DOWN)) * static_cast<float>(yg::time::getDelta());
+
+        g_camera.rotateFirstPerson(yawFromInput, pitchFromInput);
 
         // prepare diffuse color shader
         auto shdrDiffCol = g_assets.get<yg::gl::Shader>("shaderDiffuseColor");

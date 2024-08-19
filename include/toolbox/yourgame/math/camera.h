@@ -45,31 +45,30 @@ namespace yourgame
             void setAspect(float aspect);
             void setZNear(float zNear);
             void setZFar(float zFar);
+            void rotateFirstPerson(float yaw, float pitch);
             /** \brief viewportX,viewportY in [0.0,1.0] */
             void castRay(float viewportX, float viewportY, glm::vec3 &dstOrg, glm::vec3 &dstDir);
 
         private:
-            Trafo m_trafo;
+            // Intrinsics
             math::Projection m_proj = math::Projection::PERSPECTIVE;
             float m_fovy = 90.0f;
             float m_height = 1.0f;
             float m_aspect = 1.0f;
             float m_zNear = 0.1f;
             float m_zFar = 10.0f;
-            glm::mat4 m_vMat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
-                                         0.0f, 1.0f, 0.0f, 0.0f,
-                                         0.0f, 0.0f, 1.0f, 0.0f,
-                                         0.0f, 0.0f, 0.0f, 1.0f);
-            bool m_vMatInvalidated = false;
-            void updateVMatIfInvalidated();
-
-            glm::mat4 m_pMat = glm::mat4(1.0f, 0.0f, 0.0f, 0.0f,
-                                         0.0f, 1.0f, 0.0f, 0.0f,
-                                         0.0f, 0.0f, 1.0f, 0.0f,
-                                         0.0f, 0.0f, 0.0f, 1.0f);
+            glm::mat4 m_pMat = glm::mat4(1.0f); // identity
             bool m_pMatInvalidated = false;
             void updatePMatIfInvalidated();
             glm::mat4 calcPMat(float zNear, float zFar);
+
+            // Extrinsics
+            Trafo m_trafo;
+            float m_firstPersonYaw = 0.0f;
+            float m_firstPersonPitch = 0.0f;
+            glm::mat4 m_vMat = glm::mat4(1.0f); // identity
+            bool m_vMatInvalidated = false;
+            void updateVMatIfInvalidated();
         };
     } // namespace math
 } // namespace yourgame

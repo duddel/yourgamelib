@@ -105,6 +105,21 @@ namespace yourgame
             m_matInvalidated = true;
         }
 
+        void Trafo::resetScale()
+        {
+            setScaleLocal(0.0f);
+        }
+
+        void Trafo::resetRotation()
+        {
+            setRotation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f));
+        }
+
+        void Trafo::resetTranslation()
+        {
+            setTranslation(glm::vec3(0.0f));
+        }
+
         void Trafo::pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up)
         {
             auto dir = glm::normalize(center - eye);

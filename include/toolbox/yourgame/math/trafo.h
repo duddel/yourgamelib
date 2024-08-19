@@ -45,6 +45,9 @@ namespace yourgame
             void setScaleLocal(float scale);
             void setRotation(glm::quat const &rot);
             void setTranslation(glm::vec3 const &trans);
+            void resetScale();
+            void resetRotation();
+            void resetTranslation();
             void pointTo(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
             void lookAt(glm::vec3 const &eye, glm::vec3 const &center, glm::vec3 const &up);
             void lerp(float t, Trafo const &target, Trafo *dst);

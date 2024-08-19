@@ -112,6 +112,15 @@ namespace yourgame
             m_pMatInvalidated = true;
         }
 
+        void Camera::rotateFirstPerson(float yaw, float pitch)
+        {
+            m_firstPersonYaw += yaw;
+            m_firstPersonPitch = glm::clamp(m_firstPersonPitch + pitch, -1.57079632679f, 1.57079632679f);
+            m_trafo.resetRotation();
+            m_trafo.rotateGlobal(m_firstPersonYaw, math::Axis::Y);
+            m_trafo.rotateLocal(m_firstPersonPitch, math::Axis::X);
+        }
+
         void Camera::castRay(float viewportX, float viewportY, glm::vec3 &dstOrg, glm::vec3 &dstDir)
         {
             float viewX = ((viewportX * 2.0f) - 1.0f);
