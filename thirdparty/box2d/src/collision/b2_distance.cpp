@@ -27,7 +27,7 @@
 #include "box2d/b2_polygon_shape.h"
 
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
-int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
+B2_API int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;
 
 void b2DistanceProxy::Set(const b2Shape* shape, int32 index)
 {
@@ -569,30 +569,28 @@ void b2Distance(b2DistanceOutput* output,
 	// Cache the simplex.
 	simplex.WriteCache(cache);
 
-	// Apply radii if requested.
+	// Apply radii if requested
 	if (input->useRadii)
 	{
-		float rA = proxyA->m_radius;
-		float rB = proxyB->m_radius;
-
-		if (output->distance > rA + rB && output->distance > b2_epsilon)
+		if (output->distance < b2_epsilon)
 		{
-			// Shapes are still no overlapped.
-			// Move the witness points to the outer surface.
-			output->distance -= rA + rB;
-			b2Vec2 normal = output->pointB - output->pointA;
-			normal.Normalize();
-			output->pointA += rA * normal;
-			output->pointB -= rB * normal;
-		}
-		else
-		{
-			// Shapes are overlapped when radii are considered.
-			// Move the witness points to the middle.
+			// Shapes are too close to safely compute normal
 			b2Vec2 p = 0.5f * (output->pointA + output->pointB);
 			output->pointA = p;
 			output->pointB = p;
 			output->distance = 0.0f;
+		}
+		else
+		{
+			// Keep closest points on perimeter even if overlapped, this way
+			// the points move smoothly.
+			float rA = proxyA->m_radius;
+			float rB = proxyB->m_radius;
+			b2Vec2 normal = output->pointB - output->pointA;
+			normal.Normalize();
+			output->distance = b2Max(0.0f, output->distance - rA - rB);
+			output->pointA += rA * normal;
+			output->pointB -= rB * normal;
 		}
 	}
 }
@@ -642,7 +640,7 @@ bool b2ShapeCast(b2ShapeCastOutput * output, const b2ShapeCastInput * input)
 	// Main iteration loop.
 	const int32 k_maxIters = 20;
 	int32 iter = 0;
-	while (iter < k_maxIters && b2Abs(v.Length() - sigma) > tolerance)
+	while (iter < k_maxIters && v.Length() - sigma > tolerance)
 	{
 		b2Assert(simplex.m_count < 3);
 
@@ -720,6 +718,12 @@ bool b2ShapeCast(b2ShapeCastOutput * output, const b2ShapeCastInput * input)
 
 		// Iteration count is equated to the number of support point calls.
 		++iter;
+	}
+
+	if (iter == 0)
+	{
+		// Initial overlap
+		return false;
 	}
 
 	// Prepare output.

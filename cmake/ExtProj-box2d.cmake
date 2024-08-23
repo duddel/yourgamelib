@@ -43,7 +43,6 @@ list(APPEND YOURGAME_SRC_FILES
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_prismatic_joint.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_pulley_joint.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_revolute_joint.cpp
-  ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_rope_joint.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_weld_joint.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_wheel_joint.cpp
   ${YOURGAME_EXT_PROJ_CODE_DIR}/box2d/src/dynamics/b2_world.cpp

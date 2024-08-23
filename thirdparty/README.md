@@ -47,8 +47,8 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Box2D
 
--   version: **4de0ea3, 2.4.0 (unreleased)**
--   origin: <https://github.com/erincatto/box2d/tree/4de0ea3f1e9511ebd4c85b52e200a8bd9c2fae9e>
+-   version: **2.4.2**
+-   origin: <https://github.com/erincatto/box2d/releases/tag/v2.4.2>
 -   extracted from origin:
     -   LICENSE
     -   include/\*
@@ -56,7 +56,6 @@ These libraries are integrated if the project has been initialized with default 
     -   src/common/\*
     -   src/dynamics/\*
     -   src/rope/\*
--   modifications are marked with `YOURGAME_MODIFICATION`
 -   license: [box2d/LICENSE](box2d/LICENSE)
 
 ## Bullet

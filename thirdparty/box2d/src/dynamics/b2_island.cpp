@@ -29,10 +29,8 @@
 #include "box2d/b2_timer.h"
 #include "box2d/b2_world.h"
 
+#include "b2_contact_solver.h"
 #include "b2_island.h"
-// YOURGAME_MODIFICATION start
-#include "b2_contact_solver.h" //#include "dynamics/b2_contact_solver.h"
-// YOURGAME_MODIFICATION end
 
 /*
 Position Correction Notes

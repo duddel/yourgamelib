@@ -23,6 +23,7 @@
 #ifndef B2_BODY_H
 #define B2_BODY_H
 
+#include "b2_api.h"
 #include "b2_math.h"
 #include "b2_shape.h"
 
@@ -44,19 +45,15 @@ enum b2BodyType
 	b2_staticBody = 0,
 	b2_kinematicBody,
 	b2_dynamicBody
-
-	// TODO_ERIN
-	//b2_bulletBody,
 };
 
 /// A body definition holds all the data needed to construct a rigid body.
 /// You can safely re-use body definitions. Shapes are added to a body after construction.
-struct b2BodyDef
+struct B2_API b2BodyDef
 {
 	/// This constructor sets the body definition default values.
 	b2BodyDef()
 	{
-		userData = nullptr;
 		position.Set(0.0f, 0.0f);
 		angle = 0.0f;
 		linearVelocity.Set(0.0f, 0.0f);
@@ -121,14 +118,14 @@ struct b2BodyDef
 	bool enabled;
 
 	/// Use this to store application specific body data.
-	void* userData;
+	b2BodyUserData userData;
 
 	/// Scale the gravity applied to this body.
 	float gravityScale;
 };
 
 /// A rigid body. These are created via b2World::CreateBody.
-class b2Body
+class B2_API b2Body
 {
 public:
 	/// Creates a fixture and attach it to this body. Use this function if you need
@@ -246,7 +243,7 @@ public:
 
 	/// Get the mass data of the body.
 	/// @return a struct containing the mass, inertia and center of the body.
-	void GetMassData(b2MassData* data) const;
+	b2MassData GetMassData() const;
 
 	/// Set the mass properties to override the mass properties of the fixtures.
 	/// Note that this changes the center of mass position.
@@ -379,10 +376,8 @@ public:
 	const b2Body* GetNext() const;
 
 	/// Get the user data pointer that was provided in the body definition.
-	void* GetUserData() const;
-
-	/// Set the user data. Use this to store your application specific data.
-	void SetUserData(void* data);
+	b2BodyUserData& GetUserData();
+	const b2BodyUserData& GetUserData() const;
 
 	/// Get the parent world of this body.
 	b2World* GetWorld();
@@ -398,7 +393,7 @@ private:
 	friend class b2ContactManager;
 	friend class b2ContactSolver;
 	friend class b2Contact;
-	
+
 	friend class b2DistanceJoint;
 	friend class b2FrictionJoint;
 	friend class b2GearJoint;
@@ -407,7 +402,6 @@ private:
 	friend class b2PrismaticJoint;
 	friend class b2PulleyJoint;
 	friend class b2RevoluteJoint;
-	friend class b2RopeJoint;
 	friend class b2WeldJoint;
 	friend class b2WheelJoint;
 
@@ -471,7 +465,7 @@ private:
 
 	float m_sleepTime;
 
-	void* m_userData;
+	b2BodyUserData m_userData;
 };
 
 inline b2BodyType b2Body::GetType() const
@@ -554,11 +548,13 @@ inline float b2Body::GetInertia() const
 	return m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
 }
 
-inline void b2Body::GetMassData(b2MassData* data) const
+inline b2MassData b2Body::GetMassData() const
 {
-	data->mass = m_mass;
-	data->I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
-	data->center = m_sweep.localCenter;
+	b2MassData data;
+	data.mass = m_mass;
+	data.I = m_I + m_mass * b2Dot(m_sweep.localCenter, m_sweep.localCenter);
+	data.center = m_sweep.localCenter;
+	return data;
 }
 
 inline b2Vec2 b2Body::GetWorldPoint(const b2Vec2& localPoint) const
@@ -640,6 +636,11 @@ inline bool b2Body::IsBullet() const
 
 inline void b2Body::SetAwake(bool flag)
 {
+	if (m_type == b2_staticBody)
+	{
+		return;
+	}
+
 	if (flag)
 	{
 		m_flags |= e_awakeFlag;
@@ -729,12 +730,12 @@ inline const b2Body* b2Body::GetNext() const
 	return m_next;
 }
 
-inline void b2Body::SetUserData(void* data)
+inline b2BodyUserData& b2Body::GetUserData()
 {
-	m_userData = data;
+	return m_userData;
 }
 
-inline void* b2Body::GetUserData() const
+inline const b2BodyUserData& b2Body::GetUserData() const
 {
 	return m_userData;
 }
