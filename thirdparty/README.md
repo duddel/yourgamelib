@@ -34,8 +34,6 @@ These libraries are integrated if the project has been initialized with default 
 | [bullet](#bullet)                      | Bullet                | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [doctest](#doctest)                    | doctest               | :heavy_check_mark: |                    |                    |
 | [file-dialogs](#portable-file-dialogs) | Portable File Dialogs | :heavy_check_mark: |                    |                    |
-| [flecs](#flecs)                        | Flecs                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [fsm](#fsm)                            | fsm                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [lua](#lua-luabridge)                  | Lua, LuaBridge        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [miniaudio](#miniaudio)                | miniaudio             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
@@ -109,22 +107,6 @@ These libraries are integrated if the project has been initialized with default 
 -   extracted from origin:
     -   COPYING, portable-file-dialogs.h
 -   license: [portable-file-dialogs/COPYING](portable-file-dialogs/COPYING)
-
-## Flecs
-
--   version: **2.3.2**
--   origin: <https://github.com/SanderMertens/flecs/releases/tag/v2.3.2>
--   extracted from origin:
-    -   LICENSE, flecs.{h,c}
--   license: [flecs/LICENSE](flecs/LICENSE)
-
-## fsm
-
--   version: **1.0.0**
--   origin: <https://github.com/r-lyeh-archived/fsm/tree/41c635ef95d838096f891579d254eccc163ee6af>
--   extracted from origin:
-    -   LICENSE, fsm.hpp
--   license: [fsm/LICENSE](fsm/LICENSE)
 
 ## glad (generated code)
 

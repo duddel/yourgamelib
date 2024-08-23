@@ -25,7 +25,6 @@ freely, subject to the following restrictions:
 #include "yourgame/yourgame.h"
 #include "imgui.h"
 #include "box2d/box2d.h"
-#include "flecs.h"
 extern "C"
 {
 #include "lua.h"
@@ -39,17 +38,6 @@ namespace yg = yourgame; // convenience
 
 namespace mygame
 {
-    // Flecs components
-    struct flecsDistance
-    {
-        float s;
-    };
-
-    struct flecsVelocity
-    {
-        float v;
-    };
-
     // forward declarations
     void updateImgui();
 
@@ -138,9 +126,9 @@ namespace mygame
 
         // Post processing Color0 shader
         g_assets.insert("shaderPostColor0", yg::gl::loadShader(
-                                             {{GL_VERTEX_SHADER, "a//yg_default.vert"},
-                                              {GL_FRAGMENT_SHADER, "a//yg_post_null.frag"}},
-                                             {}, {}));
+                                                {{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                                 {GL_FRAGMENT_SHADER, "a//yg_post_null.frag"}},
+                                                {}, {}));
         g_assets.get<yg::gl::Shader>("shaderPostColor0")->useProgram();
 
         // geometry
@@ -351,7 +339,6 @@ namespace mygame
         static bool showLicense = false;
         static bool showImguiDemo = false;
         static bool showBox2d = false;
-        static bool showFlecs = false;
         static bool showLua = false;
         static bool showMotion = false;
         static bool showSpriteGrid = false;
@@ -389,10 +376,6 @@ namespace mygame
                 if (ImGui::MenuItem("Box2D", "", &showBox2d))
                 {
                     showBox2d = true;
-                }
-                if (ImGui::MenuItem("Flecs", "", &showFlecs))
-                {
-                    showFlecs = true;
                 }
                 if (ImGui::MenuItem("Lua", "", &showLua))
                 {
@@ -637,53 +620,6 @@ namespace mygame
         {
             delete box2dWorld;
             box2dInitialized = false;
-        }
-
-        // Flecs demo window
-        static bool flecsInitialized = false;
-        static flecs::world *flecsWorld;
-        if (showFlecs)
-        {
-            ImGui::Begin("Flecs", &showFlecs, (ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize));
-
-            if (!flecsInitialized)
-            {
-                flecsWorld = new flecs::world();
-
-                // register components
-                flecsWorld->component<flecsDistance>();
-                flecsWorld->component<flecsVelocity>();
-
-                // add movement system
-                flecsWorld->system<flecsDistance, flecsVelocity>().each([](flecs::entity e, flecsDistance &dist, flecsVelocity &vel)
-                                                                        {
-                                                                            float newS = dist.s + vel.v * e.delta_time();
-                                                                            dist.s = newS > 10.0f ? newS - 10.0f : newS; });
-
-                // add drawing system
-                flecsWorld->system<flecsDistance>().each([](flecs::entity e, flecsDistance &dist)
-                                                         {
-                                                             // indicate entity components via sliders
-                                                             float entityVal = dist.s;
-                                                             ImGui::SliderFloat(("entity " + std::to_string(e.id())).c_str(), &entityVal, 0.0f, 10.0f); });
-
-                // add some entities
-                for (int i = 1; i < 11; i++)
-                {
-                    flecsWorld->entity().set<flecsDistance>({5.0}).set<flecsVelocity>({(float)i});
-                }
-
-                flecsInitialized = true;
-            }
-
-            flecsWorld->progress();
-
-            ImGui::End();
-        }
-        else if (flecsInitialized)
-        {
-            delete flecsWorld;
-            flecsInitialized = false;
         }
 
         // Lua demo window

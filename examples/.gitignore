@@ -1,7 +1,10 @@
-*
-!.gitignore
-!*/src/*
-!*/assets/*
+*/*
+!*/src/
+!*/assets/
+!*/init.*
 */assets/yg_*
-!*/init.bash
-!*/init.cmd
+
+template/*
+!template/init.*
+
+!.gitignore
