@@ -22,105 +22,18 @@ freely, subject to the following restrictions:
 #include "yourgame/gl/conventions.h"
 #include "yourgame/gl/drawing.h"
 #include "yourgame/gl/framebuffer.h"
-#include "yourgame/gl/loading.h"
 #include "yourgame/gl/shader.h"
 #include "yourgame_internal/input.h"
+#include "yourgame_internal/util/assets.h"
 
 namespace
 {
-    const std::string shaderPostVert = R"(// meant to be compatible with glsl 330 and 300 es
-// desired #version has to be prepended befor compiling
-
-layout(location = 0) in vec3 inPosition;
-layout(location = 2) in vec2 inTexcoords;
-
-out vec2 vOutTex;
-
-uniform mat4 mvpMat;
-
-void main()
-{
-    vOutTex = inTexcoords;
-    gl_Position = mvpMat * vec4(inPosition, 1.0);
-}
-)";
-
-    const std::string shaderPostNullFrag = R"(// meant to be compatible with glsl 330 and 300 es
-// desired #version has to be prepended befor compiling
-
-precision mediump float; // required for es
-
-in vec2 vOutTex;
-
-layout(location = 0) out vec4 color;
-
-uniform sampler2D textureBufferColor0;
-
-void main()
-{
-    color = texture(textureBufferColor0, vOutTex);
-}
-)";
-
-    const std::string geoQuad = R"(v -1.0 -1.0 0.0
-v 1.0 -1.0 0.0
-v 1.0 1.0 0.0
-v -1.0 1.0 0.0
-vt 0.0 0.0
-vt 1.0 0.0
-vt 1.0 1.0
-vt 0.0 1.0
-vn 0.0 0.0 1.0
-vn 0.0 0.0 1.0
-vn 0.0 0.0 1.0
-vn 0.0 0.0 1.0
-f 1/1/1 2/2/2 3/3/3
-f 1/1/1 3/3/3 4/4/4
-)";
-
     yourgame::gl::Framebuffer *g_framebuf = nullptr;
     yourgame::gl::Shader *g_postprocShader = nullptr;
-    yourgame::gl::Shader *g_postprocNullShader = nullptr;
-    yourgame::gl::Geometry *g_quadGeo = nullptr;
     uint32_t g_framebufWidth = 0;
     uint32_t g_framebufHeight = 0;
     uint32_t g_framebufWidthActual = 0;
     uint32_t g_framebufHeightActual = 0;
-
-    void deleteInternalAssets()
-    {
-        if (g_postprocNullShader)
-        {
-            delete g_postprocNullShader;
-            g_postprocNullShader = nullptr;
-        }
-
-        if (g_quadGeo)
-        {
-            delete g_quadGeo;
-            g_quadGeo = nullptr;
-        }
-    }
-
-    bool loadInternalAssets()
-    {
-        g_postprocNullShader = yourgame::gl::loadShaderFromStrings(
-            {{GL_VERTEX_SHADER, shaderPostVert},
-             {GL_FRAGMENT_SHADER, shaderPostNullFrag}});
-
-        g_quadGeo = yourgame::gl::loadGeometryFromStrings(geoQuad, "");
-
-        if (g_postprocNullShader &&
-            g_quadGeo)
-        {
-            return true;
-        }
-        else
-        {
-            deleteInternalAssets();
-            return false;
-        }
-    }
 
     void updateFramebufSizeActual()
     {
@@ -277,7 +190,8 @@ namespace yourgame_internal
                     auto pMat = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f);
 
                     // use "null" post processing shader by default
-                    yourgame::gl::Shader *shader = g_postprocNullShader;
+                    yourgame::gl::Shader *shader =
+                        yourgame_internal::util::assets::manager.get<yourgame::gl::Shader>("shaderPostNull");
                     if (g_postprocShader)
                     {
                         shader = g_postprocShader;
@@ -292,7 +206,7 @@ namespace yourgame_internal
                     cfg.textures.push_back(g_framebuf->textureAttachment(0));
                     cfg.textures.push_back(g_framebuf->textureAttachment(1));
 
-                    yourgame::gl::drawGeo(g_quadGeo, cfg);
+                    yourgame::gl::drawGeo(yourgame_internal::util::assets::manager.get<yourgame::gl::Geometry>("geoQuad"), cfg);
                 }
             }
         } // namespace postproc
@@ -314,11 +228,6 @@ namespace yourgame
 
             bool init(uint32_t width, uint32_t height)
             {
-                if (!loadInternalAssets())
-                {
-                    return false;
-                }
-
                 resize(width, height);
 
                 g_framebuf = yourgame::gl::Framebuffer::make(
@@ -355,8 +264,6 @@ namespace yourgame
                     delete g_framebuf;
                     g_framebuf = nullptr;
                 }
-
-                deleteInternalAssets();
 
                 yourgame_internal::input::setInput(yourgame::input::Source::POSTPROC_INITIALIZED, 0.0f);
             }

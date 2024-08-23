@@ -3,4 +3,4 @@
 cd "${0%/*}"
 cd ..
 
-python ../init/init.py fps --noStub --extProj bullet miniaudio
+python ../init/init.py fps --noTemplate --extProj bullet miniaudio

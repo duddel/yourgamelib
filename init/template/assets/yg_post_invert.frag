@@ -3,11 +3,13 @@
 
 precision mediump float; // required for es
 
-in vec3 vOutCol;
+in vec2 vOutTex;
 
 layout(location = 0) out vec4 color;
 
+uniform sampler2D textureBufferColor0;
+
 void main()
 {
-    color = vec4(vOutCol, 1.0);
+    color = vec4(1) - texture(textureBufferColor0, vOutTex);
 }

@@ -35,6 +35,7 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/log.h"
 #include "yourgame_internal/time.h"
 #ifdef YOURGAME_TOOLBOX
+#include "yourgame_internal/util/assets.h"
 #include "yourgame_internal/util/postproc.h"
 #endif
 
@@ -180,6 +181,17 @@ namespace yourgame_internal
             ImGui::StyleColorsDark();
             ImGui_ImplAndroid_Init(_win);
             ImGui_ImplOpenGL3_Init(YOURGAME_GLSL_VERSION_STRING);
+#endif
+
+#ifdef YOURGAME_TOOLBOX
+            if (yourgame_internal::util::assets::loadStockAssets())
+            {
+                yourgame::log::info("Loading stock assets: success");
+            }
+            else
+            {
+                yourgame::log::error("Loading stock assets: FAILED");
+            }
 #endif
 
             char *initArgv = nullptr;

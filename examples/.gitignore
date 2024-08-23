@@ -1,0 +1,7 @@
+*
+!.gitignore
+!*/src/*
+!*/assets/*
+*/assets/yg_*
+!*/init.bash
+!*/init.cmd

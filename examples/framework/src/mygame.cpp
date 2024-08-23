@@ -76,13 +76,8 @@ namespace mygame
     {
         // load license info file
         {
-#if defined(YOURGAME_PLATFORM_DESKTOP)
-            static const std::string licFilename("a//LICENSE_desktop.txt");
-#elif defined(YOURGAME_PLATFORM_ANDROID)
-            static const std::string licFilename("a//LICENSE_android.txt");
-#elif defined(YOURGAME_PLATFORM_WEB)
-            static const std::string licFilename("a//LICENSE_web.txt");
-#endif
+            static const std::string licFilename("a//yg_LICENSES.txt");
+
             std::vector<uint8_t> licFileData;
             yg::file::readFile(licFilename, licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
@@ -109,47 +104,47 @@ namespace mygame
 
         // Skybox shader
         g_assets.insert("shaderSkybox", yg::gl::loadShader(
-                                            {{GL_VERTEX_SHADER, "a//skybox.vert"},
-                                             {GL_FRAGMENT_SHADER, "a//skybox.frag"}},
+                                            {{GL_VERTEX_SHADER, "a//yg_skybox.vert"},
+                                             {GL_FRAGMENT_SHADER, "a//yg_skybox.frag"}},
                                             {}, {}));
         g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
 
         // Normal shader
         g_assets.insert("shaderNormal", yg::gl::loadShader(
-                                            {{GL_VERTEX_SHADER, "a//simple.vert"},
-                                             {GL_FRAGMENT_SHADER, "a//simplenormal.frag"}},
+                                            {{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                             {GL_FRAGMENT_SHADER, "a//yg_simplenormal.frag"}},
                                             {}, {}));
 
         // Color shader
         g_assets.insert("shaderColor", yg::gl::loadShader(
-                                           {{GL_VERTEX_SHADER, "a//simple.vert"},
+                                           {{GL_VERTEX_SHADER, "a//yg_default.vert"},
                                             {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}},
                                            {}, {}));
         g_assets.get<yg::gl::Shader>("shaderColor")->useProgram();
 
         // Texture shader
         g_assets.insert("shaderTexture", yg::gl::loadShader(
-                                             {{GL_VERTEX_SHADER, "a//simple.vert"},
-                                              {GL_FRAGMENT_SHADER, "a//simpletex.frag"}},
+                                             {{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                              {GL_FRAGMENT_SHADER, "a//yg_simpletex.frag"}},
                                              {}, {}));
         g_assets.get<yg::gl::Shader>("shaderTexture")->useProgram();
 
         // Post processing Depth Texture shader
         g_assets.insert("shaderTextureDepth", yg::gl::loadShader(
-                                                  {{GL_VERTEX_SHADER, "a//simple.vert"},
-                                                   {GL_FRAGMENT_SHADER, "a//postdepth.frag"}},
+                                                  {{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                                   {GL_FRAGMENT_SHADER, "a//yg_post_depth.frag"}},
                                                   {}, {}));
         g_assets.get<yg::gl::Shader>("shaderTextureDepth")->useProgram();
 
         // Post processing Color0 shader
         g_assets.insert("shaderPostColor0", yg::gl::loadShader(
-                                             {{GL_VERTEX_SHADER, "a//simple.vert"},
-                                              {GL_FRAGMENT_SHADER, "a//postcolor0.frag"}},
+                                             {{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                              {GL_FRAGMENT_SHADER, "a//yg_post_null.frag"}},
                                              {}, {}));
         g_assets.get<yg::gl::Shader>("shaderPostColor0")->useProgram();
 
         // geometry
-        g_assets.insert("quadGeo", yg::gl::loadGeometry("a//quad.obj"));
+        g_assets.insert("quadGeo", yg::gl::loadGeometry("a//yg_quad05.obj"));
         g_assets.insert("cube", yg::gl::loadGeometry("a//cube.obj"));
 
         // framebuffer

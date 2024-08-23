@@ -57,12 +57,15 @@ namespace yourgame
             \tparam T object type
             \param name name
             \param obj pointer
+            \return false, if obj was nullptr, true otherwise
             */
             template <class T>
-            void insert(std::string name, T *obj)
+            bool insert(std::string name, T *obj)
             {
-                if (obj == nullptr)
-                    return;
+                if (!obj)
+                {
+                    return false;
+                }
 
                 // insert delete function for objects of type T, if not present
                 auto itDelFunc = m_delFuncs.find(typeid(T).hash_code());
@@ -80,6 +83,8 @@ namespace yourgame
                     m_delFuncs[typeid(T).hash_code()](itT->second);
                 }
                 m_ptrMaps[typeid(T).hash_code()][name] = reinterpret_cast<std::uintptr_t>(obj);
+
+                return true;
             }
 
             /**

@@ -12,7 +12,7 @@ uniform sampler2D textureDiffuse;
 void main()
 {
     vec4 texColor = texture(textureDiffuse, vOutTex);
-    if (texColor.a < 1.0)
+    if (texColor.a < 0.8)
         discard;
     color = texColor;
 }

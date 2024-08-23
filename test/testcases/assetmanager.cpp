@@ -32,9 +32,9 @@ size_t A::numObj = 0;
 TEST_CASE("AssetManager")
 {
     yourgame::util::AssetManager assman;
-    assman.insert<A>("A1", new A(1));
-    assman.insert<A>("A2", new A(2));
-    assman.insert<A>("A3", new A(3));
+    CHECK(assman.insert<A>("A1", new A(1)));
+    CHECK(assman.insert<A>("A2", new A(2)));
+    CHECK(assman.insert<A>("A3", new A(3)));
     REQUIRE(assman.numOf<A>() == 3);
     REQUIRE(A::numObj == 3);
 
@@ -47,20 +47,20 @@ TEST_CASE("AssetManager")
 
     SUBCASE("insert nullptr")
     {
-        assman.insert<A>("A4", nullptr);
+        CHECK(!assman.insert<A>("A4", nullptr));
         CHECK(assman.numOf<A>() == 3);
     }
 
     SUBCASE("insert A*")
     {
-        assman.insert<A>("A4", new A(4));
+        CHECK(assman.insert<A>("A4", new A(4)));
         CHECK(A::numObj == 4);
         CHECK(assman.numOf<A>() == 4);
     }
 
     SUBCASE("overwrite")
     {
-        assman.insert<A>("A1", new A(11));
+        CHECK(assman.insert<A>("A1", new A(11)));
         CHECK(assman.get<A>("A1")->m_a == 11);
         CHECK(A::numObj == 3);
         CHECK(assman.numOf<A>() == 3);

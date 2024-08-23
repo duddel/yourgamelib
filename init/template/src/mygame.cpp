@@ -23,16 +23,16 @@ namespace mygame
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_light.setDiffuse({1.0f, 1.0f, 1.0f});
 
-        g_assets.insert("geoCube", yg::gl::loadGeometry("a//cube.obj"));
-        g_assets.insert("geoGrid", yg::gl::loadGeometry("a//grid.obj"));
+        g_assets.insert("geoCube", yg::gl::loadGeometry("a//yg_cube.obj"));
+        g_assets.insert("geoGrid", yg::gl::loadGeometry("a//yg_grid.obj"));
 
         g_assets.insert("shaderDiffuseColor",
-                        yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
-                                            {GL_FRAGMENT_SHADER, "a//diffusecolor.frag"}}));
+                        yg::gl::loadShader({{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                            {GL_FRAGMENT_SHADER, "a//yg_diffusecolor.frag"}}));
 
         g_assets.insert("shaderSimpleColor",
-                        yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
-                                            {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
+                        yg::gl::loadShader({{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                            {GL_FRAGMENT_SHADER, "a//yg_simplecolor.frag"}}));
 
         glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
         glEnable(GL_DEPTH_TEST);

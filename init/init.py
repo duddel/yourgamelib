@@ -2,6 +2,7 @@ import os
 import posixpath
 import argparse
 import shutil
+import glob
 from jinja2 import Environment, FileSystemLoader
 import git
 
@@ -33,32 +34,40 @@ def main(args):
     # get git information about yourgamelib
     gitRepo = git.Repo(ygRootAbs)
     gitSha = gitRepo.head.object.hexsha
-    print("yourgamelib commit: {}".format(gitSha))
+    print(f"yourgamelib commit: {gitSha}")
 
     # initialize new project
     if not os.path.isdir(tgtDir):
         os.mkdir(tgtDir)
-        print("{} created".format(tgtDir))
+        print(f"{tgtDir} created")
     else:
-        print("{} already present".format(tgtDir))
+        print(f"{tgtDir} already present")
+
+    # create empty assets/ directory if not present
+    os.makedirs(os.path.join(tgtDir, 'assets'), exist_ok=True)
 
     # list content of template to copy for new project
     fileItemsToCopy = os.listdir(templateRoot)
 
-    # do not copy template code (src/) and assets/ if project is bare or
-    # contains code + assets already (no stub)
-    if (args.noStub or args.bare):
+    # If new project does not require template: remove src/, assets/
+    if (args.bare or args.noTemplate):
         fileItemsToCopy.remove("assets")
         fileItemsToCopy.remove("src")
+        # Stock assets are always copied (if no bare project requested):
+        # Copy all asset/ files beginning with "yg_"
+        if (args.noTemplate):
+            stockAssets = [os.path.join("assets", os.path.basename(a)) for a in glob.glob(
+                os.path.join(templateRoot, "assets", "yg_*"))]
+            fileItemsToCopy.extend(stockAssets)
+        # Bare project: copy only the license file
+        else:
+            licenseFile = [os.path.join("assets", os.path.basename(a)) for a in glob.glob(
+                os.path.join(templateRoot, "assets", "yg_LICENSE*"))]
+            fileItemsToCopy.extend(licenseFile)
 
-    print("copying these items to {}:".format(tgtDir))
+    print(f"copying these items to {tgtDir}:")
     print("\n".join(fileItemsToCopy))
     copy_file_items(fileItemsToCopy, templateRoot, tgtDir)
-
-    # create empty assets/ directory if not present
-    if not os.path.isdir(os.path.join(tgtDir, 'assets')):
-        os.mkdir(os.path.join(tgtDir, 'assets'))
-        print("{} created".format(os.path.join(tgtDir, 'assets')))
 
     # process template with jinja
     ldr = FileSystemLoader(tgtDir)
@@ -105,8 +114,8 @@ if __name__ == "__main__":
     aPars.add_argument("name", type=str, help='name of the new project')
     aPars.add_argument('--clone', action='store_true',
                        help='init stand-alone project that clones YourGameLib itself')
-    aPars.add_argument('--noStub', action='store_true',
-                       help='do not copy source files and assets/ from template')
+    aPars.add_argument('--noTemplate', action='store_true',
+                       help='do not copy code and assets from template')
     aPars.add_argument('--bare', action='store_true',
                        help='bare project (no toolbox, minimal dependencies)')
     aPars.add_argument("--extProj", nargs="*", type=str, default=[],

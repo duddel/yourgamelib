@@ -42,6 +42,14 @@ namespace yourgame
         };
 
         void drawGeo(const yourgame::gl::Geometry *geo, const yourgame::gl::DrawConfig &cfg);
+
+        std::array<float, 4> drawSprite(yourgame::gl::Texture *texture,
+                                        const yourgame::gl::TextureCoords &coords,
+                                        float x,
+                                        float y,
+                                        float width,
+                                        float height,
+                                        float angle);
     } // namespace gl
 } // namespace yourgame
 

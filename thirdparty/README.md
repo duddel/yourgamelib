@@ -9,7 +9,7 @@ Here is a list of third-party libraries ("External Projects") that can optionall
 | [android-native-app](#android-native-app) | Android Native App |                               | :heavy_check_mark: |                    |
 | [dirent](#dirent)                         | Dirent             | :heavy_check_mark: (Win only) |                    |                    |
 | [easyloggingpp](#easylogging)             | Easylogging++      | :heavy_check_mark:            | :heavy_check_mark: | :heavy_check_mark: |
-| [glad](#glad)                             | glad               | :heavy_check_mark:            |                    |                    |
+| [glad](#glad-generated-code)              | glad               | :heavy_check_mark:            |                    |                    |
 | [glfw](#glfw)                             | GLFW               | :heavy_check_mark:            |                    |                    |
 | [miniz](#miniz)                           | Miniz              | :heavy_check_mark:            | :heavy_check_mark: | :heavy_check_mark: |
 | [whereami](#where-am-i)                   | Where Am I?        | :heavy_check_mark:            |                    |                    |
@@ -36,7 +36,7 @@ These libraries are integrated if the project has been initialized with default 
 | [file-dialogs](#portable-file-dialogs) | Portable File Dialogs | :heavy_check_mark: |                    |                    |
 | [flecs](#flecs)                        | Flecs                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [fsm](#fsm)                            | fsm                   | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [lua](#lua)                            | Lua, LuaBridge        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [lua](#lua-luabridge)                  | Lua, LuaBridge        | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [miniaudio](#miniaudio)                | miniaudio             | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
 * * *
@@ -126,11 +126,11 @@ These libraries are integrated if the project has been initialized with default 
     -   LICENSE, fsm.hpp
 -   license: [fsm/LICENSE](fsm/LICENSE)
 
-## glad
+## glad (generated code)
 
 -   version: **0.1.33 (via webtool)**
 -   origin: see [glad.h](glad-gl3.3-core/include/glad/glad.h) 
--   license: _"Any of Public Domain, WTFPL or CC0."_, see: FAQ at <https://github.com/Dav1dde/glad>
+-   license: Creative Commons Zero (CC0) (<http://creativecommons.org/publicdomain/zero/1.0/>)
     -   glad.{h,c}
 -   license: mentioned in file
     -   [khrplatform.h](glad-gl3.3-core/include/KHR/khrplatform.h)

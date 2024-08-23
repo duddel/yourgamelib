@@ -27,24 +27,24 @@ namespace mygame
         // load license info file
         {
             std::vector<uint8_t> licFileData;
-            yg::file::readFile("a//LICENSE_web.txt", licFileData);
+            yg::file::readFile("a//yg_LICENSES.txt", licFileData);
             std::string *licStr = new std::string(licFileData.begin(), licFileData.end());
             g_assets.insert("licenseStr", licStr);
         }
 
-        g_assets.insert("geoCube", yg::gl::loadGeometry("a//cube.obj"));
-        g_assets.insert("geoGrid", yg::gl::loadGeometry("a//grid.obj"));
-        g_assets.insert("geoCross", yg::gl::loadGeometry("a//cross.obj"));
+        g_assets.insert("geoCube", yg::gl::loadGeometry("a//yg_cube.obj"));
+        g_assets.insert("geoGrid", yg::gl::loadGeometry("a//yg_grid.obj"));
+        g_assets.insert("geoCross", yg::gl::loadGeometry("a//yg_cross.obj"));
         g_assets.insert("geoBlaster", yg::gl::loadGeometry("a//blasterD.obj", "a//blasterD.mtl"));
 
-        g_assets.insert("shaderDiffuseColor", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
-                                                                  {GL_FRAGMENT_SHADER, "a//diffusecolor.frag"}}));
+        g_assets.insert("shaderDiffuseColor", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                                                  {GL_FRAGMENT_SHADER, "a//yg_diffusecolor.frag"}}));
 
-        g_assets.insert("shaderSimpleColor", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default.vert"},
-                                                                 {GL_FRAGMENT_SHADER, "a//simplecolor.frag"}}));
+        g_assets.insert("shaderSimpleColor", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//yg_default.vert"},
+                                                                 {GL_FRAGMENT_SHADER, "a//yg_simplecolor.frag"}}));
 
         g_assets.insert("shaderDiffuseTex", yg::gl::loadShader({{GL_VERTEX_SHADER, "a//default_instanced.vert"},
-                                                                {GL_FRAGMENT_SHADER, "a//diffusetex.frag"}}));
+                                                                {GL_FRAGMENT_SHADER, "a//yg_diffusetex.frag"}}));
 
         {
             yg::gl::TextureConfig cfg;
