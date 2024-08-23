@@ -15,10 +15,11 @@ var searchData=
   ['loading_2eh_12',['loading.h',['../loading_8h.html',1,'']]],
   ['loadshader_13',['loadShader',['../namespaceyourgame_1_1gl.html#a52ecace2eed3296d92336013205a0b1a',1,'yourgame::gl']]],
   ['loadshaderfromstrings_14',['loadShaderFromStrings',['../namespaceyourgame_1_1gl.html#a6578026c87961175ceb10fcc34174a17',1,'yourgame::gl']]],
-  ['loadtexture_15',['loadTexture',['../namespaceyourgame_1_1gl.html#a907ede102856dae3cc4b6bc74843c702',1,'yourgame::gl']]],
-  ['log_2ecpp_16',['log.cpp',['../log_8cpp.html',1,'']]],
-  ['log_2eh_17',['log.h',['../internal_2yourgame__internal_2log_8h.html',1,'(Global Namespace)'],['../yourgame_2log_8h.html',1,'(Global Namespace)']]],
-  ['lookat_18',['lookAt',['../classyourgame_1_1math_1_1Trafo.html#ad348c422a5937363223ca507cf85b1f9',1,'yourgame::math::Trafo']]],
-  ['loop_19',['loop',['../audio_8cpp.html#a5ed2b25d9f2f070cb0ee764aa0985308',1,'audio.cpp']]],
-  ['ls_20',['ls',['../namespaceyourgame_1_1file.html#a01c44182cb042d89869452b08cc9e4f1',1,'yourgame::file']]]
+  ['loadstockassets_15',['loadStockAssets',['../namespaceyourgame__internal_1_1util_1_1assets.html#ad3dc62cce72c36667b793f153b6dee3d',1,'yourgame_internal::util::assets']]],
+  ['loadtexture_16',['loadTexture',['../namespaceyourgame_1_1gl.html#a907ede102856dae3cc4b6bc74843c702',1,'yourgame::gl']]],
+  ['log_2ecpp_17',['log.cpp',['../log_8cpp.html',1,'']]],
+  ['log_2eh_18',['log.h',['../internal_2yourgame__internal_2log_8h.html',1,'(Global Namespace)'],['../yourgame_2log_8h.html',1,'(Global Namespace)']]],
+  ['lookat_19',['lookAt',['../classyourgame_1_1math_1_1Trafo.html#ad348c422a5937363223ca507cf85b1f9',1,'yourgame::math::Trafo']]],
+  ['loop_20',['loop',['../audio_8cpp.html#a5ed2b25d9f2f070cb0ee764aa0985308',1,'audio.cpp']]],
+  ['ls_21',['ls',['../namespaceyourgame_1_1file.html#a01c44182cb042d89869452b08cc9e4f1',1,'yourgame::file']]]
 ];

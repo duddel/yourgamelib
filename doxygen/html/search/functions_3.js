@@ -12,5 +12,6 @@ var searchData=
   ['drawall_9',['drawAll',['../classyourgame_1_1gl_1_1Geometry.html#adc9ad26d3a11efa5f9b3f28bb60d7f96',1,'yourgame::gl::Geometry']]],
   ['drawallinstanced_10',['drawAllInstanced',['../classyourgame_1_1gl_1_1Geometry.html#a4b8f08ba3dd6c40d8ebff887d6016ba0',1,'yourgame::gl::Geometry']]],
   ['drawgeo_11',['drawGeo',['../namespaceyourgame_1_1gl.html#a5aeba7f566c012ce98c02a4d92dbd541',1,'yourgame::gl']]],
-  ['drawinstanced_12',['drawInstanced',['../classyourgame_1_1gl_1_1Shape.html#ad9268a8ae90541dd7e0decb7605494ca',1,'yourgame::gl::Shape']]]
+  ['drawinstanced_12',['drawInstanced',['../classyourgame_1_1gl_1_1Shape.html#ad9268a8ae90541dd7e0decb7605494ca',1,'yourgame::gl::Shape']]],
+  ['drawsprite_13',['drawSprite',['../namespaceyourgame_1_1gl.html#a59ff39d21bdd4e91595bf15af289db1b',1,'yourgame::gl']]]
 ];

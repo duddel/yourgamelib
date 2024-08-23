@@ -99,16 +99,16 @@ $(function() {
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        g_light.setPosition({4.07625f, 5.90386f, -1.00545f});</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        g_light.setDiffuse({1.0f, 1.0f, 1.0f});</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        g_assets.insert(<span class="stringliteral">&quot;geoCube&quot;</span>, yg::gl::loadGeometry(<span class="stringliteral">&quot;a//cube.obj&quot;</span>));</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        g_assets.insert(<span class="stringliteral">&quot;geoGrid&quot;</span>, yg::gl::loadGeometry(<span class="stringliteral">&quot;a//grid.obj&quot;</span>));</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        g_assets.insert(<span class="stringliteral">&quot;geoCube&quot;</span>, yg::gl::loadGeometry(<span class="stringliteral">&quot;a//yg_cube.obj&quot;</span>));</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        g_assets.insert(<span class="stringliteral">&quot;geoGrid&quot;</span>, yg::gl::loadGeometry(<span class="stringliteral">&quot;a//yg_grid.obj&quot;</span>));</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        g_assets.insert(<span class="stringliteral">&quot;shaderDiffuseColor&quot;</span>,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                        yg::gl::loadShader({{GL_VERTEX_SHADER, <span class="stringliteral">&quot;a//default.vert&quot;</span>},</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                            {GL_FRAGMENT_SHADER, <span class="stringliteral">&quot;a//diffusecolor.frag&quot;</span>}}));</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                        yg::gl::loadShader({{GL_VERTEX_SHADER, <span class="stringliteral">&quot;a//yg_default.vert&quot;</span>},</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                                            {GL_FRAGMENT_SHADER, <span class="stringliteral">&quot;a//yg_diffusecolor.frag&quot;</span>}}));</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        g_assets.insert(<span class="stringliteral">&quot;shaderSimpleColor&quot;</span>,</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                        yg::gl::loadShader({{GL_VERTEX_SHADER, <span class="stringliteral">&quot;a//default.vert&quot;</span>},</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                            {GL_FRAGMENT_SHADER, <span class="stringliteral">&quot;a//simplecolor.frag&quot;</span>}}));</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                        yg::gl::loadShader({{GL_VERTEX_SHADER, <span class="stringliteral">&quot;a//yg_default.vert&quot;</span>},</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>                                            {GL_FRAGMENT_SHADER, <span class="stringliteral">&quot;a//yg_simplecolor.frag&quot;</span>}}));</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        glClearColor(0.275f, 0.275f, 0.275f, 1.0f);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        glEnable(GL_DEPTH_TEST);</div>

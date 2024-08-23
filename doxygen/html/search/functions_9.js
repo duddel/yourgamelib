@@ -6,7 +6,8 @@ var searchData=
   ['loadgeometryfromstrings_3',['loadGeometryFromStrings',['../namespaceyourgame_1_1gl.html#ac7e154ff074bae3fa3f1c54fa22a06d0',1,'yourgame::gl']]],
   ['loadshader_4',['loadShader',['../namespaceyourgame_1_1gl.html#a52ecace2eed3296d92336013205a0b1a',1,'yourgame::gl']]],
   ['loadshaderfromstrings_5',['loadShaderFromStrings',['../namespaceyourgame_1_1gl.html#a6578026c87961175ceb10fcc34174a17',1,'yourgame::gl']]],
-  ['loadtexture_6',['loadTexture',['../namespaceyourgame_1_1gl.html#a907ede102856dae3cc4b6bc74843c702',1,'yourgame::gl']]],
-  ['lookat_7',['lookAt',['../classyourgame_1_1math_1_1Trafo.html#ad348c422a5937363223ca507cf85b1f9',1,'yourgame::math::Trafo']]],
-  ['ls_8',['ls',['../namespaceyourgame_1_1file.html#a01c44182cb042d89869452b08cc9e4f1',1,'yourgame::file']]]
+  ['loadstockassets_6',['loadStockAssets',['../namespaceyourgame__internal_1_1util_1_1assets.html#ad3dc62cce72c36667b793f153b6dee3d',1,'yourgame_internal::util::assets']]],
+  ['loadtexture_7',['loadTexture',['../namespaceyourgame_1_1gl.html#a907ede102856dae3cc4b6bc74843c702',1,'yourgame::gl']]],
+  ['lookat_8',['lookAt',['../classyourgame_1_1math_1_1Trafo.html#ad348c422a5937363223ca507cf85b1f9',1,'yourgame::math::Trafo']]],
+  ['ls_9',['ls',['../namespaceyourgame_1_1file.html#a01c44182cb042d89869452b08cc9e4f1',1,'yourgame::file']]]
 ];

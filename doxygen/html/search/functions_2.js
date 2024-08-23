@@ -6,5 +6,6 @@ var searchData=
   ['clear_3',['clear',['../classyourgame_1_1util_1_1AssetManager.html#ae58d96d9d6b3e6dabab11b1e6bde13f6',1,'yourgame::util::AssetManager']]],
   ['clearrigidbodies_4',['clearRigidBodies',['../classyourgame_1_1util_1_1PhysEnv.html#a2ce9207484e52be806cba6bc24c50a9c',1,'yourgame::util::PhysEnv']]],
   ['clearshapes_5',['clearShapes',['../classyourgame_1_1util_1_1PhysEnv.html#a9e5ebe29eab333b3ca6b54e4fc719b85',1,'yourgame::util::PhysEnv']]],
-  ['collision_6',['Collision',['../classyourgame_1_1util_1_1Collision.html#ae7ba13a96bec762bd62aa49ac3cd5790',1,'yourgame::util::Collision']]]
+  ['clearstockassets_6',['clearStockAssets',['../namespaceyourgame__internal_1_1util_1_1assets.html#aa98f86f98c6121ee1d37455f669ba7f7',1,'yourgame_internal::util::assets']]],
+  ['collision_7',['Collision',['../classyourgame_1_1util_1_1Collision.html#ae7ba13a96bec762bd62aa49ac3cd5790',1,'yourgame::util::Collision']]]
 ];

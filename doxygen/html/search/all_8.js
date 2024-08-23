@@ -14,7 +14,7 @@ var searchData=
   ['input_5fdesktop_2eh_11',['input_desktop.h',['../input__desktop_8h.html',1,'']]],
   ['inputstates_12',['inputStates',['../namespaceyourgame__internal_1_1input.html#a00c5bfa45561d6b2177bc09b7916fb6f',1,'yourgame_internal::input']]],
   ['inputvalue_13',['inputvalue',['../structyourgame__internal_1_1input_1_1InputValue.html',1,'yourgame_internal::input::InputValue'],['../structyourgame__internal_1_1input_1_1InputValue.html#a43eb521a71f36283fa169aaea8e00fc1',1,'yourgame_internal::input::InputValue::InputValue()']]],
-  ['insert_14',['insert',['../classyourgame_1_1util_1_1AssetManager.html#a1dbe6b5fcead554ed3c0d08924ea6a3f',1,'yourgame::util::AssetManager::insert(std::string name, T obj)'],['../classyourgame_1_1util_1_1AssetManager.html#a585fab67d0f4a09c4c582bbec28e9651',1,'yourgame::util::AssetManager::insert(std::string name, T *obj)']]],
+  ['insert_14',['insert',['../classyourgame_1_1util_1_1AssetManager.html#a1dbe6b5fcead554ed3c0d08924ea6a3f',1,'yourgame::util::AssetManager::insert(std::string name, T obj)'],['../classyourgame_1_1util_1_1AssetManager.html#ac45e1d59d41ec97796ecf21ccf1801e1',1,'yourgame::util::AssetManager::insert(std::string name, T *obj)']]],
   ['insertcoords_15',['insertCoords',['../classyourgame_1_1gl_1_1Texture.html#adc4a41b120fbe5eb6997c4a04a41597a',1,'yourgame::gl::Texture']]],
   ['instancecount_16',['instancecount',['../structyourgame_1_1gl_1_1DrawConfig.html#a3e7fa0c7a2d490034d50ff1dee59844e',1,'yourgame::gl::DrawConfig']]],
   ['internalformat_17',['internalformat',['../structyourgame_1_1gl_1_1Framebuffer_1_1TextureAttachDescr.html#abb4b05a51b744f720ac4555834947bd1',1,'yourgame::gl::Framebuffer::TextureAttachDescr']]],

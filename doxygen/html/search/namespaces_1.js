@@ -24,5 +24,6 @@ var searchData=
   ['yourgame_5finternal_3a_3alog_21',['log',['../namespaceyourgame__internal_1_1log.html',1,'yourgame_internal']]],
   ['yourgame_5finternal_3a_3atime_22',['time',['../namespaceyourgame__internal_1_1time.html',1,'yourgame_internal']]],
   ['yourgame_5finternal_3a_3autil_23',['util',['../namespaceyourgame__internal_1_1util.html',1,'yourgame_internal']]],
-  ['yourgame_5finternal_3a_3autil_3a_3apostproc_24',['postproc',['../namespaceyourgame__internal_1_1util_1_1postproc.html',1,'yourgame_internal::util']]]
+  ['yourgame_5finternal_3a_3autil_3a_3aassets_24',['assets',['../namespaceyourgame__internal_1_1util_1_1assets.html',1,'yourgame_internal::util']]],
+  ['yourgame_5finternal_3a_3autil_3a_3apostproc_25',['postproc',['../namespaceyourgame__internal_1_1util_1_1postproc.html',1,'yourgame_internal::util']]]
 ];

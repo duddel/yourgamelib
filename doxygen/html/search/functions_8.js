@@ -6,7 +6,7 @@ var searchData=
   ['initfile_3',['initfile',['../namespaceyourgame__internal_1_1file_1_1desktop.html#a6dd4436a0032fd6f0c0fb83ed510f47f',1,'yourgame_internal::file::desktop::initFile()'],['../namespaceyourgame__internal_1_1file_1_1android.html#a402abbdf4ef839e176321789d127d48d',1,'yourgame_internal::file::android::initFile()']]],
   ['initinput_4',['initInput',['../namespaceyourgame__internal_1_1input_1_1desktop.html#a9f6e13f6ee673e9d26ccb2fc3ead19eb',1,'yourgame_internal::input::desktop']]],
   ['inputvalue_5',['InputValue',['../structyourgame__internal_1_1input_1_1InputValue.html#a43eb521a71f36283fa169aaea8e00fc1',1,'yourgame_internal::input::InputValue']]],
-  ['insert_6',['insert',['../classyourgame_1_1util_1_1AssetManager.html#a1dbe6b5fcead554ed3c0d08924ea6a3f',1,'yourgame::util::AssetManager::insert(std::string name, T obj)'],['../classyourgame_1_1util_1_1AssetManager.html#a585fab67d0f4a09c4c582bbec28e9651',1,'yourgame::util::AssetManager::insert(std::string name, T *obj)']]],
+  ['insert_6',['insert',['../classyourgame_1_1util_1_1AssetManager.html#a1dbe6b5fcead554ed3c0d08924ea6a3f',1,'yourgame::util::AssetManager::insert(std::string name, T obj)'],['../classyourgame_1_1util_1_1AssetManager.html#ac45e1d59d41ec97796ecf21ccf1801e1',1,'yourgame::util::AssetManager::insert(std::string name, T *obj)']]],
   ['insertcoords_7',['insertCoords',['../classyourgame_1_1gl_1_1Texture.html#adc4a41b120fbe5eb6997c4a04a41597a',1,'yourgame::gl::Texture']]],
   ['involves_8',['involves',['../classyourgame_1_1util_1_1Collision.html#adac38672adf29b01bc67a94da8a7738f',1,'yourgame::util::Collision']]],
   ['involves2_9',['involves2',['../classyourgame_1_1util_1_1Collision.html#a09da95c32e9668110abc486e609323cb',1,'yourgame::util::Collision']]],

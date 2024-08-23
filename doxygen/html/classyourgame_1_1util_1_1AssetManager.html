@@ -90,10 +90,10 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0f44b9c0249c997cd49605af73533782" id="r_a0f44b9c0249c997cd49605af73533782"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1util_1_1AssetManager.html#a0f44b9c0249c997cd49605af73533782">~AssetManager</a> ()</td></tr>
 <tr class="separator:a0f44b9c0249c997cd49605af73533782"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a585fab67d0f4a09c4c582bbec28e9651" id="r_a585fab67d0f4a09c4c582bbec28e9651"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a585fab67d0f4a09c4c582bbec28e9651"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1util_1_1AssetManager.html#a585fab67d0f4a09c4c582bbec28e9651">insert</a> (std::string name, T *obj)</td></tr>
-<tr class="memdesc:a585fab67d0f4a09c4c582bbec28e9651"><td class="mdescLeft">&#160;</td><td class="mdescRight">insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer is replaced. rejects nullptrs.  <br /></td></tr>
-<tr class="separator:a585fab67d0f4a09c4c582bbec28e9651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac45e1d59d41ec97796ecf21ccf1801e1" id="r_ac45e1d59d41ec97796ecf21ccf1801e1"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ac45e1d59d41ec97796ecf21ccf1801e1"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1util_1_1AssetManager.html#ac45e1d59d41ec97796ecf21ccf1801e1">insert</a> (std::string name, T *obj)</td></tr>
+<tr class="memdesc:ac45e1d59d41ec97796ecf21ccf1801e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer is replaced. rejects nullptrs.  <br /></td></tr>
+<tr class="separator:ac45e1d59d41ec97796ecf21ccf1801e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dbe6b5fcead554ed3c0d08924ea6a3f" id="r_a1dbe6b5fcead554ed3c0d08924ea6a3f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a1dbe6b5fcead554ed3c0d08924ea6a3f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classyourgame_1_1util_1_1AssetManager.html#a1dbe6b5fcead554ed3c0d08924ea6a3f">insert</a> (std::string name, T obj)</td></tr>
 <tr class="memdesc:a1dbe6b5fcead554ed3c0d08924ea6a3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">dummy for compile-time check (static_assert) of non-pointer type  <br /></td></tr>
@@ -122,7 +122,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>utility to store and request pointers, and to delete dynamically allocated objects, by name </p>
 <p>use like so:</p><ul>
 <li>create an object with <code>new</code></li>
-<li>use <a class="el" href="classyourgame_1_1util_1_1AssetManager.html#a585fab67d0f4a09c4c582bbec28e9651" title="insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer ...">insert()</a> to store the pointer by name<ul>
+<li>use <a class="el" href="classyourgame_1_1util_1_1AssetManager.html#ac45e1d59d41ec97796ecf21ccf1801e1" title="insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer ...">insert()</a> to store the pointer by name<ul>
 <li>if it exists, previous object is deleted and the pointer is replaced</li>
 </ul>
 </li>
@@ -131,7 +131,7 @@ Public Member Functions</h2></td></tr>
 </ul>
 <dl class="section attention"><dt>Attention</dt><dd>type T is always the base type, not the pointer type (T*) </dd>
 <dd>
-never delete objects manually with <code>delete</code> if they have been stored with <a class="el" href="classyourgame_1_1util_1_1AssetManager.html#a585fab67d0f4a09c4c582bbec28e9651" title="insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer ...">insert()</a> </dd></dl>
+never delete objects manually with <code>delete</code> if they have been stored with <a class="el" href="classyourgame_1_1util_1_1AssetManager.html#ac45e1d59d41ec97796ecf21ccf1801e1" title="insert pointer. if it exists (same type T and same name), previous object is deleted and the pointer ...">insert()</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0f44b9c0249c997cd49605af73533782" name="a0f44b9c0249c997cd49605af73533782"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f44b9c0249c997cd49605af73533782">&#9670;&#160;</a></span>~AssetManager()</h2>
@@ -306,8 +306,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a585fab67d0f4a09c4c582bbec28e9651" name="a585fab67d0f4a09c4c582bbec28e9651"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a585fab67d0f4a09c4c582bbec28e9651">&#9670;&#160;</a></span>insert() <span class="overload">[1/2]</span></h2>
+<a id="ac45e1d59d41ec97796ecf21ccf1801e1" name="ac45e1d59d41ec97796ecf21ccf1801e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac45e1d59d41ec97796ecf21ccf1801e1">&#9670;&#160;</a></span>insert() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,7 +318,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void yourgame::util::AssetManager::insert </td>
+          <td class="memname">bool yourgame::util::AssetManager::insert </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>name</em>, </td>
@@ -359,6 +359,7 @@ only insert pointer to object, that has been created with <code>new</code></dd><
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>false, if obj was nullptr, true otherwise </dd></dl>
 
 </div>
 </div>

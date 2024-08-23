@@ -10,8 +10,9 @@ var searchData=
   ['m_5fprogressdata_7',['m_progressData',['../classyourgame_1_1math_1_1Particles.html#a054bd9cef9902ce65a493ed5503d8440',1,'yourgame::math::Particles']]],
   ['m_5frigidbody_8',['m_rigidBody',['../classyourgame_1_1util_1_1RayTestResult.html#ac82d6ab9604c90e8897c32fa901e632e',1,'yourgame::util::RayTestResult']]],
   ['major_9',['major',['../namespaceyourgame_1_1version.html#a99bad3d5f2946429886bc793e2868601',1,'yourgame::version']]],
-  ['mass_10',['mass',['../structyourgame_1_1util_1_1RigidBodyInfo.html#ac401c9a70c1aeaa7df08d2806bf6b29f',1,'yourgame::util::RigidBodyInfo']]],
-  ['minmagfilter_11',['minMagFilter',['../structyourgame_1_1gl_1_1TextureConfig.html#a260f0d183483f61ae80403b28890877e',1,'yourgame::gl::TextureConfig']]],
-  ['minor_12',['minor',['../namespaceyourgame_1_1version.html#af0a655b9c5c0abc63db1f651054533a6',1,'yourgame::version']]],
-  ['modelmat_13',['modelMat',['../structyourgame_1_1gl_1_1DrawConfig.html#ad0f91e06ec5aca392fc7b6e279830829',1,'yourgame::gl::DrawConfig']]]
+  ['manager_10',['manager',['../namespaceyourgame__internal_1_1util_1_1assets.html#a591d535b6736fefa7eaf0e1f2308e386',1,'yourgame_internal::util::assets']]],
+  ['mass_11',['mass',['../structyourgame_1_1util_1_1RigidBodyInfo.html#ac401c9a70c1aeaa7df08d2806bf6b29f',1,'yourgame::util::RigidBodyInfo']]],
+  ['minmagfilter_12',['minMagFilter',['../structyourgame_1_1gl_1_1TextureConfig.html#a260f0d183483f61ae80403b28890877e',1,'yourgame::gl::TextureConfig']]],
+  ['minor_13',['minor',['../namespaceyourgame_1_1version.html#af0a655b9c5c0abc63db1f651054533a6',1,'yourgame::version']]],
+  ['modelmat_14',['modelMat',['../structyourgame_1_1gl_1_1DrawConfig.html#ad0f91e06ec5aca392fc7b6e279830829',1,'yourgame::gl::DrawConfig']]]
 ];
