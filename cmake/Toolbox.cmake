@@ -12,6 +12,7 @@ list(APPEND YOURGAME_SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/drawing.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/framebuffer.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/geometry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/init.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/lightsource.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/loading.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/toolbox/gl/particles.cpp

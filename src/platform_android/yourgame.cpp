@@ -35,6 +35,7 @@ freely, subject to the following restrictions:
 #include "yourgame_internal/log.h"
 #include "yourgame_internal/time.h"
 #ifdef YOURGAME_TOOLBOX
+#include "yourgame_internal/gl/init.h"
 #include "yourgame_internal/util/assets.h"
 #include "yourgame_internal/util/postproc.h"
 #endif
@@ -184,6 +185,8 @@ namespace yourgame_internal
 #endif
 
 #ifdef YOURGAME_TOOLBOX
+            yourgame_internal::gl::initState();
+
             if (yourgame_internal::util::assets::loadStockAssets())
             {
                 yourgame::log::info("Loading stock assets: success");
