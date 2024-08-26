@@ -181,8 +181,8 @@ These libraries are integrated if the project has been initialized with default 
 
 ## miniaudio
 
--   version: **0.10.16 (unreleased), 54fe965 (dev)**
--   origin: <https://github.com/dr-soft/miniaudio/tree/54fe965bc019ebc6e96a0c04a0a5550c1ca8b2fe>
+-   version: **0.11.21**
+-   origin: <https://github.com/mackron/miniaudio/releases/tag/0.11.21>
 -   extracted from origin:
     -   miniaudio.h, LICENSE
 -   license: [miniaudio/LICENSE](miniaudio/LICENSE)

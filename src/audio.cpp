@@ -146,7 +146,7 @@ namespace yourgame
 
                     // read pcm frames
                     ma_uint64 framesBuffered;
-                    auto maRes = ma_data_source_read_pcm_frames(&(src->decoder), pcmBuf.data(), frameCount, &framesBuffered, src->loop);
+                    auto maRes = ma_data_source_read_pcm_frames(&(src->decoder), pcmBuf.data(), frameCount, &framesBuffered);
 
                     // form a valarray from pcm frames. the gains get applied in this valarray below
                     std::valarray<float> pcmBufVarr(pcmBuf.data(), pcmBuf.size());
@@ -298,7 +298,7 @@ namespace yourgame
                 g_maDevice.sampleRate);
 
             audioSource *newSource = new audioSource();
-            if (ma_decoder_init_memory_vorbis(&audioFile->second[0], audioFile->second.size(), &maDecCfg, &(newSource->decoder)) != MA_SUCCESS)
+            if (ma_decoder_init_memory(&audioFile->second[0], audioFile->second.size(), &maDecCfg, &(newSource->decoder)) != MA_SUCCESS)
             {
                 delete newSource;
                 return -3;
@@ -306,6 +306,11 @@ namespace yourgame
 
             newSource->channelGains.resize(g_maDevice.playback.channels, 1.0f);
             newSource->loop = loop;
+
+            if (loop)
+            {
+                ma_data_source_set_looping(&(newSource->decoder), 1);
+            }
 
             ma_mutex_lock(&g_mtxSources);
             g_sources[sourceId] = newSource;
