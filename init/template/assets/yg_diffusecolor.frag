@@ -10,12 +10,16 @@ in vec3 vOutCol;
 layout(location = 0) out vec4 color;
 
 uniform vec3 lightPosition;
+uniform vec3 lightAmbient;
 uniform vec3 lightDiffuse;
 
 void main()
 {
     vec3 lightDir = normalize(lightPosition - vOutPos);
     float diff = max(dot(normalize(vOutNorm), lightDir), 0.0);
+    vec3 finalLight = lightAmbient + (lightDiffuse * diff);
 
-    color = vec4(vOutCol * lightDiffuse * (diff + 0.2), 1.0);
+    vec3 finalColor = vOutCol;
+
+    color = vec4(finalColor * finalLight, 1.0);
 }

@@ -32,7 +32,7 @@ namespace mygame
             g_assets.insert("licenseStr", licStr);
         }
 
-        g_assets.insert("geoCube", yg::gl::loadGeometry("a//yg_cube.obj"));
+        g_assets.insert("geoCube", yg::gl::loadGeometry("a//yg_cube_outside.obj"));
         g_assets.insert("geoGrid", yg::gl::loadGeometry("a//yg_grid.obj"));
         g_assets.insert("geoCross", yg::gl::loadGeometry("a//yg_cross.obj"));
         g_assets.insert("geoBlaster", yg::gl::loadGeometry("a//blasterD.obj", "a//blasterD.mtl"));

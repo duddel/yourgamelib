@@ -133,7 +133,7 @@ namespace mygame
 
         // geometry
         g_assets.insert("quadGeo", yg::gl::loadGeometry("a//yg_quad05.obj"));
-        g_assets.insert("cube", yg::gl::loadGeometry("a//cube.obj"));
+        g_assets.insert("cube", yg::gl::loadGeometry("a//yg_cube_inside.obj"));
 
         // framebuffer
         // sampling the depth texture with texture() (in glsl) is unreliable on GL ES platforms:
@@ -453,7 +453,7 @@ namespace mygame
             ImGui::ColorPicker3("clear color", (float *)&g_clearColor);
 
             // geometry
-            const char *geoNames[] = {"ship_dark", "tower", "sphere"};
+            const char *geoNames[] = {"ship_dark", "tower"};
             static int geoId = 0;
             int numGeos = sizeof(geoNames) / sizeof(geoNames[0]);
             ImGui::ListBox("geometry", &geoId, geoNames, numGeos, numGeos);

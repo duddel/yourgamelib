@@ -23,7 +23,7 @@ namespace mygame
         g_light.setPosition({4.07625f, 5.90386f, -1.00545f});
         g_light.setDiffuse({1.0f, 1.0f, 1.0f});
 
-        g_assets.insert("geoCube", yg::gl::loadGeometry("a//yg_cube.obj"));
+        g_assets.insert("geoCube", yg::gl::loadGeometry("a//yg_cube_outside.obj"));
         g_assets.insert("geoGrid", yg::gl::loadGeometry("a//yg_grid.obj"));
 
         g_assets.insert("shaderDiffuseColor",
