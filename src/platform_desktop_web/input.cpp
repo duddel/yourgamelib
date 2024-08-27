@@ -236,8 +236,8 @@ namespace yourgame_internal
             yourgame_internal::input::setInput(yourgame::input::SCROLL_OFFSET_X, 0.0f);
             yourgame_internal::input::setInput(yourgame::input::SCROLL_OFFSET_Y, 0.0f);
 
-// todo: mapped gamepad input available since glfw v3.3,
-// emscripten implements glfw v3.2 API only (2020-12-12)
+// ToDo: emscripten GLFW implementation is incomplete (undefined symbol: glfwGetGamepadState),
+//       even though the GLFW API, provided via emscripten, is v3.3 (2024-08-27)
 #ifndef __EMSCRIPTEN__
             for (const auto &pad : gamepadFirstButtonAxisIdx)
             {
@@ -282,8 +282,8 @@ namespace yourgame_internal
                 glfwSetScrollCallback(window, scrollCallback);
                 glfwSetJoystickCallback(joystickCallback);
 
-// todo: mapped gamepad input available since glfw v3.3,
-// emscripten implements glfw v3.2 API only (2020-12-12)
+// ToDo: emscripten GLFW implementation is incomplete (undefined symbol: glfwGetGamepadState),
+//       even though the GLFW API, provided via emscripten, is v3.3 (2024-08-27)
 #ifndef __EMSCRIPTEN__
                 // poll and set gamepads, that are already connected during init
                 for (const auto &p : gamepadConnectedApiMapping)

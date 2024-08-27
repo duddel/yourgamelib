@@ -33,7 +33,9 @@ RUN apt-get update && apt-get install -y \
     zip \
     libgl1-mesa-dev \
     wget \
-    xorg-dev && \
+    xorg-dev \
+    libwayland-dev \
+    libxkbcommon-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Install tools for docs and quality

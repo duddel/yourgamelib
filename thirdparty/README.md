@@ -118,10 +118,15 @@ These libraries are integrated if the project has been initialized with default 
 
 ## GLFW
 
--   version: **3.3**
--   origin: <https://github.com/glfw/glfw/releases/tag/3.3>
+-   version: **3.4**
+-   origin: <https://github.com/glfw/glfw/releases/tag/3.4>
 -   extracted from origin:
-    -   all, except deps/, docs/, examples/, tests/
+    -   CMake/\*
+    -   deps/wayland/\*
+    -   include/\*
+    -   src/\*
+    -   CMakeLists.txt
+    -   LICENSE.md
 -   license: [glfw/LICENSE.md](glfw/LICENSE.md)
 
 ## glm

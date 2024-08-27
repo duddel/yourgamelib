@@ -247,10 +247,7 @@ namespace yourgame_internal
 
             glfwSwapInterval(yourgame::input::geti(yourgame::input::VSYNC_ON) ? 1 : 0);
 
-            // enable raw mouse input if supported. affects catched mouse mode, see catchMouse()
-// todo: raw mouse motion available since glfw v3.3,
-// emscripten implements glfw v3.2 API only (2021-01-19)
-#ifndef __EMSCRIPTEN__
+#if (GLFW_VERSION_MAJOR == 3) && (GLFW_VERSION_MINOR >= 3)
             if (glfwRawMouseMotionSupported())
             {
                 glfwSetInputMode(_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
