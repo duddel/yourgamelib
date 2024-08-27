@@ -118,6 +118,8 @@ Functions</h2></td></tr>
 <tr class="separator:a5aeba7f566c012ce98c02a4d92dbd541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59ff39d21bdd4e91595bf15af289db1b" id="r_a59ff39d21bdd4e91595bf15af289db1b"><td class="memItemLeft" align="right" valign="top">std::array&lt; float, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1gl.html#a59ff39d21bdd4e91595bf15af289db1b">drawSprite</a> (<a class="el" href="classyourgame_1_1gl_1_1Texture.html">yourgame::gl::Texture</a> *texture, const <a class="el" href="structyourgame_1_1gl_1_1TextureCoords.html">yourgame::gl::TextureCoords</a> &amp;coords, float x, float y, float width, float height, float angle)</td></tr>
 <tr class="separator:a59ff39d21bdd4e91595bf15af289db1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2cb0c91a20469244ff460cfbd85f0a5" id="r_ab2cb0c91a20469244ff460cfbd85f0a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1gl.html#ab2cb0c91a20469244ff460cfbd85f0a5">drawSky</a> (<a class="el" href="classyourgame_1_1gl_1_1Texture.html">yourgame::gl::Texture</a> *texture, <a class="el" href="classyourgame_1_1math_1_1Camera.html">yourgame::math::Camera</a> *camera, std::array&lt; float, 3 &gt; tint, <a class="el" href="classyourgame_1_1math_1_1Trafo.html">yourgame::math::Trafo</a> *trafo)</td></tr>
+<tr class="separator:ab2cb0c91a20469244ff460cfbd85f0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a907ede102856dae3cc4b6bc74843c702" id="r_a907ede102856dae3cc4b6bc74843c702"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1gl_1_1Texture.html">Texture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1gl.html#a907ede102856dae3cc4b6bc74843c702">loadTexture</a> (const std::string &amp;imgFilename, const std::string &amp;atlasFilename, const <a class="el" href="structyourgame_1_1gl_1_1TextureConfig.html">yourgame::gl::TextureConfig</a> &amp;cfg)</td></tr>
 <tr class="separator:a907ede102856dae3cc4b6bc74843c702"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95ca8f05fd41df16d2ec9fb5fd342ba2" id="r_a95ca8f05fd41df16d2ec9fb5fd342ba2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classyourgame_1_1gl_1_1Texture.html">Texture</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceyourgame_1_1gl.html#a95ca8f05fd41df16d2ec9fb5fd342ba2">loadCubemap</a> (const std::vector&lt; std::string &gt; &amp;filenames, const <a class="el" href="structyourgame_1_1gl_1_1TextureConfig.html">yourgame::gl::TextureConfig</a> &amp;cfg)</td></tr>
@@ -227,6 +229,46 @@ Variables</h2></td></tr>
           <td></td>
           <td class="paramtype">const <a class="el" href="structyourgame_1_1gl_1_1DrawConfig.html">yourgame::gl::DrawConfig</a> &amp;&#160;</td>
           <td class="paramname"><em>cfg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2cb0c91a20469244ff460cfbd85f0a5" name="ab2cb0c91a20469244ff460cfbd85f0a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2cb0c91a20469244ff460cfbd85f0a5">&#9670;&#160;</a></span>drawSky()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void yourgame::gl::drawSky </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classyourgame_1_1gl_1_1Texture.html">yourgame::gl::Texture</a> *&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classyourgame_1_1math_1_1Camera.html">yourgame::math::Camera</a> *&#160;</td>
+          <td class="paramname"><em>camera</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::array&lt; float, 3 &gt;&#160;</td>
+          <td class="paramname"><em>tint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classyourgame_1_1math_1_1Trafo.html">yourgame::math::Trafo</a> *&#160;</td>
+          <td class="paramname"><em>trafo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

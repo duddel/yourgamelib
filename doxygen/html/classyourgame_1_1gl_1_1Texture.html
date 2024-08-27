@@ -99,12 +99,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad362a91d1cdea28c75b6d8d890bf74df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d5c0da4b352d2434faad98f75ea1404" id="r_a7d5c0da4b352d2434faad98f75ea1404"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#a7d5c0da4b352d2434faad98f75ea1404">updateData</a> (GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const void *data, bool generateMipmap)</td></tr>
 <tr class="separator:a7d5c0da4b352d2434faad98f75ea1404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a4c5532a3dbc37877e0593162ec0d53" id="r_a0a4c5532a3dbc37877e0593162ec0d53"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#a0a4c5532a3dbc37877e0593162ec0d53">handle</a> () const</td></tr>
+<tr class="separator:a0a4c5532a3dbc37877e0593162ec0d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1805636668884d92ca4ef88d729635c2" id="r_a1805636668884d92ca4ef88d729635c2"><td class="memItemLeft" align="right" valign="top">GLenum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#a1805636668884d92ca4ef88d729635c2">getTarget</a> () const</td></tr>
+<tr class="separator:a1805636668884d92ca4ef88d729635c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae97bd8fb33e9cfaecb64761602bb3e54" id="r_ae97bd8fb33e9cfaecb64761602bb3e54"><td class="memItemLeft" align="right" valign="top">GLsizei&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#ae97bd8fb33e9cfaecb64761602bb3e54">getWidth</a> () const</td></tr>
 <tr class="separator:ae97bd8fb33e9cfaecb64761602bb3e54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af06dfea131f57faeeae36c6507b15134" id="r_af06dfea131f57faeeae36c6507b15134"><td class="memItemLeft" align="right" valign="top">GLsizei&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#af06dfea131f57faeeae36c6507b15134">getHeight</a> () const</td></tr>
 <tr class="separator:af06dfea131f57faeeae36c6507b15134"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a4c5532a3dbc37877e0593162ec0d53" id="r_a0a4c5532a3dbc37877e0593162ec0d53"><td class="memItemLeft" align="right" valign="top">GLuint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#a0a4c5532a3dbc37877e0593162ec0d53">handle</a> () const</td></tr>
-<tr class="separator:a0a4c5532a3dbc37877e0593162ec0d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc4a41b120fbe5eb6997c4a04a41597a" id="r_adc4a41b120fbe5eb6997c4a04a41597a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#adc4a41b120fbe5eb6997c4a04a41597a">insertCoords</a> (std::string name, int x, int y, int width, int height, bool cwRot)</td></tr>
 <tr class="separator:adc4a41b120fbe5eb6997c4a04a41597a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bd86870b362e2b1d41b029c9f390a47" id="r_a9bd86870b362e2b1d41b029c9f390a47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structyourgame_1_1gl_1_1TextureCoords.html">TextureCoords</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classyourgame_1_1gl_1_1Texture.html#a9bd86870b362e2b1d41b029c9f390a47">getCoords</a> (std::string name) const</td></tr>
@@ -364,6 +366,31 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>returns a list of the names of all sequences </p>
+
+</div>
+</div>
+<a id="a1805636668884d92ca4ef88d729635c2" name="a1805636668884d92ca4ef88d729635c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1805636668884d92ca4ef88d729635c2">&#9670;&#160;</a></span>getTarget()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">GLenum yourgame::gl::Texture::getTarget </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

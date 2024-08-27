@@ -123,13 +123,14 @@ var searchData=
   ['getrotation_120',['getRotation',['../classyourgame_1_1math_1_1Trafo.html#a203c67a33e6c6a1f7cfeb6b03681ab70',1,'yourgame::math::Trafo']]],
   ['getscale_121',['getScale',['../classyourgame_1_1math_1_1Trafo.html#ab7c445b707f21c19f7ed2f3ae5f73480',1,'yourgame::math::Trafo']]],
   ['getsequencenames_122',['getSequenceNames',['../classyourgame_1_1gl_1_1Texture.html#a50ad755b3b4a860d86a0ebc53d31d6e3',1,'yourgame::gl::Texture']]],
-  ['gettime_123',['getTime',['../namespaceyourgame_1_1time.html#a93280bb827010563a3caae7bf52455ae',1,'yourgame::time']]],
-  ['gettrafo_124',['getTrafo',['../classyourgame_1_1util_1_1RigidBody.html#a0362d3ec1908700cee198b8a04b97e1b',1,'yourgame::util::RigidBody']]],
-  ['getuniformlocation_125',['getUniformLocation',['../classyourgame_1_1gl_1_1Shader.html#a16386d3d896c4f6b01447bcb1a32934c',1,'yourgame::gl::Shader']]],
-  ['getwidth_126',['getwidth',['../classyourgame_1_1gl_1_1Texture.html#ae97bd8fb33e9cfaecb64761602bb3e54',1,'yourgame::gl::Texture::getWidth()'],['../classyourgame_1_1util_1_1Image.html#a718b5cb073328ec198406aa3e5fcd0b7',1,'yourgame::util::Image::getWidth()']]],
-  ['git_5fcommit_127',['git_commit',['../namespaceyourgame_1_1version.html#ad525dc89ea2f858a141d6fdd560b351c',1,'yourgame::version']]],
-  ['git_5fdate_128',['git_date',['../namespaceyourgame_1_1version.html#a64c06e31adccb495242934c5c8d9999f',1,'yourgame::version']]],
-  ['gl_5finclude_2eh_129',['gl_include.h',['../gl__include_8h.html',1,'']]],
-  ['glfw_5finclude_5fnone_130',['glfw_include_none',['../input__desktop_8h.html#a088324ad8995e3eb76024e3e79083d48',1,'GLFW_INCLUDE_NONE:&#160;input_desktop.h'],['../platform__desktop__web_2input_8cpp.html#a088324ad8995e3eb76024e3e79083d48',1,'GLFW_INCLUDE_NONE:&#160;input.cpp'],['../platform__desktop__web_2yourgame_8cpp.html#a088324ad8995e3eb76024e3e79083d48',1,'GLFW_INCLUDE_NONE:&#160;yourgame.cpp']]],
-  ['glm_5fenable_5fexperimental_131',['glm_enable_experimental',['../camera_8h.html#abd75661fe7969e19439052a5f69ba5d1',1,'GLM_ENABLE_EXPERIMENTAL:&#160;camera.h'],['../trafo_8h.html#abd75661fe7969e19439052a5f69ba5d1',1,'GLM_ENABLE_EXPERIMENTAL:&#160;trafo.h']]]
+  ['gettarget_123',['getTarget',['../classyourgame_1_1gl_1_1Texture.html#a1805636668884d92ca4ef88d729635c2',1,'yourgame::gl::Texture']]],
+  ['gettime_124',['getTime',['../namespaceyourgame_1_1time.html#a93280bb827010563a3caae7bf52455ae',1,'yourgame::time']]],
+  ['gettrafo_125',['getTrafo',['../classyourgame_1_1util_1_1RigidBody.html#a0362d3ec1908700cee198b8a04b97e1b',1,'yourgame::util::RigidBody']]],
+  ['getuniformlocation_126',['getUniformLocation',['../classyourgame_1_1gl_1_1Shader.html#a16386d3d896c4f6b01447bcb1a32934c',1,'yourgame::gl::Shader']]],
+  ['getwidth_127',['getwidth',['../classyourgame_1_1gl_1_1Texture.html#ae97bd8fb33e9cfaecb64761602bb3e54',1,'yourgame::gl::Texture::getWidth()'],['../classyourgame_1_1util_1_1Image.html#a718b5cb073328ec198406aa3e5fcd0b7',1,'yourgame::util::Image::getWidth()']]],
+  ['git_5fcommit_128',['git_commit',['../namespaceyourgame_1_1version.html#ad525dc89ea2f858a141d6fdd560b351c',1,'yourgame::version']]],
+  ['git_5fdate_129',['git_date',['../namespaceyourgame_1_1version.html#a64c06e31adccb495242934c5c8d9999f',1,'yourgame::version']]],
+  ['gl_5finclude_2eh_130',['gl_include.h',['../gl__include_8h.html',1,'']]],
+  ['glfw_5finclude_5fnone_131',['glfw_include_none',['../input__desktop_8h.html#a088324ad8995e3eb76024e3e79083d48',1,'GLFW_INCLUDE_NONE:&#160;input_desktop.h'],['../platform__desktop__web_2input_8cpp.html#a088324ad8995e3eb76024e3e79083d48',1,'GLFW_INCLUDE_NONE:&#160;input.cpp'],['../platform__desktop__web_2yourgame_8cpp.html#a088324ad8995e3eb76024e3e79083d48',1,'GLFW_INCLUDE_NONE:&#160;yourgame.cpp']]],
+  ['glm_5fenable_5fexperimental_132',['glm_enable_experimental',['../camera_8h.html#abd75661fe7969e19439052a5f69ba5d1',1,'GLM_ENABLE_EXPERIMENTAL:&#160;camera.h'],['../trafo_8h.html#abd75661fe7969e19439052a5f69ba5d1',1,'GLM_ENABLE_EXPERIMENTAL:&#160;trafo.h']]]
 ];

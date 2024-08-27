@@ -19,5 +19,6 @@ var searchData=
   ['drawing_2eh_16',['drawing.h',['../drawing_8h.html',1,'']]],
   ['drawinstanced_17',['drawInstanced',['../classyourgame_1_1gl_1_1Shape.html#ad9268a8ae90541dd7e0decb7605494ca',1,'yourgame::gl::Shape']]],
   ['drawmode_18',['drawMode',['../structyourgame_1_1gl_1_1Shape_1_1ElemArrBufferDescr.html#a3ebf7a4c1f9ab11137b93f558cd5428d',1,'yourgame::gl::Shape::ElemArrBufferDescr']]],
-  ['drawsprite_19',['drawSprite',['../namespaceyourgame_1_1gl.html#a59ff39d21bdd4e91595bf15af289db1b',1,'yourgame::gl']]]
+  ['drawsky_19',['drawSky',['../namespaceyourgame_1_1gl.html#ab2cb0c91a20469244ff460cfbd85f0a5',1,'yourgame::gl']]],
+  ['drawsprite_20',['drawSprite',['../namespaceyourgame_1_1gl.html#a59ff39d21bdd4e91595bf15af289db1b',1,'yourgame::gl']]]
 ];
