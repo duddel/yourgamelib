@@ -92,9 +92,10 @@ namespace yourgame
                             const void *data,
                             bool generateMipmap);
 
+            GLuint handle() const { return m_handle; }
+            GLenum getTarget() const { return m_target; }
             GLsizei getWidth() const { return m_width; }
             GLsizei getHeight() const { return m_height; }
-            GLuint handle() const { return m_handle; }
 
             void insertCoords(std::string name, int x, int y, int width, int height, bool cwRot);
 

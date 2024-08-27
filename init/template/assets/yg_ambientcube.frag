@@ -3,13 +3,15 @@
 
 precision mediump float; // required for es
 
-in vec3 vOutPos; // used for cubemap texture lookup
+in vec3 vOutPos;
 
 layout(location = 0) out vec4 color;
 
+uniform vec3 lightAmbient;
 uniform samplerCube textureSkyCube;
 
 void main()
 {
-    color = texture(textureSkyCube, vOutPos);
+    vec3 finalColor = vec3(texture(textureSkyCube, vOutPos));
+    color = vec4(finalColor * lightAmbient, 1.0);
 }

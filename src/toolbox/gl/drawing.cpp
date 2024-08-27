@@ -164,5 +164,65 @@ namespace yourgame
 
             return screenPos;
         }
+
+        void drawSky(yourgame::gl::Texture *texture,
+                     yourgame::math::Camera *camera,
+                     std::array<float, 3> tint,
+                     yourgame::math::Trafo *trafo)
+        {
+            if (!texture || !camera)
+            {
+                return;
+            }
+
+            bool isCubemap = (texture->getTarget() == GL_TEXTURE_CUBE_MAP);
+
+            yourgame::gl::Geometry *geo = isCubemap ? yourgame_internal::util::assets::manager.get<yourgame::gl::Geometry>("cubeInside")
+                                                    : yourgame_internal::util::assets::manager.get<yourgame::gl::Geometry>("sphereInside");
+
+            yourgame::gl::DrawConfig cfg;
+            cfg.shader = isCubemap ? yourgame_internal::util::assets::manager.get<yourgame::gl::Shader>("ambientCubemap")
+                                   : yourgame_internal::util::assets::manager.get<yourgame::gl::Shader>("ambientTexture");
+
+            cfg.textures.push_back(texture);
+
+            {
+                yourgame::gl::Lightsource light;
+                light.setAmbient(tint);
+                cfg.shader->useProgram(&light, camera);
+            }
+
+            // we do not pass camera to the draw config (cfg) and
+            // build the model matrix (used as mvp) manually:
+            if (trafo)
+            {
+                cfg.modelMat = camera->pMat(0.1f, 2.0f) *             // "custom" zNear, zFar for skybox camera projection
+                               glm::mat4(glm::mat3(camera->vMat())) * // rotation part of camera view matrix
+                               glm::mat4(glm::mat3(trafo->mat()));    // rotation part of skybox transformation
+            }
+            else
+            {
+                cfg.modelMat = camera->pMat(0.1f, 2.0f) *            // "custom" zNear, zFar for skybox camera projection
+                               glm::mat4(glm::mat3(camera->vMat())); // rotation part of camera view matrix
+            }
+
+            // Draw geometry while preserving current depth mask state
+            {
+                GLboolean depthMask;
+                glGetBooleanv(GL_DEPTH_WRITEMASK, &depthMask);
+
+                if (depthMask == GL_TRUE)
+                {
+                    glDepthMask(GL_FALSE);
+                }
+
+                yourgame::gl::drawGeo(geo, cfg);
+
+                if (depthMask == GL_TRUE)
+                {
+                    glDepthMask(GL_TRUE);
+                }
+            }
+        }
     } // namespace gl
 } // namespace yourgame

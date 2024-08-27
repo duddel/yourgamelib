@@ -52,7 +52,6 @@ namespace mygame
     yg::math::Trafo g_modelTrafo;
     yg::math::Trafo g_skyboxTrafo;
     yg::math::Camera g_camera;
-    yg::math::Camera g_skyboxCamera;
     std::map<std::string, yg::gl::Geometry *> g_geos;
     std::string g_geoName = "ship_dark";
     float g_shaderColorMix = 0.5f;
@@ -76,7 +75,6 @@ namespace mygame
                                  glm::vec3(0.0f, 0.5f, 0.0f),
                                  glm::vec3(0.0f, 1.0f, 0.0f));
         g_camera.setPerspective(75.0f, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 1.0f, 10.0f);
-        g_skyboxCamera.setPerspective(75.0f, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
 
         // Skybox texture
         {
@@ -200,7 +198,6 @@ namespace mygame
         }
 
         g_camera.setAspect(yg::input::get(yg::input::WINDOW_ASPECT_RATIO));
-        g_skyboxCamera.setAspect(yg::input::get(yg::input::WINDOW_ASPECT_RATIO));
 
         // prepare draw call based on selected shader
         auto mvp = g_camera.pMat() * g_camera.vMat() * g_modelTrafo.mat();
@@ -242,16 +239,7 @@ namespace mygame
         // draw skybox
         if (g_drawSkybox)
         {
-            yg::gl::DrawConfig cfg;
-            cfg.shader = g_assets.get<yg::gl::Shader>("shaderSkybox");
-            cfg.textures = {g_assets.get<yg::gl::Texture>("skybox")};
-            cfg.modelMat = g_skyboxCamera.pMat() *                    // skybox camera projection
-                           glm::mat4(glm::mat3(g_camera.vMat())) *    // rotation part of main camera view matrix
-                           glm::mat4(glm::mat3(g_skyboxTrafo.mat())); // rotation part of skybox transformation
-            glDepthMask(GL_FALSE);
-            g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
-            yg::gl::drawGeo(g_assets.get<yg::gl::Geometry>("cube"), cfg);
-            glDepthMask(GL_TRUE);
+            yg::gl::drawSky(g_assets.get<yg::gl::Texture>("skybox"), &g_camera, {1.0f, 1.0f, 1.0f}, &g_skyboxTrafo);
         }
 
         // set selected shader
@@ -485,7 +473,6 @@ namespace mygame
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.1f, 10.0f);
                 ImGui::SliderFloat("fovy", &f1, 10.0f, 180.0f);
                 g_camera.setPerspective(f1, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), f2, f3);
-                g_skyboxCamera.setPerspective(f1, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), 0.1f, 2.0f);
             }
             else
             {
@@ -495,7 +482,6 @@ namespace mygame
                 ImGui::DragFloatRange2("zNear/zFar", &f2, &f3, 0.05f, 0.0f, 10.0f);
                 ImGui::SliderFloat("height", &f1, 0.1f, 30.0f);
                 g_camera.setOrthographic(f1, yg::input::get(yg::input::WINDOW_ASPECT_RATIO), f2, f3);
-                // skybox camera always perspective (see above)
             }
 
             // shader

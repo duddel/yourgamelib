@@ -12,7 +12,6 @@ uniform sampler2D textureDiffuse;
 
 void main()
 {
-    vec3 finalLight = lightAmbient;
     vec3 finalColor = vec3(texture(textureDiffuse, vOutTex));
-    color = vec4(finalColor * finalLight, 1.0);
+    color = vec4(finalColor * lightAmbient, 1.0);
 }

@@ -23,6 +23,7 @@ freely, subject to the following restrictions:
 #include <array>
 #include <vector>
 #include "yourgame/math/camera.h"
+#include "yourgame/math/trafo.h"
 #include "yourgame/gl/geometry.h"
 #include "yourgame/gl/shader.h"
 #include "yourgame/gl/texture.h"
@@ -50,6 +51,11 @@ namespace yourgame
                                         float width,
                                         float height,
                                         float angle);
+
+        void drawSky(yourgame::gl::Texture *texture,
+                     yourgame::math::Camera *camera,
+                     std::array<float, 3> tint,
+                     yourgame::math::Trafo *trafo);
     } // namespace gl
 } // namespace yourgame
 

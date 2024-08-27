@@ -18,7 +18,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 #include "doctest.h"
-#include "yourgame/yourgame.h"
+#include "yourgame/util/assetmanager.h"
 
 struct A
 {
@@ -28,6 +28,15 @@ struct A
     ~A() { A::numObj--; }
 };
 size_t A::numObj = 0;
+
+struct B
+{
+    static size_t numObj;
+    int m_a;
+    B(int a) : m_a(a) { B::numObj++; }
+    ~B() { B::numObj--; }
+};
+size_t B::numObj = 0;
 
 TEST_CASE("AssetManager")
 {
@@ -99,5 +108,13 @@ TEST_CASE("AssetManager")
         assman.clear();
         CHECK(A::numObj == 0);
         CHECK(assman.numOf<A>() == 0);
+    }
+
+    SUBCASE("same name")
+    {
+        CHECK(assman.insert<A>("Object", new A(1)));
+        CHECK(assman.insert<B>("Object", new B(2)));
+        CHECK(assman.get<A>("Object")->m_a == 1);
+        CHECK(assman.get<B>("Object")->m_a == 2);
     }
 }

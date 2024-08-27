@@ -25,7 +25,7 @@ namespace yourgame_internal
     {
         void initState()
         {
-            glClearColor(0.275f, 0.275f, 0.275f, 1.0f);
+            glClearColor(0.4f, 0.6f, 0.8f, 1.0f);
 
             glEnable(GL_DEPTH_TEST);
 

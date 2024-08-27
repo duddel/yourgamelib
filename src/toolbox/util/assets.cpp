@@ -36,6 +36,9 @@ namespace yourgame_internal
                 ret = ret && manager.insert("geoQuad", yourgame::gl::loadGeometry("a//yg_quad.obj"));
                 ret = ret && manager.insert("geoGrid", yourgame::gl::loadGeometry("a//yg_grid.obj"));
 
+                ret = ret && manager.insert("sphereInside", yourgame::gl::loadGeometry("a//yg_sphere_inside.obj"));
+                ret = ret && manager.insert("cubeInside", yourgame::gl::loadGeometry("a//yg_cube_inside.obj"));
+
                 // Shaders
                 ret = ret && manager.insert("shaderPostNull", yourgame::gl::loadShader(
                                                                   {{GL_VERTEX_SHADER, "a//yg_post.vert"},
@@ -44,6 +47,14 @@ namespace yourgame_internal
                 ret = ret && manager.insert("shaderSprite", yourgame::gl::loadShader(
                                                                 {{GL_VERTEX_SHADER, "a//yg_sprite.vert"},
                                                                  {GL_FRAGMENT_SHADER, "a//yg_sprite.frag"}}));
+
+                ret = ret && manager.insert("ambientTexture", yourgame::gl::loadShader(
+                                                                  {{GL_VERTEX_SHADER, "a//yg_tex.vert"},
+                                                                   {GL_FRAGMENT_SHADER, "a//yg_ambienttex.frag"}}));
+
+                ret = ret && manager.insert("ambientCubemap", yourgame::gl::loadShader(
+                                                                  {{GL_VERTEX_SHADER, "a//yg_pos.vert"},
+                                                                   {GL_FRAGMENT_SHADER, "a//yg_ambientcube.frag"}}));
 
                 if (!ret)
                 {
