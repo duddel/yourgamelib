@@ -139,12 +139,13 @@ These libraries are integrated if the project has been initialized with default 
 
 ## Dear ImGui
 
--   version: **1.82**
--   origin: <https://github.com/ocornut/imgui/releases/tag/v1.82>
+-   version: **1.91.0**
+-   origin: <https://github.com/ocornut/imgui/releases/tag/v1.91.0>
 -   extracted from origin: see files below
 -   license: [imgui/LICENSE.txt](imgui/LICENSE.txt)
     -   backends/imgui_impl_android.{h,cpp}
     -   backends/imgui_impl_glfw.{h,cpp}
+    -   backends/imgui_impl_opengl3_loader.h
     -   backends/imgui_impl_opengl3.{h,cpp}
     -   imconfig.h
     -   imgui.{h,cpp}
@@ -153,6 +154,7 @@ These libraries are integrated if the project has been initialized with default 
     -   imgui_internal.h
     -   imgui_tables.cpp
     -   imgui_widgets.cpp
+    -   LICENSE.txt
 -   license: mentioned in files
     -   [imstb_rectpack.h](imgui/imstb_rectpack.h)
     -   [imstb_textedit.h](imgui/imstb_textedit.h)

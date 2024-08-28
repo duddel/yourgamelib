@@ -159,6 +159,16 @@ namespace yourgame_internal
             // initialize file io
             yourgame_internal::file::desktop::initFile();
 
+// Log YourGameLib GL versions
+#if defined(YOURGAME_GL_API_GL)
+            yourgame::log::info("YOURGAME_GL_API_GL");
+#elif defined(YOURGAME_GL_API_GLES)
+            yourgame::log::info("YOURGAME_GL_API_GLES");
+#endif
+            yourgame::log::info("YOURGAME_GLSL_VERSION_STRING: %v", YOURGAME_GLSL_VERSION_STRING);
+            yourgame::log::info("YOURGAME_GL_MAJOR: %v", YOURGAME_GL_MAJOR);
+            yourgame::log::info("YOURGAME_GL_MINOR: %v", YOURGAME_GL_MINOR);
+
 #ifndef YOURGAME_CLIMODE
             // initialize glfw, gl
             yourgame::log::info("glfwInit()...");

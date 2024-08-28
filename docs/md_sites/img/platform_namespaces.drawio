@@ -1,0 +1,114 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.7">
+  <diagram name="platform_namespaces" id="CkHTEnF1taCmYiaFYZeK">
+    <mxGraphModel dx="1359" dy="906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Mhy9dfmOikeWYf-RurAn-21" value="&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;Common Public API&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;yourgame/&amp;lt;aspect&amp;gt;.h&lt;/span&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fillColor=#dae8fc;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="40" y="140" width="200" height="160" as="geometry">
+            <mxRectangle x="40" y="40" width="140" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Mhy9dfmOikeWYf-RurAn-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="Mhy9dfmOikeWYf-RurAn-21" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="200" as="sourcePoint" />
+            <mxPoint x="100" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-2" value="&lt;pre style=&quot;&quot;&gt;namespace yourgame {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;  }&lt;br&gt;}&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="Mhy9dfmOikeWYf-RurAn-21" vertex="1">
+          <mxGeometry y="40" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-3" value="&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;Common Internal API&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;yourgame_internal/&amp;lt;aspect&amp;gt;.h&lt;/span&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fillColor=#ffe6cc;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="260" y="140" width="200" height="160" as="geometry">
+            <mxRectangle x="40" y="40" width="140" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="Ud2aYxaD3KzGg5NP4v88-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="200" as="sourcePoint" />
+            <mxPoint x="100" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-5" value="&lt;pre style=&quot;&quot;&gt;namespace yourgame_internal {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;  }&lt;br&gt;}&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="Ud2aYxaD3KzGg5NP4v88-3" vertex="1">
+          <mxGeometry y="40" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-6" value="&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;Platform Specific Internal API&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;yourgame_internal/&amp;lt;aspect&amp;gt;_&amp;lt;platform&amp;gt;.h&lt;/span&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=40;fillColor=#f8cecc;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="480" y="140" width="240" height="160" as="geometry">
+            <mxRectangle x="40" y="40" width="140" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="Ud2aYxaD3KzGg5NP4v88-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="200" as="sourcePoint" />
+            <mxPoint x="100" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-8" value="&lt;pre&gt;namespace yourgame_internal {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; namespace &amp;lt;platform&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; }&lt;br&gt;&amp;nbsp; }&lt;br&gt;}&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;" parent="Ud2aYxaD3KzGg5NP4v88-6" vertex="1">
+          <mxGeometry y="40" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-9" value="&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;Common Implementation&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;src/&amp;lt;aspect&amp;gt;.cpp&lt;/span&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=40;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="40" y="320" width="290" height="250" as="geometry">
+            <mxRectangle x="40" y="40" width="140" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="Ud2aYxaD3KzGg5NP4v88-9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="200" as="sourcePoint" />
+            <mxPoint x="100" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-27" value="&lt;pre&gt;namespace yourgame_internal {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; // Common Internal Implementation&lt;br&gt;&amp;nbsp; }&lt;br&gt;}&lt;br&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fillColor=#ffe6cc;strokeColor=default;" parent="Ud2aYxaD3KzGg5NP4v88-9" vertex="1">
+          <mxGeometry y="40" width="290" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-11" value="&lt;pre&gt;namespace yourgame {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; // Common Public Implementation&lt;br&gt;&amp;nbsp; }&lt;br&gt;}&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fillColor=#dae8fc;strokeColor=default;" parent="Ud2aYxaD3KzGg5NP4v88-9" vertex="1">
+          <mxGeometry y="150" width="290" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-12" value="&lt;div&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;Platform Specific Implementation&lt;/b&gt;&lt;br&gt;&lt;/div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;src/platform/&amp;lt;aspect&amp;gt;.cpp&lt;/span&gt;" style="swimlane;whiteSpace=wrap;html=1;startSize=40;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="360" y="320" width="360" height="310" as="geometry">
+            <mxRectangle x="40" y="40" width="140" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="Ud2aYxaD3KzGg5NP4v88-12" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="200" as="sourcePoint" />
+            <mxPoint x="100" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-14" value="&lt;pre&gt;namespace yourgame_internal {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; // Platform Specific Internal Implementation&lt;br&gt;&amp;nbsp; &amp;nbsp; namespace &amp;lt;platform&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; // Platform Specific Internal Implementation&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; // with Platform Specific API&lt;br&gt;&amp;nbsp; &amp;nbsp; }&lt;br&gt;&amp;nbsp; }&lt;br&gt;}&lt;br&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fillColor=#ffe6cc;strokeColor=default;" parent="Ud2aYxaD3KzGg5NP4v88-12" vertex="1">
+          <mxGeometry y="40" width="360" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-28" value="&lt;pre&gt;namespace yourgame {&lt;br&gt;&amp;nbsp; namespace &amp;lt;aspect&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; // Platform Specific Public Implementation&lt;br&gt;&amp;nbsp; }&lt;br&gt;}&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fillColor=#dae8fc;strokeColor=default;" parent="Ud2aYxaD3KzGg5NP4v88-12" vertex="1">
+          <mxGeometry y="210" width="360" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-37" value="&lt;pre style=&quot;&quot;&gt;&amp;nbsp; &amp;nbsp; namespace &amp;lt;platform&amp;gt; {&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; // Platform Specific Internal Implementation&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; // with Platform Specific API&lt;br&gt;&amp;nbsp; &amp;nbsp; }&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=none;strokeWidth=1;align=left;" parent="Ud2aYxaD3KzGg5NP4v88-12" vertex="1">
+          <mxGeometry y="100" width="360" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-52" value="&lt;b&gt;User Code (&quot;mygame&quot;)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="60" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Ud2aYxaD3KzGg5NP4v88-54" target="Ud2aYxaD3KzGg5NP4v88-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="100" />
+              <mxPoint x="360" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="Ud2aYxaD3KzGg5NP4v88-54" target="Ud2aYxaD3KzGg5NP4v88-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ud2aYxaD3KzGg5NP4v88-54" value="&lt;b&gt;Platform Specific Framework Code (&quot;main&quot;)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="260" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="LJSQXvAlbtGrMZhqtavF-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Ud2aYxaD3KzGg5NP4v88-52" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="139" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LJSQXvAlbtGrMZhqtavF-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.84;entryY=0.013;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="Ud2aYxaD3KzGg5NP4v88-54" target="Mhy9dfmOikeWYf-RurAn-21" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

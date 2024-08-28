@@ -146,14 +146,16 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   # setting the output file extension to .html lets emscripten
   # generate an additional .html file along the .js and .wasm
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
-  # enforce GLFW v3 API (default is v2)
-  # enforce WEB GL v2 (default is v1)
+  # Use a more complete GLFW implementation: --use-port=contrib.glfw
+  #   (alternative: -sUSE_GLFW=3)
+  # Enforce WebGL v2
   # ASYNCIFY is required for emscripten_wget_data() etc.
   set(C_CXX_FLAGS_FOR_EM
-    "-s USE_GLFW=3 \
-    -s USE_WEBGL2=1 \
-    -s ALLOW_MEMORY_GROWTH=1 \
-    -s ASYNCIFY \
+    "--use-port=contrib.glfw3 \
+    -sMIN_WEBGL_VERSION=2 \
+    -sMAX_WEBGL_VERSION=2 \
+    -sALLOW_MEMORY_GROWTH=1 \
+    -sASYNCIFY \
     --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/build/shell.html")
 
   # check if there are any assets

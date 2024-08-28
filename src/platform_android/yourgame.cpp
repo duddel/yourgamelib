@@ -102,6 +102,16 @@ namespace yourgame_internal
             char *initLogArgv = nullptr;
             yourgame_internal::log::init(0, &initLogArgv);
 
+// Log YourGameLib GL versions
+#if defined(YOURGAME_GL_API_GL)
+            yourgame::log::info("YOURGAME_GL_API_GL");
+#elif defined(YOURGAME_GL_API_GLES)
+            yourgame::log::info("YOURGAME_GL_API_GLES");
+#endif
+            yourgame::log::info("YOURGAME_GLSL_VERSION_STRING: %v", YOURGAME_GLSL_VERSION_STRING);
+            yourgame::log::info("YOURGAME_GL_MAJOR: %v", YOURGAME_GL_MAJOR);
+            yourgame::log::info("YOURGAME_GL_MINOR: %v", YOURGAME_GL_MINOR);
+
             // initialize EGL
             _display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
             if (_display == EGL_NO_DISPLAY)
@@ -170,7 +180,7 @@ namespace yourgame_internal
             yourgame::log::info("GL_VERSION: %v", glGetString(GL_VERSION));
             yourgame::log::info("GL_VENDOR: %v", glGetString(GL_VENDOR));
             yourgame::log::info("GL_RENDERER: %v", glGetString(GL_RENDERER));
-            yourgame::log::info("GL_EXTENSIONS: %v", glGetString(GL_EXTENSIONS));
+            yourgame::log::info("GL_SHADING_LANGUAGE_VERSION: %v", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 #ifdef YOURGAME_EXTPROJ_imgui
             IMGUI_CHECKVERSION();

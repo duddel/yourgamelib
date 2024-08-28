@@ -238,7 +238,8 @@ namespace yourgame_internal
 
 // ToDo: emscripten GLFW implementation is incomplete (undefined symbol: glfwGetGamepadState),
 //       even though the GLFW API, provided via emscripten, is v3.3 (2024-08-27)
-#ifndef __EMSCRIPTEN__
+// -> use contrib.glfw3 (by compiling with --use-port=contrib.glfw3)
+#if !defined(__EMSCRIPTEN__) || defined(EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3)
             for (const auto &pad : gamepadFirstButtonAxisIdx)
             {
                 GLFWgamepadstate state;
@@ -284,7 +285,8 @@ namespace yourgame_internal
 
 // ToDo: emscripten GLFW implementation is incomplete (undefined symbol: glfwGetGamepadState),
 //       even though the GLFW API, provided via emscripten, is v3.3 (2024-08-27)
-#ifndef __EMSCRIPTEN__
+// -> use contrib.glfw3 (by compiling with --use-port=contrib.glfw3)
+#if !defined(__EMSCRIPTEN__) || defined(EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3)
                 // poll and set gamepads, that are already connected during init
                 for (const auto &p : gamepadConnectedApiMapping)
                 {

@@ -6,6 +6,10 @@
 
 Processed log: [clang-tidy_results.txt](../clang-tidy_results.txt).
 
+## Platform Namespaces
+
+![Platform Namespaces](img/platform_namespaces.png)
+
 ## Notes
 
 -   Deploy `web` examples to `gh-pages`
