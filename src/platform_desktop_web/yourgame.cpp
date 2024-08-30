@@ -22,6 +22,9 @@ freely, subject to the following restrictions:
 #endif
 #include "yourgame/gl_include.h"
 #define GLFW_INCLUDE_NONE
+#ifdef EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3
+#include <GLFW/emscripten_glfw3.h>
+#endif
 #include <GLFW/glfw3.h>
 #ifdef YOURGAME_EXTPROJ_imgui
 #include "imgui.h"
@@ -115,11 +118,13 @@ namespace yourgame_internal
         glfwSwapBuffers(_window);
 
         yourgame_internal::input::tickInput();
-// todo: glfw callbacks seem to be invoked by emscripten automatically
-// sometime after glfwSwapBuffers()
-#ifndef __EMSCRIPTEN__
+
+        // todo: glfw callbacks seem to be invoked by emscripten automatically
+        // sometime after glfwSwapBuffers()
+#if !defined(__EMSCRIPTEN__) || defined(EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3)
         glfwPollEvents();
 #endif
+
 #endif // #ifndef YOURGAME_CLIMODE
     }
 
@@ -188,6 +193,11 @@ namespace yourgame_internal
 
             // create the window
 #ifdef __EMSCRIPTEN__
+#ifdef EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3
+            emscripten_glfw_set_next_window_canvas_selector("#canvas");
+            _window = glfwCreateWindow(320, 200, "", NULL, NULL);
+            emscripten_glfw_make_canvas_resizable(_window, "window", nullptr);
+#else
             {
                 // the desired size of the glfw "window" is the size of the canvas
                 // element in the .html file.
@@ -204,6 +214,7 @@ namespace yourgame_internal
                     _window = glfwCreateWindow(960, 540, "", NULL, NULL);
                 }
             }
+#endif
 #else
             // create window with the current primary monitor mode ("desktop")
             const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());

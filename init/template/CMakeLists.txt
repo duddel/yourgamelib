@@ -12,6 +12,11 @@ project({{ YOURGAME_PROJECT_NAME }} VERSION 0.0.1)
 # otherwise, assets are loaded from assets/ directory during runtime.
 set(WEB_PACK_ASSETS OFF)
 
+# Web platform: set GLFW implementation to use.
+# if ON: use a more complete GLFW implementation (--use-port=contrib.glfw)
+# if OFF: use the stock GLFW3 port (-sUSE_GLFW=3)
+set(YOURGAME_WEB_USE_CONTRIB_GLFW ON)
+
 # enable this option to clone yourgamelib and checkout the commit, defined
 # as YOURGAME_GIT_COMMIT_REQUESTED. otherwise, the original path, where
 # this project has been initialized from, is used.
@@ -146,28 +151,33 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   # setting the output file extension to .html lets emscripten
   # generate an additional .html file along the .js and .wasm
   set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
-  # Use a more complete GLFW implementation: --use-port=contrib.glfw
-  #   (alternative: -sUSE_GLFW=3)
-  # Enforce WebGL v2
-  # ASYNCIFY is required for emscripten_wget_data() etc.
-  set(C_CXX_FLAGS_FOR_EM
-    "--use-port=contrib.glfw3 \
-    -sMIN_WEBGL_VERSION=2 \
-    -sMAX_WEBGL_VERSION=2 \
-    -sALLOW_MEMORY_GROWTH=1 \
-    -sASYNCIFY \
-    --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/build/shell.html")
+
+  set(LINKER_FLAGS_FOR_EM
+    "-sMIN_WEBGL_VERSION=2 \
+-sMAX_WEBGL_VERSION=2 \
+-sALLOW_MEMORY_GROWTH=1 \
+-sASYNCIFY \
+--shell-file ${CMAKE_CURRENT_SOURCE_DIR}/build/shell.html")
+
+  # Enable requested GLFW implementation
+  if(YOURGAME_WEB_USE_CONTRIB_GLFW)
+    set(LINKER_FLAGS_FOR_EM "${LINKER_FLAGS_FOR_EM} --use-port=contrib.glfw3")
+    # This is also a compiler flag and needs to be set for the yourgame library
+    target_compile_options(yourgame PUBLIC "--use-port=contrib.glfw3")
+  else()
+    set(LINKER_FLAGS_FOR_EM "${LINKER_FLAGS_FOR_EM} -sUSE_GLFW=3")
+  endif()
 
   # check if there are any assets
   file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
 
   if(WEB_PACK_ASSETS AND ASSET_FILES)
-    set(C_CXX_FLAGS_FOR_EM "${C_CXX_FLAGS_FOR_EM} \
-      --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
+    set(LINKER_FLAGS_FOR_EM "${LINKER_FLAGS_FOR_EM} \
+--preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
   endif()
 
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_CXX_FLAGS_FOR_EM}")
+  # Set final linker flags
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS_FOR_EM}")
 
   if(CPACK_GENERATOR)
     # these 4 files are typically created by emscripten: .html, .js, .wasm, .data.
