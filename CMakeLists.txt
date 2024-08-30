@@ -5,9 +5,9 @@ find_package(Git)
 project(yourgame VERSION 0.0.0)
 
 # enforce C++11 and disable extensions
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 
 # todo: allow custom gl versions
 set(YOURGAME_GL_MAJOR 3)

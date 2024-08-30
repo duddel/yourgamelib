@@ -13,9 +13,9 @@ list(APPEND YOURGAME_COMPILE_DEFS
 )
 
 # enforce C++11 and disable extensions
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 
 # the initial value of YOURGAME_GIT_COMMIT_REQUESTED is the commit of yourgamelib
 # during initialization of this project.

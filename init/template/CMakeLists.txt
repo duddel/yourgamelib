@@ -31,9 +31,9 @@ set(YOURGAME_GIT_REMOTE https://github.com/duddel/yourgamelib)
 set(YOURGAME_GIT_COMMIT_REQUESTED {{ YOURGAME_GIT_COMMIT_INIT }})
 
 # enforce C++11 and disable extensions
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_EXTENSIONS OFF)
 
 # get git commit sha and test it against the requested commit of the project:
 # git describe usually returns the name of an annotated tag, but with --match="",
