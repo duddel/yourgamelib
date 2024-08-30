@@ -1,17 +1,22 @@
 /code/include/base/yourgame/audio.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  26:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/base/yourgame/control.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/base/yourgame/file.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  27:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/base/yourgame/gl_include.h
   38:9 (warning) header guard does not follow preferred style [llvm-header-guard]
 /code/include/base/yourgame/input.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   28:14 (warning) enum 'Source' uses a larger base type ('unsigned int', size: 4 bytes) than necessary for its value set, consider using 'std::uint16_t' (2 bytes) as the base type to reduce its size [performance-enum-size]
 /code/include/base/yourgame/log.h
   101:33 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   35:33 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
   46:33 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
   56:33 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
@@ -21,25 +26,31 @@
   92:33 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
 /code/include/base/yourgame/math.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   27:20 (warning) enum 'Projection' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
   33:20 (warning) enum 'Axis' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
 /code/include/base/yourgame/time.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/base/yourgame/version.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   45:34 (warning) redundant string initialization [readability-redundant-string-init]
 /code/include/base/yourgame/yourgame.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
 /code/include/base_internal/yourgame_internal/file.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   24:1 (warning) #includes are not sorted properly [llvm-include-order]
+  27:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   31:28 (warning) variable 'projectPathAbs' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
 /code/include/base_internal/yourgame_internal/file_desktop.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   30:9 (warning) namespace 'desktop' not terminated with a closing comment [llvm-namespace-comment]
 /code/include/base_internal/yourgame_internal/input.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  26:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   30:16 (warning) accessing fields in struct 'InputValue' is inefficient due to poor alignment; currently aligned to 4 bytes, but recommended alignment is 8 bytes [altera-struct-pack-align]
   32:13 (warning) single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor,hicpp-explicit-conversions]
   33:19 (warning) member variable 'val' has public visibility [misc-non-private-member-variables-in-classes]
@@ -47,9 +58,11 @@
   37:62 (warning) variable 'inputStates' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
 /code/include/base_internal/yourgame_internal/input_desktop.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  26:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   33:9 (warning) namespace 'desktop' not terminated with a closing comment [llvm-namespace-comment]
 /code/include/base_internal/yourgame_internal/log.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   27:29 (warning) do not declare C-style arrays, use std::array<> instead [cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays]
   28:5 (warning) namespace 'log' not terminated with a closing comment [llvm-namespace-comment]
 /code/include/base_internal/yourgame_internal/mygame_external.h
@@ -57,18 +70,22 @@
   42:32 (warning) do not declare C-style arrays, use std::array<> instead [cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays]
 /code/include/base_internal/yourgame_internal/time.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/base_internal/yourgame_internal/yourgame.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
 /code/include/base_internal/yourgame_internal/yourgame_desktop.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   27:28 (warning) do not declare C-style arrays, use std::array<> instead [cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays]
 /code/include/toolbox/yourgame/gl/buffer.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   29:15 (warning) class 'Buffer' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   29:15 (warning) class 'Buffer' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   44:13 (warning) constructor does not initialize these fields: m_target, m_handle, m_usage [cppcoreguidelines-pro-type-member-init,hicpp-member-init]
 /code/include/toolbox/yourgame/gl/conventions.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   38:30 (warning) variable 'unifNameMvpMatrix' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   39:30 (warning) variable 'unifNameVpMatrix' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   40:30 (warning) variable 'unifNameModelMatrix' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
@@ -89,11 +106,13 @@
 /code/include/toolbox/yourgame/gl/drawing.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  31:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   35:16 (warning) accessing fields in struct 'DrawConfig' is inefficient due to poor alignment; currently aligned to 8 bytes, but recommended alignment is 128 bytes [altera-struct-pack-align]
   40:59 (warning) initializer for member 'textures' is redundant [readability-redundant-member-init]
 /code/include/toolbox/yourgame/gl/framebuffer.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  27:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   31:15 (warning) class 'Framebuffer' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   31:15 (warning) class 'Framebuffer' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   34:20 (warning) accessing fields in struct 'TextureAttachDescr' is inefficient due to padding; only needs 44 bytes but is using 48 bytes [altera-struct-pack-align]
@@ -102,19 +121,23 @@
 /code/include/toolbox/yourgame/gl/geometry.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  30:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   34:15 (warning) class 'Geometry' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   34:15 (warning) class 'Geometry' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
 /code/include/toolbox/yourgame/gl/lightsource.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/toolbox/yourgame/gl/loading.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  31:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   35:16 (warning) accessing fields in struct 'TextureConfig' is inefficient due to padding; only needs 38 bytes but is using 40 bytes [altera-struct-pack-align]
   35:16 (warning) accessing fields in struct 'TextureConfig' is inefficient due to poor alignment; currently aligned to 8 bytes, but recommended alignment is 64 bytes [altera-struct-pack-align]
   42:62 (warning) initializer for member 'parameteri' is redundant [readability-redundant-member-init]
 /code/include/toolbox/yourgame/gl/particles.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  27:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   31:15 (warning) class 'Particles' defines a destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   31:15 (warning) class 'Particles' defines a non-default destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   31:15 (warning) destructor of 'Particles' is public and non-virtual [cppcoreguidelines-virtual-class-destructor]
@@ -122,12 +145,14 @@
 /code/include/toolbox/yourgame/gl/shader.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  30:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   34:15 (warning) class 'Shader' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   34:15 (warning) class 'Shader' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   51:13 (warning) constructor does not initialize these fields: m_programHandle [cppcoreguidelines-pro-type-member-init,hicpp-member-init]
 /code/include/toolbox/yourgame/gl/shape.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  27:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   31:15 (warning) class 'Shape' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   31:15 (warning) class 'Shape' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   34:20 (warning) accessing fields in struct 'ArrBufferDescr' is inefficient due to padding; only needs 29 bytes but is using 40 bytes [altera-struct-pack-align]
@@ -137,15 +162,22 @@
 /code/include/toolbox/yourgame/gl/spritegrid.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  28:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   32:15 (warning) class 'SpriteGrid' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   32:15 (warning) class 'SpriteGrid' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
+  67:13 (warning) function 'geo' should be marked [[nodiscard]] [modernize-use-nodiscard]
 /code/include/toolbox/yourgame/gl/texture.h
+  107:13 (warning) function 'getCoords' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  122:13 (warning) function 'getNumFrames' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  127:13 (warning) function 'getSequenceNames' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  136:13 (warning) function 'getGridCoords' should be marked [[nodiscard]] [modernize-use-nodiscard]
   139:13 (warning) constructor does not initialize these fields: m_handle, m_target, m_unit, m_width, m_height [cppcoreguidelines-pro-type-member-init,hicpp-member-init]
   146:20 (warning) accessing fields in struct 'Sequence' is inefficient due to padding; only needs 73 bytes but is using 80 bytes [altera-struct-pack-align]
   146:20 (warning) accessing fields in struct 'Sequence' is inefficient due to poor alignment; currently aligned to 8 bytes, but recommended alignment is 128 bytes [altera-struct-pack-align]
   146:20 (warning) constructor does not initialize these fields: framesInvalidated [cppcoreguidelines-pro-type-member-init,hicpp-member-init]
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  28:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   32:16 (warning) accessing fields in struct 'TextureCoords' is inefficient due to padding; only needs 41 bytes but is using 44 bytes [altera-struct-pack-align]
   32:16 (warning) accessing fields in struct 'TextureCoords' is inefficient due to poor alignment; currently aligned to 4 bytes, but recommended alignment is 64 bytes [altera-struct-pack-align]
   35:13 (warning) use '= default' to define a trivial default constructor [hicpp-use-equals-default,modernize-use-equals-default]
@@ -163,12 +195,18 @@
   65:18 (warning) member variable 'cwRotated' has public visibility [misc-non-private-member-variables-in-classes]
   68:15 (warning) class 'Texture' defines a destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   68:15 (warning) class 'Texture' defines a non-default destructor, a copy constructor and a copy assignment operator but does not define a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
+  95:13 (warning) function 'handle' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  96:13 (warning) function 'getTarget' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  97:13 (warning) function 'getWidth' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  98:13 (warning) function 'getHeight' should be marked [[nodiscard]] [modernize-use-nodiscard]
 /code/include/toolbox/yourgame/math/camera.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   24:1 (warning) #includes are not sorted properly [llvm-include-order]
+  29:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/toolbox/yourgame/math/particles.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  28:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   38:15 (warning) destructor of 'Particles' is public and non-virtual [cppcoreguidelines-virtual-class-destructor]
   47:20 (warning) accessing fields in struct 'Config' is inefficient due to padding; only needs 103 bytes but is using 104 bytes [altera-struct-pack-align]
   47:20 (warning) accessing fields in struct 'Config' is inefficient due to poor alignment; currently aligned to 8 bytes, but recommended alignment is 128 bytes [altera-struct-pack-align]
@@ -181,6 +219,11 @@
 /code/include/toolbox/yourgame/math/trafo.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   24:1 (warning) #includes are not sorted properly [llvm-include-order]
+  28:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
+  56:13 (warning) function 'getAxisGlobal' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  57:13 (warning) function 'getEye' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  58:13 (warning) function 'getRotation' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  59:13 (warning) function 'getScale' should be marked [[nodiscard]] [modernize-use-nodiscard]
 /code/include/toolbox/yourgame/toolbox.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
 /code/include/toolbox/yourgame/util/assetmanager.h
@@ -192,6 +235,7 @@
   189:21 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  29:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   46:15 (warning) class 'AssetManager' defines a non-default destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   63:37 (warning) the parameter 'name' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]
   76:23 (warning) deleting a pointer through a type that is not marked 'gsl::owner<>'; consider using a smart pointer instead [cppcoreguidelines-owning-memory]
@@ -204,11 +248,19 @@
 /code/include/toolbox/yourgame/util/image.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  27:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   31:15 (warning) class 'Image' defines a copy constructor and a copy assignment operator but does not define a destructor, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   34:24 (warning) enum 'Layout' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
+  70:13 (warning) function 'getData' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  72:13 (warning) function 'getWidth' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  74:13 (warning) function 'getHeight' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  76:13 (warning) function 'getLayout' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  78:13 (warning) function 'getNumChannels' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  80:13 (warning) function 'getNumDemandedBytes' should be marked [[nodiscard]] [modernize-use-nodiscard]
   83:13 (warning) constructor does not initialize these fields: m_width, m_height, m_layout [cppcoreguidelines-pro-type-member-init,hicpp-member-init]
 /code/include/toolbox/yourgame/util/motion.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  26:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   33:24 (warning) enum 'FlowType' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
   40:24 (warning) enum 'SegmentEase' uses a larger base type ('int', size: 4 bytes) than necessary for its value set, consider using 'std::uint8_t' (1 byte) as the base type to reduce its size [performance-enum-size]
   53:13 (warning) single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor,hicpp-explicit-conversions]
@@ -237,11 +289,14 @@
   160:24 (warning) member variable 'm_body0' has public visibility [misc-non-private-member-variables-in-classes]
   161:24 (warning) member variable 'm_body1' has public visibility [misc-non-private-member-variables-in-classes]
   162:19 (warning) member variable 'm_impulse' has public visibility [misc-non-private-member-variables-in-classes]
+  170:13 (warning) function 'involves' should be marked [[nodiscard]] [modernize-use-nodiscard]
+  182:13 (warning) function 'involves2' should be marked [[nodiscard]] [modernize-use-nodiscard]
   193:13 (warning) single-argument constructors must be marked explicit to avoid unintentional implicit conversions [google-explicit-constructor,hicpp-explicit-conversions]
   194:24 (warning) member variable 'm_rigidBody' has public visibility [misc-non-private-member-variables-in-classes]
   198:15 (warning) class 'PhysEnv' defines a destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
   23:1 (warning) #includes are not sorted properly [llvm-include-order]
+  28:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   32:16 (warning) accessing fields in struct 'RigidBodyInfo' is inefficient due to padding; only needs 38 bytes but is using 40 bytes [altera-struct-pack-align]
   32:16 (warning) accessing fields in struct 'RigidBodyInfo' is inefficient due to poor alignment; currently aligned to 4 bytes, but recommended alignment is 64 bytes [altera-struct-pack-align]
   48:15 (warning) class 'RigidBody' defines a destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions,hicpp-special-member-functions]
@@ -249,14 +304,19 @@
   57:62 (warning) parameter 'name' is passed by value and only copied once; consider moving it to avoid unnecessary copies [performance-unnecessary-value-param]
 /code/include/toolbox/yourgame/util/postproc.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/toolbox_internal/yourgame_internal/gl/init.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/include/toolbox_internal/yourgame_internal/util/assets.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   31:49 (warning) variable 'manager' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
 /code/include/toolbox_internal/yourgame_internal/util/postproc.h
   20:9 (warning) header guard does not follow preferred style [llvm-header-guard]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/quality/_build/version.cpp
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   30:20 (warning) no header providing "std::string" is directly included [misc-include-cleaner]
   30:27 (warning) initialization of 'verstr' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]
   30:9 (warning) static objects are disallowed; if possible, use a constexpr constructor instead [fuchsia-statically-constructed-objects]
@@ -294,6 +354,7 @@
   25:1 (warning) included header valarray is not used directly [misc-include-cleaner]
   26:1 (warning) included header file.h is not used directly [misc-include-cleaner]
   27:1 (warning) included header log.h is not used directly [misc-include-cleaner]
+  36:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   40:18 (warning) 3 adjacent parameters of 'init' of similar type ('int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
   40:22 (warning) parameter 'numSources' is unused [misc-unused-parameters]
   40:38 (warning) parameter 'numChannels' is unused [misc-unused-parameters]
@@ -322,6 +383,7 @@
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
   221:13 (warning) variable 'reFilePath' of type 'std::regex' (aka 'basic_regex<char>') can be declared 'const' [misc-const-correctness]
   240:17 (warning) switching on non-enum value without default case may not cover all cases [bugprone-switch-missing-default-case]
+  31:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   35:21 (warning) initialization of 'projectPathAbs' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]
   35:21 (warning) redundant string initialization [readability-redundant-string-init]
   35:21 (warning) variable 'projectPathAbs' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
@@ -343,17 +405,21 @@
   66:17 (warning) calling legacy resource function without passing a 'gsl::owner<>' [cppcoreguidelines-owning-memory]
   66:17 (warning) the value returned by this function should not be disregarded; neglecting it may lead to errors [cert-err33-c]
   74:17 (warning) implicit conversion 'DIR *' (aka '__dirstream *') -> 'bool' [readability-implicit-bool-conversion]
+  89:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/src/input.cpp
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
+  24:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   28:14 (warning) no header providing "std::map" is directly included [misc-include-cleaner]
   28:55 (warning) variable 'inputStates' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   28:9 (warning) static objects are disallowed; if possible, use a constexpr constructor instead [fuchsia-statically-constructed-objects]
+  43:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/src/log.cpp
   26:1 (warning) initialization of 'elCrashHandler' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]
   26:1 (warning) initialization of 'elStorage' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]
   26:1 (warning) static objects are disallowed; if possible, use a constexpr constructor instead [fuchsia-statically-constructed-objects]
   26:1 (warning) variable 'elCrashHandler' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   26:1 (warning) variable 'elStorage' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
+  28:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   63:29 (warning) do not declare C-style arrays, use std::array<> instead [cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays]
 /code/src/platform_desktop_web/file.cpp
   138:75 (warning) no header providing "size_t" is directly included [misc-include-cleaner]
@@ -376,6 +442,7 @@
   30:1 (warning) #includes are not sorted properly [llvm-include-order]
   36:17 (warning) variable 'assetPathAbs' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   36:5 (warning) static objects are disallowed; if possible, use a constexpr constructor instead [fuchsia-statically-constructed-objects]
+  39:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   50:21 (warning) variable 'exeBasePathLength' is not initialized [cppcoreguidelines-init-variables]
   51:17 (warning) variable 'exePathLength' of type 'int' can be declared 'const' [misc-const-correctness]
   51:59 (warning) no header providing "NULL" is directly included [misc-include-cleaner]
@@ -392,6 +459,7 @@
   56:17 (warning) no header providing "free" is directly included [misc-include-cleaner]
   60:17 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   64:25 (warning) implicit conversion 'DIR *' (aka '__dirstream *') -> 'bool' [readability-implicit-bool-conversion]
+  76:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   85:68 (warning) no header providing "uint8_t" is directly included [misc-include-cleaner]
   90:13 (warning) variable 'ret' of type 'int' can be declared 'const' [misc-const-correctness]
 /code/src/platform_desktop_web/input.cpp
@@ -424,6 +492,7 @@
   213:41 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
   215:49 (warning) statement should be inside braces [google-readability-braces-around-statements,hicpp-braces-around-statements,readability-braces-around-statements]
   21:1 (warning) #includes are not sorted properly [llvm-include-order]
+  221:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   225:14 (warning) function 'tickInput' has cognitive complexity of 49 (threshold 25) [readability-function-cognitive-complexity]
   228:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   243:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
@@ -462,6 +531,7 @@
   284:13 (warning) use of a signed integer operand with a binary bitwise operator [hicpp-signed-bitwise]
   285:33 (warning) use nullptr [hicpp-use-nullptr,modernize-use-nullptr]
   313:87 (warning) no header providing "yourgame::time::getClockPeriod" is directly included [misc-include-cleaner]
+  320:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   329:26 (warning) 2 adjacent parameters of 'sendCmdToEnv' of similar type ('int') are easily swapped by mistake [bugprone-easily-swappable-parameters]
   329:30 (warning) parameter 'cmdId' is unused [misc-unused-parameters]
   329:41 (warning) parameter 'data0' is unused [misc-unused-parameters]
@@ -487,6 +557,7 @@
   62:62 (warning) no header providing "yourgame::input::WINDOW_ASPECT_RATIO_INVERSE" is directly included [misc-include-cleaner]
 /code/src/time.cpp
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   29:20 (warning) variable 'clockPeriod' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   30:20 (warning) variable 'deltaTimeS' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   31:51 (warning) initialization of 'lastNowTime' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]
@@ -496,8 +567,10 @@
   37:27 (warning) C-style casts are discouraged; use static_cast [google-readability-casting]
   38:27 (warning) C-style casts are discouraged; use static_cast [google-readability-casting]
   46:13 (warning) variable 'duration' of type 'std::chrono::duration<double>' can be declared 'const' [misc-const-correctness]
+  53:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   70:13 (warning) variable 'duration' of type 'std::chrono::duration<double>' can be declared 'const' [misc-const-correctness]
 /code/src/toolbox/gl/buffer.cpp
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   29:20 (warning) variable 'handle' is not initialized [cppcoreguidelines-init-variables]
   42:13 (warning) do not use 'else' after 'return' [llvm-else-after-return,readability-else-after-return]
   44:17 (warning) initializing non-owner 'Buffer *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]
@@ -506,6 +579,7 @@
   62:22 (warning) method 'unbindTarget' can be made const [readability-make-member-function-const]
   67:22 (warning) method 'bufferData' can be made const [readability-make-member-function-const]
 /code/src/toolbox/gl/conventions.cpp
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   36:23 (warning) variable 'unifNameMvpMatrix' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   37:23 (warning) variable 'unifNameVpMatrix' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
   38:23 (warning) variable 'unifNameModelMatrix' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
@@ -544,6 +618,7 @@
   190:31 (warning) no header providing "yourgame::gl::Lightsource" is directly included [misc-include-cleaner]
   197:17 (warning) implicit conversion 'yourgame::math::Trafo *' -> 'bool' [readability-implicit-bool-conversion]
   211:27 (warning) variable 'depthMask' is not initialized [cppcoreguidelines-init-variables]
+  24:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   28:42 (warning) no header providing "yourgame::gl::Geometry" is directly included [misc-include-cleaner]
   30:18 (warning) implicit conversion 'const yourgame::gl::Geometry *' -> 'bool' [readability-implicit-bool-conversion]
   36:17 (warning) implicit conversion 'yourgame::gl::Shader *' -> 'bool' [readability-implicit-bool-conversion]
@@ -561,6 +636,7 @@
   96:41 (warning) 2 adjacent parameters of 'drawSprite' of similar type ('float') are easily swapped by mistake [bugprone-easily-swappable-parameters]
   98:41 (warning) 2 adjacent parameters of 'drawSprite' of similar type ('float') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 /code/src/toolbox/gl/framebuffer.cpp
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   26:103 (warning) the parameter 'texAttachDescrs' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]
   26:76 (warning) no header providing "std::vector" is directly included [misc-include-cleaner]
   28:13 (warning) initializing non-owner 'Framebuffer *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]
@@ -579,6 +655,7 @@
   118:54 (warning) the parameter 'name' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]
   131:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   139:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   28:13 (warning) returning a newly created resource of type 'Geometry *' or 'gsl::owner<>' from a function whose return type is not 'gsl::owner<>' [cppcoreguidelines-owning-memory]
   33:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   35:17 (warning) deleting a pointer through a type that is not marked 'gsl::owner<>'; consider using a smart pointer instead [cppcoreguidelines-owning-memory]
@@ -603,7 +680,10 @@
   89:21 (warning) implicit conversion 'Shape *' -> 'bool' [readability-implicit-bool-conversion]
   99:121 (warning) the parameter 'bufferName' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]
   99:53 (warning) the parameter 'shapeName' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]
+/code/src/toolbox/gl/init.cpp
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
 /code/src/toolbox/gl/lightsource.cpp
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   26:14 (warning) no header providing "std::array" is directly included [misc-include-cleaner]
 /code/src/toolbox/gl/loading.cpp
   112:29 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
@@ -638,6 +718,7 @@
   328:25 (warning) redundant string initialization [readability-redundant-string-init]
   332:21 (warning) implicit conversion 'int' -> 'bool' [readability-implicit-bool-conversion]
   343:19 (warning) function 'loadGeometryFromStrings' has cognitive complexity of 46 (threshold 25) [readability-function-cognitive-complexity]
+  34:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   352:32 (warning) no header providing "yourgame::log::error" is directly included [misc-include-cleaner]
   387:17 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   38:18 (warning) function 'loadTexture' has cognitive complexity of 70 (threshold 25) [readability-function-cognitive-complexity]
@@ -715,6 +796,7 @@
 /code/src/toolbox/gl/particles.cpp
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
   20:1 (warning) included header glm.hpp is not used directly [misc-include-cleaner]
+  24:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   28:68 (warning) no header providing "yourgame::gl::Geometry" is directly included [misc-include-cleaner]
   30:18 (warning) implicit conversion 'yourgame::gl::Geometry *' -> 'bool' [readability-implicit-bool-conversion]
   35:13 (warning) initializing non-owner 'Particles *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]
@@ -749,6 +831,7 @@
   218:13 (warning) variable 'unifName' of type 'std::string' (aka 'basic_string<char>') can be declared 'const' [misc-const-correctness]
   225:13 (warning) do not use 'else' after 'return' [llvm-else-after-return,readability-else-after-return]
   227:17 (warning) variable 'unifLoc' of type 'GLint' (aka 'int') can be declared 'const' [misc-const-correctness]
+  24:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   34:52 (warning) no header providing "NULL" is directly included [misc-include-cleaner]
   34:52 (warning) use nullptr [hicpp-use-nullptr,modernize-use-nullptr]
   37:23 (warning) variable 'status' is not initialized [cppcoreguidelines-init-variables]
@@ -773,6 +856,7 @@
   101:93 (warning) use nullptr [hicpp-use-nullptr,modernize-use-nullptr]
   105:21 (warning) method 'drawInstanced' can be made const [readability-make-member-function-const]
   108:102 (warning) use nullptr [hicpp-use-nullptr,modernize-use-nullptr]
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   26:33 (warning) no header providing "std::vector" is directly included [misc-include-cleaner]
   27:40 (warning) no header providing "yourgame::gl::Buffer" is directly included [misc-include-cleaner]
   36:13 (warning) initializing non-owner 'Shape *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]
@@ -821,6 +905,7 @@
   191:44 (warning) narrowing conversion from 'unsigned long' to signed type 'GLsizeiptr' (aka 'long') is implementation-defined [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
   192:42 (warning) narrowing conversion from 'unsigned long' to signed type 'GLsizeiptr' (aka 'long') is implementation-defined [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
   194:82 (warning) C-style casts are discouraged; use static_cast [google-readability-casting]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   27:21 (warning) use '= default' to define a trivial default constructor [hicpp-use-equals-default,modernize-use-equals-default]
   29:50 (warning) no header providing "yourgame::gl::Texture" is directly included [misc-include-cleaner]
   30:41 (warning) no header providing "std::vector" is directly included [misc-include-cleaner]
@@ -867,6 +952,7 @@
   195:13 (warning) variable 'width' of type 'int' can be declared 'const' [misc-const-correctness]
   196:13 (warning) variable 'height' of type 'int' can be declared 'const' [misc-const-correctness]
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
+  24:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   28:32 (warning) 2 adjacent parameters of 'make' of similar type ('GLenum') are easily swapped by mistake [bugprone-easily-swappable-parameters]
   30:43 (warning) no header providing "std::vector" is directly included [misc-include-cleaner]
   30:55 (warning) no header providing "std::pair" is directly included [misc-include-cleaner]
@@ -899,12 +985,14 @@
   176:29 (warning) no header providing "glm::ortho" is directly included [misc-include-cleaner]
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
   20:1 (warning) included header glm.hpp is not used directly [misc-include-cleaner]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   27:14 (warning) no header providing "glm::mat4" is directly included [misc-include-cleaner]
   44:9 (warning) no header providing "yourgame::math::Trafo" is directly included [misc-include-cleaner]
   50:42 (warning) no header providing "yourgame::math::Projection" is directly included [misc-include-cleaner]
   59:37 (warning) 4 adjacent parameters of 'setPerspective' of similar type ('float') are easily swapped by mistake [bugprone-easily-swappable-parameters]
   69:38 (warning) 4 adjacent parameters of 'setOrthographic' of similar type ('float') are easily swapped by mistake [bugprone-easily-swappable-parameters]
 /code/src/toolbox/math/particles.cpp
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   26:20 (warning) random number generator seeded with a default argument will generate a predictable sequence of values [cert-msc32-c,cert-msc51-cpp]
   29:29 (warning) no header providing "std::uniform_real_distribution" is directly included [misc-include-cleaner]
   39:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
@@ -930,6 +1018,7 @@
   194:24 (warning) avoid repeating the return type from the declaration; use a braced initializer list instead [modernize-return-braced-init-list]
   197:24 (warning) avoid repeating the return type from the declaration; use a braced initializer list instead [modernize-return-braced-init-list]
   200:24 (warning) avoid repeating the return type from the declaration; use a braced initializer list instead [modernize-return-braced-init-list]
+  22:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   26:14 (warning) no header providing "glm::mat4" is directly included [misc-include-cleaner]
   32:52 (warning) no header providing "yourgame::math::Axis" is directly included [misc-include-cleaner]
   35:34 (warning) no header providing "glm::angleAxis" is directly included [misc-include-cleaner]
@@ -939,6 +1028,7 @@
   67:34 (warning) do not access members of unions; use (boost::)variant instead [cppcoreguidelines-pro-type-union-access]
   68:34 (warning) do not access members of unions; use (boost::)variant instead [cppcoreguidelines-pro-type-union-access]
 /code/src/toolbox/util/assets.cpp
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   29:13 (warning) static objects are disallowed; if possible, use a constexpr constructor instead [fuchsia-statically-constructed-objects]
   29:42 (warning) variable 'manager' is non-const and globally accessible, consider making it const [cppcoreguidelines-avoid-non-const-global-variables]
 /code/src/toolbox/util/image.cpp
@@ -970,6 +1060,7 @@
   162:38 (warning) do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]
   192:20 (warning) performing an implicit widening conversion to type 'size_t' (aka 'unsigned long') of a multiplication performed in type 'int' [bugprone-implicit-widening-of-multiplication-result]
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
+  25:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   29:47 (warning) no header providing "uint8_t" is directly included [misc-include-cleaner]
   30:41 (warning) no header providing "size_t" is directly included [misc-include-cleaner]
   34:46 (warning) implicit conversion 'bool' -> 'int' [readability-implicit-bool-conversion]
@@ -1008,9 +1099,11 @@
   230:13 (warning) variable 't01' of type 'float' can be declared 'const' [misc-const-correctness]
   236:13 (warning) variable 't01' of type 'float' can be declared 'const' [misc-const-correctness]
   237:13 (warning) variable 't01s' of type 'float' can be declared 'const' [misc-const-correctness]
+  23:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   97:13 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
   99:26 (warning) narrowing conversion from 'double' to 'float' [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
 /code/src/toolbox/util/postproc.cpp
+  104:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   112:22 (warning) implicit conversion 'yourgame::gl::Framebuffer *' -> 'bool' [readability-implicit-bool-conversion]
   131:22 (warning) implicit conversion 'yourgame::gl::Framebuffer *' -> 'bool' [readability-implicit-bool-conversion]
   151:21 (warning) variable 'aspectFramebuf' of type 'float' can be declared 'const' [misc-const-correctness]
@@ -1033,6 +1126,7 @@
   209:102 (warning) no header providing "yourgame::gl::Geometry" is directly included [misc-include-cleaner]
   20:10 (warning) inclusion of deprecated C++ header 'stdint.h'; consider using 'cstdint' instead [hicpp-deprecated-headers,modernize-deprecated-headers]
   20:1 (warning) #includes are not sorted properly [llvm-include-order]
+  216:1 (warning) nested namespaces can be concatenated [modernize-concat-nested-namespaces]
   222:25 (warning) 2 adjacent parameters of 'resize' of similar type ('uint32_t') are easily swapped by mistake [bugprone-easily-swappable-parameters]
   234:21 (warning) narrowing conversion from 'uint32_t' (aka 'unsigned int') to signed type 'GLsizei' (aka 'int') is implementation-defined [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
   235:21 (warning) narrowing conversion from 'uint32_t' (aka 'unsigned int') to signed type 'GLsizei' (aka 'int') is implementation-defined [bugprone-narrowing-conversions,cppcoreguidelines-narrowing-conversions]
