@@ -51,6 +51,8 @@ namespace
 
     void framebufferSizeCallback(GLFWwindow *window, int width, int height)
     {
+        yourgame::log::debug("GLFW framebuffer resized: %v,%v", width, height);
+
         yourgame_internal::input::setInput2(yourgame::input::WINDOW_WIDTH, static_cast<float>(width));
         yourgame_internal::input::setInput2(yourgame::input::WINDOW_HEIGHT, static_cast<float>(height));
         yourgame_internal::input::setInput2(yourgame::input::WINDOW_WIDTH_INVERSE,
@@ -62,32 +64,55 @@ namespace
         yourgame_internal::input::setInput2(yourgame::input::WINDOW_ASPECT_RATIO_INVERSE,
                                             (width < 1 || height < 1) ? 1.0f : static_cast<float>(height) / static_cast<float>(width));
     }
+
+    void errorCallback(int errorCode, char const *errorMessage)
+    {
+        yourgame::log::error("GLFW error %v: %v", errorCode, errorMessage);
+    }
+
+#ifdef __EMSCRIPTEN__
+    bool getHtmlCanvasSize(int *width, int *height)
+    {
+        if (width == nullptr || height == nullptr)
+        {
+            return false;
+        }
+
+        double widthD, heightD;
+        if (emscripten_get_element_css_size("#canvas", &widthD, &heightD) !=
+            EMSCRIPTEN_RESULT_SUCCESS)
+        {
+            return false;
+        }
+
+        *width = static_cast<int>(widthD);
+        *height = static_cast<int>(heightD);
+
+        return true;
+    }
+#endif
 } // namespace
 
 namespace yourgame_internal
 {
     void tick()
     {
-        // timing
         yourgame_internal::time::tick();
 
 #ifndef YOURGAME_CLIMODE
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) && !defined(EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3)
         {
-            // the desired size of the glfw "window" is the size of the canvas
-            // element in the .html file, which can change if the browser
-            // window is resized or set to fullscreen.
-            // glfwSetWindowSize() seems to take care of resizing the framebuffer.
-            // todo: do this via a "canvas resized" callback, if available
-            double widthD, heightD;
-            auto ret = emscripten_get_element_css_size("#canvas", &widthD, &heightD);
-            int width = static_cast<int>(widthD);
-            int height = static_cast<int>(heightD);
-            if (ret == EMSCRIPTEN_RESULT_SUCCESS &&
-                (yourgame::input::geti(yourgame::input::WINDOW_WIDTH) != width ||
-                 yourgame::input::geti(yourgame::input::WINDOW_HEIGHT) != height))
+            int width, height;
+            if (getHtmlCanvasSize(&width, &height))
             {
-                glfwSetWindowSize(_window, width, height);
+                if (yourgame::input::geti(yourgame::input::WINDOW_WIDTH) != width ||
+                    yourgame::input::geti(yourgame::input::WINDOW_HEIGHT) != height)
+                {
+                    yourgame::log::debug("Canvas resized. Calling glfwSetWindowSize(%v, %v, %v)", _window, width, height);
+                    glfwSetWindowSize(_window, width, height);
+                    // Assuming framebuffer is resized and the FramebufferSizeCallback
+                    // is invoked after glfwSetWindowSize()
+                }
             }
         }
 #endif
@@ -119,12 +144,9 @@ namespace yourgame_internal
 
         yourgame_internal::input::tickInput();
 
-        // todo: glfw callbacks seem to be invoked by emscripten automatically
-        // sometime after glfwSwapBuffers()
-#if !defined(__EMSCRIPTEN__) || defined(EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3)
+        // ToDo: glfwPollEvents() seems to be doing nothing with emscripten GLFW
+        // stock implementation (-sUSE_GLFW=3), but likely does not harm.
         glfwPollEvents();
-#endif
-
 #endif // #ifndef YOURGAME_CLIMODE
     }
 
@@ -158,13 +180,11 @@ namespace yourgame_internal
 
         int init(int argc, char *argv[])
         {
-            // initialize logging
             yourgame_internal::log::init(argc, argv);
 
-            // initialize file io
             yourgame_internal::file::desktop::initFile();
 
-// Log YourGameLib GL versions
+// Log YourGameLib GL version info
 #if defined(YOURGAME_GL_API_GL)
             yourgame::log::info("YOURGAME_GL_API_GL");
 #elif defined(YOURGAME_GL_API_GLES)
@@ -175,14 +195,16 @@ namespace yourgame_internal
             yourgame::log::info("YOURGAME_GL_MINOR: %v", YOURGAME_GL_MINOR);
 
 #ifndef YOURGAME_CLIMODE
-            // initialize glfw, gl
-            yourgame::log::info("glfwInit()...");
+            glfwSetErrorCallback(errorCallback);
+
+            yourgame::log::info("GLFW %v, glfwInit()...", glfwGetVersionString());
             if (!glfwInit())
             {
                 yourgame::log::error("glfwInit() failed");
                 return -1;
             }
 
+// Set GL version hints for GLFW
 #if defined(YOURGAME_GL_API_GLES)
             glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 #elif defined(YOURGAME_GL_API_GL)
@@ -191,22 +213,21 @@ namespace yourgame_internal
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, YOURGAME_GL_MAJOR);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, YOURGAME_GL_MINOR);
 
-            // create the window
+// Window creation
 #ifdef __EMSCRIPTEN__
 #ifdef EMSCRIPTEN_USE_PORT_CONTRIB_GLFW3
             emscripten_glfw_set_next_window_canvas_selector("#canvas");
-            _window = glfwCreateWindow(320, 200, "", NULL, NULL);
-            emscripten_glfw_make_canvas_resizable(_window, "window", nullptr);
+            _window = glfwCreateWindow(960, 540, "", NULL, NULL);
+            if (_window)
+            {
+                emscripten_glfw_make_canvas_resizable(_window, "window", nullptr);
+            }
 #else
             {
-                // the desired size of the glfw "window" is the size of the canvas
-                // element in the .html file.
-                double widthD, heightD;
-                auto ret = emscripten_get_element_css_size("#canvas", &widthD, &heightD);
-                if (ret == EMSCRIPTEN_RESULT_SUCCESS)
+                // Create GLFW window matching canvas size
+                int width, height;
+                if (getHtmlCanvasSize(&width, &height))
                 {
-                    int width = static_cast<int>(widthD);
-                    int height = static_cast<int>(heightD);
                     _window = glfwCreateWindow(width, height, "", NULL, NULL);
                 }
                 else
@@ -224,12 +245,12 @@ namespace yourgame_internal
             glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
             if (yourgame::input::geti(yourgame::input::WINDOW_FULLSCREEN))
             {
-                // create fullscreen window
+                // Fullscreen
                 _window = glfwCreateWindow(mode->width, mode->height, "", glfwGetPrimaryMonitor(), NULL);
             }
             else
             {
-                // create windowed window, roughly centered, 0.8 times desktop resolution
+                // Window, centered, 80% of desktop resolution
                 _window = glfwCreateWindow((mode->width * 8) / 10, (mode->height * 8) / 10, "", NULL, NULL);
                 if (_window)
                 {
@@ -247,11 +268,13 @@ namespace yourgame_internal
 
             glfwMakeContextCurrent(_window);
 
+            // Set the framebufferSizeCallback and call it once, to announce the initial size
             glfwSetFramebufferSizeCallback(_window, framebufferSizeCallback);
-            // call it manually to set initial size
-            int width, height;
-            glfwGetFramebufferSize(_window, &width, &height);
-            framebufferSizeCallback(_window, width, height);
+            {
+                int width, height;
+                glfwGetFramebufferSize(_window, &width, &height);
+                framebufferSizeCallback(_window, width, height);
+            }
 
 #if defined(YOURGAME_GL_EXT_LOADER_GLAD)
             yourgame::log::info("gladLoadGL()...");
@@ -261,6 +284,8 @@ namespace yourgame_internal
                 return -1;
             }
 #endif
+
+            // Log GL info
             yourgame::log::info("GL_VERSION: %v", glGetString(GL_VERSION));
             yourgame::log::info("GL_VENDOR: %v", glGetString(GL_VENDOR));
             yourgame::log::info("GL_RENDERER: %v", glGetString(GL_RENDERER));
@@ -268,12 +293,10 @@ namespace yourgame_internal
 
             glfwSwapInterval(yourgame::input::geti(yourgame::input::VSYNC_ON) ? 1 : 0);
 
-#if (GLFW_VERSION_MAJOR == 3) && (GLFW_VERSION_MINOR >= 3)
             if (glfwRawMouseMotionSupported())
             {
                 glfwSetInputMode(_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
             }
-#endif
 
             yourgame_internal::input::desktop::initInput(_window);
 
@@ -305,10 +328,8 @@ namespace yourgame_internal
 
             mygame::init(argc, argv);
 
-            // initialize timing:
-            // get the initial time point just before tick() starts, which will
-            // result in a small time delta in the first tick() cycle.
-            // todo: is it desirable to have time delta == 0.0 in first tick() cycle?
+            // Initialize timing
+            // First cycle will see a small time delta
             yourgame_internal::time::init();
             yourgame::log::info("steady_clock precision: %vs (%vns)", yourgame::time::getClockPeriod(), yourgame::time::getClockPeriod() * 1.0e+9);
 
@@ -344,14 +365,11 @@ namespace yourgame
             }
             else
             {
-                // set windowed, roughly centered, 0.8 times desktop resolution
+                // Window, centered, 80% of desktop resolution
                 glfwSetWindowMonitor(_window, NULL, 0, 0, (mode->width * 8) / 10, (mode->height * 8) / 10, mode->refreshRate);
                 glfwSetWindowPos(_window, mode->width / 10, mode->height / 10);
             }
             yourgame_internal::input::setInput2(yourgame::input::WINDOW_FULLSCREEN, enable ? 1.0f : 0.0f);
-            // todo: glfwSwapInterval() is required to be called again after
-            // window mode changed: https://github.com/glfw/glfw/issues/1072
-            glfwSwapInterval(yourgame::input::geti(yourgame::input::VSYNC_ON) ? 1 : 0);
 #endif
         }
 
