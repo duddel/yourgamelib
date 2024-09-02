@@ -84,16 +84,15 @@ namespace mygame
             cfg.wrapMode = GL_CLAMP_TO_EDGE;
             cfg.generateMipmap = true;
             cfg.premultiplyAlpha = false;
-            g_assets.insert("skybox", yg::gl::loadCubemap({"a//sky_right.png", "a//sky_left.png", "a//sky_top.png", "a//sky_bottom.png", "a//sky_front.png", "a//sky_back.png"},
-                                                          cfg));
+            g_assets.insert("skybox", yg::gl::loadCubemap(
+                                          {"a//sky_right.png",
+                                           "a//sky_left.png",
+                                           "a//sky_top.png",
+                                           "a//sky_bottom.png",
+                                           "a//sky_front.png",
+                                           "a//sky_back.png"},
+                                          cfg));
         }
-
-        // Skybox shader
-        g_assets.insert("shaderSkybox", yg::gl::loadShader(
-                                            {{GL_VERTEX_SHADER, "a//yg_skybox.vert"},
-                                             {GL_FRAGMENT_SHADER, "a//yg_skybox.frag"}},
-                                            {}, {}));
-        g_assets.get<yg::gl::Shader>("shaderSkybox")->useProgram();
 
         // Normal shader
         g_assets.insert("shaderNormal", yg::gl::loadShader(

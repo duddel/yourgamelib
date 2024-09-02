@@ -28,12 +28,7 @@ repo_name: duddel/yourgamelib
 edit_uri: ""
 nav:
   - Getting Started: index.md
-  - Examples:
-      - Bare: Examples/Bare.md
-      - Fps: Examples/Fps.md
-      - Framework: Examples/Framework.md
-      - Particles: Examples/Particles.md
-      - Sprites: Examples/Sprites.md
+  - Examples: Examples.md
   - Manual: Manual.md
   - API:
     - Overview: Overview.md
