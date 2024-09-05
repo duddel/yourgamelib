@@ -1,5 +1,4 @@
 **/_build*
-*.log
-docs/_deploy
-.vscode/
+**/_deploy*
 YourGameProject/
+.vscode/

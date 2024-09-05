@@ -6,7 +6,13 @@ find_package(Git)
 
 project({{ YOURGAME_PROJECT_NAME }} VERSION 0.0.1)
 
-# web platform only.
+# Name of the CMake target (default: name of project defined above)
+set(YOURGAME_PROJECT_TARGET_NAME ${CMAKE_PROJECT_NAME})
+
+# Name of the target output files (default: name of project defined above)
+set(YOURGAME_PROJECT_OUTPUT_NAME ${CMAKE_PROJECT_NAME})
+
+# Web platform: pack assets
 # enable this option to copy assets (if any) into the wasm file system.
 # only recommended if the assets are final and not to be updated.
 # otherwise, assets are loaded from assets/ directory during runtime.
@@ -114,7 +120,7 @@ list(APPEND MYGAME_INC_DIRS_PRIVATE
 )
 
 if(YOURGAME_PLATFORM STREQUAL "android")
-  add_library(${CMAKE_PROJECT_NAME} SHARED
+  add_library(${YOURGAME_PROJECT_TARGET_NAME} SHARED
     ${MYGAME_SRC_FILES}
   )
   set(CMAKE_SHARED_LINKER_FLAGS
@@ -124,7 +130,7 @@ if(YOURGAME_PLATFORM STREQUAL "android")
   # todo: convincing the Android Studio project to use ${CMAKE_CURRENT_SOURCE_DIR}/assets
   #       as the assets directory for the app is preferred, but unsolved.
   add_custom_command(
-    TARGET ${CMAKE_PROJECT_NAME}
+    TARGET ${YOURGAME_PROJECT_TARGET_NAME}
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_CURRENT_SOURCE_DIR}/assets"
@@ -133,16 +139,18 @@ if(YOURGAME_PLATFORM STREQUAL "android")
 endif()
 
 if(YOURGAME_PLATFORM STREQUAL "web" OR YOURGAME_PLATFORM STREQUAL "desktop")
-  add_executable(${CMAKE_PROJECT_NAME}
+  add_executable(${YOURGAME_PROJECT_TARGET_NAME}
     ${MYGAME_SRC_FILES}
   )
 endif()
 
+set_target_properties(${YOURGAME_PROJECT_TARGET_NAME} PROPERTIES OUTPUT_NAME ${YOURGAME_PROJECT_OUTPUT_NAME})
+
 if(YOURGAME_PLATFORM STREQUAL "desktop")
   if(CPACK_GENERATOR)
-    install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION .)
+    install(TARGETS ${YOURGAME_PROJECT_TARGET_NAME} DESTINATION .)
     install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION .) # copy assets/
-    set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CMAKE_PROJECT_NAME})
+    set(CPACK_PACKAGE_INSTALL_DIRECTORY ${YOURGAME_PROJECT_OUTPUT_NAME})
     include(CPack)
   endif()
 endif()
@@ -150,7 +158,7 @@ endif()
 if(YOURGAME_PLATFORM STREQUAL "web")
   # setting the output file extension to .html lets emscripten
   # generate an additional .html file along the .js and .wasm
-  set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES SUFFIX ".html")
+  set_target_properties(${YOURGAME_PROJECT_TARGET_NAME} PROPERTIES SUFFIX ".html")
 
   set(LINKER_FLAGS_FOR_EM
     "-sMIN_WEBGL_VERSION=2 \
@@ -182,16 +190,16 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   if(CPACK_GENERATOR)
     # these 4 files are typically created by emscripten: .html, .js, .wasm, .data.
     # the .data file is only available if any asset files have been packed (see above)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.html DESTINATION . RENAME index.html)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.js DESTINATION .)
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.wasm DESTINATION .)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.html DESTINATION . RENAME index.html)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.js DESTINATION .)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.wasm DESTINATION .)
 
     # pack asset files, if any.
     # either pack the .data file, if WEB_PACK_ASSETS == ON,
     # or pack separate assets/ directory, otherwise.
     if(ASSET_FILES)
       if(WEB_PACK_ASSETS)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.data DESTINATION .)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.data DESTINATION .)
       else()
         install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/ DESTINATION ./assets/)
       endif()
@@ -202,10 +210,10 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   endif()
 endif()
 
-target_include_directories(${CMAKE_PROJECT_NAME}
+target_include_directories(${YOURGAME_PROJECT_TARGET_NAME}
   PRIVATE ${MYGAME_INC_DIRS_PRIVATE}
 )
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+target_link_libraries(${YOURGAME_PROJECT_TARGET_NAME} PRIVATE
   yourgame
 )

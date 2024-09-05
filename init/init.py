@@ -74,7 +74,6 @@ def main(args):
     jEnv = Environment(loader=ldr)
 
     # process CMakeLists.txt
-    # todo: extend source file pattern
     dstSources = [f for f in os.listdir(tgtDirSrc) if f.endswith(".cpp")]
     templ = jEnv.get_template("CMakeLists.txt")
     templ.stream(
@@ -106,6 +105,11 @@ def main(args):
         YOURGAME_GIT_COMMIT_INIT=gitSha
     ).dump(os.path.join(tgtDir, "README.md"))
 
+    # process shell.html
+    templ = jEnv.get_template("build/shell.html")
+    templ.stream(
+        YOURGAME_PROJECT_NAME=newProjName
+    ).dump(os.path.join(tgtDir, "build", "shell.html"))
 
 if __name__ == "__main__":
     # command line args

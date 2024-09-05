@@ -2,80 +2,51 @@ name: deploy
 on: push
 
 jobs:
-  deploy_desktop:
-    name: desktop
-    runs-on: ${{ matrix.os }}
+  build:
+    name: build
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        #yourgame_platform: [desktop, web, android]
+        yourgame_platform: [desktop, web] # ToDo: fix android
 
     steps:
       - uses: actions/checkout@v4
-      # ubuntu: install deps, configure/build
-      - name: install deps
-        run: |
-          sudo apt update
-          sudo apt install libgl1-mesa-dev xorg-dev
-        if: startsWith(matrix.os, 'ubuntu')
-      - name: configure/build (ubuntu)
-        run: |
-          cd build
-          ./build_desktop_release.bash
-        if: startsWith(matrix.os, 'ubuntu')
-      # windows: configure/build
+
+      - name: build docker image (desktop)
+        run: docker build -t yourgame --build-arg NO_DOCS="true" --build-arg NO_EMSDK="true" --build-arg NO_ANDROID="true" https://github.com/duddel/yourgamelib.git
+        if: startsWith(matrix.yourgame_platform, 'desktop')
+      - name: build docker image (web)
+        run: docker build -t yourgame --build-arg NO_DOCS="true" --build-arg NO_ANDROID="true" https://github.com/duddel/yourgamelib.git
+        if: startsWith(matrix.yourgame_platform, 'web')
+      - name: build docker image (android)
+        run: docker build -t yourgame --build-arg NO_DOCS="true" --build-arg NO_EMSDK="true" https://github.com/duddel/yourgamelib.git
+        if: startsWith(matrix.yourgame_platform, 'android')
+
+      - name: build
+        run: docker run --rm -v $(pwd):/code yourgame /bin/bash -c "cd build && ./build_${{ matrix.yourgame_platform }}_release.bash"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.yourgame_platform }}
+          path: build/_deploy/*
+
+  build_windows:
+    name: build windows
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
       - name: configure/build (win32)
         run: |
           cd build
           build_desktop_release_win32.cmd
-        if: startsWith(matrix.os, 'windows')
         shell: cmd
       - name: configure/build (win64)
         run: |
           cd build
           build_desktop_release_win64.cmd
-        if: startsWith(matrix.os, 'windows')
         shell: cmd
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          path: build/_deploy/*
-
-  deploy_web:
-    name: web
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: install emsdk
-        run: |
-          git clone https://github.com/emscripten-core/emsdk.git
-          cd emsdk
-          ./emsdk install latest
-          ./emsdk activate latest
-      - name: configure/build
-        # build_web_release.bash needs to know the emsdk location
-        # in order to call: source $EMSDK/emsdk_env.sh:
-        env:
-          EMSDK: ${{ github.workspace }}/emsdk
-        run: |
-          cd build
-          ./build_web_release.bash
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          path: build/_deploy/*
-
-  deploy_android:
-    name: android
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: assemble
-        run: |
-          cd build
-          ./build_android_release.bash
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
+          name: windows
           path: build/_deploy/*
