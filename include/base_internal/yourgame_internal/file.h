@@ -28,11 +28,16 @@ namespace yourgame_internal
 {
     namespace file
     {
-        extern std::string projectPathAbs;
+        const std::string ARCHIVE_FILE_EXTENSION = "zip";
 
         int readFileFromPath(const std::string &filepath, std::vector<uint8_t> &dst);
+
+        int readFileFromArchive(const std::string &archivepath, const std::string &filename, std::vector<uint8_t> &dst);
+
         int writeFileToPath(const std::string &filepath, const void *data, size_t numBytes);
+
         bool checkIfPathIsDirectory(const std::string &filepath);
+
         void normalizePath(std::string &path);
     } // namespace file
 } // namespace yourgame_internal

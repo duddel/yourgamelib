@@ -1,5 +1,6 @@
 <!--
-This is a minimal Emscripten shell file.
+This is a minimal Emscripten shell file, provided by
+  yourgamelib (https://github.com/duddel/yourgamelib)
 Build without "--shell-file" linker flag to use Emscripten stock shell file.
 -->
 <!doctype html>
@@ -34,6 +35,15 @@ Build without "--shell-file" linker flag to use Emscripten stock shell file.
           return canvas;
         })()
       };
+
+      // Hand over arguments from URL, to be received by main() via argv[]
+      let args = window.location.search.substr(1).split('&');
+      if (args[0].length > 0) {
+        Module['arguments'] = []
+        for (let i = 0; i < args.length; ++i) {
+          Module['arguments'][i] = decodeURI(args[i]);
+        }
+      }
     </script>
     {{ '{{{' }} SCRIPT {{ '}}}' }}
   </body>

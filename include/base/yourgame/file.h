@@ -28,20 +28,6 @@ namespace yourgame
 {
     namespace file
     {
-        /** \brief returns the full (absolut) path to a file called filename in the project file location */
-        std::string getProjectFilePath(const std::string &filename = "");
-
-        std::string getAssetFilePath(const std::string &filename = "");
-
-        /** \brief reads an entire file (from asset file location) and returns it as a vector of bytes */
-        int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst);
-
-        /** \brief reads an entire file (from project file location) and returns it as a vector of bytes */
-        int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst);
-
-        /** \brief sets path as current project directory. initial project directory is "" */
-        void setProjectPath(const std::string &path);
-
         /** \brief reads an entire file and returns it as a vector of bytes
         - prepend \c a// to load a file from asset file location
         - prepend \c p// to load a file from project file location
@@ -51,6 +37,37 @@ namespace yourgame
         - example: <code>loadFile("file4.bin" ...) // loads file4.bin from working directory </code>
         */
         int readFile(const std::string &filename, std::vector<uint8_t> &dst);
+
+        /** \brief reads an entire file (from asset file location) and returns it as a vector of bytes */
+        int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst);
+
+        /** \brief reads an entire file (from project file location) and returns it as a vector of bytes */
+        int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst);
+
+        /** \brief writes numBytes bytes from data to a file called filename, destination path determined
+        by prefix ("a//", etc.), see readFile(). overwrites the file if it exists.
+        \attention filename requires a prefix, such as "a//". otherwise, writing is omitted. */
+        int writeFile(const std::string &filename, const void *data, size_t numBytes);
+
+        /** \brief writes numBytes bytes from data to a file called filename in the asset file location.
+        overwrites the file if it exists */
+        int writeAssetFile(const std::string &filename, const void *data, size_t numBytes);
+
+        /** \brief writes numBytes bytes from data to a file called filename in the project file location.
+        overwrites the file if it exists */
+        int writeProjectFile(const std::string &filename, const void *data, size_t numBytes);
+
+        /** \brief sets path as current project directory */
+        void setProjectPath(const std::string &path);
+
+        /** \brief returns the full (absolut) path to the executable (base), extended by pathRelative */
+        std::string getBasePath(const std::string &pathRelative = "");
+
+        /** \brief returns the full (absolut) path to the assets directory, extended by pathRelative */
+        std::string getAssetFilePath(const std::string &pathRelative = "");
+
+        /** \brief returns the full (absolut) path to the current project directory, extended by pathRelative */
+        std::string getProjectFilePath(const std::string &pathRelative = "");
 
         /** \brief returns the location (path or prefix, such as a//) of a file, filepath points to
         - example: "file1.bin" returns ""
@@ -85,19 +102,6 @@ namespace yourgame
         - example: "Makefile" returns ""
         */
         std::string getFileExtension(const std::string &filepath);
-
-        /** \brief writes numBytes bytes from data to a file called filename in the asset file location.
-        overwrites the file if it exists */
-        int writeAssetFile(const std::string &filename, const void *data, size_t numBytes);
-
-        /** \brief writes numBytes bytes from data to a file called filename in the project file location.
-        overwrites the file if it exists */
-        int writeProjectFile(const std::string &filename, const void *data, size_t numBytes);
-
-        /** \brief writes numBytes bytes from data to a file called filename, destination path determined
-        by prefix ("a//", etc.), see readFile(). overwrites the file if it exists.
-        \attention filename requires a prefix, such as "a//". otherwise, writing is omitted. */
-        int writeFile(const std::string &filename, const void *data, size_t numBytes);
 
         /** \brief returns list of directory content. accepts prefixes like readFile() does. accepts wildcard "*" for
         files (after last / in pattern) */

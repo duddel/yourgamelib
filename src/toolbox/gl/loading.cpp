@@ -357,8 +357,7 @@ namespace yourgame
             auto attribs = objRdr.GetAttrib();
             auto materials = objRdr.GetMaterials();
 
-            yourgame::log::debug("%v shape(s)", shapes.size());
-            yourgame::log::debug("%v material(s)", materials.size());
+            yourgame::log::debug("%v shape(s), %v material(s)", shapes.size(), materials.size());
 
             std::vector<GLuint> objIdxData;
             std::vector<GLuint> objLineIdxData;

@@ -33,7 +33,28 @@ freely, subject to the following restrictions:
 
 namespace
 {
-    std::string assetPathAbs;
+    std::string basePathAbs = "";
+    std::string assetPathAbs = "";
+    std::string projectPath = "";
+
+#ifdef __EMSCRIPTEN__
+    int wgetData(const std::string &filepath, std::vector<uint8_t> &dst)
+    {
+        void *data;
+        int size;
+        int error;
+        emscripten_wget_data(filepath.c_str(), &data, &size, &error);
+
+        if (error == 0)
+        {
+            dst.resize(size);
+            std::memcpy(&dst[0], data, size);
+            std::free(data);
+        }
+
+        return error;
+    }
+#endif
 } // namespace
 
 namespace yourgame_internal
@@ -45,21 +66,24 @@ namespace yourgame_internal
             void initFile()
             {
 #ifdef __EMSCRIPTEN__
-                assetPathAbs = "/home/web_user/";
+                assetPathAbs = "assets/";
+                basePathAbs = "";
 #else
                 int exeBasePathLength;
                 int exePathLength = wai_getExecutablePath(NULL, 0, NULL);
                 char *path = (char *)malloc(exePathLength + 1);
                 wai_getExecutablePath(path, exePathLength, &exeBasePathLength);
                 path[exeBasePathLength + 1] = '\0';
-                std::string basePath(path);
+
+                basePathAbs = std::string(path);
+
                 free(path);
-                yourgame_internal::file::normalizePath(basePath);
+                yourgame_internal::file::normalizePath(basePathAbs);
 
                 // check existing (via dirent openable) asset directories
                 for (const auto &a : {"assets/", "../assets/", "../../assets/", "../../../assets/"})
                 {
-                    assetPathAbs = basePath + a;
+                    assetPathAbs = basePathAbs + a;
                     DIR *dir = opendir(assetPathAbs.c_str());
                     if (dir)
                     {
@@ -77,62 +101,90 @@ namespace yourgame
 {
     namespace file
     {
-        std::string getAssetFilePath(const std::string &filename)
+        std::string getAssetFilePath(const std::string &pathRelative)
         {
-            return assetPathAbs + filename;
+            return assetPathAbs + pathRelative;
+        }
+
+        std::string getBasePath(const std::string &pathRelative)
+        {
+            return basePathAbs + pathRelative;
         }
 
         int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
         {
-            // on platform desktop: try to read file from the actual assets directory.
-            // on platform web, this is transient memory. assets are only available if they
-            // have been packed by emscripten or have been downloaded before (see below).
-            int ret = yourgame_internal::file::readFileFromPath(assetPathAbs + filename, dst);
-            if (ret == 0)
+#ifdef __EMSCRIPTEN__
+            return wgetData(assetPathAbs + filename, dst);
+#else
+            return (yourgame_internal::file::readFileFromPath(assetPathAbs + filename, dst));
+#endif
+        }
+
+        int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
+        {
+            // Assuming projectPath points to an archive file
+            if (getFileExtension(projectPath) == yourgame_internal::file::ARCHIVE_FILE_EXTENSION)
             {
-                yourgame::log::debug("readAssetFile(): successfully read asset %v from %v", filename, assetPathAbs);
+                return yourgame_internal::file::readFileFromArchive(projectPath, filename, dst);
             }
 
-// on platform desktop, return result of readFileFromPath()
-#ifndef __EMSCRIPTEN__
-            return ret;
-// on platform web, try to download (wget) the file
+#ifdef __EMSCRIPTEN__
+            return wgetData(projectPath + filename, dst);
 #else
-            if (ret != 0)
+            return yourgame_internal::file::readFileFromPath(projectPath + filename, dst);
+#endif
+        }
+
+        void setProjectPath(const std::string &path)
+        {
+            if (path.size() < 1)
             {
-                for (const auto &a : {"./assets/", "../assets/"})
+                return;
+            }
+
+            projectPath = path;
+            yourgame_internal::file::normalizePath(projectPath);
+
+            // Assuming directory path. Append '/'
+            if (getFileExtension(projectPath) != yourgame_internal::file::ARCHIVE_FILE_EXTENSION)
+            {
+                if (projectPath.back() != '/')
                 {
-                    void *wgetData;
-                    int wgetSize;
-                    int wgetError;
-
-                    emscripten_wget_data((a + filename).c_str(), &wgetData, &wgetSize, &wgetError);
-
-                    if (wgetError == 0)
-                    {
-                        yourgame::log::debug("readAssetFile(): successfully downloaded asset %v from %v, %v bytes", filename, a, wgetSize);
-
-                        // save downloaded asset in asset directory
-                        if (yourgame::file::writeAssetFile(filename, wgetData, wgetSize) == 0)
-                        {
-                            yourgame::log::debug("readAssetFile() successfully saved asset %v", filename);
-                        }
-                        else
-                        {
-                            yourgame::log::debug("readAssetFile() failed to save asset %v", filename);
-                        }
-
-                        dst.resize(wgetSize);
-                        std::memcpy(&dst[0], wgetData, wgetSize);
-                        std::free(wgetData);
-                        ret = 0;
-                        break;
-                    }
+                    projectPath += '/';
                 }
             }
+            // Assuming archive path. On platform web: if the project path is an archive,
+            // we download it to transient memory and adjust the projectPath
+            else
+            {
+#ifdef __EMSCRIPTEN__
+                std::vector<uint8_t> archiveData;
+                if (wgetData(projectPath, archiveData) == 0)
+                {
+                    projectPath = "/home/web_user/" + getFileName(projectPath);
 
-            return ret;
+                    yourgame_internal::file::writeFileToPath(projectPath,
+                                                             archiveData.data(),
+                                                             archiveData.size());
+
+                    yourgame::log::info("setProjectPath(): saved project archive file to %v", projectPath);
+                }
+                else
+                {
+                    yourgame::log::error("setProjectPath(): failed to save project archive file %v", getFileName(projectPath));
+                }
 #endif
+            }
+        }
+
+        std::string getProjectFilePath(const std::string &pathRelative)
+        {
+            return projectPath + pathRelative;
+        }
+
+        int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
+        {
+            return yourgame_internal::file::writeFileToPath(projectPath + filename, data, numBytes);
         }
 
         int writeAssetFile(const std::string &filename, const void *data, size_t numBytes)
@@ -157,7 +209,7 @@ namespace yourgame
                     break;
                 case 'p':
                     // substr() returns empty string if pos == length.
-                    pathToOpen = (yourgame_internal::file::projectPathAbs + pathToOpen.substr(3, std::string::npos));
+                    pathToOpen = (projectPath + pathToOpen.substr(3, std::string::npos));
                     break;
                 }
             }

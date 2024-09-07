@@ -12,12 +12,6 @@ set(YOURGAME_PROJECT_TARGET_NAME ${CMAKE_PROJECT_NAME})
 # Name of the target output files (default: name of project defined above)
 set(YOURGAME_PROJECT_OUTPUT_NAME ${CMAKE_PROJECT_NAME})
 
-# Web platform: pack assets
-# enable this option to copy assets (if any) into the wasm file system.
-# only recommended if the assets are final and not to be updated.
-# otherwise, assets are loaded from assets/ directory during runtime.
-set(WEB_PACK_ASSETS OFF)
-
 # Web platform: set GLFW implementation to use.
 # if ON: use a more complete GLFW implementation (--use-port=contrib.glfw)
 # if OFF: use the stock GLFW3 port (-sUSE_GLFW=3)
@@ -165,6 +159,7 @@ if(YOURGAME_PLATFORM STREQUAL "web")
 -sMAX_WEBGL_VERSION=2 \
 -sALLOW_MEMORY_GROWTH=1 \
 -sASYNCIFY \
+-sASYNCIFY_STACK_SIZE=8192 \
 --shell-file ${CMAKE_CURRENT_SOURCE_DIR}/build/shell.html")
 
   # Enable requested GLFW implementation
@@ -179,11 +174,6 @@ if(YOURGAME_PLATFORM STREQUAL "web")
   # check if there are any assets
   file(GLOB ASSET_FILES ${CMAKE_CURRENT_SOURCE_DIR}/assets/*.*)
 
-  if(WEB_PACK_ASSETS AND ASSET_FILES)
-    set(LINKER_FLAGS_FOR_EM "${LINKER_FLAGS_FOR_EM} \
---preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/home/web_user/")
-  endif()
-
   # Set final linker flags
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS_FOR_EM}")
 
@@ -194,15 +184,9 @@ if(YOURGAME_PLATFORM STREQUAL "web")
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.js DESTINATION .)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.wasm DESTINATION .)
 
-    # pack asset files, if any.
-    # either pack the .data file, if WEB_PACK_ASSETS == ON,
-    # or pack separate assets/ directory, otherwise.
+    # Pack asset files to assets/, if any
     if(ASSET_FILES)
-      if(WEB_PACK_ASSETS)
-        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${YOURGAME_PROJECT_OUTPUT_NAME}.data DESTINATION .)
-      else()
-        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/ DESTINATION ./assets/)
-      endif()
+      install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets/ DESTINATION ./assets/)
     endif()
 
     set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY 0)

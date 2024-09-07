@@ -47,7 +47,12 @@ namespace yourgame
 {
     namespace file
     {
-        std::string getAssetFilePath(const std::string &filename)
+        std::string getAssetFilePath(const std::string &pathRelative)
+        {
+            return "";
+        }
+
+        std::string getBasePath(const std::string &pathRelative)
         {
             return "";
         }
