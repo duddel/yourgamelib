@@ -5,7 +5,5 @@ var searchData=
   ['paused_2',['paused',['../audio_8cpp.html#a1656129c4a4fd8809254194f08f0ac70',1,'audio.cpp']]],
   ['pointer_3',['pointer',['../structyourgame_1_1gl_1_1Shape_1_1ArrBufferDescr.html#a366c094c3e763a55b057222c8fbd6081',1,'yourgame::gl::Shape::ArrBufferDescr']]],
   ['premultiplyalpha_4',['premultiplyAlpha',['../structyourgame_1_1gl_1_1TextureConfig.html#a481d38113e0aa8721197a32ffb848c2c',1,'yourgame::gl::TextureConfig']]],
-  ['project_5fname_5',['PROJECT_NAME',['../namespaceyourgame_1_1version.html#a84ecdf18258526c9c4060c06e66a376e',1,'yourgame::version']]],
-  ['projectpathabs_6',['projectPathAbs',['../namespaceyourgame__internal_1_1file.html#acf40b9331217d5a739b22a2566b74446',1,'yourgame_internal::file']]],
-  ['projectpathisdirectory_7',['projectPathIsDirectory',['../namespaceyourgame__internal_1_1file.html#a451b3807bf6b999f51928180d4c5b1f8',1,'yourgame_internal::file']]]
+  ['project_5fname_5',['PROJECT_NAME',['../namespaceyourgame_1_1version.html#a84ecdf18258526c9c4060c06e66a376e',1,'yourgame::version']]]
 ];
