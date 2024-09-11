@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.2"
-    ndkVersion "25.2.9519653"
+    compileSdkVersion 34        // https://developer.android.com/tools/releases/platforms
+    buildToolsVersion "34.0.0"  // https://developer.android.com/tools/releases/build-tools
+    ndkVersion "27.1.12297006"  // https://developer.android.com/ndk/downloads/revision_history
     defaultConfig {
         applicationId "yourgame.project.{{ YOURGAME_PROJECT_NAME_LOWER }}"
         namespace "yourgame.project.{{ YOURGAME_PROJECT_NAME_LOWER }}"
         minSdkVersion 24
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "0.0.1"
         externalNativeBuild {

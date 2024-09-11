@@ -7,8 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        #yourgame_platform: [desktop, web, android]
-        yourgame_platform: [desktop, web] # ToDo: fix android
+        yourgame_platform: [desktop, web, android]
 
     steps:
       - uses: actions/checkout@v4

@@ -57,6 +57,11 @@ namespace yourgame
             return "";
         }
 
+        std::string getProjectFilePath(const std::string &pathRelative)
+        {
+            return "";
+        }
+
         int readAssetFile(const std::string &filename, std::vector<uint8_t> &dst)
         {
             AAsset *assDesc = AAssetManager_open(assMan,
@@ -74,15 +79,27 @@ namespace yourgame
             return -1;
         }
 
+        int readProjectFile(const std::string &filename, std::vector<uint8_t> &dst)
+        {
+            return -1;
+        }
+
         int writeAssetFile(const std::string &filename, const void *data, size_t numBytes)
         {
-            // assets are read-only on android
             return -1;
+        }
+
+        int writeProjectFile(const std::string &filename, const void *data, size_t numBytes)
+        {
+            return -1;
+        }
+
+        void setProjectPath(const std::string &path)
+        {
         }
 
         std::vector<std::string> ls(const std::string &pattern)
         {
-            // todo not implemented. dirent might work with android.
             std::vector<std::string> ret;
             return ret;
         }

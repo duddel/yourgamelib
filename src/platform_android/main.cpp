@@ -24,9 +24,6 @@ freely, subject to the following restrictions:
 
 static void handleAppCmd(struct android_app *app, int32_t appCmd)
 {
-    // logging works after yourgame_internal::android::init() was called
-    // todo: split log::init() from init()?
-
     switch (appCmd)
     {
     case APP_CMD_INIT_WINDOW:
@@ -61,15 +58,19 @@ void android_main(struct android_app *app)
 
     while (true)
     {
-        int ident;
         int outEvents;
-        struct android_poll_source *outData;
+        struct android_poll_source *outData = nullptr;
 
-        // poll all events. if the app is not visible, this loop blocks until yourgame_internal::android::isInitialized() returns true
-        while ((ident = ALooper_pollAll(yourgame_internal::android::isInitialized() ? 0 : -1, NULL, &outEvents, (void **)&outData)) >= 0)
+        // ToDo: this logic needs some verification.
+        // docs: https://developer.android.com/ndk/reference/group/looper
+        // ndk sample: https://github.com/android/ndk-samples/blob/main/native-activity/app/src/main/cpp/main.cpp
+        while (ALooper_pollOnce(yourgame_internal::android::isInitialized() ? 0 : -1,
+                                NULL,
+                                &outEvents,
+                                reinterpret_cast<void **>(&outData)) != ALOOPER_POLL_TIMEOUT)
         {
             // process one event
-            if (outData != NULL)
+            if (outData != nullptr)
             {
                 outData->process(app, outData);
             }

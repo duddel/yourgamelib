@@ -1,5 +1,11 @@
 # Examples
 
+## Template
+
+<a href="https://duddel.github.io/yourgamelib/yg_examples/template" target="frame_template">Click here</a> to load the demo below, or view it in <a href="https://duddel.github.io/yourgamelib/yg_examples/template" target="about:blank">full screen</a>.
+
+<iframe src="about:blank" style="width: 700px; height: 400px; border: 1px solid black" name="frame_template"></iframe>
+
 ## Bare
 
 <a href="https://duddel.github.io/yourgamelib/yg_examples/bare" target="frame_bare">Click here</a> to load the demo below, or view it in <a href="https://duddel.github.io/yourgamelib/yg_examples/bare" target="about:blank">full screen</a>.

@@ -82,20 +82,19 @@ RUN if [ "$NO_ANDROID" = "false" ]; then \
     fi
 
 # Install Android SDK
+# For installation procedure, see https://developer.android.com/tools/sdkmanager
 RUN if [ "$NO_ANDROID" = "false" ]; then \
       cd /opt && \
       wget https://dl.google.com/android/repository/commandlinetools-linux-12172612_latest.zip && \
       unzip commandlinetools-linux-12172612_latest.zip -d android_sdk && \
       cd android_sdk/cmdline-tools && \
       mkdir latest && \
-      mv NOTICE.txt latest/ && \
-      mv bin latest/ && \
-      mv lib latest/ && \
-      mv source.properties latest/ && \
+      mv bin lib NOTICE.txt source.properties latest/ && \
       yes | /opt/android_sdk/cmdline-tools/latest/bin/sdkmanager --licenses; \
     fi
 
-ENV ANDROID_HOME=/opt/android_sdk/cmdline-tools/latest/
+# see: https://developer.android.com/tools/variables#envar
+ENV ANDROID_HOME=/opt/android_sdk/
 
 # Install Gradle
 RUN if [ "$NO_ANDROID" = "false" ]; then \
@@ -105,10 +104,6 @@ RUN if [ "$NO_ANDROID" = "false" ]; then \
     fi
 
 ENV PATH="$PATH:/opt/gradle/gradle-8.9/bin"
-
-# ToDo: Android builds fail due to missing NDK license
-# Checking the license for package NDK (Side by side) 25.2.9519653 in /opt/android_sdk/cmdline-tools/latest/licenses
-# Warning: License for package NDK (Side by side) 25.2.9519653 not accepted.
 
 WORKDIR /code
 

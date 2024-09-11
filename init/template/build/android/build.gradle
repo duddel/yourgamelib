@@ -1,11 +1,13 @@
 buildscript {
-    ext.kotlin_version = '1.8.0'
+    // https://docs.gradle.org/current/userguide/compatibility.html
+    ext.kotlin_version = '1.9.23'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.1'
+        // https://developer.android.com/reference/tools/gradle-api
+        classpath 'com.android.tools.build:gradle:8.6.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }

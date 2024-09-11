@@ -8,8 +8,7 @@ jobs:
     strategy:
       matrix:
         example_name: [framework, bare, template, fps, particles, sprites]
-        #yourgame_platform: [desktop, web, android]
-        yourgame_platform: [desktop, web] # ToDo: fix android
+        yourgame_platform: [desktop, web, android]
 
     steps:
       - uses: actions/checkout@v4
