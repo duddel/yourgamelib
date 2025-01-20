@@ -10,7 +10,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 ===========================================================
 License of yourgamelib
 ===========================================================
-Copyright (c) 2019-2024 Alexander Scholz
+Copyright (c) 2019-2025 Alexander Scholz
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
 arising from the use of this software.
