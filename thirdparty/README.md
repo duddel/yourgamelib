@@ -22,7 +22,7 @@ These libraries are integrated if the project has been initialized with default 
 | ------------------------------- | ------------------- | ------------------ | ------------------ | ------------------ |
 | [glm](#glm)                     | glm                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [imgui](#dear-imgui)            | Dear Imgui          | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| [json](#json-for-modern-c++)    | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| [json](#json-for-modern-c)      | JSON for Modern C++ | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [stb](#stb)                     | stb                 | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | [tinyobjloader](#tinyobjloader) | tinyobjloader       | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 
@@ -162,8 +162,8 @@ These libraries are integrated if the project has been initialized with default 
 
 ## JSON for Modern C++
 
--   version: **3.8.0**
--   origin: <https://github.com/nlohmann/json/releases/tag/v3.8.0>
+-   version: **3.11.3**
+-   origin: <https://github.com/nlohmann/json/releases/tag/v3.11.3>
 -   extracted from origin:
     -   json.hpp, LICENSE.MIT
 -   license: [json/LICENSE.MIT](json/LICENSE.MIT)
