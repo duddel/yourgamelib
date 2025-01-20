@@ -698,6 +698,7 @@
   115:37 (warning) variable 'pixelWidth' is not initialized [cppcoreguidelines-init-variables]
   116:37 (warning) variable 'pixelHeight' is not initialized [cppcoreguidelines-init-variables]
   151:29 (warning) kernel performance could be improved by unrolling this loop with a '#pragma unroll' directive [altera-unroll-loops]
+  151:34 (warning) 'auto &jFrame' can be declared as 'const auto &jFrame' [readability-qualified-auto]
   153:33 (warning) variable 'rotated' of type 'bool' can be declared 'const' [misc-const-correctness]
   154:37 (warning) variable 'pixelWidth' is not initialized [cppcoreguidelines-init-variables]
   155:37 (warning) variable 'pixelHeight' is not initialized [cppcoreguidelines-init-variables]
