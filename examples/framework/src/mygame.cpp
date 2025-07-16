@@ -274,7 +274,7 @@ namespace mygame
         g_assets.get<yg::gl::Texture>("skybox")->bind();
 
         // draw object
-        g_geos[g_geoName]->drawAll();
+        g_geos[g_geoName]->draw();
 
         // unbind framebuffer and draw framebuffer color or depth texture attachment, if requested
         if (g_assets.get<yg::gl::Framebuffer>("framebuf") && (g_framebufDisplay != 0))
@@ -299,7 +299,7 @@ namespace mygame
                 glUniformMatrix4fv(g_assets.get<yg::gl::Shader>("shaderTextureDepth")->getUniformLocation(yg::gl::unifNameMvpMatrix), 1, GL_FALSE, glm::value_ptr(pMat));
                 g_assets.get<yg::gl::Framebuffer>("framebuf")->textureAttachment(1)->bind();
             }
-            g_assets.get<yg::gl::Geometry>("quadGeo")->drawAll();
+            g_assets.get<yg::gl::Geometry>("quadGeo")->draw();
         }
 
         // if mouse is catched, first-person camera movement is enabled
@@ -843,7 +843,7 @@ namespace mygame
                 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, (texFilter == 0) ? GL_NEAREST : GL_LINEAR);
                 texFilterLast = texFilter;
             }
-            spriteGrid->geo()->drawAll();
+            spriteGrid->geo()->draw();
         }
         else if (spriteGridInitialized)
         {

@@ -24,8 +24,6 @@ freely, subject to the following restrictions:
 #include <map>
 #include <vector>
 #include "yourgame/gl_include.h"
-#include "yourgame/gl/buffer.h"
-#include "yourgame/gl/shape.h"
 
 namespace yourgame
 {
@@ -34,22 +32,44 @@ namespace yourgame
         class Geometry
         {
         public:
+            struct ArrayBufferDescriptor
+            {
+                GLuint index;
+                GLint size;
+                GLenum type;
+                GLboolean normalized;
+                GLsizei stride;
+                const GLvoid *pointer;
+                GLuint attribDivisor;
+            };
+
+            struct ElementArrayBufferDescriptor
+            {
+                GLenum type;
+                GLenum drawMode;
+                GLsizei numElements;
+            };
+
             static Geometry *make();
             ~Geometry();
-            bool addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
-            bool bufferData(std::string name, GLsizeiptr size, const GLvoid *data);
-            bool addShape(std::string name,
-                          std::vector<Shape::ArrBufferDescr> arDescrs,
-                          std::vector<std::string> arBufferNames,
-                          Shape::ElemArrBufferDescr elArDescr,
-                          std::string elArBufferName);
-            bool addBufferToShape(std::string shapeName,
-                                  std::vector<Shape::ArrBufferDescr> arDescrs,
-                                  std::string bufferName);
-            bool setShapeElArDescr(std::string name,
-                                   Shape::ElemArrBufferDescr elArDescr);
-            void drawAll() const;
-            void drawAllInstanced(GLsizei instancecount) const;
+
+            bool addArrayBuffer(std::string name,
+                                GLsizeiptr size,
+                                const GLvoid *data,
+                                GLenum usage,
+                                ArrayBufferDescriptor descriptor);
+
+            bool bufferArrayData(std::string name, GLsizeiptr size, const GLvoid *data);
+
+            bool setElementArrayBuffer(GLsizeiptr size,
+                                       const GLvoid *data,
+                                       GLenum usage,
+                                       ElementArrayBufferDescriptor descriptor);
+
+            bool init();
+
+            void draw() const;
+            void drawInstanced(GLsizei instancecount) const;
 
             /* deleting the copy constructor and the copy assignment operator
             prevents copying (and moving) of the object. */
@@ -57,9 +77,43 @@ namespace yourgame
             Geometry &operator=(Geometry const &) = delete;
 
         private:
+            class Buffer
+            {
+            public:
+                static Buffer *make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage);
+                ~Buffer();
+                void bind();
+                void unbindTarget();
+                bool bufferData(GLsizeiptr size, const GLvoid *data);
+
+                /* deleting the copy constructor and the copy assignment operator
+                prevents copying (and moving) of the object. */
+                Buffer(Buffer const &) = delete;
+                Buffer &operator=(Buffer const &) = delete;
+
+            private:
+                Buffer() {}
+                GLenum m_target;
+                GLuint m_handle;
+                GLenum m_usage;
+            };
+
+            struct ArrayBuffer
+            {
+                Buffer *buffer = nullptr;
+                ArrayBufferDescriptor descriptor;
+            };
+
+            struct ElementArrayBuffer
+            {
+                Buffer *buffer = nullptr;
+                ElementArrayBufferDescriptor descriptor;
+            };
+
             Geometry() {}
-            std::map<std::string, Buffer *> m_buffers;
-            std::map<std::string, Shape *> m_shapes;
+            std::map<std::string, ArrayBuffer> m_arrayBuffers;
+            ElementArrayBuffer m_elementArrayBuffer;
+            GLuint m_vaoHandle = 0;
         };
     } // namespace gl
 } // namespace yourgame

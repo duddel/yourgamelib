@@ -30,25 +30,35 @@ namespace yourgame
 
         Geometry::~Geometry()
         {
-            for (const auto &b : m_buffers)
+            // Delete VAO
+            glBindVertexArray(0);
+            glDeleteVertexArrays(1, &m_vaoHandle);
+
+            // Delete Array Buffers
+            for (const auto &b : m_arrayBuffers)
             {
-                delete b.second;
+                delete b.second.buffer;
             }
 
-            for (const auto &s : m_shapes)
+            // Delete Element Array Buffer
+            if (m_elementArrayBuffer.buffer)
             {
-                delete s.second;
+                delete m_elementArrayBuffer.buffer;
             }
         }
 
-        bool Geometry::addBuffer(std::string name, GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
+        bool Geometry::addArrayBuffer(std::string name,
+                                      GLsizeiptr size,
+                                      const GLvoid *data,
+                                      GLenum usage,
+                                      ArrayBufferDescriptor descriptor)
         {
-            if (!m_buffers.count(name))
+            if (!m_arrayBuffers.count(name))
             {
-                Buffer *newBuffer = Buffer::make(target, size, data, usage);
+                Buffer *newBuffer = Buffer::make(GL_ARRAY_BUFFER, size, data, usage);
                 if (newBuffer)
                 {
-                    m_buffers.insert(std::pair<std::string, Buffer *>(name, newBuffer));
+                    m_arrayBuffers.insert(std::pair<std::string, ArrayBuffer>(name, {newBuffer, descriptor}));
                     return true;
                 }
                 return false;
@@ -56,90 +66,146 @@ namespace yourgame
             return false;
         }
 
-        bool Geometry::bufferData(std::string name, GLsizeiptr size, const GLvoid *data)
+        bool Geometry::setElementArrayBuffer(GLsizeiptr size,
+                                             const GLvoid *data,
+                                             GLenum usage,
+                                             ElementArrayBufferDescriptor descriptor)
         {
-            auto it = m_buffers.find(name);
-            if (it != m_buffers.end())
+            // Delete Element Array Buffer it it already exists
+            if (m_elementArrayBuffer.buffer)
             {
-                return it->second->bufferData(size, data);
+                delete m_elementArrayBuffer.buffer;
+                m_elementArrayBuffer.buffer = nullptr;
+            }
+
+            Buffer *newBuffer = Buffer::make(GL_ELEMENT_ARRAY_BUFFER, size, data, usage);
+            if (newBuffer)
+            {
+                m_elementArrayBuffer.buffer = newBuffer;
+                m_elementArrayBuffer.descriptor = descriptor;
+                return true;
             }
             return false;
         }
 
-        bool Geometry::addShape(std::string name,
-                                std::vector<Shape::ArrBufferDescr> arDescrs,
-                                std::vector<std::string> arBufferNames,
-                                Shape::ElemArrBufferDescr elArDescr,
-                                std::string elArBufferName)
+        bool Geometry::bufferArrayData(std::string name, GLsizeiptr size, const GLvoid *data)
         {
-            if (arDescrs.size() != arBufferNames.size())
+            auto it = m_arrayBuffers.find(name);
+            if (it != m_arrayBuffers.end())
             {
-                return false;
-            }
-
-            if (!m_shapes.count(name))
-            {
-                std::vector<Buffer *> arBuffers;
-                for (const auto &arBufName : arBufferNames)
-                {
-                    arBuffers.push_back(m_buffers[arBufName]);
-                }
-
-                Shape *newShape = Shape::make(arDescrs, arBuffers, elArDescr, m_buffers[elArBufferName]);
-                if (newShape)
-                {
-                    m_shapes.insert(std::pair<std::string, Shape *>(name, newShape));
-                    return true;
-                }
-                return false;
+                return it->second.buffer->bufferData(size, data);
             }
             return false;
         }
 
-        bool Geometry::addBufferToShape(std::string shapeName, std::vector<Shape::ArrBufferDescr> arDescrs, std::string bufferName)
+        bool Geometry::init()
         {
-            auto it = m_shapes.find(shapeName);
-            if (it != m_shapes.end())
+            // Delete VAO if it already exists
+            if (m_vaoHandle != 0)
             {
-                // the actual buffer only needs to be passed once to GLShape::addArrBuf()
-                auto numArDescrs = arDescrs.size();
-                if (numArDescrs > 0)
+                glDeleteVertexArrays(1, &m_vaoHandle);
+                m_vaoHandle = 0;
+            }
+
+            glGenVertexArrays(1, &m_vaoHandle);
+            glBindVertexArray(m_vaoHandle);
+
+            for (const auto &pair : m_arrayBuffers)
+            {
+                pair.second.buffer->bind();
+
+                glEnableVertexAttribArray(pair.second.descriptor.index);
+
+                glVertexAttribPointer(pair.second.descriptor.index,
+                                      pair.second.descriptor.size,
+                                      pair.second.descriptor.type,
+                                      pair.second.descriptor.normalized,
+                                      pair.second.descriptor.stride,
+                                      pair.second.descriptor.pointer);
+
+                if (pair.second.descriptor.attribDivisor > 0)
                 {
-                    it->second->addArrBuf(arDescrs[0], m_buffers[bufferName]);
-                }
-                for (auto i = 1; i < numArDescrs; i++)
-                {
-                    it->second->addArrBuf(arDescrs[i], nullptr);
+                    glVertexAttribDivisor(pair.second.descriptor.index, pair.second.descriptor.attribDivisor);
                 }
             }
-            return false;
+
+            m_elementArrayBuffer.buffer->bind();
+
+            glBindVertexArray(0);
+
+            return true;
         }
 
-        bool Geometry::setShapeElArDescr(std::string name,
-                                         Shape::ElemArrBufferDescr elArDescr)
+        void Geometry::draw() const
         {
-            auto it = m_shapes.find(name);
-            if (it != m_shapes.end())
-            {
-                return it->second->setElArDescr(elArDescr);
-            }
-            return false;
+            glBindVertexArray(m_vaoHandle);
+            glDrawElements(m_elementArrayBuffer.descriptor.drawMode,
+                           m_elementArrayBuffer.descriptor.numElements,
+                           m_elementArrayBuffer.descriptor.type,
+                           0);
+            glBindVertexArray(0);
         }
 
-        void Geometry::drawAll() const
+        void Geometry::drawInstanced(GLsizei instancecount) const
         {
-            for (const auto &s : m_shapes)
+            glBindVertexArray(m_vaoHandle);
+            glDrawElementsInstanced(m_elementArrayBuffer.descriptor.drawMode,
+                                    m_elementArrayBuffer.descriptor.numElements,
+                                    m_elementArrayBuffer.descriptor.type,
+                                    0,
+                                    instancecount);
+            glBindVertexArray(0);
+        }
+
+        // Buffer ...
+        Geometry::Buffer *Geometry::Buffer::make(GLenum target, GLsizeiptr size, const GLvoid *data, GLenum usage)
+        {
+            GLuint handle;
+            glGenBuffers(1, &handle);
+            glBindBuffer(target, handle);
+            glBufferData(target, size, data, usage);
+
+            GLint checkSize = -1;
+            glGetBufferParameteriv(target, GL_BUFFER_SIZE, &checkSize);
+            if (size != checkSize)
             {
-                s.second->draw();
+                glBindBuffer(target, 0);
+                glDeleteBuffers(1, &handle);
+                return nullptr;
+            }
+            else
+            {
+                Buffer *newBuf = new Buffer();
+                newBuf->m_target = target;
+                newBuf->m_handle = handle;
+                newBuf->m_usage = usage;
+                return newBuf;
             }
         }
 
-        void Geometry::drawAllInstanced(GLsizei instancecount) const
+        Geometry::Buffer::~Buffer()
         {
-            for (const auto &s : m_shapes)
-            {
-                s.second->drawInstanced(instancecount);
-            }
+            glDeleteBuffers(1, &m_handle);
+        }
+
+        void Geometry::Buffer::bind()
+        {
+            glBindBuffer(m_target, m_handle);
+        }
+
+        void Geometry::Buffer::unbindTarget()
+        {
+            glBindBuffer(m_target, 0);
+        }
+
+        bool Geometry::Buffer::bufferData(GLsizeiptr size, const GLvoid *data)
+        {
+            glBindBuffer(m_target, m_handle);
+            glBufferData(m_target, size, data, m_usage);
+
+            GLint checkSize = -1;
+            glGetBufferParameteriv(m_target, GL_BUFFER_SIZE, &checkSize);
+            return (size == checkSize);
         }
     } // namespace gl
 } // namespace yourgame

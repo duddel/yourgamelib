@@ -164,34 +164,33 @@ namespace yourgame
             if (!m_geo)
             {
                 m_geo = yourgame::gl::Geometry::make();
-                // todo: make buffer usage (GL_STATIC_DRAW) configurable
-                m_geo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
-                m_geo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-                m_geo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
-                m_geo->addBuffer("color", GL_ARRAY_BUFFER, vertColorSize, objColordData.data(), GL_STATIC_DRAW);
-                m_geo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
 
-                std::vector<std::string> arBufferNames = {"pos", "norm", "texcoords", "color"};
+                m_geo->addArrayBuffer("pos", vertPosSize, objPosData.data(), GL_DYNAMIC_DRAW,
+                                      {gl::attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
+                m_geo->addArrayBuffer("norm", vertNormSize, objNormalData.data(), GL_DYNAMIC_DRAW,
+                                      {gl::attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
+                m_geo->addArrayBuffer("texcoords", vertTexcoordsSize, objTexCoordData.data(), GL_DYNAMIC_DRAW,
+                                      {gl::attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
+                m_geo->addArrayBuffer("color", vertColorSize, objColordData.data(), GL_DYNAMIC_DRAW,
+                                      {gl::attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
 
-                std::vector<yourgame::gl::Shape::ArrBufferDescr> arDescrs =
-                    {{gl::attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-                     {gl::attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-                     {gl::attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-                     {gl::attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0}};
+                m_geo->setElementArrayBuffer(vertIdxSize, objIdxData.data(), GL_DYNAMIC_DRAW,
+                                             {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
 
-                m_geo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
+                m_geo->init();
 
                 // todo: leave m_geo in a valid state if buffer creation failed
             }
             else
             {
-                m_geo->bufferData("pos", vertPosSize, objPosData.data());
-                m_geo->bufferData("norm", vertNormSize, objNormalData.data());
-                m_geo->bufferData("texcoords", vertTexcoordsSize, objTexCoordData.data());
-                m_geo->bufferData("color", vertColorSize, objColordData.data());
-                m_geo->bufferData("idx", vertIdxSize, objIdxData.data());
+                m_geo->bufferArrayData("pos", vertPosSize, objPosData.data());
+                m_geo->bufferArrayData("norm", vertNormSize, objNormalData.data());
+                m_geo->bufferArrayData("texcoords", vertTexcoordsSize, objTexCoordData.data());
+                m_geo->bufferArrayData("color", vertColorSize, objColordData.data());
+
                 // the shape needs to know how many elements to draw:
-                m_geo->setShapeElArDescr("main", {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
+                 m_geo->setElementArrayBuffer(vertIdxSize, objIdxData.data(), GL_STATIC_DRAW,
+                                              {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
 
                 // todo: leave m_geo in a valid state if buffer creation failed
             }

@@ -1,10 +1,13 @@
 @echo off
+setlocal
 
-IF NOT EXIST _build_debug_win32\ (
-  mkdir _build_debug_win32
-  cd _build_debug_win32
-  cmake -A Win32 -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=DEBUG ../..
-  cd ..
+set BUILD_DIR=_build_debug_win64
+
+IF NOT EXIST %BUILD_DIR% (
+  mkdir %BUILD_DIR%
+  cmake -A Win32 -B %BUILD_DIR% -DYOURGAME_PLATFORM=desktop -DCMAKE_BUILD_TYPE=Debug ..
 )
 
-cd _build_debug_win32 && cmake --build . && cd ..
+cmake --build %BUILD_DIR%
+
+endlocal

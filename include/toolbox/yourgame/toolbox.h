@@ -21,7 +21,6 @@ freely, subject to the following restrictions:
 #define YOURGAME_TOOLBOX_H
 
 // the following includes are part of the yourgame (toolbox) API
-#include "yourgame/gl/buffer.h"
 #include "yourgame/gl/conventions.h"
 #include "yourgame/gl/drawing.h"
 #include "yourgame/gl/framebuffer.h"
@@ -30,7 +29,6 @@ freely, subject to the following restrictions:
 #include "yourgame/gl/loading.h"
 #include "yourgame/gl/particles.h"
 #include "yourgame/gl/shader.h"
-#include "yourgame/gl/shape.h"
 #include "yourgame/gl/spritegrid.h"
 #include "yourgame/gl/texture.h"
 #include "yourgame/math/camera.h"

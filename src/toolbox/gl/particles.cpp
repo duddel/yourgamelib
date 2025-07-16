@@ -33,14 +33,14 @@ namespace yourgame
             }
 
             Particles *newParts = new Particles(cfg, geo);
-
             GLsizei vec4Size = static_cast<GLsizei>(sizeof(glm::vec4));
-            // todo: handle errors during addBuffer()
-            newParts->m_geo->addBuffer("instModelPos", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
-            newParts->m_geo->addBuffer("instProgress", GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
-            newParts->m_geo->addBufferToShape("main", {{gl::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1}}, "instModelPos");
-            newParts->m_geo->addBufferToShape("main", {{gl::attrLocInstProgress, 1, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (void *)0, 1}}, "instProgress");
 
+            newParts->m_geo->addArrayBuffer("instModelPos", 0, nullptr, GL_DYNAMIC_DRAW,
+                                            {gl::attrLocInstModelMatCol3, 4, GL_FLOAT, GL_FALSE, vec4Size, (void *)0, 1});
+            newParts->m_geo->addArrayBuffer("instProgress", 0, nullptr, GL_DYNAMIC_DRAW,
+                                            {gl::attrLocInstProgress, 1, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (void *)0, 1});
+
+            newParts->m_geo->init();
             return newParts;
         }
 
@@ -52,9 +52,10 @@ namespace yourgame
         void Particles::tick(float dt)
         {
             yourgame::math::Particles::tick(dt);
-            m_geo->bufferData("instModelPos", m_positionData.size() * sizeof(m_positionData[0]), m_positionData.data());
-            m_geo->bufferData("instProgress", m_progressData.size() * sizeof(m_progressData[0]), m_progressData.data());
+            m_geo->bufferArrayData("instModelPos", m_positionData.size() * sizeof(m_positionData[0]), m_positionData.data());
+            m_geo->bufferArrayData("instProgress", m_progressData.size() * sizeof(m_progressData[0]), m_progressData.data());
         }
+
         yourgame::gl::Geometry *Particles::geo()
         {
             return m_geo;

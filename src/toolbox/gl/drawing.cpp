@@ -82,11 +82,11 @@ namespace yourgame
             // draw call
             if (cfg.instancecount > 1)
             {
-                geo->drawAllInstanced(cfg.instancecount);
+                geo->drawInstanced(cfg.instancecount);
             }
             else
             {
-                geo->drawAll();
+                geo->draw();
             }
         }
 

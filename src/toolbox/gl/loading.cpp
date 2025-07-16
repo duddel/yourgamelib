@@ -496,6 +496,9 @@ namespace yourgame
                         objLineIdxData.push_back((GLuint)(mapRet.first->second));
                     }
                 }
+
+                // ToDo: load points
+                // ...
             }
 
             Geometry *newGeo = Geometry::make();
@@ -507,36 +510,47 @@ namespace yourgame
             auto vertIdxSize = objIdxData.size() * sizeof(objIdxData[0]);
             auto vertLineIdxSize = objLineIdxData.size() * sizeof(objLineIdxData[0]);
 
-            // add available buffers to new Geometry and configure
-            // the Geometry shape...
-            std::vector<Shape::ArrBufferDescr> arDescrs =
-                {{attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0},
-                 {attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0}};
+            newGeo->addArrayBuffer("pos", vertPosSize, objPosData.data(), GL_STATIC_DRAW,
+                                   {attrLocPosition, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
+            newGeo->addArrayBuffer("color", vertColorSize, objColordData.data(), GL_STATIC_DRAW,
+                                   {attrLocColor, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
 
-            std::vector<std::string> arBufferNames = {"pos", "color"};
-
-            newGeo->addBuffer("pos", GL_ARRAY_BUFFER, vertPosSize, objPosData.data(), GL_STATIC_DRAW);
-            newGeo->addBuffer("color", GL_ARRAY_BUFFER, vertColorSize, objColordData.data(), GL_STATIC_DRAW);
-            newGeo->addBuffer("idx", GL_ELEMENT_ARRAY_BUFFER, vertIdxSize, objIdxData.data(), GL_STATIC_DRAW);
-            newGeo->addBuffer("idxLines", GL_ELEMENT_ARRAY_BUFFER, vertLineIdxSize, objLineIdxData.data(), GL_STATIC_DRAW);
             if (vertNormSize > 0)
             {
-                newGeo->addBuffer("norm", GL_ARRAY_BUFFER, vertNormSize, objNormalData.data(), GL_STATIC_DRAW);
-                arDescrs.push_back({attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
-                arBufferNames.push_back("norm");
+                newGeo->addArrayBuffer("norm", vertNormSize, objNormalData.data(), GL_STATIC_DRAW,
+                                       {attrLocNormal, 3, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
             }
             if (vertTexcoordsSize > 0)
             {
-                newGeo->addBuffer("texcoords", GL_ARRAY_BUFFER, vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW);
-                arDescrs.push_back({attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
-                arBufferNames.push_back("texcoords");
+                newGeo->addArrayBuffer("texcoords", vertTexcoordsSize, objTexCoordData.data(), GL_STATIC_DRAW,
+                                       {attrLocTexcoords, 2, GL_FLOAT, GL_FALSE, 0, (void *)0, 0});
             }
 
-            // all obj triangle shapes
-            newGeo->addShape("main", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()}, "idx");
+            // Create the actual Geometry.
+            // - If there are triangles -> Geometry only uses triangles (GL_TRIANGLES), lines are ignored
+            // - If there are no triangles, but lines, Geometry only uses lines (GL_LINES)
+            // - If no triangles and no lines -> discard Geometry
+            //   - ToDo: Maybe it is a point cloud? consider creating Geometry with GL_POINTS
+            // ToDo: This could be more flexible.
+            // - Return multiple Geometries (one for each draw mode: GL_TRIANGLES, GL_LINES)
+            // - Let user specify which primitives to load (e.g. force GL_LINES)
+            if (vertIdxSize > 0)
+            {
+                newGeo->setElementArrayBuffer(vertIdxSize, objIdxData.data(), GL_STATIC_DRAW,
+                                              {GL_UNSIGNED_INT, GL_TRIANGLES, (GLsizei)objIdxData.size()});
+            }
+            else if (vertLineIdxSize > 0)
+            {
+                newGeo->setElementArrayBuffer(vertLineIdxSize, objLineIdxData.data(), GL_STATIC_DRAW,
+                                              {GL_UNSIGNED_INT, GL_LINES, (GLsizei)objLineIdxData.size()});
+            }
+            else
+            {
+                delete newGeo;
+                return nullptr;
+            }
 
-            // all obj line shapes
-            newGeo->addShape("lines", arDescrs, arBufferNames, {GL_UNSIGNED_INT, GL_LINES, (GLsizei)objLineIdxData.size()}, "idxLines");
+            newGeo->init();
 
             return newGeo;
         }
