@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['drawconfig_0',['DrawConfig',['../structyourgame_1_1gl_1_1DrawConfig.html',1,'yourgame::gl']]]
+  ['elementarraybufferdescriptor_0',['ElementArrayBufferDescriptor',['../structyourgame_1_1gl_1_1Geometry_1_1ElementArrayBufferDescriptor.html',1,'yourgame::gl::Geometry']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['elemarrbufferdescr_0',['ElemArrBufferDescr',['../structyourgame_1_1gl_1_1Shape_1_1ElemArrBufferDescr.html',1,'yourgame::gl::Shape']]],
+  ['elementarraybufferdescriptor_0',['ElementArrayBufferDescriptor',['../structyourgame_1_1gl_1_1Geometry_1_1ElementArrayBufferDescriptor.html',1,'yourgame::gl::Geometry']]],
   ['emittera_1',['emitterA',['../structyourgame_1_1math_1_1Particles_1_1Config.html#a7e2c746b5cd58888e97f17453c4ef525',1,'yourgame::math::Particles::Config']]],
   ['emitterb_2',['emitterB',['../structyourgame_1_1math_1_1Particles_1_1Config.html#a71e854fe30f417e14d5a05e202d4c153',1,'yourgame::math::Particles::Config']]],
   ['emitterc_3',['emitterC',['../structyourgame_1_1math_1_1Particles_1_1Config.html#a41f8f37e71dfe290b69387cfeec5c11a',1,'yourgame::math::Particles::Config']]],

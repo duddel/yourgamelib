@@ -6,7 +6,7 @@ var searchData=
   ['aspectratiopixel_3',['aspectRatioPixel',['../structyourgame_1_1gl_1_1TextureCoords.html#a871e1c89675e67d516c42e1889cf911e',1,'yourgame::gl::TextureCoords']]],
   ['aspectratiopixelinverse_4',['aspectRatioPixelInverse',['../structyourgame_1_1gl_1_1TextureCoords.html#a657012b30a62abc7bff88f8249ef357b',1,'yourgame::gl::TextureCoords']]],
   ['attachment_5',['attachment',['../structyourgame_1_1gl_1_1Framebuffer_1_1TextureAttachDescr.html#af989870548b90aca78d8f53d1d5cf45e',1,'yourgame::gl::Framebuffer::TextureAttachDescr']]],
-  ['attribdivisor_6',['attribDivisor',['../structyourgame_1_1gl_1_1Shape_1_1ArrBufferDescr.html#ae5ee59fb6eaad030b73e46f06dfcfcf6',1,'yourgame::gl::Shape::ArrBufferDescr']]],
+  ['attribdivisor_6',['attribDivisor',['../structyourgame_1_1gl_1_1Geometry_1_1ArrayBufferDescriptor.html#a42c06b3f89f52624ef3d64e868901e08',1,'yourgame::gl::Geometry::ArrayBufferDescriptor']]],
   ['attrloccolor_7',['attrLocColor',['../namespaceyourgame_1_1gl.html#a1cd7aaec51068255fddefb0a59e408c6',1,'yourgame::gl']]],
   ['attrlocinstmodelmatcol0_8',['attrLocInstModelMatCol0',['../namespaceyourgame_1_1gl.html#ad3089e99832bd6a6940b530f78f449ba',1,'yourgame::gl']]],
   ['attrlocinstmodelmatcol1_9',['attrLocInstModelMatCol1',['../namespaceyourgame_1_1gl.html#a1fd5bb87d6fb58dc8d4fb971f7588bc5',1,'yourgame::gl']]],

@@ -14,7 +14,7 @@ var searchData=
   ['pingpong_11',['PINGPONG',['../classyourgame_1_1util_1_1Motion.html#a0e070074ed57d3d199bd713efb342bbea65d1ef58bfa19db0a2f44fc48df5723a',1,'yourgame::util::Motion']]],
   ['play_12',['play',['../namespaceyourgame_1_1audio.html#ab73a45ab1d698593d2a5324436bac8f3',1,'yourgame::audio']]],
   ['pmat_13',['pmat',['../classyourgame_1_1math_1_1Camera.html#a606dd070e6e948ad3c2a0afceca63859',1,'yourgame::math::Camera::pMat()'],['../classyourgame_1_1math_1_1Camera.html#a27da8edc9568185e48f1df65223bf522',1,'yourgame::math::Camera::pMat(float zNear, float zFar)']]],
-  ['pointer_14',['pointer',['../structyourgame_1_1gl_1_1Shape_1_1ArrBufferDescr.html#a366c094c3e763a55b057222c8fbd6081',1,'yourgame::gl::Shape::ArrBufferDescr']]],
+  ['pointer_14',['pointer',['../structyourgame_1_1gl_1_1Geometry_1_1ArrayBufferDescriptor.html#a07ae0184473a9569be6a5fa86265fed2',1,'yourgame::gl::Geometry::ArrayBufferDescriptor']]],
   ['pointto_15',['pointTo',['../classyourgame_1_1math_1_1Trafo.html#aa8d2f15cc7a1da86314cac0251b96480',1,'yourgame::math::Trafo']]],
   ['position_16',['position',['../classyourgame_1_1gl_1_1Lightsource.html#a0c4f76dc48e859c1ce076d37aa5907b7',1,'yourgame::gl::Lightsource']]],
   ['postproc_2ecpp_17',['postproc.cpp',['../postproc_8cpp.html',1,'']]],
